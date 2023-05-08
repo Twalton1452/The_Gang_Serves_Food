@@ -1,0 +1,161 @@
+[gd_scene load_steps=14 format=3 uid="uid://crg8j7gc45t56"]
+
+[ext_resource type="Script" path="res://Scripts/world.gd" id="1_ot15l"]
+[ext_resource type="Script" path="res://Scripts/InteractableComponent.gd" id="2_x636e"]
+[ext_resource type="PackedScene" uid="uid://c6fwtyi3882jp" path="res://Scenes/restaurant.tscn" id="3_143sp"]
+[ext_resource type="Texture2D" uid="uid://dbhoh01adyned" path="res://addons/kenney_particle_pack/circle_05.png" id="3_mhqd0"]
+[ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="4_o5iqt"]
+[ext_resource type="PackedScene" uid="uid://cu7nu7k7n8iul" path="res://3d_models/Plate.blend" id="5_fw23g"]
+[ext_resource type="PackedScene" uid="uid://wt4qx8l7q5bl" path="res://Scenes/fridge.tscn" id="6_l43ah"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_il2d7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3w32"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_irnl5"]
+sky_material = SubResource("ProceduralSkyMaterial_g3w32")
+
+[sub_resource type="Environment" id="Environment_ujyim"]
+background_mode = 2
+sky = SubResource("Sky_irnl5")
+tonemap_mode = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bcg13"]
+bg_color = Color(1, 0, 0.0509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2aib2"]
+bg_color = Color(0, 0.72549, 0, 1)
+
+[node name="World" type="Node"]
+script = ExtResource("1_ot15l")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.01041)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("2_x636e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 1.49012e-08, 1.49012e-08, 1, 2.98023e-08, 7.45058e-09, 2.98023e-08, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_il2d7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ujyim")
+
+[node name="Restaurant" parent="." instance=ExtResource("3_143sp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545555, -0.546066, 0)
+
+[node name="Ground" parent="." instance=ExtResource("4_o5iqt")]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.601873, 10)
+
+[node name="Fridge" parent="." instance=ExtResource("6_l43ah")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.251101, -0.546324, -0.801678)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MainMenu" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 386.0
+offset_top = 226.0
+offset_right = -386.0
+offset_bottom = -226.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HostButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="JoinButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join"
+
+[node name="AddressEntry" type="LineEdit" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter Address to Join here"
+alignment = 1
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Reticle" type="TextureRect" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.03, 0.03)
+pivot_offset = Vector2(576, 324)
+mouse_filter = 2
+texture = ExtResource("3_mhqd0")
+stretch_mode = 5
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 300.0
+offset_top = 50.0
+offset_right = -300.0
+offset_bottom = -542.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bcg13")
+theme_override_styles/fill = SubResource("StyleBoxFlat_2aib2")
+max_value = 3.0
+value = 3.0
+show_percentage = false
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
+spawn_path = NodePath("..")
+
+[node name="Plate" parent="." instance=ExtResource("5_fw23g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.76497, -0.213246, 3.91885)
+
+[node name="Plate2" parent="." instance=ExtResource("5_fw23g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.76497, -0.213246, 3.68144)
+
+[node name="Plate3" parent="." instance=ExtResource("5_fw23g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.08528, -0.213246, 3.91885)
+
+[node name="Plate4" parent="." instance=ExtResource("5_fw23g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.08528, -0.213246, 3.68144)
+
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

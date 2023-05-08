@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dq6tp44ylnin7"]
+
+[ext_resource type="Script" path="res://Scripts/InteractableComponent.gd" id="1_s63h1"]
+
+[node name="InteractableComponent" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_s63h1")

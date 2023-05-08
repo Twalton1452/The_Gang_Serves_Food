@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c28hpirne8typ"]
+
+[ext_resource type="Script" path="res://Scripts/RotatableComponent.gd" id="1_mnpqc"]
+
+[node name="RotatableComponent" type="Node3D"]
+script = ExtResource("1_mnpqc")
