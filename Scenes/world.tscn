@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://crg8j7gc45t56"]
+[gd_scene load_steps=15 format=3 uid="uid://crg8j7gc45t56"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_ot15l"]
 [ext_resource type="Script" path="res://Scripts/InteractableComponent.gd" id="2_x636e"]
@@ -6,7 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dbhoh01adyned" path="res://addons/kenney_particle_pack/circle_05.png" id="3_mhqd0"]
 [ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="4_o5iqt"]
 [ext_resource type="PackedScene" uid="uid://cu7nu7k7n8iul" path="res://3d_models/Plate.blend" id="5_fw23g"]
-[ext_resource type="PackedScene" uid="uid://wt4qx8l7q5bl" path="res://Scenes/fridge.tscn" id="6_l43ah"]
+[ext_resource type="PackedScene" uid="uid://c8uk5h5u78k5b" path="res://Scenes/fridge_components.tscn" id="8_p3k3o"]
+[ext_resource type="PackedScene" uid="uid://g3ohqt15xw1d" path="res://Scenes/stove_components.tscn" id="8_pljc0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_il2d7"]
 
@@ -53,9 +54,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545555, -0.546066, 0)
 
 [node name="Ground" parent="." instance=ExtResource("4_o5iqt")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.601873, 10)
-
-[node name="Fridge" parent="." instance=ExtResource("6_l43ah")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.251101, -0.546324, -0.801678)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -155,6 +153,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.08528, -0.213246, 3.91885)
 
 [node name="Plate4" parent="." instance=ExtResource("5_fw23g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.08528, -0.213246, 3.68144)
+
+[node name="Fridge" parent="." instance=ExtResource("8_p3k3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.417491, -0.546324, -1.01203)
+
+[node name="kitchenStove" parent="." instance=ExtResource("8_pljc0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1064, -0.546323, -0.864933)
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

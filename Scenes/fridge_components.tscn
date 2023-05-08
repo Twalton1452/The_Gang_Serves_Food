@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8uk5h5u78k5b"]
+
+[ext_resource type="PackedScene" uid="uid://dr60d8lik1jhv" path="res://3d_models/Kenneys_Furniture/kitchenFridge.glb" id="1_7cp4a"]
+[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/interactable_component.tscn" id="2_400m6"]
+[ext_resource type="PackedScene" uid="uid://c28hpirne8typ" path="res://Scenes/rotatable_component.tscn" id="3_58gvr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hajab"]
+size = Vector3(0.414506, 0.209362, 0.0458187)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xppdi"]
+size = Vector3(0.403937, 0.582219, 0.0381829)
+
+[node name="Fridge" type="Node3D"]
+
+[node name="kitchenFridge" parent="." instance=ExtResource("1_7cp4a")]
+
+[node name="InteractableComponent" parent="kitchenFridge/kitchenFridge(Clone)/doorFreezer" index="0" instance=ExtResource("2_400m6")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/doorFreezer/InteractableComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18568, 0.104617, 0.013337)
+shape = SubResource("BoxShape3D_hajab")
+
+[node name="RotatableComponent" parent="kitchenFridge/kitchenFridge(Clone)/doorFreezer" index="1" instance=ExtResource("3_58gvr")]
+
+[node name="InteractableComponent" parent="kitchenFridge/kitchenFridge(Clone)/doorFridge" index="0" instance=ExtResource("2_400m6")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/doorFridge/InteractableComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.187532, 0.315334, 0.0377477)
+shape = SubResource("BoxShape3D_xppdi")
+
+[node name="RotatableComponent" parent="kitchenFridge/kitchenFridge(Clone)/doorFridge" index="1" instance=ExtResource("3_58gvr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.67638e-08, 7.45058e-09, 0)
+
+[node name="StaticBody3D" parent="kitchenFridge/kitchenFridge(Clone)" index="2"]
+input_ray_pickable = false
+
+[connection signal="interacted" from="kitchenFridge/kitchenFridge(Clone)/doorFreezer/InteractableComponent" to="kitchenFridge/kitchenFridge(Clone)/doorFreezer/RotatableComponent" method="_on_interactable_component_interacted"]
+[connection signal="interacted" from="kitchenFridge/kitchenFridge(Clone)/doorFridge/InteractableComponent" to="kitchenFridge/kitchenFridge(Clone)/doorFridge/RotatableComponent" method="_on_interactable_component_interacted"]
+
+[editable path="kitchenFridge"]

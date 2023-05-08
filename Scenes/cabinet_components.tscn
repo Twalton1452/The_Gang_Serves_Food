@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7kurfh7ka4m2"]
+
+[ext_resource type="PackedScene" uid="uid://bawrceikdujgg" path="res://3d_models/Kenneys_Furniture/kitchenCabinet.glb" id="1_wh3he"]
+[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/interactable_component.tscn" id="2_v3x7c"]
+[ext_resource type="PackedScene" uid="uid://c28hpirne8typ" path="res://Scenes/rotatable_component.tscn" id="3_uygw2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oy36d"]
+size = Vector3(0.401765, 0.30559, 0.0463363)
+
+[node name="kitchenCabinet" instance=ExtResource("1_wh3he")]
+
+[node name="InteractableComponent" parent="kitchenCabinet(Clone)/door" index="0" instance=ExtResource("2_v3x7c")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenCabinet(Clone)/door/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.187023, 0.140577, 0.00736533)
+shape = SubResource("BoxShape3D_oy36d")
+
+[node name="RotatableComponent" parent="kitchenCabinet(Clone)/door" index="1" instance=ExtResource("3_uygw2")]
+
+[connection signal="interacted" from="kitchenCabinet(Clone)/door/InteractableComponent" to="kitchenCabinet(Clone)/door/RotatableComponent" method="_on_interactable_component_interacted"]

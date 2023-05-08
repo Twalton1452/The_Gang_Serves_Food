@@ -30,6 +30,10 @@ animation/remove_immutable_tracks=true
 import_script/path=""
 _subresources={
 "nodes": {
+"PATH:kitchenFridge(Clone)": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
 "PATH:kitchenFridge(Clone)/doorFridge": {
 "physics/shape_type": 1
 }
