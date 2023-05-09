@@ -36,6 +36,7 @@ func _on_join_button_pressed():
 	# enet_peer.create_client(address_entry.text, PORT)
 	enet_peer.create_client("localhost", PORT)
 	multiplayer.multiplayer_peer = enet_peer
+	multiplayer.server_disconnected.connect(server_disconnect)
 	
 func add_player(peer_id):
 	var player = player_scene.instantiate()
@@ -48,6 +49,9 @@ func remove_player(peer_id):
 	var player = get_node_or_null(str(peer_id))
 	if player:
 		player.queue_free()
+
+func server_disconnect():
+	get_tree().quit()
 
 func update_health_bar(health_value):
 	health_bar.value = health_value
