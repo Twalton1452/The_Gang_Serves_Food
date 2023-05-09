@@ -116,7 +116,10 @@ func is_holding_item():
 
 func hold_item(item: Node3D):
 	#print_debug("%s is now holding %s" % [str(get_multiplayer_authority()), item.name])
-	item.reparent(item_holder, false)
+	if item.get_parent() == null:
+		item_holder.add_child(item)
+	else:
+		item.reparent(item_holder, false)
 	item.position = Vector3.ZERO
 
 func get_held_item() -> Node3D:

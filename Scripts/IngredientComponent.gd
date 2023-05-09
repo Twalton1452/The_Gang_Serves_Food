@@ -8,9 +8,8 @@ class_name IngredientComponent
 
 func take_ingredient() -> Node3D:
 	if ingredient_parent != null and ingredient_parent.get_child_count() > 0:
-		ingredient_scene.instantiate()
 		return ingredient_parent.get_child(ingredient_parent.get_child_count() - 1)
-	return
+	return ingredient_scene.instantiate()
 
 func put_ingredient_down(ingredient: Node3D) -> void:
 	if ingredient_parent != null and ingredient_parent.get_child_count() < max_amount:

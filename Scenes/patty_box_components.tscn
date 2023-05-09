@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bhm43rjjcejqy" path="res://3d_models/BrownBox.blend" id="1_0hbu4"]
 [ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="3_skm6r"]
-[ext_resource type="Script" path="res://Scripts/IngredientComponent.gd" id="4_pa17m"]
+[ext_resource type="PackedScene" uid="uid://bei81b4d8anq0" path="res://Scenes/components/ingredient_component.tscn" id="4_g51o6"]
 [ext_resource type="PackedScene" uid="uid://effhc27p2nda" path="res://Scenes/patty.tscn" id="5_baeti"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ewkhx"]
@@ -66,8 +66,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0651258, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0486675, 0)
 shape = SubResource("BoxShape3D_ewkhx")
 
-[node name="IngredientComponent" type="Node3D" parent="." index="3" node_paths=PackedStringArray("ingredient_parent")]
-script = ExtResource("4_pa17m")
+[node name="IngredientComponent" parent="." index="3" node_paths=PackedStringArray("ingredient_parent") instance=ExtResource("4_g51o6")]
 ingredient_scene = ExtResource("5_baeti")
 ingredient_parent = NodePath("../Patties")
 
