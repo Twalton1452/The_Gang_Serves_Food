@@ -24,7 +24,7 @@ func _enter_tree():
 
 func _ready():
 	if not is_multiplayer_authority(): return
-	
+
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 
@@ -117,7 +117,7 @@ func is_holding_item():
 func hold_item(item: Node3D):
 	#print_debug("%s is now holding %s" % [str(get_multiplayer_authority()), item.name])
 	if item.get_parent() == null:
-		item_holder.add_child(item)
+		item_holder.add_child(item, true)
 	else:
 		item.reparent(item_holder, false)
 	item.position = Vector3.ZERO

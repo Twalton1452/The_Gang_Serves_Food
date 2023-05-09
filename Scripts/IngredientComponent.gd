@@ -12,12 +12,14 @@ func take_ingredient() -> Node3D:
 	return ingredient_scene.instantiate()
 
 func put_ingredient_down(ingredient: Node3D) -> void:
-	if ingredient_parent != null and ingredient_parent.get_child_count() < max_amount:
-		ingredient.reparent(ingredient_parent, false)
-		if ingredient_parent.get_child_count() > 2:
-			ingredient.position = ingredient_parent.get_child(-2).position + stacking_spacing
+	var parent = ingredient_parent if ingredient_parent != null else self
+	if parent.get_child_count() < max_amount:
+		ingredient.reparent(parent, false)
+		if parent.get_child_count() > 2:
+			ingredient.position = parent.get_child(-2).position + stacking_spacing
 		else:
 			ingredient.position = Vector3.ZERO
+		
 
 func _on_interactable_component_interacted(_node : InteractableComponent, player : Player):
 	if not player.is_holding_item():

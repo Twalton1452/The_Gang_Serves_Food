@@ -9,7 +9,6 @@ const player_scene = preload("res://Scenes/player.tscn")
 const PORT = 9998
 var enet_peer = ENetMultiplayerPeer.new()
 
-
 #func _ready():
 	#call_deferred("_on_host_button_pressed")
 
@@ -37,7 +36,13 @@ func _on_join_button_pressed():
 	enet_peer.create_client("localhost", PORT)
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.server_disconnected.connect(server_disconnect)
-	
+
+func _exit_tree():
+	if not multiplayer.is_server():
+		return
+	multiplayer.peer_connected.disconnect(add_player)
+	multiplayer.peer_disconnected.disconnect(remove_player)
+
 func add_player(peer_id):
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
