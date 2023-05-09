@@ -41,15 +41,17 @@ func _unhandled_input(event):
 		rotate_y(-event.relative.x * look_speed)
 		camera.rotate_x(-event.relative.y * look_speed)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
+
+	# Left over example code from Boilerplate
 	if event.is_action_pressed("shoot") and anim_player.current_animation != "shoot":
 		play_shoot_effects.rpc()
 		if gun_ray_cast.is_colliding():
 			var hit_player = gun_ray_cast.get_collider()
 			hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+
 	if event.is_action_pressed("interact"):
 		if interact_ray_cast.is_colliding():
-			var interactable = interact_ray_cast.get_collider() as InteractableComponent
-			interactable.interact.rpc(get_multiplayer_authority())
+			interact.rpc()
 			
 
 func _physics_process(delta):
@@ -84,6 +86,12 @@ func _physics_process(delta):
 
 	move_and_slide()
 
+@rpc("call_local")
+func interact() -> void:
+	var interactable = interact_ray_cast.get_collider() as InteractableComponent
+	interactable.interact(self)
+
+## Left over example code from boilerplate
 @rpc("call_local")
 func play_shoot_effects():
 	anim_player.stop()
