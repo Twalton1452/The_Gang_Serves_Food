@@ -1,4 +1,5 @@
 extends Node3D
+class_name RotatableComponent
 
 ## Set in degrees, but converted to radians on _ready for the Tween
 @export var tar_rot = Vector3(0.0, -90.0, 0.0)
@@ -14,7 +15,7 @@ func _ready():
 	tar_rot.y = deg_to_rad(tar_rot.y)
 	tar_rot.z = deg_to_rad(tar_rot.z)
 
-func _on_interactable_component_interacted(node):
+func _on_interactable_component_interacted(node, _player):
 	rotate_parent(node)
 
 func rotate_parent(node):

@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://g3ohqt15xw1d"]
+[gd_scene load_steps=5 format=3 uid="uid://c0g1h8k6b2m0u"]
 
 [ext_resource type="PackedScene" uid="uid://43j8lde63v6x" path="res://3d_models/Kenneys_Furniture/kitchenStove.glb" id="1_kvmn6"]
-[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/interactable_component.tscn" id="2_u7x5j"]
-[ext_resource type="PackedScene" uid="uid://c28hpirne8typ" path="res://Scenes/rotatable_component.tscn" id="3_v0p4e"]
+[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_u7x5j"]
+[ext_resource type="PackedScene" uid="uid://c28hpirne8typ" path="res://Scenes/components/rotatable_component.tscn" id="3_v0p4e"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1tpb2"]
 size = Vector3(0.380177, 0.285769, 0.0260013)

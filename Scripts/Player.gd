@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name Player
 
 signal health_changed(health_value)
 
@@ -7,6 +8,7 @@ signal health_changed(health_value)
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
 @onready var gun_ray_cast = $Camera3D/GunRayCast3D
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
+@onready var item_holder = $Camera3D/ItemHolder
 
 const SPEED = 4.0
 const JUMP_VELOCITY = 10.0
@@ -47,7 +49,8 @@ func _unhandled_input(event):
 	if event.is_action_pressed("interact"):
 		if interact_ray_cast.is_colliding():
 			var interactable = interact_ray_cast.get_collider() as InteractableComponent
-			interactable.interact()
+			interactable.interact.rpc(get_multiplayer_authority())
+			
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
@@ -99,3 +102,11 @@ func receive_damage():
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "shoot":
 		anim_player.play("idle")
+
+func is_holding_item():
+	return item_holder.get_child_count() > 0
+
+func hold_item(item: Node3D):
+	print("%s is now holding %s" % [str(get_multiplayer_authority()), item.name])
+	item.reparent(item_holder, false)
+	item.position = Vector3.ZERO

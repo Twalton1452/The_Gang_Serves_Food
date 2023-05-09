@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://crg8j7gc45t56"]
+[gd_scene load_steps=22 format=3 uid="uid://crg8j7gc45t56"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_ot15l"]
 [ext_resource type="Script" path="res://Scripts/InteractableComponent.gd" id="2_x636e"]
@@ -6,8 +6,15 @@
 [ext_resource type="Texture2D" uid="uid://dbhoh01adyned" path="res://addons/kenney_particle_pack/circle_05.png" id="3_mhqd0"]
 [ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="4_o5iqt"]
 [ext_resource type="PackedScene" uid="uid://cu7nu7k7n8iul" path="res://3d_models/Plate.blend" id="5_fw23g"]
-[ext_resource type="PackedScene" uid="uid://c8uk5h5u78k5b" path="res://Scenes/fridge_components.tscn" id="8_p3k3o"]
-[ext_resource type="PackedScene" uid="uid://g3ohqt15xw1d" path="res://Scenes/stove_components.tscn" id="8_pljc0"]
+[ext_resource type="PackedScene" uid="uid://cspma4eqnxob5" path="res://Scenes/fridge_components.tscn" id="8_p3k3o"]
+[ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/stove_components.tscn" id="8_pljc0"]
+[ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/cabinet_components.tscn" id="9_8q8ed"]
+[ext_resource type="PackedScene" uid="uid://df8lx1i6kk3b4" path="res://3d_models/Patty.blend" id="10_2w3w8"]
+[ext_resource type="PackedScene" uid="uid://djotf66w74co1" path="res://3d_models/Bun.blend" id="11_1o50j"]
+[ext_resource type="PackedScene" uid="uid://igad4n71g06j" path="res://3d_models/BottomBun.blend" id="12_vj74u"]
+[ext_resource type="PackedScene" uid="uid://be3c0n81j2t5a" path="res://3d_models/Plate.glb" id="13_ovmxf"]
+[ext_resource type="PackedScene" uid="uid://drdyip8qwof8h" path="res://3d_models/TopBun.blend" id="14_5b88j"]
+[ext_resource type="PackedScene" uid="uid://cc85g7fimsk2a" path="res://Scenes/patty_box_components.tscn" id="15_nfvn3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_il2d7"]
 
@@ -139,7 +146,7 @@ value = 3.0
 show_percentage = false
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn", "res://Scenes/patty.tscn")
 spawn_path = NodePath("..")
 
 [node name="Plate" parent="." instance=ExtResource("5_fw23g")]
@@ -159,6 +166,33 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.417491, -0.546324, -1.0120
 
 [node name="kitchenStove" parent="." instance=ExtResource("8_pljc0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1064, -0.546323, -0.864933)
+
+[node name="kitchenCabinet" parent="." instance=ExtResource("9_8q8ed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65047, -0.546324, -0.876345)
+
+[node name="Patty" parent="." instance=ExtResource("10_2w3w8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.16825, -0.19159, 1.7188)
+
+[node name="Bun" parent="." instance=ExtResource("11_1o50j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.16814, -0.184102, 1.71859)
+
+[node name="BottomBun" parent="." instance=ExtResource("12_vj74u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.16687, -0.193966, 1.71678)
+
+[node name="Plate5" parent="." instance=ExtResource("13_ovmxf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.17154, -0.210698, 1.71156)
+
+[node name="TopBun" parent="." instance=ExtResource("14_5b88j")]
+transform = Transform3D(0.937319, -0.348474, 0, 0.348474, 0.937319, 0, 0, 0, 1, -1.49679, -0.11388, -1.01111)
+
+[node name="BottomBun2" parent="." instance=ExtResource("12_vj74u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.46411, -0.130391, -1.0162)
+
+[node name="kitchenCabinet2" parent="." instance=ExtResource("9_8q8ed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.63735, -0.546324, -0.885777)
+
+[node name="PattyBox" parent="." instance=ExtResource("15_nfvn3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.41691, -0.115575, -1.0213)
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

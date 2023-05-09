@@ -9,13 +9,13 @@
 [ext_resource type="PackedScene" uid="uid://c8f0jt5feollv" path="res://3d_models/Kenneys_Furniture/plantSmall1.glb" id="5_7igg5"]
 [ext_resource type="PackedScene" uid="uid://ck3bb6tnvaowq" path="res://3d_models/Kenneys_Furniture/kitchenCabinetCornerRound.glb" id="7_6t36f"]
 [ext_resource type="PackedScene" uid="uid://c4hh6x4ekialm" path="res://3d_models/Kenneys_Furniture/kitchenCoffeeMachine.glb" id="8_bwfvy"]
-[ext_resource type="PackedScene" uid="uid://c7kurfh7ka4m2" path="res://Scenes/cabinet_components.tscn" id="10_b6sav"]
+[ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/cabinet_components.tscn" id="10_b6sav"]
 [ext_resource type="PackedScene" uid="uid://b30hc26360tau" path="res://3d_models/Kenneys_Furniture/kitchenMicrowave.glb" id="10_yvy3p"]
 [ext_resource type="PackedScene" uid="uid://cpb5xjyhdnwqr" path="res://3d_models/Kenneys_Furniture/kitchenSink.glb" id="11_t52rp"]
-[ext_resource type="PackedScene" uid="uid://c8uk5h5u78k5b" path="res://Scenes/fridge_components.tscn" id="12_xj5b4"]
+[ext_resource type="PackedScene" uid="uid://cspma4eqnxob5" path="res://Scenes/fridge_components.tscn" id="12_xj5b4"]
 [ext_resource type="PackedScene" uid="uid://cpy8etfbd2bwm" path="res://3d_models/Kenneys_Furniture/tableCloth.glb" id="15_s1kwc"]
 [ext_resource type="PackedScene" uid="uid://blhyqxbfnxe40" path="res://3d_models/Kenneys_Furniture/chairCushion.glb" id="16_4dkdq"]
-[ext_resource type="PackedScene" uid="uid://g3ohqt15xw1d" path="res://Scenes/stove_components.tscn" id="16_eiaux"]
+[ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/stove_components.tscn" id="16_eiaux"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26lyt"]
 albedo_color = Color(0.913725, 0.701961, 0.435294, 1)
