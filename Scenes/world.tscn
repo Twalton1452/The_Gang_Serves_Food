@@ -146,7 +146,7 @@ value = 3.0
 show_percentage = false
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn", "res://Scenes/patty.tscn")
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
 spawn_path = NodePath("..")
 
 [node name="Plate" parent="." instance=ExtResource("5_fw23g")]
