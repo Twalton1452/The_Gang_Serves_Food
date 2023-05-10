@@ -9,7 +9,14 @@ const SCENE_ID = SceneIds.SCENES.HOLDER
 func _ready():
 	assert(true_parent != null, \
 		"Assign a true_parent to this HolderComponent so we can stay sync'd correctly")
-	name = name + "_" + true_parent.name
+	
+	# Attempt to generate a unique name for easy sync at runtime
+	# get_instance_id() sadly doesn't generate the same across the network
+	# Open to consistent ideas, for now just make sure true_parent is a uniquen name
+	if true_parent != null and true_parent != get_parent():
+		name = true_parent.name + "_" + get_parent().name + "_" + "Holder"
+	else:
+		name = name + "_" + true_parent.name
 
 	add_to_group(str(SCENE_ID))
 

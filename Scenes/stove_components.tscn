@@ -22,16 +22,56 @@ shape = SubResource("BoxShape3D_1tpb2")
 [node name="RotatableComponent" parent="kitchenStove(Clone)/door" index="1" instance=ExtResource("3_v0p4e")]
 tar_rot = Vector3(90, 0, 0)
 
-[node name="InteractableComponent" parent="kitchenStove(Clone)" index="2" instance=ExtResource("2_u7x5j")]
+[node name="Burner1" type="Node3D" parent="kitchenStove(Clone)" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.133402, 0.442529, -0.184244)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/InteractableComponent" index="0"]
+[node name="InteractableComponent" parent="kitchenStove(Clone)/Burner1" index="0" instance=ExtResource("2_u7x5j")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner1/InteractableComponent" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00705564, 0)
 shape = SubResource("BoxShape3D_kvf7u")
 
-[node name="HolderComponent" parent="kitchenStove(Clone)" index="3" node_paths=PackedStringArray("true_parent") instance=ExtResource("4_tavom")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.133402, 0.442529, -0.184244)
-true_parent = NodePath("../..")
+[node name="HolderComponent" parent="kitchenStove(Clone)/Burner1" index="1" node_paths=PackedStringArray("true_parent") instance=ExtResource("4_tavom")]
+true_parent = NodePath("../../..")
+
+[node name="Burner2" type="Node3D" parent="kitchenStove(Clone)" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297999, 0.442529, -0.184244)
+
+[node name="InteractableComponent" parent="kitchenStove(Clone)/Burner2" index="0" instance=ExtResource("2_u7x5j")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner2/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00705564, 0)
+shape = SubResource("BoxShape3D_kvf7u")
+
+[node name="HolderComponent" parent="kitchenStove(Clone)/Burner2" index="1" node_paths=PackedStringArray("true_parent") instance=ExtResource("4_tavom")]
+true_parent = NodePath("../../..")
+
+[node name="Burner3" type="Node3D" parent="kitchenStove(Clone)" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297999, 0.442529, -0.31986)
+
+[node name="InteractableComponent" parent="kitchenStove(Clone)/Burner3" index="0" instance=ExtResource("2_u7x5j")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner3/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00705564, 0)
+shape = SubResource("BoxShape3D_kvf7u")
+
+[node name="HolderComponent" parent="kitchenStove(Clone)/Burner3" index="1" node_paths=PackedStringArray("true_parent") instance=ExtResource("4_tavom")]
+true_parent = NodePath("../../..")
+
+[node name="Burner4" type="Node3D" parent="kitchenStove(Clone)" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131336, 0.442529, -0.31986)
+
+[node name="InteractableComponent" parent="kitchenStove(Clone)/Burner4" index="0" instance=ExtResource("2_u7x5j")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner4/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00705564, 0)
+shape = SubResource("BoxShape3D_kvf7u")
+
+[node name="HolderComponent" parent="kitchenStove(Clone)/Burner4" index="1" node_paths=PackedStringArray("true_parent") instance=ExtResource("4_tavom")]
+true_parent = NodePath("../../..")
 
 [connection signal="interacted" from="kitchenStove(Clone)/door/InteractableComponent" to="kitchenStove(Clone)/door/RotatableComponent" method="_on_interactable_component_interacted" flags=18]
-[connection signal="interacted" from="kitchenStove(Clone)/InteractableComponent" to="kitchenStove(Clone)/HolderComponent" method="_on_interactable_component_interacted"]
+[connection signal="interacted" from="kitchenStove(Clone)/Burner1/InteractableComponent" to="kitchenStove(Clone)/Burner1/HolderComponent" method="_on_interactable_component_interacted"]
+[connection signal="interacted" from="kitchenStove(Clone)/Burner2/InteractableComponent" to="kitchenStove(Clone)/Burner2/HolderComponent" method="_on_interactable_component_interacted"]
+[connection signal="interacted" from="kitchenStove(Clone)/Burner3/InteractableComponent" to="kitchenStove(Clone)/Burner3/HolderComponent" method="_on_interactable_component_interacted"]
+[connection signal="interacted" from="kitchenStove(Clone)/Burner4/InteractableComponent" to="kitchenStove(Clone)/Burner4/HolderComponent" method="_on_interactable_component_interacted"]
