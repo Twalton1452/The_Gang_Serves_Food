@@ -8,6 +8,7 @@ extends Node
 func sync_nodes_for_new_player(peer_id: int):
 	print("------Begin Sync for Peer %s------" % peer_id)
 	
+	
 	var holders = get_tree().get_nodes_in_group(str(SceneIds.SCENES.HOLDER))
 	
 	for holder in holders as Array[HolderComponent]:
@@ -20,9 +21,10 @@ func sync_nodes_for_new_player(peer_id: int):
 			# Tell the Peer all the information it needs to get this Holder/Holdable setup
 			sync_hold_node.rpc_id(peer_id, holder_name, holder_scene_id, held_item_name, held_item_scene_id)
 
+	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	print("-----Finished Sync for Peer %s-----" % peer_id)
 
-@rpc("any_peer")
+@rpc("any_peer", "reliable")
 func sync_hold_node(holder_name: String, holder_scene_id: int, held_item_name: String, held_item_scene_id: int):
 	print("[Peer %s] received request to [sync] for: %s. Holder: %s" % [multiplayer.get_unique_id(), held_item_name, holder_name])
 	var synced = false
@@ -46,7 +48,6 @@ func sync_hold_node(holder_name: String, holder_scene_id: int, held_item_name: S
 		
 		# Spawn Holdable
 		var holdable_scene = SceneIds.PATHS[held_item_scene_id].instantiate()
-		holdable_scene.name = held_item_name
 		
 		# Find the Holder
 		for holder in get_tree().get_nodes_in_group(str(holder_scene_id)):
@@ -54,3 +55,7 @@ func sync_hold_node(holder_name: String, holder_scene_id: int, held_item_name: S
 			if holder.name == holder_name:
 				(holder as HolderComponent).joined_midsession_sync(holdable_scene)
 				break
+		print("About to set Holdable name during sync")
+		# _ready should have happened, so set the name after it attempted to generate its own id
+		holdable_scene.name = held_item_name
+		print("Set Holdable name during sync")

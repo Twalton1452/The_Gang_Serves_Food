@@ -5,4 +5,5 @@ class_name HoldableComponent
 @export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.PATTY
 
 func _ready():
+	get_parent().name = NetworkingUtils.generate_network_safe_name(get_parent().name)
 	get_parent().add_to_group(str(SCENE_ID))

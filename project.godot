@@ -15,6 +15,10 @@ run/main_scene="res://Scenes/world.tscn"
 config/features=PackedStringArray("4.0", "GL Compatibility")
 config/icon="res://kitchenStove_SE.png"
 
+[autoload]
+
+NetworkingUtils="*res://Scripts/NetworkingUtils.gd"
+
 [display]
 
 window/stretch/mode="viewport"

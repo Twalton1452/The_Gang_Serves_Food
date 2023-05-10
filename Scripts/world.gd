@@ -52,7 +52,7 @@ func add_player(peer_id: int):
 		player.health_changed.connect(update_health_bar)
 
 	# Attempt to Sync nodes for non-server players
-	if peer_id != 1:
+	if peer_id != 1 and multiplayer.get_unique_id() == 1:
 		$Networking/MidsessionJoinSyncer.sync_nodes_for_new_player.call_deferred(peer_id)
 
 func remove_player(peer_id):
