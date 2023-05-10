@@ -8,7 +8,9 @@ signal health_changed(health_value)
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
 @onready var gun_ray_cast = $Camera3D/GunRayCast3D
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
-@onready var item_holder = $Camera3D/ItemHolder
+
+# Need to assign in the scene because its name will change at runtime
+@export var holder_component : HolderComponent
 
 const SPEED = 4.0
 const JUMP_VELOCITY = 10.0
@@ -27,6 +29,7 @@ func _ready():
 
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
+
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
@@ -66,7 +69,6 @@ func _physics_process(delta):
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
@@ -110,19 +112,3 @@ func receive_damage():
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "shoot":
 		anim_player.play("idle")
-
-func is_holding_item():
-	return item_holder.get_child_count() > 0
-
-func hold_item(item: Node3D):
-	#print_debug("%s is now holding %s" % [str(get_multiplayer_authority()), item.name])
-	if item.get_parent() == null:
-		item_holder.add_child(item, true)
-	else:
-		item.reparent(item_holder, false)
-	item.position = Vector3.ZERO
-
-func get_held_item() -> Node3D:
-	if is_holding_item():
-		return item_holder.get_child(-1)
-	return null

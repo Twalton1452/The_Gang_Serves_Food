@@ -22,12 +22,13 @@ func put_ingredient_down(ingredient: Node3D) -> void:
 		
 
 func _on_interactable_component_interacted(_node : InteractableComponent, player : Player):
-	if not player.is_holding_item():
-
-		var holdable = take_ingredient().get_node("HoldableComponent")
-		if holdable is HoldableComponent:
-			holdable.hold(player.name)
-	elif player.get_held_item().scene_file_path == ingredient_scene.resource_path:
-		put_ingredient_down(player.get_held_item())
+	if not player.holder_component.is_holding_item():
+		player.holder_component.hold_item(take_ingredient())
+#		var holdable = take_ingredient().get_node("HoldableComponent")
+#
+#		if holdable is HoldableComponent:
+#			holdable.hold(player.item_holder)
+	elif player.holder_component.get_held_item().scene_file_path == ingredient_scene.resource_path:
+		put_ingredient_down(player.holder_component.get_held_item())
 	else:
 		print("This isn't the same item, can't put it back: %s" % player.get_held_item().scene_file_path)

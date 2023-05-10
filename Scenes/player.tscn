@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://dm5x7oexer5o7"]
+[gd_scene load_steps=18 format=3 uid="uid://dm5x7oexer5o7"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_ybpai"]
+[ext_resource type="PackedScene" uid="uid://cem03x0wqpatv" path="res://Scenes/components/holder_component.tscn" id="2_iorh3"]
 [ext_resource type="PackedScene" uid="uid://j4ykwt0h6c4r" path="res://3d_models/Pistol.blend" id="2_rnvw1"]
 [ext_resource type="Texture2D" uid="uid://e4pjkdypimg1" path="res://addons/kenney_particle_pack/star_06.png" id="3_wwdcx"]
 
@@ -157,10 +158,11 @@ properties/2/path = NodePath("Camera3D:rotation")
 properties/2/spawn = true
 properties/2/sync = true
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("holder_component")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 collision_layer = 2
 script = ExtResource("1_ybpai")
+holder_component = NodePath("Camera3D/HolderComponent")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
@@ -173,8 +175,9 @@ shape = SubResource("CapsuleShape3D_opbun")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.243105, 0)
 
-[node name="ItemHolder" type="Node3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195305, -0.107893, -0.165758)
+[node name="HolderComponent" parent="Camera3D" node_paths=PackedStringArray("true_parent") instance=ExtResource("2_iorh3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, -0.108, -0.166)
+true_parent = NodePath("../..")
 
 [node name="Pistol" parent="Camera3D" instance=ExtResource("2_rnvw1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)

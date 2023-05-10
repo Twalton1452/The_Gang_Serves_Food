@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0g1h8k6b2m0u"]
+[gd_scene load_steps=6 format=3 uid="uid://c0g1h8k6b2m0u"]
 
 [ext_resource type="PackedScene" uid="uid://43j8lde63v6x" path="res://3d_models/Kenneys_Furniture/kitchenStove.glb" id="1_kvmn6"]
 [ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_u7x5j"]
@@ -6,6 +6,9 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1tpb2"]
 size = Vector3(0.380177, 0.285769, 0.0260013)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kvf7u"]
+size = Vector3(0.154177, 0.0224466, 0.130161)
 
 [node name="kitchenStove" instance=ExtResource("1_kvmn6")]
 
@@ -17,5 +20,12 @@ shape = SubResource("BoxShape3D_1tpb2")
 
 [node name="RotatableComponent" parent="kitchenStove(Clone)/door" index="1" instance=ExtResource("3_v0p4e")]
 tar_rot = Vector3(90, 0, 0)
+
+[node name="InteractableComponent" parent="kitchenStove(Clone)" index="2" instance=ExtResource("2_u7x5j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.133402, 0.442529, -0.184244)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00705564, 0)
+shape = SubResource("BoxShape3D_kvf7u")
 
 [connection signal="interacted" from="kitchenStove(Clone)/door/InteractableComponent" to="kitchenStove(Clone)/door/RotatableComponent" method="_on_interactable_component_interacted" flags=18]

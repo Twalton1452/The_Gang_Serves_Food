@@ -2,38 +2,55 @@ extends Node
 
 @onready var players = $"../../Players"
 
-## Syncs nodes for HoldableComponent's. Holdable's typically just reparent nodes
+## Syncs nodes for HolderComponents. Holders typically just reparent nodes
 ## Reparenting isn't out of the box supported for the MultiplayerSynchronizer
 ## So this helps to get things moved along and can be amended for other weirdness
 func sync_nodes_for_new_player(peer_id: int):
 	print("------Begin Sync for Peer %s------" % peer_id)
-	for player in players.get_children() as Array[Player]:
-		# new player doesn't have anything to sync
-		if player.name == str(peer_id):
-			continue
+	
+	var holders = get_tree().get_nodes_in_group(str(SceneIds.SCENES.HOLDER))
+	
+	for holder in holders as Array[HolderComponent]:
+		if holder.is_holding_item():
+			var holder_name = holder.name
+			var holder_scene_id = holder.SCENE_ID
+			var held_item_name = holder.get_held_item().name
+			var held_item_scene_id = holder.get_held_item().get_node("HoldableComponent").SCENE_ID
+			print("[Holder %s] has an item. Sending info to [Peer: %s]" % [holder_name, peer_id])
+			# Tell the Peer all the information it needs to get this Holder/Holdable setup
+			sync_hold_node.rpc_id(peer_id, holder_name, holder_scene_id, held_item_name, held_item_scene_id)
 
-		if player.is_holding_item():
-			print("[Player %s] has an item. Sending info to [Peer: %s]" % [player.name, peer_id])
-			var holdable = player.get_held_item().get_node("HoldableComponent") as HoldableComponent
-			var holding_p_id = holdable.holding_p_id
-			var holdable_scene_id = holdable.SCENE_ID
-			sync_hold_node.rpc_id(peer_id, holdable.get_parent().name, holding_p_id, holdable_scene_id)
 	print("-----Finished Sync for Peer %s-----" % peer_id)
 
 @rpc("any_peer")
-func sync_hold_node(node_name: String, holding_p_id: String, holdable_scene_id: int):
-	print("[Peer %s] received request to [sync] for: %s. Holder: %s" % [multiplayer.get_unique_id(), node_name, holding_p_id])
+func sync_hold_node(holder_name: String, holder_scene_id: int, held_item_name: String, held_item_scene_id: int):
+	print("[Peer %s] received request to [sync] for: %s. Holder: %s" % [multiplayer.get_unique_id(), held_item_name, holder_name])
 	var synced = false
-	for holdable_scene in get_tree().get_nodes_in_group(str(holdable_scene_id)):
-		if holdable_scene.name == node_name:
-			holdable_scene.get_node("HoldableComponent").midsession_join_sync(holding_p_id)
-			synced = true
-			break
+
+	# Find the Holdable
+	for holdable_scene in get_tree().get_nodes_in_group(str(held_item_scene_id)):
+		# Found the Holdable
+		if holdable_scene.name == held_item_name:
+			# Find the Holder
+			for holder in get_tree().get_nodes_in_group(str(holder_scene_id)):
+				# Found the Holder
+				if holder.name == holder_name:
+					(holder as HolderComponent).joined_midsession_sync(holdable_scene)
+					synced = true
+					break
 		
+	# Didn't find the Holdable, need to spawn one
 	if not synced:
 		print("[Peer %s] didn't find %s in the objects on startup. The Player must have generated this at run time. [Spawning a %s with name %s]" \
-		% [multiplayer.get_unique_id(), node_name, SceneIds.PATHS[holdable_scene_id].get_state().get_node_name(0), node_name])
-		var holdable_scene = SceneIds.PATHS[holdable_scene_id].instantiate()
-		holdable_scene.name = node_name
-		add_child(holdable_scene) # need to add it as a child briefly so it can reference other nodes
-		holdable_scene.get_node("HoldableComponent").midsession_join_sync(holding_p_id)
+			% [multiplayer.get_unique_id(), held_item_name, SceneIds.PATHS[held_item_scene_id].get_state().get_node_name(0), held_item_name])
+		
+		# Spawn Holdable
+		var holdable_scene = SceneIds.PATHS[held_item_scene_id].instantiate()
+		holdable_scene.name = held_item_name
+		
+		# Find the Holder
+		for holder in get_tree().get_nodes_in_group(str(holder_scene_id)):
+			# Found the Holder
+			if holder.name == holder_name:
+				(holder as HolderComponent).joined_midsession_sync(holdable_scene)
+				break
