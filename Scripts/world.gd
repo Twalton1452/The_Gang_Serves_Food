@@ -4,6 +4,7 @@ extends Node
 @onready var address_entry = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/AddressEntry
 @onready var hud = $CanvasLayer/HUD
 @onready var health_bar = $CanvasLayer/HUD/HealthBar
+@onready var players = $Players
 
 const player_scene = preload("res://Scenes/player.tscn")
 const PORT = 9998
@@ -43,16 +44,20 @@ func _exit_tree():
 	multiplayer.peer_connected.disconnect(add_player)
 	multiplayer.peer_disconnected.disconnect(remove_player)
 
-func add_player(peer_id):
+func add_player(peer_id: int):
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
-	add_child(player)
+	players.add_child(player)
 	if player.is_multiplayer_authority():
 		player.health_changed.connect(update_health_bar)
 
+	# Attempt to Sync nodes for non-server players
+	if peer_id != 1:
+		$Networking/MidsessionJoinSyncer.sync_nodes_for_new_player.call_deferred(peer_id)
+
 func remove_player(peer_id):
-	var player = get_node_or_null(str(peer_id))
-	if player:
+	var player = players.get_node_or_null(str(peer_id))
+	if player != null:
 		player.queue_free()
 
 func server_disconnect():

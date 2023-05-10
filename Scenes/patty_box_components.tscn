@@ -71,3 +71,5 @@ ingredient_scene = ExtResource("5_baeti")
 ingredient_parent = NodePath("../Patties")
 
 [connection signal="interacted" from="InteractableComponent" to="IngredientComponent" method="_on_interactable_component_interacted"]
+
+[editable path="Patties/Patty"]

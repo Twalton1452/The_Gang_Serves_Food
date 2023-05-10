@@ -9,7 +9,7 @@ class_name IngredientComponent
 func take_ingredient() -> Node3D:
 	if ingredient_parent != null and ingredient_parent.get_child_count() > 0:
 		return ingredient_parent.get_child(ingredient_parent.get_child_count() - 1)
-	return ingredient_scene.instantiate()
+	return null
 
 func put_ingredient_down(ingredient: Node3D) -> void:
 	var parent = ingredient_parent if ingredient_parent != null else self
@@ -23,7 +23,10 @@ func put_ingredient_down(ingredient: Node3D) -> void:
 
 func _on_interactable_component_interacted(_node : InteractableComponent, player : Player):
 	if not player.is_holding_item():
-		player.hold_item(take_ingredient())
+
+		var holdable = take_ingredient().get_node("HoldableComponent")
+		if holdable is HoldableComponent:
+			holdable.hold(player.name)
 	elif player.get_held_item().scene_file_path == ingredient_scene.resource_path:
 		put_ingredient_down(player.get_held_item())
 	else:

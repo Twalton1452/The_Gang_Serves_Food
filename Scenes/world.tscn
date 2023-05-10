@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://crg8j7gc45t56"]
+[gd_scene load_steps=21 format=3 uid="uid://crg8j7gc45t56"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_ot15l"]
 [ext_resource type="PackedScene" uid="uid://c6fwtyi3882jp" path="res://Scenes/restaurant.tscn" id="3_143sp"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://be3c0n81j2t5a" path="res://3d_models/Plate.glb" id="13_ovmxf"]
 [ext_resource type="PackedScene" uid="uid://drdyip8qwof8h" path="res://3d_models/TopBun.blend" id="14_5b88j"]
 [ext_resource type="PackedScene" uid="uid://cc85g7fimsk2a" path="res://Scenes/patty_box_components.tscn" id="15_nfvn3"]
+[ext_resource type="Script" path="res://Scripts/MidsessionJoinSyncer.gd" id="15_yuxcf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3w32"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -132,10 +133,7 @@ max_value = 3.0
 value = 3.0
 show_percentage = false
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
-spawn_path = NodePath("..")
-spawn_limit = 10
+[node name="Players" type="Node3D" parent="."]
 
 [node name="Plate" parent="." instance=ExtResource("5_fw23g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.76497, -0.213246, 3.91885)
@@ -182,6 +180,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.63735, -0.546324, -0.88577
 [node name="PattyBox" parent="." instance=ExtResource("15_nfvn3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.41691, -0.115575, -1.0213)
 
+[node name="Networking" type="Node" parent="."]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="Networking"]
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
+spawn_path = NodePath("../../Players")
+spawn_limit = 10
+
+[node name="MidsessionJoinSyncer" type="Node" parent="Networking"]
+script = ExtResource("15_yuxcf")
+
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
-[connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]
+[connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

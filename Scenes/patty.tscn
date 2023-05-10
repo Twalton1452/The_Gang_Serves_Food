@@ -1,5 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://effhc27p2nda"]
+[gd_scene load_steps=3 format=3 uid="uid://effhc27p2nda"]
 
 [ext_resource type="PackedScene" uid="uid://df8lx1i6kk3b4" path="res://3d_models/Patty.blend" id="1_eds4o"]
+[ext_resource type="Script" path="res://Scripts/HoldableComponent.gd" id="2_wqk10"]
 
 [node name="Patty" instance=ExtResource("1_eds4o")]
+
+[node name="HoldableComponent" type="Node3D" parent="." index="1"]
+script = ExtResource("2_wqk10")
