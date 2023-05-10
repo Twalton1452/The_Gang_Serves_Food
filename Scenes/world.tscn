@@ -150,7 +150,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.08528, -0.213246, 3.68144)
 [node name="Fridge" parent="." instance=ExtResource("8_p3k3o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.40198, -0.546324, -1.01203)
 
-[node name="kitchenStove" parent="." instance=ExtResource("8_pljc0")]
+[node name="kitchenStoveTest" parent="." instance=ExtResource("8_pljc0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.286929, -0.546323, -0.864933)
 
 [node name="kitchenCabinet" parent="." instance=ExtResource("9_8q8ed")]

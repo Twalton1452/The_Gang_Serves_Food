@@ -10,7 +10,7 @@ func _ready():
 	assert(true_parent != null, \
 		"Assign a true_parent to this HolderComponent so we can stay sync'd correctly")
 	name = name + "_" + true_parent.name
-		
+
 	add_to_group(str(SCENE_ID))
 
 func joined_midsession_sync(item_to_hold: Node3D):
@@ -28,3 +28,19 @@ func hold_item(item: Node3D):
 	else:
 		item.reparent(self, false)
 	item.position = Vector3.ZERO
+
+
+func _on_interactable_component_interacted(node : InteractableComponent, player : Player):
+	# Player placing Item
+	if player.holder_component.is_holding_item():
+		# Swap Items - This is currently holding something
+		if is_holding_item():
+			var curr_item = get_held_item()
+			hold_item(player.holder_component.get_held_item())
+			player.holder_component.hold_item(curr_item)
+		# Take Player's item
+		else:
+			hold_item(player.holder_component.get_held_item())
+	# Player taking Item - They are not holding anything
+	elif is_holding_item():
+		player.holder_component.hold_item(get_held_item())

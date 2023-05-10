@@ -6,17 +6,3 @@ class_name HoldableComponent
 
 func _ready():
 	get_parent().add_to_group(str(SCENE_ID))
-
-#func midsession_join_sync(holder: Node3D):
-#	hold(holder)
-#
-#func hold(holder: Node3D) -> void:
-#	var item = get_parent()
-#	#print("HoldableComponent is giving %s to %s" % [item.name, holder.name])
-#
-#	if not item.is_inside_tree():
-#		holder.add_child(item, true)
-#	else:
-#		item.reparent(holder, false)
-#	item.position = Vector3.ZERO
-	

@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://c0g1h8k6b2m0u"]
+[gd_scene load_steps=7 format=3 uid="uid://c0g1h8k6b2m0u"]
 
 [ext_resource type="PackedScene" uid="uid://43j8lde63v6x" path="res://3d_models/Kenneys_Furniture/kitchenStove.glb" id="1_kvmn6"]
 [ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_u7x5j"]
 [ext_resource type="PackedScene" uid="uid://c28hpirne8typ" path="res://Scenes/components/rotatable_component.tscn" id="3_v0p4e"]
+[ext_resource type="PackedScene" uid="uid://cem03x0wqpatv" path="res://Scenes/components/holder_component.tscn" id="4_tavom"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1tpb2"]
 size = Vector3(0.380177, 0.285769, 0.0260013)
@@ -28,4 +29,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.133402, 0.442529, -0.184244
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00705564, 0)
 shape = SubResource("BoxShape3D_kvf7u")
 
+[node name="HolderComponent" parent="kitchenStove(Clone)" index="3" node_paths=PackedStringArray("true_parent") instance=ExtResource("4_tavom")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.133402, 0.442529, -0.184244)
+true_parent = NodePath("../..")
+
 [connection signal="interacted" from="kitchenStove(Clone)/door/InteractableComponent" to="kitchenStove(Clone)/door/RotatableComponent" method="_on_interactable_component_interacted" flags=18]
+[connection signal="interacted" from="kitchenStove(Clone)/InteractableComponent" to="kitchenStove(Clone)/HolderComponent" method="_on_interactable_component_interacted"]
