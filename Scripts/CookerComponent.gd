@@ -11,7 +11,7 @@ func _on_holder_component_started_holding(node: Node3D):
 	node_to_cook = node.get_node("CookableComponent")
 	begin_cooking()
 
-func _on_holder_component_released_holding(node: Node3D):
+func _on_holder_component_released_holding(_node: Node3D):
 	stop_cooking()
 	node_to_cook = null
 

@@ -8,6 +8,7 @@ signal health_changed(health_value)
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
 @onready var gun_ray_cast = $Camera3D/GunRayCast3D
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
+@onready var face_sprite = $FaceSprite
 
 # Need to assign in the scene because its name will change at runtime
 @export var holder_component : HolderComponent
@@ -29,7 +30,7 @@ func _ready():
 
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
-
+	pick_emotive_face.rpc(randi_range(0, face_sprite.hframes * face_sprite.vframes - 1))
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
@@ -67,6 +68,7 @@ func _physics_process(delta):
 	# Handle Jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		pick_emotive_face.rpc(randi_range(0, face_sprite.hframes * face_sprite.vframes - 1))
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "up", "down")
@@ -87,6 +89,10 @@ func _physics_process(delta):
 		
 
 	move_and_slide()
+
+@rpc("call_local")
+func pick_emotive_face(id = -1):
+	face_sprite.frame = id
 
 @rpc("call_local")
 func interact() -> void:
