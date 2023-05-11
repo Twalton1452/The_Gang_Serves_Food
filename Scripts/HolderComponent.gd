@@ -5,9 +5,10 @@ signal started_holding(node: Node3D)
 signal released_holding(node: Node3D)
 
 const SCENE_ID = SceneIds.SCENES.HOLDER
+var net_id = -1
 
 func _ready():
-	name = NetworkingUtils.generate_network_safe_name(name)
+	net_id = NetworkingUtils.generate_id()
 
 	add_to_group(str(SCENE_ID))
 

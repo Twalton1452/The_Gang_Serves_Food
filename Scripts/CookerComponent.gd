@@ -8,8 +8,11 @@ class_name CookerComponent
 var node_to_cook : CookableComponent
 
 func _on_holder_component_started_holding(node: Node3D):
-	node_to_cook = node.get_node("CookableComponent")
-	begin_cooking()
+	if node is CookableComponent:
+		node_to_cook = node
+		begin_cooking()
+	else:
+		print("%s isn't cookable, but i'll hold on to it" % node.name)
 
 func _on_holder_component_released_holding(_node: Node3D):
 	stop_cooking()

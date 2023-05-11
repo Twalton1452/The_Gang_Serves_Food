@@ -1,4 +1,4 @@
-extends Node3D
+extends HoldableComponent
 class_name CookableComponent
 
 enum CookStates {
@@ -6,9 +6,6 @@ enum CookStates {
 	COOKED,
 	BURNED
 }
-
-# Used to retrieve data about how to COOK this
-@export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.PATTY
 
 @export var gradient : Gradient
 @export var obj_to_color : MeshInstance3D
@@ -29,20 +26,29 @@ var cooked_percent = 0.4
 var burning_percent = 0.8
 var cook_state : CookStates = CookStates.RAW
 
+func set_sync_state(value):
+	super(value)
+	cook_progress = value.decode_half(0)
+	evaluate_cook_rate()
+
+func get_sync_state():
+	var buf = super()
+	var og_buf_size = buf.size()
+	buf.resize(og_buf_size + 2)
+	buf.encode_half(og_buf_size, cook_progress)
+	return buf
+
 func _ready():
+	super()
 	material_to_color = obj_to_color.get_surface_override_material(0)
 	
 	add_to_group(str(SceneIds.SCENES.COOKABLE))
 
-func joined_midsession_sync(cook_prog: float):
-	cook_progress = cook_prog
-	evaluate_cook_rate()
-
 func cook(power: float):
 	if cook_state == CookStates.BURNED:
 		return
-	evaluate_cook_rate()
 	
+	evaluate_cook_rate()
 	cook_progress += cook_rate * power
 
 func evaluate_cook_rate():
