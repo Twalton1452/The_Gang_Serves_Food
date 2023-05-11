@@ -17,15 +17,18 @@ func sync_nodes_for_new_player(peer_id: int):
 			var holder_scene_id = holder.SCENE_ID
 			var held_item_name = holder.get_held_item().name
 			var held_item_scene_id = holder.get_held_item().get_node("HoldableComponent").SCENE_ID
+			var cook_prog = 0.0
+			if holder.get_held_item().get_node_or_null("CookableComponent") != null:
+				cook_prog = (holder.get_held_item().get_node("CookableComponent") as CookableComponent).cook_progress
 			print("[Holder %s] has an item. Sending info to [Peer: %s]" % [holder_name, peer_id])
 			# Tell the Peer all the information it needs to get this Holder/Holdable setup
-			sync_hold_node.rpc_id(peer_id, holder_name, holder_scene_id, held_item_name, held_item_scene_id)
-
+			sync_hold_node.rpc_id(peer_id, holder_name, holder_scene_id, held_item_name, held_item_scene_id, cook_prog)
+	
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	print("-----Finished Sync for Peer %s-----" % peer_id)
 
 @rpc("any_peer", "reliable")
-func sync_hold_node(holder_name: String, holder_scene_id: int, held_item_name: String, held_item_scene_id: int):
+func sync_hold_node(holder_name: String, holder_scene_id: int, held_item_name: String, held_item_scene_id: int, cook_prog: float):
 	print("[Peer %s] received request to [sync] for: %s. Holder: %s" % [multiplayer.get_unique_id(), held_item_name, holder_name])
 	var synced = false
 
@@ -33,6 +36,9 @@ func sync_hold_node(holder_name: String, holder_scene_id: int, held_item_name: S
 	for holdable_scene in get_tree().get_nodes_in_group(str(held_item_scene_id)):
 		# Found the Holdable
 		if holdable_scene.name == held_item_name:
+			# This Holdable has a CookableComponent
+			if cook_prog != 0.0:
+				(holdable_scene.get_node("CookableComponent") as CookableComponent).joined_midsession_sync(cook_prog)
 			# Find the Holder
 			for holder in get_tree().get_nodes_in_group(str(holder_scene_id)):
 				# Found the Holder

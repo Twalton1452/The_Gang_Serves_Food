@@ -8,6 +8,7 @@ enum SCENES {
 	PATTY = 1,
 	
 	HOLDER = 100,
+	COOKABLE = 101,
 }
 
 const PATHS = {
