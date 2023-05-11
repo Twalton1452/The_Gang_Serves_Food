@@ -17,11 +17,9 @@ func _on_holder_component_released_holding(node: Node3D):
 
 func begin_cooking():
 	tick_timer.start()
-	print("Beginning to Cook %s" % node_to_cook.name)
 
 func stop_cooking():
 	tick_timer.stop()
-	print("Stopped Cooking %s" % node_to_cook.name)
 
 func _on_cooking_ticks_timer_timeout():
 	node_to_cook.cook(power)

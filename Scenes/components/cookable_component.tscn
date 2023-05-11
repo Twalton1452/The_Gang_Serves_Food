@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cknjc0vjk4j6s"]
+[gd_scene load_steps=3 format=3 uid="uid://cknjc0vjk4j6s"]
 
-[ext_resource type="Script" path="res://Scripts/CookableComponent.gd" id="1_vjpmj"]
+[ext_resource type="Script" path="res://Scripts/CookableComponent.gd" id="1_va81s"]
+[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="2_4n3xu"]
 
 [node name="CookableComponent" type="Node3D"]
-script = ExtResource("1_vjpmj")
+script = ExtResource("1_va81s")
+gradient = ExtResource("2_4n3xu")

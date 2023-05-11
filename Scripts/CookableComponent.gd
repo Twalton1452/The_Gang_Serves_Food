@@ -39,10 +39,9 @@ func joined_midsession_sync(cook_prog: float):
 	evaluate_cook_rate()
 
 func cook(power: float):
-	evaluate_cook_rate()
-	
 	if cook_state == CookStates.BURNED:
 		return
+	evaluate_cook_rate()
 	
 	cook_progress += cook_rate * power
 

@@ -1,19 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://effhc27p2nda"]
+[gd_scene load_steps=5 format=3 uid="uid://effhc27p2nda"]
 
 [ext_resource type="PackedScene" uid="uid://df8lx1i6kk3b4" path="res://3d_models/Patty.blend" id="1_eds4o"]
 [ext_resource type="PackedScene" uid="uid://dkv5vdaxiou0c" path="res://Scenes/components/holdable_component.tscn" id="2_b37o0"]
 [ext_resource type="Material" uid="uid://b60lm8s0trq5f" path="res://Materials/Patty_mat.tres" id="2_yu6yt"]
 [ext_resource type="PackedScene" uid="uid://cknjc0vjk4j6s" path="res://Scenes/components/cookable_component.tscn" id="3_nua6c"]
-[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="5_iocu3"]
 
 [node name="Patty" instance=ExtResource("1_eds4o")]
 
 [node name="Patty" parent="." index="0"]
+cast_shadow = 0
 surface_material_override/0 = ExtResource("2_yu6yt")
 
 [node name="HoldableComponent" parent="." index="1" instance=ExtResource("2_b37o0")]
 
 [node name="CookableComponent" parent="." index="2" node_paths=PackedStringArray("obj_to_color") instance=ExtResource("3_nua6c")]
-gradient = ExtResource("5_iocu3")
 obj_to_color = NodePath("../Patty")
-cook_rate = 0.05
