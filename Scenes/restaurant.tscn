@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://c6fwtyi3882jp"]
+[gd_scene load_steps=27 format=3 uid="uid://c6fwtyi3882jp"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
+[ext_resource type="Script" path="res://Scripts/level.gd" id="1_thrv2"]
 [ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="2_8d1g5"]
 [ext_resource type="PackedScene" uid="uid://i7st3vdotqiu" path="res://3d_models/Kenneys_Furniture/wallWindow.glb" id="3_6vamh"]
 [ext_resource type="PackedScene" uid="uid://bvjit4lsovbr3" path="res://3d_models/Kenneys_Furniture/wallDoorwayWide.glb" id="3_21ak5"]
@@ -16,11 +17,23 @@
 [ext_resource type="PackedScene" uid="uid://cpy8etfbd2bwm" path="res://3d_models/Kenneys_Furniture/tableCloth.glb" id="15_s1kwc"]
 [ext_resource type="PackedScene" uid="uid://blhyqxbfnxe40" path="res://3d_models/Kenneys_Furniture/chairCushion.glb" id="16_4dkdq"]
 [ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/stove_components.tscn" id="16_eiaux"]
+[ext_resource type="PackedScene" uid="uid://cu7nu7k7n8iul" path="res://3d_models/Plate.blend" id="17_gpi2i"]
+[ext_resource type="PackedScene" uid="uid://df8lx1i6kk3b4" path="res://3d_models/Patty.blend" id="18_0sxpa"]
+[ext_resource type="PackedScene" uid="uid://djotf66w74co1" path="res://3d_models/Bun.blend" id="19_vie8s"]
+[ext_resource type="PackedScene" uid="uid://igad4n71g06j" path="res://3d_models/BottomBun.blend" id="20_msp06"]
+[ext_resource type="PackedScene" uid="uid://be3c0n81j2t5a" path="res://3d_models/Plate.glb" id="21_b4sg5"]
+[ext_resource type="PackedScene" uid="uid://drdyip8qwof8h" path="res://3d_models/TopBun.blend" id="22_wdr14"]
+[ext_resource type="PackedScene" uid="uid://cc85g7fimsk2a" path="res://Scenes/patty_box_components.tscn" id="23_ym7y0"]
+[ext_resource type="Script" path="res://Scripts/MidsessionJoinSyncer.gd" id="24_gdwhe"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26lyt"]
 albedo_color = Color(0.913725, 0.701961, 0.435294, 1)
 
 [node name="Restaurant" type="Node3D"]
+script = ExtResource("1_thrv2")
+
+[node name="SpawnPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.607102, 0.266214, -0.00944018)
 
 [node name="OutsideWalls" type="Node3D" parent="."]
 
@@ -304,6 +317,69 @@ light_size = 60.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.29374, 0.989138, 7.46648)
 light_energy = 0.5
 light_size = 60.0
+
+[node name="Ground" parent="." instance=ExtResource("2_8d1g5")]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
+
+[node name="Players" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.543243, 0)
+
+[node name="Plate" parent="." instance=ExtResource("17_gpi2i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.22692, 0.33589, 3.91885)
+
+[node name="Plate2" parent="." instance=ExtResource("17_gpi2i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.22692, 0.33589, 3.68144)
+
+[node name="Plate3" parent="." instance=ExtResource("17_gpi2i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.54723, 0.33589, 3.91885)
+
+[node name="Plate4" parent="." instance=ExtResource("17_gpi2i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.54723, 0.33589, 3.68144)
+
+[node name="Fridge" parent="." instance=ExtResource("12_xj5b4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.40198, -0.00308084, -1.01203)
+
+[node name="kitchenStoveTest" parent="." instance=ExtResource("16_eiaux")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.286929, -0.00307983, -0.864933)
+
+[node name="kitchenCabinet" parent="." instance=ExtResource("10_b6sav")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.39494, -0.00308084, -0.876345)
+
+[node name="Patty" parent="." instance=ExtResource("18_0sxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.62308, 0.351653, 1.7188)
+
+[node name="Bun" parent="." instance=ExtResource("19_vie8s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.62297, 0.359141, 1.71859)
+
+[node name="BottomBun" parent="." instance=ExtResource("20_msp06")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6217, 0.349277, 1.71678)
+
+[node name="Plate5" parent="." instance=ExtResource("21_b4sg5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.62637, 0.332545, 1.71156)
+
+[node name="TopBun" parent="." instance=ExtResource("22_wdr14")]
+transform = Transform3D(0.937319, -0.348474, 0, 0.348474, 0.937319, 0, 0, 0, 1, -1.24126, 0.429363, -1.01111)
+
+[node name="BottomBun2" parent="." instance=ExtResource("20_msp06")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.20858, 0.412852, -1.0162)
+
+[node name="kitchenCabinet2" parent="." instance=ExtResource("10_b6sav")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.844253, -0.00308084, -0.885777)
+
+[node name="PattyBox" parent="." instance=ExtResource("23_ym7y0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.623813, 0.427668, -1.0213)
+
+[node name="Networking" type="Node" parent="."]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="Networking"]
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
+spawn_path = NodePath("../../Players")
+spawn_limit = 10
+
+[node name="MidsessionJoinSyncer" type="Node" parent="Networking"]
+script = ExtResource("24_gdwhe")
+
+[connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]
 
 [editable path="roof"]
 [editable path="floor"]

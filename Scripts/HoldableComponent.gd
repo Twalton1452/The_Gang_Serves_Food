@@ -7,7 +7,7 @@ class_name HoldableComponent
 var net_id = -1
 var sync_state : set = set_sync_state, get = get_sync_state
 
-func set_sync_state(value: PackedByteArray) -> void:
+func set_sync_state(_value: PackedByteArray) -> void:
 	pass
 
 func get_sync_state() -> PackedByteArray:
