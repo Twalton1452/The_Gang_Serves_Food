@@ -387,3 +387,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02352, 0.421447, -0.934928
 
 [editable path="roof"]
 [editable path="floor"]
+[editable path="kitchenStoveTest"]
+[editable path="kitchenStoveTest/kitchenStove(Clone)/door/InteractableComponent"]

@@ -65,7 +65,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.218728, 0.531005, -0.171134
 [node name="BrownBox2" parent="." instance=ExtResource("4_td0wt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.218728, 0.306445, -0.171134)
 
-[connection signal="interacted" from="kitchenFridge/kitchenFridge(Clone)/doorFreezer/InteractableComponent" to="kitchenFridge/kitchenFridge(Clone)/doorFreezer/RotatableComponent" method="_on_interactable_component_interacted"]
-[connection signal="interacted" from="kitchenFridge/kitchenFridge(Clone)/doorFridge/InteractableComponent" to="kitchenFridge/kitchenFridge(Clone)/doorFridge/RotatableComponent" method="_on_interactable_component_interacted"]
-
 [editable path="kitchenFridge"]

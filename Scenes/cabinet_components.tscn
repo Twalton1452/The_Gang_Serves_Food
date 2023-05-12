@@ -16,5 +16,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.187023, 0.140577, 0.0073653
 shape = SubResource("BoxShape3D_oy36d")
 
 [node name="RotatableComponent" parent="kitchenCabinet(Clone)/door" index="1" instance=ExtResource("3_xcfly")]
-
-[connection signal="interacted" from="kitchenCabinet(Clone)/door/InteractableComponent" to="kitchenCabinet(Clone)/door/RotatableComponent" method="_on_interactable_component_interacted"]

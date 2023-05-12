@@ -74,6 +74,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0531011, 0.0651258, 0)
 [node name="Patty16" parent="IngredientComponent" index="15" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0651258, 0)
 
-[connection signal="interacted" from="InteractableComponent" to="IngredientComponent" method="_on_interactable_component_interacted"]
-
 [editable path="IngredientComponent/Patty"]

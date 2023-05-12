@@ -7,6 +7,17 @@ class_name CookerComponent
 
 var node_to_cook : CookableComponent
 
+func _ready():
+	var connector = $"../HolderComponent" if get_node_or_null("../HolderComponent") != null else get_parent()
+	(connector as HolderComponent).started_holding.connect(_on_holder_component_started_holding)
+	(connector as HolderComponent).released_holding.connect(_on_holder_component_released_holding)
+
+func _exit_tree():
+	var connector = $"../HolderComponent" if get_node_or_null("../HolderComponent") != null else get_parent()
+	if connector != null:
+		($"../HolderComponent" as HolderComponent).started_holding.disconnect(_on_holder_component_started_holding)
+		($"../HolderComponent" as HolderComponent).released_holding.disconnect(_on_holder_component_released_holding)
+
 func _on_holder_component_started_holding(node: Node3D):
 	if node is CookableComponent:
 		node_to_cook = node

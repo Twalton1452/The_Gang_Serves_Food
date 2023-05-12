@@ -4,13 +4,31 @@ class_name HolderComponent
 signal started_holding(node: Node3D)
 signal released_holding(node: Node3D)
 
+var connector : InteractableComponent
+
 const SCENE_ID = SceneIds.SCENES.HOLDER
 var net_id = -1
 
 func _ready():
 	net_id = NetworkingUtils.generate_id()
-
+	
 	add_to_group(str(SCENE_ID))
+	
+	# Holders can be the parents of InteractableComponents or on the same Level
+	
+	connect_signals.call_deferred()
+
+func connect_signals():
+	connector = get_node_or_null("../InteractableComponent")
+	# This is likely to be a Player's hand, they don't have hitboxes around them
+	if connector == null:
+		return
+	
+	connector.interacted.connect(_on_interactable_component_interacted)
+
+func _exit_tree():
+	if connector != null:
+		connector.interacted.disconnect(_on_interactable_component_interacted)
 
 func joined_midsession_sync(item_to_hold: Node3D):
 	hold_item(item_to_hold)

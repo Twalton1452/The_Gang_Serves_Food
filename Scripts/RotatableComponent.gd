@@ -5,8 +5,8 @@ class_name RotatableComponent
 @export var tar_rot = Vector3(0.0, -90.0, 0.0)
 @export var is_rotated = false
 
+var connector : InteractableComponent
 var og_rot : Vector3
-
 var in_progress = false
 
 func set_sync_state(value) -> int:
@@ -14,7 +14,6 @@ func set_sync_state(value) -> int:
 	is_rotated = bool(value.decode_u8(continuing_offset))
 	in_progress = bool(value.decode_u8(continuing_offset + 1))
 	
-	print("yep")
 	if is_rotated or in_progress:
 		get_parent().rotation = tar_rot
 	
@@ -34,6 +33,19 @@ func _ready():
 	tar_rot.x = deg_to_rad(tar_rot.x)
 	tar_rot.y = deg_to_rad(tar_rot.y)
 	tar_rot.z = deg_to_rad(tar_rot.z)
+	
+	connect_signals.call_deferred()
+
+func connect_signals():
+	connector = get_node_or_null("../InteractableComponent")
+	if connector == null:
+		return
+	
+	connector.interacted.connect(_on_interactable_component_interacted)
+
+func _exit_tree():
+	if connector != null:
+		connector.interacted.disconnect(_on_interactable_component_interacted)
 
 func _on_interactable_component_interacted(node, _player):
 	rotate_parent(node)
