@@ -25,7 +25,7 @@ func _on_holder_component_started_holding(node: Node3D):
 	else:
 		print("%s isn't cookable, but i'll hold on to it" % node.name)
 
-func _on_holder_component_released_holding(_node: Node3D):
+func _on_holder_component_released_holding(_ode: Node3D):
 	stop_cooking()
 	node_to_cook = null
 

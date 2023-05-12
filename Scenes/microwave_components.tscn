@@ -1,0 +1,37 @@
+[gd_scene load_steps=8 format=3 uid="uid://cdhj2idf4x5iv"]
+
+[ext_resource type="PackedScene" uid="uid://b30hc26360tau" path="res://3d_models/Kenneys_Furniture/kitchenMicrowave.glb" id="1_1gdom"]
+[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_yw07b"]
+[ext_resource type="PackedScene" uid="uid://c28hpirne8typ" path="res://Scenes/components/rotatable_component.tscn" id="3_dgtxf"]
+[ext_resource type="PackedScene" uid="uid://cem03x0wqpatv" path="res://Scenes/components/holder_component.tscn" id="4_ru5vi"]
+[ext_resource type="PackedScene" uid="uid://yn600f7addoh" path="res://Scenes/components/cooker_component.tscn" id="5_bv4fv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xxxa0"]
+size = Vector3(0.228572, 0.180694, 0.0217883)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nxpsc"]
+size = Vector3(0.184246, 0.0656887, 0.109807)
+
+[node name="kitchenMicrowave" instance=ExtResource("1_1gdom")]
+
+[node name="InteractableComponent" parent="kitchenMicrowave(Clone)/Group" index="0" instance=ExtResource("2_yw07b")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenMicrowave(Clone)/Group/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.098109, 0.0691545, -0.00419922)
+shape = SubResource("BoxShape3D_xxxa0")
+
+[node name="RotatableComponent" parent="kitchenMicrowave(Clone)/Group" index="1" instance=ExtResource("3_dgtxf")]
+
+[node name="Inside" type="Node3D" parent="kitchenMicrowave(Clone)" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.123053, 0.0254075, -0.0665226)
+
+[node name="InteractableComponent" parent="kitchenMicrowave(Clone)/Inside" index="0" instance=ExtResource("2_yw07b")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenMicrowave(Clone)/Inside/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00757807, 0.0272973, -0.0213865)
+shape = SubResource("BoxShape3D_nxpsc")
+
+[node name="HolderComponent" parent="kitchenMicrowave(Clone)/Inside" index="1" instance=ExtResource("4_ru5vi")]
+
+[node name="CookerComponent" parent="kitchenMicrowave(Clone)/Inside" index="2" instance=ExtResource("5_bv4fv")]
+power = 0.7

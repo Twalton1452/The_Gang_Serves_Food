@@ -61,10 +61,11 @@ func _on_interactable_component_interacted(_node : InteractableComponent, player
 		# Swap Items - This Holder is currently holding something
 		if is_holding_item():
 			var curr_item = get_held_item()
+			released_holding.emit(curr_item)
+			
 			hold_item(player.holder_component.get_held_item())
 			player.holder_component.hold_item(curr_item)
 			
-			released_holding.emit(curr_item)
 		# Take Player's item
 		else:
 			hold_item(player.holder_component.get_held_item())
