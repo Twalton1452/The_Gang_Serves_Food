@@ -6,6 +6,9 @@ class_name IngredientComponent
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
 
 func hold_item(item: Node3D):
+	if is_holding(item):
+		return
+	
 	if get_child_count() < max_amount:
 		super(item)
 		if get_child_count() > 2:

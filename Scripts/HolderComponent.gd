@@ -21,10 +21,18 @@ func is_holding_item() -> bool:
 func get_held_item() -> Node3D:
 	return get_child(-1)
 
+func is_holding(item: Node3D):
+	if not is_holding_item():
+		return false
+	for child in get_children():
+		if child == item:
+			return true
+
 func hold_item(item: Node3D):
+	#print("HOLDING %s" % item.net_id)
 	if not item.is_inside_tree():
 		add_child(item, true)
-	else:
+	elif not is_holding(item):
 		item.reparent(self, false)
 	started_holding.emit(item)
 	item.position = Vector3.ZERO

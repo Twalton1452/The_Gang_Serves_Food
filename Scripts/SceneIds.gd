@@ -5,6 +5,7 @@
 class_name SceneIds
 
 enum SCENES {
+	NETWORKED = 0,
 	PATTY = 1,
 	
 	HOLDER = 100,

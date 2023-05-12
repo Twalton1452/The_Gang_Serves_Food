@@ -6,42 +6,44 @@ extends Node
 func sync_nodes_for_new_player(peer_id: int):
 	print("------Begin Sync for Peer %s------" % peer_id)
 	
-	var holdables = get_tree().get_nodes_in_group(str(SceneIds.SCENES.HOLDABLE))
+	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
 	
-	for holdable in holdables as Array[HoldableComponent]:
-		if not holdable.changed:
-			continue
+	for net_node in net_nodes as Array[NetworkedNode3D]:
+#		if not net_node.changed:
+#			continue
 		
-		print("[Holdable %s] has changed. Syncing info to [Peer: %s]" % [holdable.net_id, peer_id])
+		print("[Syncing Node %s] to [Peer: %s]" % [net_node.net_id, peer_id])
 		# Tell the Peer all the information it needs to get this Holdable setup
-		sync_holdable_node.rpc_id(peer_id, holdable.net_id, holdable.SCENE_ID, holdable.sync_state)
+		sync_networked_node.rpc_id(peer_id, net_node.net_id, net_node.SCENE_ID, net_node.sync_state)
 
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	print("-----Finished Sync for Peer %s-----" % peer_id)
 
 @rpc("any_peer", "reliable")
-func sync_holdable_node(holdable_id: int, holdable_scene_id: int, sync_state : PackedByteArray):
-	var holdables = get_tree().get_nodes_in_group(str(SceneIds.SCENES.HOLDABLE))
+func sync_networked_node(net_id: int, net_scene_id: int, sync_state : PackedByteArray):
+	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
 	#holdables[holdable_id].sync_state = sync_state
 	
-	print("[Peer %s] received request to [sync Holdable %s]" % [multiplayer.get_unique_id(), holdable_id])
+	print("[Peer %s] received request to [sync Node %s]" % [multiplayer.get_unique_id(), net_id])
 	var synced = false
 
 	# Find the Holdable
-	for holdable_scene in holdables:
+	for net_node in net_nodes:
 		# Found the Holdable
-		if holdable_scene.net_id == holdable_id:
-			(holdable_scene as HoldableComponent).sync_state = sync_state
+		if net_node.net_id == net_id:
+			net_node.sync_state = sync_state
 			synced = true
 		
 	# Didn't find the Holdable, need to spawn one
 	if not synced:
+		assert(SceneIds.PATHS.has(net_scene_id), "%s does not have a SceneId PATH to instantiate from in SceneIds.gd")
+		
 		print("[Peer %s] didn't find %s in the objects on startup. The Player must have generated this at run time. [Spawning a %s with id %s]" \
-			% [multiplayer.get_unique_id(), holdable_id, SceneIds.PATHS[holdable_scene_id].get_state().get_node_name(0), holdable_id])
+			% [multiplayer.get_unique_id(), net_id, SceneIds.PATHS[net_scene_id].get_state().get_node_name(0), net_id])
 		
 		# Spawn Holdable
-		var holdable_scene = SceneIds.PATHS[holdable_scene_id].instantiate()
-		add_child(holdable_scene, true) # Briefly add the node into the tree so that it can call get_node from within
-		holdable_scene.net_id = holdable_id
-		holdable_scene.sync_state = sync_state
+		var net_scene = SceneIds.PATHS[net_scene_id].instantiate()
+		add_child(net_scene, true) # Briefly add the node into the tree so that it can call get_node from within
+		net_scene.net_id = net_id
+		net_scene.sync_state = sync_state
 
