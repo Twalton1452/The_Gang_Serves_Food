@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbxagt40g03jj"]
+[gd_scene load_steps=4 format=3 uid="uid://qp0n17xt4bgl"]
 
 [ext_resource type="PackedScene" uid="uid://dbfpcm1d8q0wi" path="res://3d_models/Tomato1.blend" id="1_5jqit"]
+[ext_resource type="Texture2D" uid="uid://y2en35l2bjh3" path="res://3d_models/Tomato1_Tomato Base.png" id="2_yuckk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wakld"]
+albedo_texture = ExtResource("2_yuckk")
 
 [node name="Tomato1" instance=ExtResource("1_5jqit")]
 
 [node name="Cylinder" parent="." index="0"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_wakld")

@@ -11,6 +11,7 @@ enum SCENES {
 	HOLDER = 100,
 	HOLDABLE = 101,
 	COOKABLE = 102,
+	ROTATABLE = 103,
 }
 
 const PATHS = {

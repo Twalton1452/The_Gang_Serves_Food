@@ -4,3 +4,4 @@
 
 [node name="RotatableComponent" type="Node3D"]
 script = ExtResource("1_mnpqc")
+SCENE_ID = 103

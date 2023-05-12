@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://c6fwtyi3882jp"]
+[gd_scene load_steps=28 format=3 uid="uid://c6fwtyi3882jp"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://drdyip8qwof8h" path="res://3d_models/TopBun.blend" id="22_wdr14"]
 [ext_resource type="PackedScene" uid="uid://cc85g7fimsk2a" path="res://Scenes/patty_box_components.tscn" id="23_ym7y0"]
 [ext_resource type="Script" path="res://Scripts/MidsessionJoinSyncer.gd" id="24_gdwhe"]
+[ext_resource type="PackedScene" uid="uid://qp0n17xt4bgl" path="res://Scenes/tomato_blend.tscn" id="26_lq3vh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26lyt"]
 albedo_color = Color(0.913725, 0.701961, 0.435294, 1)
@@ -378,6 +379,9 @@ spawn_limit = 10
 
 [node name="MidsessionJoinSyncer" type="Node" parent="Networking"]
 script = ExtResource("24_gdwhe")
+
+[node name="Tomato1" parent="." instance=ExtResource("26_lq3vh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.02352, 0.421447, -0.934928)
 
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]
 
