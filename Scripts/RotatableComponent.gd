@@ -3,10 +3,10 @@ class_name RotatableComponent
 
 ## Set in degrees, but converted to radians on _ready for the Tween
 @export var tar_rot = Vector3(0.0, -90.0, 0.0)
+@export var is_rotated = false
 
 var og_rot : Vector3
 
-var is_rotated = false
 var in_progress = false
 
 func _ready():
@@ -32,3 +32,4 @@ func rotate_parent(node):
 	await t.finished
 	in_progress = false
 	is_rotated = !is_rotated
+

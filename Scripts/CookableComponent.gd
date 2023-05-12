@@ -26,22 +26,24 @@ var cooked_percent = 0.4
 var burning_percent = 0.8
 var cook_state : CookStates = CookStates.RAW
 
-func set_sync_state(value):
-	super(value)
-	cook_progress = value.decode_half(0)
+func set_sync_state(value) -> int:
+	var continuing_offset = super(value)
+	cook_progress = value.decode_half(continuing_offset)
 	evaluate_cook_rate()
+	
+	return continuing_offset + 2
 
-func get_sync_state():
+func get_sync_state() -> PackedByteArray:
 	var buf = super()
-	var og_buf_size = buf.size()
-	buf.resize(og_buf_size + 2)
-	buf.encode_half(og_buf_size, cook_progress)
+	var end_of_parent_buf = buf.size()
+	buf.resize(end_of_parent_buf + 2)
+	buf.encode_half(end_of_parent_buf, cook_progress) # half is 2 bytes
 	return buf
 
 func _ready():
 	super()
 	material_to_color = obj_to_color.get_surface_override_material(0)
-	
+	evaluate_cook_rate()
 	add_to_group(str(SceneIds.SCENES.COOKABLE))
 
 func cook(power: float):
