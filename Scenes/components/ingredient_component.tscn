@@ -2,6 +2,5 @@
 
 [ext_resource type="Script" path="res://Scripts/IngredientComponent.gd" id="1_na0uy"]
 
-[node name="IngredientComponent" type="Node3D" node_paths=PackedStringArray("ingredient_parent")]
+[node name="IngredientComponent" type="Node3D"]
 script = ExtResource("1_na0uy")
-ingredient_parent = NodePath("")

@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dr60d8lik1jhv" path="res://3d_models/Kenneys_Furniture/kitchenFridge.glb" id="1_7cp4a"]
 [ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_400m6"]
 [ext_resource type="PackedScene" uid="uid://c28hpirne8typ" path="res://Scenes/components/rotatable_component.tscn" id="3_58gvr"]
-[ext_resource type="PackedScene" uid="uid://bhm43rjjcejqy" path="res://3d_models/BrownBox.blend" id="4_td0wt"]
+[ext_resource type="PackedScene" uid="uid://cgdeg0ylwgf77" path="res://Scenes/brown_box.tscn" id="4_yjxx3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hajab"]
 size = Vector3(0.414506, 0.209362, 0.0458187)
@@ -40,7 +40,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.67638e-08, 7.45058e-09, 0)
 input_ray_pickable = false
 
 [node name="Top" type="MeshInstance3D" parent="kitchenFridge/kitchenFridge(Clone)" index="3"]
-transform = Transform3D(0.373974, 0, 0, 0, 0.02, 0, 0, 0, 0.2, 0.214339, 0.490748, -0.173867)
+transform = Transform3D(0.373974, 0, 0, 0, 0.02, 0, 0, 0, 0.2, 0.214339, 0.419018, -0.173867)
 cast_shadow = 0
 mesh = SubResource("BoxMesh_rv0he")
 
@@ -49,8 +49,11 @@ mesh = SubResource("BoxMesh_rv0he")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/Top/StaticBody3D"]
 shape = SubResource("BoxShape3D_fan4s")
 
+[node name="BrownBoxTop" parent="kitchenFridge/kitchenFridge(Clone)/Top" instance=ExtResource("4_yjxx3")]
+transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.0117361, 0.847813, 0.013665)
+
 [node name="Bottom" type="MeshInstance3D" parent="kitchenFridge/kitchenFridge(Clone)" index="4"]
-transform = Transform3D(0.373974, 0, 0, 0, 0.02, 0, 0, 0, 0.2, 0.214339, 0.261018, -0.173867)
+transform = Transform3D(0.373974, 0, 0, 0, 0.02, 0, 0, 0, 0.2, 0.214339, 0.188206, -0.173867)
 cast_shadow = 0
 mesh = SubResource("BoxMesh_rv0he")
 
@@ -59,10 +62,7 @@ mesh = SubResource("BoxMesh_rv0he")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/Bottom/StaticBody3D"]
 shape = SubResource("BoxShape3D_fan4s")
 
-[node name="BrownBox" parent="." instance=ExtResource("4_td0wt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.218728, 0.531005, -0.171134)
-
-[node name="BrownBox2" parent="." instance=ExtResource("4_td0wt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.218728, 0.306445, -0.171134)
+[node name="BrownBoxBottom" parent="kitchenFridge/kitchenFridge(Clone)/Bottom" instance=ExtResource("4_yjxx3")]
+transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.0117361, 0.534283, 0.013665)
 
 [editable path="kitchenFridge"]

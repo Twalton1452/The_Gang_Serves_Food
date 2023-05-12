@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://cgdeg0ylwgf77"]
+
+[ext_resource type="PackedScene" uid="uid://bhm43rjjcejqy" path="res://3d_models/BrownBox.blend" id="1_foli8"]
+[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_ckm3k"]
+[ext_resource type="PackedScene" uid="uid://bei81b4d8anq0" path="res://Scenes/components/ingredient_component.tscn" id="3_lqjuo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3wjmx"]
+size = Vector3(0.252378, 0.0940385, 0.143815)
+
+[node name="BrownBox" instance=ExtResource("1_foli8")]
+
+[node name="InteractableComponent" parent="Box" index="1" instance=ExtResource("2_ckm3k")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0470509, 0)
+shape = SubResource("BoxShape3D_3wjmx")
+
+[node name="IngredientComponent" parent="Box" index="2" instance=ExtResource("3_lqjuo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0152823, 0)
+max_amount = 20
