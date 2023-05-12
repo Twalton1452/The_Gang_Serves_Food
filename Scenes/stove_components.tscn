@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c0g1h8k6b2m0u"]
+[gd_scene load_steps=13 format=3 uid="uid://c0g1h8k6b2m0u"]
 
 [ext_resource type="PackedScene" uid="uid://43j8lde63v6x" path="res://3d_models/Kenneys_Furniture/kitchenStove.glb" id="1_kvmn6"]
 [ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_u7x5j"]
@@ -8,9 +8,6 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1tpb2"]
 size = Vector3(0.380177, 0.285769, 0.0260013)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_kvf7u"]
-size = Vector3(0.361106, 0.0224466, 0.330352)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l0a6h"]
 size = Vector3(0.153897, 0.0171556, 0.132471)
@@ -24,6 +21,12 @@ size = Vector3(0.153897, 0.0171556, 0.132471)
 [sub_resource type="BoxShape3D" id="BoxShape3D_q361a"]
 size = Vector3(0.153897, 0.0171556, 0.132471)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_kvf7u"]
+size = Vector3(0.361106, 0.0224466, 0.330352)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2vbqw"]
+size = Vector3(0.361106, 0.0224466, 0.330352)
+
 [node name="kitchenStove" instance=ExtResource("1_kvmn6")]
 
 [node name="InteractableComponent" parent="kitchenStove(Clone)/door" index="0" instance=ExtResource("2_u7x5j")]
@@ -34,20 +37,6 @@ shape = SubResource("BoxShape3D_1tpb2")
 
 [node name="RotatableComponent" parent="kitchenStove(Clone)/door" index="1" instance=ExtResource("3_v0p4e")]
 tar_rot = Vector3(90, 0, 0)
-
-[node name="OvenTop" type="Node3D" parent="kitchenStove(Clone)/door" index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.179124, 0.140582, -0.207599)
-
-[node name="InteractableComponent" parent="kitchenStove(Clone)/door/OvenTop" index="0" instance=ExtResource("2_u7x5j")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/door/OvenTop/InteractableComponent" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0030705, 0.00614673, 0.0093129)
-shape = SubResource("BoxShape3D_kvf7u")
-
-[node name="HolderComponent" parent="kitchenStove(Clone)/door/OvenTop" index="1" instance=ExtResource("4_tavom")]
-
-[node name="CookerComponent" parent="kitchenStove(Clone)/door/OvenTop" index="2" instance=ExtResource("5_ejadq")]
-power = 1.0
 
 [node name="Burner1" type="Node3D" parent="kitchenStove(Clone)" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.133402, 0.442529, -0.184244)
@@ -97,5 +86,34 @@ shape = SubResource("BoxShape3D_q361a")
 [node name="HolderComponent" parent="kitchenStove(Clone)/Burner4" index="1" instance=ExtResource("4_tavom")]
 
 [node name="CookerComponent" parent="kitchenStove(Clone)/Burner4" index="2" instance=ExtResource("5_ejadq")]
+
+[node name="OvenTop" type="Node3D" parent="kitchenStove(Clone)" index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.205968, 0.225668, -0.237599)
+
+[node name="InteractableComponent" parent="kitchenStove(Clone)/OvenTop" index="0" instance=ExtResource("2_u7x5j")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/OvenTop/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0030705, 0.00614673, 0.0093129)
+shape = SubResource("BoxShape3D_kvf7u")
+
+[node name="HolderComponent" parent="kitchenStove(Clone)/OvenTop" index="1" instance=ExtResource("4_tavom")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0662719)
+
+[node name="CookerComponent" parent="kitchenStove(Clone)/OvenTop" index="2" instance=ExtResource("5_ejadq")]
+power = 1.0
+
+[node name="OvenBottom" type="Node3D" parent="kitchenStove(Clone)" index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.205968, 0.0949426, -0.237599)
+
+[node name="InteractableComponent" parent="kitchenStove(Clone)/OvenBottom" index="0" instance=ExtResource("2_u7x5j")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/OvenBottom/InteractableComponent" index="0"]
+shape = SubResource("BoxShape3D_2vbqw")
+
+[node name="HolderComponent" parent="kitchenStove(Clone)/OvenBottom" index="1" instance=ExtResource("4_tavom")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0662719)
+
+[node name="CookerComponent" parent="kitchenStove(Clone)/OvenBottom" index="2" instance=ExtResource("5_ejadq")]
+power = 1.0
 
 [editable path="kitchenStove(Clone)/door/InteractableComponent"]
