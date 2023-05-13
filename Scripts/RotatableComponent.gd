@@ -43,11 +43,8 @@ func connect_signals():
 	
 	connector.interacted.connect(_on_interactable_component_interacted)
 
-func _exit_tree():
-	if connector != null:
-		connector.interacted.disconnect(_on_interactable_component_interacted)
-
 func _on_interactable_component_interacted(node, _player):
+	changed = true
 	rotate_parent(node)
 
 func rotate_parent(node):

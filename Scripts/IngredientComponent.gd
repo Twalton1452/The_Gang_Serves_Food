@@ -11,7 +11,7 @@ func hold_item(item: Node3D):
 	
 	if get_child_count() < max_amount:
 		super(item)
-		if get_child_count() > 2:
+		if get_child_count() > 1:
 			item.position = get_child(-2).position + stacking_spacing
 		else:
 			item.position = Vector3.ZERO

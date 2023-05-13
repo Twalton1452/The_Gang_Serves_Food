@@ -21,6 +21,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0486675, 0)
 shape = SubResource("BoxShape3D_ewkhx")
 
 [node name="IngredientComponent" parent="." index="2" instance=ExtResource("4_g51o6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00457682, 0)
 ingredient_scene = ExtResource("5_baeti")
 
 [node name="Patty" parent="IngredientComponent" index="0" instance=ExtResource("5_baeti")]

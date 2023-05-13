@@ -26,10 +26,6 @@ func connect_signals():
 	
 	connector.interacted.connect(_on_interactable_component_interacted)
 
-func _exit_tree():
-	if connector != null:
-		connector.interacted.disconnect(_on_interactable_component_interacted)
-
 func joined_midsession_sync(item_to_hold: Node3D):
 	hold_item(item_to_hold)
 
@@ -37,7 +33,9 @@ func is_holding_item() -> bool:
 	return get_child_count() > 0
 
 func get_held_item() -> Node3D:
-	return get_child(-1)
+	if is_holding_item():
+		return get_child(-1)
+	return null
 
 func is_holding(item: Node3D):
 	if not is_holding_item():

@@ -5,11 +5,13 @@ func sync_nodes_for_new_player(peer_id: int):
 	print("------Begin Sync for Peer %s------" % peer_id)
 	
 	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
-	
+	var not_synced = 0
 	for net_node in net_nodes as Array[NetworkedNode3D]:
 		# Enable this when we start watching for Delta's in the state
-		# if not net_node.changed:
-		#	continue
+		if not net_node.changed:
+			#print("[Not Syncing Node %s] hasn't changed" % net_node.net_id)
+			not_synced += 1
+			continue
 		
 		print("[Syncing Node %s] to [Peer: %s]" % [net_node.net_id, peer_id])
 		# Tell the Peer all the information it needs to get this Networked Node through sync_state
@@ -17,12 +19,13 @@ func sync_nodes_for_new_player(peer_id: int):
 
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	print("-----Finished Sync for Peer %s-----" % peer_id)
+	print("[Result] %d/%d Nodes needed syncing for %s" % [net_nodes.size() - not_synced, net_nodes.size(), peer_id])
 
 @rpc("any_peer", "reliable")
 func sync_networked_node(net_id: int, net_scene_id: int, sync_state : PackedByteArray):
 	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
 	
-	print("[Peer %s] received request to [sync Node %s]" % [multiplayer.get_unique_id(), net_id])
+	#print("[Peer %s] received request to [sync Node %s]" % [multiplayer.get_unique_id(), net_id])
 	var synced = false
 
 	# Find the Networked Node
@@ -44,4 +47,5 @@ func sync_networked_node(net_id: int, net_scene_id: int, sync_state : PackedByte
 		add_child(net_scene, true) # Briefly add the node into the tree so that it can call get_node from within
 		net_scene.net_id = net_id
 		net_scene.sync_state = sync_state
+		net_scene.changed = true
 

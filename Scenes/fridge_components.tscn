@@ -50,7 +50,10 @@ mesh = SubResource("BoxMesh_rv0he")
 shape = SubResource("BoxShape3D_fan4s")
 
 [node name="BrownBoxTop" parent="kitchenFridge/kitchenFridge(Clone)/Top" instance=ExtResource("4_yjxx3")]
-transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.0117361, 0.847813, 0.013665)
+transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.233409, 0.847816, 0.013665)
+
+[node name="BrownBoxTop2" parent="kitchenFridge/kitchenFridge(Clone)/Top" instance=ExtResource("4_yjxx3")]
+transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, -0.248417, 0.847816, 0.013665)
 
 [node name="Bottom" type="MeshInstance3D" parent="kitchenFridge/kitchenFridge(Clone)" index="4"]
 transform = Transform3D(0.373974, 0, 0, 0, 0.02, 0, 0, 0, 0.2, 0.214339, 0.188206, -0.173867)
@@ -63,6 +66,12 @@ mesh = SubResource("BoxMesh_rv0he")
 shape = SubResource("BoxShape3D_fan4s")
 
 [node name="BrownBoxBottom" parent="kitchenFridge/kitchenFridge(Clone)/Bottom" instance=ExtResource("4_yjxx3")]
-transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.0117361, 0.534283, 0.013665)
+transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, -0.324322, 0.534283, 0.013665)
+
+[node name="BrownBoxBottom2" parent="kitchenFridge/kitchenFridge(Clone)/Bottom" instance=ExtResource("4_yjxx3")]
+transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.00239873, 0.534283, 0.013665)
+
+[node name="BrownBoxBottom3" parent="kitchenFridge/kitchenFridge(Clone)/Bottom" instance=ExtResource("4_yjxx3")]
+transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.326499, 0.534283, 0.013665)
 
 [editable path="kitchenFridge"]

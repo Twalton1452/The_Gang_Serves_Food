@@ -8,6 +8,8 @@ enum SCENES {
 	NETWORKED = 0,
 	PATTY = 1,
 	
+	PLATE = 50,
+	
 	HOLDER = 100,
 	HOLDABLE = 101,
 	COOKABLE = 102,

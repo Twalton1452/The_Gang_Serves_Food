@@ -42,7 +42,7 @@ func get_sync_state() -> PackedByteArray:
 
 func _ready():
 	super()
-	material_to_color = obj_to_color.get_surface_override_material(0)
+	material_to_color = obj_to_color.get_active_material(0)#.get_surface_override_material(0)
 	evaluate_cook_rate()
 	add_to_group(str(SceneIds.SCENES.COOKABLE))
 

@@ -7,9 +7,10 @@ class_name NetworkedNode3D
 
 var net_id = -1
 var sync_state : set = set_sync_state, get = get_sync_state
-# Should be set to false until it moves somewhere, but just have it set to true
-# for now to update every client easily
-var changed = true
+
+# Used by the MidsessionSync script to see if it should update the Peer on spawn to reduce bandwidth
+# Run-time spawns will need this set to true automatically
+var changed = false
 
 func set_sync_state(value: PackedByteArray) -> int:
 	var sync_pos = Vector3(value.decode_half(0), value.decode_half(2), value.decode_half(4))
@@ -40,3 +41,9 @@ func get_sync_state() -> PackedByteArray:
 func _ready():
 	net_id = NetworkingUtils.generate_id()
 	add_to_group(str(SceneIds.SCENES.NETWORKED))
+
+# When the node changes parents this is fired off
+# Can work as a delta signifier to the midsession joins
+func _exit_tree():
+	print("%s exited tree will need syncing" % name)
+	changed = true

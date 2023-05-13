@@ -5,16 +5,19 @@
 [ext_resource type="PackedScene" uid="uid://bei81b4d8anq0" path="res://Scenes/components/ingredient_component.tscn" id="3_lqjuo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3wjmx"]
-size = Vector3(0.252378, 0.0940385, 0.143815)
+size = Vector3(0.112874, 0.0741163, 0.1109)
 
 [node name="BrownBox" instance=ExtResource("1_foli8")]
 
-[node name="InteractableComponent" parent="Box" index="1" instance=ExtResource("2_ckm3k")]
+[node name="Box" parent="." index="0"]
+transform = Transform3D(0.449212, 0, 0, 0, 1, 0, 0, 0, 0.751964, 0, 0, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/InteractableComponent" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0470509, 0)
+[node name="InteractableComponent" parent="." index="1" instance=ExtResource("2_ckm3k")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0384798, 0)
 shape = SubResource("BoxShape3D_3wjmx")
 
-[node name="IngredientComponent" parent="Box" index="2" instance=ExtResource("3_lqjuo")]
+[node name="IngredientComponent" parent="." index="2" instance=ExtResource("3_lqjuo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0152823, 0)
 max_amount = 20
