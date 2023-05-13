@@ -61,6 +61,9 @@ func _on_interactable_component_interacted(_node : InteractableComponent, player
 			var curr_item = get_held_item()
 			released_holding.emit(curr_item)
 			
+			# TODO:
+			# If player right clicked to interact
+			# Attempt to combine the curr_item onto the Holder
 			hold_item(player.holder_component.get_held_item())
 			player.holder_component.hold_item(curr_item)
 			

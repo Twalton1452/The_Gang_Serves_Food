@@ -31,7 +31,8 @@ import_script/path=""
 _subresources={
 "nodes": {
 "PATH:kitchenStove(Clone)": {
-"generate/physics": true
+"generate/physics": true,
+"physics/shape_type": 1
 }
 }
 }

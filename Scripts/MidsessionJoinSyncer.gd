@@ -7,7 +7,6 @@ func sync_nodes_for_new_player(peer_id: int):
 	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
 	var not_synced = 0
 	for net_node in net_nodes as Array[NetworkedNode3D]:
-		# Enable this when we start watching for Delta's in the state
 		if not net_node.changed:
 			#print("[Not Syncing Node %s] hasn't changed" % net_node.net_id)
 			not_synced += 1
