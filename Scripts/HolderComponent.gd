@@ -53,6 +53,9 @@ func hold_item(item: Node3D):
 	started_holding.emit(item)
 	item.position = Vector3.ZERO
 
+func notify_release(item: Node3D):
+	released_holding.emit(item)
+
 func _on_interactable_component_interacted(_node : InteractableComponent, player : Player):
 	# Player placing Item
 	if player.holder_component.is_holding_item():

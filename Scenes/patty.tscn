@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://effhc27p2nda"]
+[gd_scene load_steps=7 format=3 uid="uid://effhc27p2nda"]
 
 [ext_resource type="PackedScene" uid="uid://df8lx1i6kk3b4" path="res://3d_models/Patty.blend" id="1_eds4o"]
 [ext_resource type="Script" path="res://Scripts/CookableComponent.gd" id="2_vh6g7"]
 [ext_resource type="Material" uid="uid://b60lm8s0trq5f" path="res://Materials/Patty_mat.tres" id="2_yu6yt"]
 [ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="3_hpc4y"]
+[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="5_murj2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sloww"]
+size = Vector3(0.0956296, 0.0185002, 0.0917687)
 
 [node name="Patty" node_paths=PackedStringArray("obj_to_color") instance=ExtResource("1_eds4o")]
 script = ExtResource("2_vh6g7")
@@ -13,3 +17,8 @@ obj_to_color = NodePath("Patty")
 [node name="Patty" parent="." index="0"]
 cast_shadow = 0
 surface_material_override/0 = ExtResource("2_yu6yt")
+
+[node name="InteractableComponent" parent="." index="1" instance=ExtResource("5_murj2")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableComponent" index="0"]
+shape = SubResource("BoxShape3D_sloww")
