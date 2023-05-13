@@ -45,5 +45,4 @@ func _ready():
 # When the node changes parents this is fired off
 # Can work as a delta signifier to the midsession joins
 func _exit_tree():
-	print("%s exited tree will need syncing" % name)
 	changed = true
