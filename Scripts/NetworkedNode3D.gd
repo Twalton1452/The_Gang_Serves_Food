@@ -42,7 +42,21 @@ func _ready():
 	net_id = NetworkingUtils.generate_id()
 	add_to_group(str(SceneIds.SCENES.NETWORKED))
 
-# When the node changes parents this is fired off
+# When the node changes (parents) this gets fired off
 # Can work as a delta signifier to the midsession joins
 func _exit_tree():
 	changed = true
+
+# Could be useful
+# These notifications also get fired off during less-optimal times, needs logic
+# https://docs.godotengine.org/en/stable/tutorials/best_practices/godot_notifications.html
+#func _notification(what):
+#	match what:
+#		NOTIFICATION_PARENTED:
+#			changed = true
+#		NOTIFICATION_UNPARENTED:
+#			changed = true
+#		NOTIFICATION_PREDELETE:
+#			print_debug("Not Implemented Yet. Tell the Syncronizer this net_id so midsession joins know. Deleting %s, id: " % [name, net_id])
+#			changed = true
+

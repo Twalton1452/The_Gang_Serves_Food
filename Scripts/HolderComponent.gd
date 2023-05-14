@@ -14,23 +14,24 @@ func _ready():
 	
 	add_to_group(str(SCENE_ID))
 	
-	# Holders can be the parents of InteractableComponents or on the same Level
-	
 	connect_signals.call_deferred()
 
 func connect_signals():
-	connector = get_node_or_null("../InteractableComponent")
+	# Look up and down for an InteractableComponent
+	connector = get_node("../InteractableComponent") if get_node_or_null("../InteractableComponent") != null else get_node_or_null("InteractableComponent")
 	# This is likely to be a Player's hand, they don't have hitboxes around them
 	if connector == null:
 		return
 	
 	connector.interacted.connect(_on_interactable_component_interacted)
 
-func joined_midsession_sync(item_to_hold: Node3D):
-	hold_item(item_to_hold)
+func get_held_items() -> Array[Node]:
+	if get_child_count() > 0:
+		return get_children().filter(func(c): return c is HoldableComponent)
+	return []
 
 func is_holding_item() -> bool:
-	return get_child_count() > 0
+	return len(get_held_items()) > 0
 
 func get_held_item() -> Node3D:
 	if is_holding_item():

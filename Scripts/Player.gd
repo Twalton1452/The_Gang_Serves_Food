@@ -34,14 +34,16 @@ func _ready():
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
+	
+	# Only used to exit the game currently
 	if event.is_action_pressed("unlock_cursor"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			
-
-	if event is InputEventMouseMotion:
+	
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * look_speed)
 		camera.rotate_x(-event.relative.y * look_speed)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
@@ -56,6 +58,9 @@ func _unhandled_input(event):
 	if event.is_action_pressed("interact"):
 		if interact_ray_cast.is_colliding():
 			interact.rpc()
+	if event.is_action_pressed("secondary_interact"):
+		if interact_ray_cast.is_colliding():
+			secondary_interact.rpc()
 			
 
 func _physics_process(delta):
@@ -98,6 +103,11 @@ func pick_emotive_face(id = -1):
 func interact() -> void:
 	var interactable = interact_ray_cast.get_collider() as InteractableComponent
 	interactable.interact(self)
+
+@rpc("call_local")
+func secondary_interact() -> void:
+	var interactable = interact_ray_cast.get_collider() as InteractableComponent
+	interactable.interact(self, true)
 
 ## Left over example code from boilerplate
 @rpc("call_local")
