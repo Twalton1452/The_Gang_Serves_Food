@@ -27,19 +27,18 @@ func connect_signals():
 	c_interactable.interacted.connect(_on_interactable_component_interacted)
 	c_interactable.secondary_interacted.connect(_on_interactable_component_secondary_interacted)
 
-# This probably needs a rewrite, just emit signals that you're being held and let the Holder's take care of it
-# Holdable's are doing too much and really shouldn't be
-# Left Click
+# Left Click Holdable
 func _on_interactable_component_interacted(_node : InteractableComponent, player : Player):
+	pass
 	# Player is currently holding something
 	if player.holder_component.is_holding_item():
 		# Player is holding a Plate, put this onto it if available
-		if player.holder_component.get_held_item() is HoldableComponent:
-			for holdable_child in player.holder_component.get_held_item().get_children():
-				# Found a Holder and there is an available slot
-				if holdable_child is HolderComponent and not holdable_child.is_holding_item():
-					holdable_child.hold_item(self)
-					return
+#		if player.holder_component.get_held_item() is HoldableComponent:
+#			for holdable_child in player.holder_component.get_held_item().get_children():
+#				# Found a Holder and there is an available slot
+#				if holdable_child is HolderComponent and not holdable_child.is_holding_item():
+#					holdable_child.hold_item(self)
+#					return
 		# Couldn't find an available slot if the Player was holding a Plate
 		# Swap Items
 		# Assumption is every Holdable belongs to a Holder right now
