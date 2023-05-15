@@ -52,7 +52,7 @@ func hold_item(item: Node3D):
 	started_holding.emit(item)
 	item.position = Vector3.ZERO
 
-func release_item_to(holder: HolderComponent):
+func release_item_to(holder: HolderComponent):	
 	var item = get_held_item()
 	released_holding.emit(item)
 	holder.hold_item(item)
@@ -97,4 +97,5 @@ func _on_interactable_component_secondary_interacted(_node : InteractableCompone
 			return
 		
 		# Player trying to place items from their Multi-holder onto our empty Holder
-		player.c_holder.get_held_item().release_item_to(self)
+		if player.c_holder.get_held_item().is_holding_item():
+			player.c_holder.get_held_item().release_item_to(self)

@@ -26,13 +26,10 @@ func _on_interactable_component_interacted(_node : InteractableComponent, player
 		# We have something to give the Player
 		if is_holding_item():
 			release_item_to(player.c_holder)
-#	elif player.c_holder.get_held_item() is HoldableComponent:
-#		# Player is holding a Plate, put this onto it if available
-#		for holder_child in player.c_holder.get_held_item().get_children():
-#			# Found a Holder and there is an available slot
-#			if holder_child is HolderComponent and not holder_child.is_holding_item():
-#				release_item_to(holder_child)
-#				return
+	# Player is holding a Plate, put this onto it
+	elif player.c_holder.get_held_item() is MultiHolderComponent:
+		if is_holding_item():
+			release_item_to(player.c_holder.get_held_item())
 	# Taking Player's item no matter what
 	elif ingredient_scene == null:
 		player.c_holder.release_item_to(self)
