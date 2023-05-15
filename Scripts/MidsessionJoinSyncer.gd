@@ -5,6 +5,12 @@ func sync_nodes_for_new_player(peer_id: int):
 	print("------Begin Sync for Peer %s------" % peer_id)
 	
 	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
+	net_nodes.sort_custom(func(a, b):
+		if a is MultiHolderComponent and not b is MultiHolderComponent:
+			return true
+		return false
+	)
+	print(net_nodes)
 	var not_synced = 0
 	for net_node in net_nodes as Array[NetworkedNode3D]:
 		if not net_node.changed:

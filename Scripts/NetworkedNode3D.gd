@@ -46,6 +46,7 @@ func _ready():
 # Can work as a delta signifier to the midsession joins
 func _exit_tree():
 	changed = true
+	#print("[Changed: %s] Parent: %s" % [name, get_parent().name])
 
 # Could be useful
 # These notifications also get fired off during less-optimal times, needs logic

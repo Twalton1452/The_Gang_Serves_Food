@@ -180,6 +180,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.243105, 0)
 
 [node name="HolderComponent" parent="Camera3D" instance=ExtResource("2_iorh3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, -0.108, -0.166)
+SCENE_ID = 100
 
 [node name="Pistol" parent="Camera3D" instance=ExtResource("2_rnvw1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)

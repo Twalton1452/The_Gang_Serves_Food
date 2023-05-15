@@ -1,4 +1,4 @@
-extends Node3D
+extends NetworkedNode3D
 class_name HolderComponent
 
 signal started_holding(node: Node3D)
@@ -6,19 +6,9 @@ signal released_holding(node: Node3D)
 
 var c_interactable : InteractableComponent
 
-const SCENE_ID = SceneIds.SCENES.HOLDER
-var net_id = -1
-
 func _ready():
-	net_id = NetworkingUtils.generate_id()
-	
-	add_to_group(str(SCENE_ID))
-	
+	super()
 	connect_signals.call_deferred()
-
-func _notification(what):
-	if what == NOTIFICATION_MOVED_IN_PARENT:
-		print("%s unparented" % name)
 
 func connect_signals():
 	# Look up and down for an InteractableComponent
