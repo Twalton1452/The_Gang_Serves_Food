@@ -20,6 +20,7 @@ script = ExtResource("2_rrfqx")
 [node name="Main" type="Node3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0477687, 0.005896, 0)
 script = ExtResource("3_tbja8")
+can_hold_holders = false
 
 [node name="InteractableComponent" parent="Main" index="0" instance=ExtResource("2_ajxyg")]
 
@@ -30,6 +31,7 @@ shape = SubResource("BoxShape3D_kpxjo")
 [node name="Side" type="Node3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0554797, 0.005896, -0.0499425)
 script = ExtResource("3_tbja8")
+can_hold_holders = false
 
 [node name="InteractableComponent" parent="Side" index="0" instance=ExtResource("2_ajxyg")]
 
@@ -39,6 +41,7 @@ shape = SubResource("BoxShape3D_0ri12")
 [node name="Side2" type="Node3D" parent="." index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0554797, 0.005896, 0.049072)
 script = ExtResource("3_tbja8")
+can_hold_holders = false
 
 [node name="InteractableComponent" parent="Side2" index="0" instance=ExtResource("2_ajxyg")]
 

@@ -4,6 +4,8 @@ class_name HolderComponent
 signal started_holding(node: Node3D)
 signal released_holding(node: Node3D)
 
+@export var can_hold_holders = true
+
 var c_interactable : InteractableComponent
 
 func _ready():
@@ -44,6 +46,9 @@ func is_holding(item: Node3D):
 			return true
 
 func hold_item(item: Node3D):
+	if item is HolderComponent and not can_hold_holders:
+		return
+	
 	#print("HOLDING %s" % item.net_id)
 	if not item.is_inside_tree():
 		add_child(item, true)
