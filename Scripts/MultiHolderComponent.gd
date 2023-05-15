@@ -9,9 +9,14 @@ func _ready():
 	for child in get_children():
 		if child is HolderComponent:
 			c_holders.push_back(child)
+			# Only the parent needs to retain information for MultiHolders
+			# Feels hacky to do this here, might need a better solution for NetworkedNodes
+			# Maybe a child Node, NetworkedNode?
+			child.remove_from_group(str(SceneIds.SCENES.NETWORKED))
 	
 	assert(len(c_holders) > 0, "MultiHolderComponent: %s, Parent: %s, doesn't have any holders" \
 		% [name, get_parent().name])
+	
 
 func get_held_items() -> Array[Node]:
 	var items : Array[Node] = []
