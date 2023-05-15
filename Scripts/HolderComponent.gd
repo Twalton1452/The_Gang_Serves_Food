@@ -1,4 +1,4 @@
-extends Node
+extends Node3D
 class_name HolderComponent
 
 signal started_holding(node: Node3D)
@@ -32,7 +32,7 @@ func connect_signals():
 
 func get_held_items() -> Array[Node]:
 	if get_child_count() > 0:
-		return get_children().filter(func(c): return c is HoldableComponent)
+		return get_children().filter(func(c): return c is HoldableComponent or c is HolderComponent)
 	return []
 
 func has_space_for_item():
@@ -80,12 +80,9 @@ func _on_interactable_component_interacted(_node : InteractableComponent, player
 		if is_holding_item():
 			
 			# Player is holding a Plate, put this onto it if available
-			if player.c_holder.get_held_item() is HoldableComponent:
-				for holder_child in player.c_holder.get_held_item().get_children():
-					# Found a Holder and there is an available slot
-					if holder_child is HolderComponent and not holder_child.is_holding_item():
-						release_item_to(holder_child)
-						return
+			if player.c_holder.get_held_item() is MultiHolderComponent:
+				release_item_to(player.c_holder.get_held_item())
+				return
 			
 			swap_items_with(player.c_holder)
 		# Take Player's item
@@ -100,22 +97,14 @@ func _on_interactable_component_secondary_interacted(_node : InteractableCompone
 	# Player trying to place Item
 	if player.c_holder.is_holding_item():
 		
-		var multi_holder = player.c_holder.get_held_item() is HoldableComponent and \
-			len(player.c_holder.get_held_item().get_children().filter(func(child): return child is HolderComponent)) > 0
-		
 		# Player trying to Right Click this Holder with just an Item
-		if not multi_holder:
+		if not player.c_holder.get_held_item() is MultiHolderComponent:
 			# Combine?
 			return
 		
-		
-		# Player trying to put items from their Plate onto this occupied Holder
+		# Holder has no space - Combining didn't take place
 		if not has_space_for_item():
 			return
 		
 		# Player trying to place items from their Multi-holder onto our empty Holder
-		var occupied_holders = player.c_holder.get_held_item().get_children().filter(func(child): return child is HolderComponent and child.is_holding_item())
-		for holder in occupied_holders:
-			# Found a Holder and we have an available slot for it
-			holder.release_item_to(self)
-			return
+		player.c_holder.get_held_item().release_item_to(self)

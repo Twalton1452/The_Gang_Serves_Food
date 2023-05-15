@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://be5imvxe13rct"]
+[gd_scene load_steps=8 format=3 uid="uid://be5imvxe13rct"]
 
 [ext_resource type="PackedScene" uid="uid://be3c0n81j2t5a" path="res://3d_models/Plate.glb" id="1_k85uc"]
 [ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_ajxyg"]
-[ext_resource type="Script" path="res://Scripts/HoldableComponent.gd" id="2_w56h2"]
+[ext_resource type="Script" path="res://Scripts/MultiHolderComponent.gd" id="2_rrfqx"]
 [ext_resource type="Script" path="res://Scripts/HolderComponent.gd" id="3_tbja8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kpxjo"]
@@ -14,12 +14,8 @@ size = Vector3(0.087787, 0.0381488, 0.0875514)
 [sub_resource type="BoxShape3D" id="BoxShape3D_6453g"]
 size = Vector3(0.087787, 0.0381488, 0.0875514)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_rrkun"]
-size = Vector3(0.265822, 0.0100072, 0.263445)
-
 [node name="Plate" instance=ExtResource("1_k85uc")]
-script = ExtResource("2_w56h2")
-SCENE_ID = 50
+script = ExtResource("2_rrfqx")
 
 [node name="Main" type="Node3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0477687, 0.005896, 0)
@@ -48,8 +44,3 @@ script = ExtResource("3_tbja8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Side2/InteractableComponent" index="0"]
 shape = SubResource("BoxShape3D_6453g")
-
-[node name="InteractableComponent" parent="." index="4" instance=ExtResource("2_ajxyg")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableComponent" index="0"]
-shape = SubResource("BoxShape3D_rrkun")
