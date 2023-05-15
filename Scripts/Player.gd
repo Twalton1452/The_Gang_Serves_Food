@@ -9,9 +9,8 @@ signal health_changed(health_value)
 @onready var gun_ray_cast = $Camera3D/GunRayCast3D
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
 @onready var face_sprite = $FaceSprite
+@onready var c_holder : HolderComponent = $Camera3D/HolderComponent
 
-# Need to assign in the scene because its name will change at runtime
-@export var holder_component : HolderComponent
 
 const SPEED = 4.0
 const JUMP_VELOCITY = 10.0
