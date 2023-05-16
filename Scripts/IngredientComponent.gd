@@ -5,8 +5,9 @@ class_name IngredientComponent
 @export var max_amount = 99
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
 
-func has_space_for_item():
-	return len(get_held_items()) < max_amount
+func has_space_for_item(item: Node3D) -> bool:
+	var acceptable_item = ingredient_scene == null or item != null and item.scene_file_path == ingredient_scene.resource_path
+	return acceptable_item and len(get_held_items()) < max_amount
 
 func hold_item(item: Node3D):
 	if is_holding(item):

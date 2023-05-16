@@ -338,18 +338,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.40198, -0.00308084, -1.0120
 [node name="kitchenStoveTest" parent="." instance=ExtResource("16_eiaux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.286929, -0.00307983, -0.864933)
 
-[node name="CookerComponent" parent="kitchenStoveTest/kitchenStove(Clone)/Burner1" index="2"]
-power = null
-
-[node name="CookerComponent" parent="kitchenStoveTest/kitchenStove(Clone)/Burner2" index="2"]
-power = null
-
-[node name="CookerComponent" parent="kitchenStoveTest/kitchenStove(Clone)/Burner3" index="2"]
-power = null
-
-[node name="CookerComponent" parent="kitchenStoveTest/kitchenStove(Clone)/Burner4" index="2"]
-power = null
-
 [node name="kitchenCabinet" parent="." instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.39494, -0.00308084, -0.876345)
 
@@ -358,6 +346,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.91198, -0.00308084, -0.876
 
 [node name="Plate" parent="." instance=ExtResource("18_1wlvs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.16105, 0.603157, -1.03649)
+can_hold_holders = true
 
 [node name="TopBun" parent="." instance=ExtResource("22_wdr14")]
 transform = Transform3D(0.937319, -0.348474, 0, 0.348474, 0.937319, 0, 0, 0, 1, -1.84815, 0.429363, -0.940503)

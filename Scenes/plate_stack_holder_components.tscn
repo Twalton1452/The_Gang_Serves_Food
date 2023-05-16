@@ -21,69 +21,92 @@ ingredient_scene = ExtResource("2_lyxfo")
 stacking_spacing = Vector3(0, 0.006, 0)
 
 [node name="Plate" parent="IngredientComponent" index="0" instance=ExtResource("2_lyxfo")]
+can_hold_holders = true
 
 [node name="Plate2" parent="IngredientComponent" index="1" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00648129, 0)
+can_hold_holders = true
 
 [node name="Plate3" parent="IngredientComponent" index="2" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0143401, 0)
+can_hold_holders = true
 
 [node name="Plate4" parent="IngredientComponent" index="3" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0208214, 0)
+can_hold_holders = true
 
 [node name="Plate5" parent="IngredientComponent" index="4" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0274878, 0)
+can_hold_holders = true
 
 [node name="Plate6" parent="IngredientComponent" index="5" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0339691, 0)
+can_hold_holders = true
 
 [node name="Plate7" parent="IngredientComponent" index="6" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0418279, 0)
+can_hold_holders = true
 
 [node name="Plate8" parent="IngredientComponent" index="7" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0483091, 0)
+can_hold_holders = true
 
 [node name="Plate9" parent="IngredientComponent" index="8" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0550472, 0)
+can_hold_holders = true
 
 [node name="Plate10" parent="IngredientComponent" index="9" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0615285, 0)
+can_hold_holders = true
 
 [node name="Plate11" parent="IngredientComponent" index="10" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0693873, 0)
+can_hold_holders = true
 
 [node name="Plate12" parent="IngredientComponent" index="11" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0758686, 0)
+can_hold_holders = true
 
 [node name="Plate13" parent="IngredientComponent" index="12" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.082535, 0)
+can_hold_holders = true
 
 [node name="Plate14" parent="IngredientComponent" index="13" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0890163, 0)
+can_hold_holders = true
 
 [node name="Plate15" parent="IngredientComponent" index="14" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0968751, 0)
+can_hold_holders = true
 
 [node name="Plate16" parent="IngredientComponent" index="15" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103356, 0)
+can_hold_holders = true
 
 [node name="Plate17" parent="IngredientComponent" index="16" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.108725, 0)
+can_hold_holders = true
 
 [node name="Plate18" parent="IngredientComponent" index="17" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.116584, 0)
+can_hold_holders = true
 
 [node name="Plate19" parent="IngredientComponent" index="18" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.123065, 0)
+can_hold_holders = true
 
 [node name="Plate20" parent="IngredientComponent" index="19" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.129731, 0)
+can_hold_holders = true
 
 [node name="Plate21" parent="IngredientComponent" index="20" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.136213, 0)
+can_hold_holders = true
 
 [node name="Plate22" parent="IngredientComponent" index="21" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.144072, 0)
+can_hold_holders = true
 
 [node name="Plate23" parent="IngredientComponent" index="22" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.150553, 0)
+can_hold_holders = true

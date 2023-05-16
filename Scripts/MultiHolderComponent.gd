@@ -27,7 +27,7 @@ func get_held_items() -> Array[Node]:
 		
 	return items
 
-func has_space_for_item():
+func has_space_for_item(_item: Node3D) -> bool:
 	return len(get_held_items()) < len(c_holders)
 
 func get_held_item() -> Node3D:

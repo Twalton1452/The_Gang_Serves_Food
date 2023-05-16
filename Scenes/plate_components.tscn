@@ -6,17 +6,20 @@
 [ext_resource type="Script" path="res://Scripts/HolderComponent.gd" id="3_tbja8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kpxjo"]
-size = Vector3(0.087787, 0.0381488, 0.171531)
+size = Vector3(0.087787, 0.0183977, 0.171531)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0ri12"]
-size = Vector3(0.087787, 0.0381488, 0.0875514)
+size = Vector3(0.0675428, 0.02522, 0.0663167)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6453g"]
-size = Vector3(0.087787, 0.0381488, 0.0875514)
+size = Vector3(0.0675428, 0.02522, 0.0663167)
 
 [node name="Plate" instance=ExtResource("1_k85uc")]
 script = ExtResource("2_rrfqx")
 SCENE_ID = 50
+
+[node name="Cube" parent="." index="0"]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0, 0)
 
 [node name="Main" type="Node3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0477687, 0.005896, 0)
@@ -27,7 +30,7 @@ SCENE_ID = 100
 [node name="InteractableComponent" parent="Main" index="0" instance=ExtResource("2_ajxyg")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Main/InteractableComponent" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00668143, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00233732, 0)
 shape = SubResource("BoxShape3D_kpxjo")
 
 [node name="Side" type="Node3D" parent="." index="2"]
@@ -39,6 +42,7 @@ SCENE_ID = 100
 [node name="InteractableComponent" parent="Side" index="0" instance=ExtResource("2_ajxyg")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Side/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00596087, 0, 0.00766298)
 shape = SubResource("BoxShape3D_0ri12")
 
 [node name="Side2" type="Node3D" parent="." index="3"]
@@ -50,4 +54,5 @@ SCENE_ID = 100
 [node name="InteractableComponent" parent="Side2" index="0" instance=ExtResource("2_ajxyg")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Side2/InteractableComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00600364, 0, -0.00688984)
 shape = SubResource("BoxShape3D_6453g")

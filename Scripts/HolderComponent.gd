@@ -27,7 +27,7 @@ func get_held_items() -> Array[Node]:
 		return get_children().filter(func(c): return c is HoldableComponent or c is HolderComponent)
 	return []
 
-func has_space_for_item():
+func has_space_for_item(_item: Node3D) -> bool:
 	return len(get_held_items()) == 0
 
 func is_holding_item() -> bool:
@@ -98,7 +98,7 @@ func _on_interactable_component_secondary_interacted(_node : InteractableCompone
 			return
 		
 		# Holder has no space - Combining didn't take place
-		if not has_space_for_item():
+		if not has_space_for_item(player.c_holder.get_held_item().get_held_item()):
 			return
 		
 		# Player trying to place items from their Multi-holder onto our empty Holder
