@@ -1,9 +1,19 @@
 extends Node
 
+
+@rpc("call_local", "reliable")
+func pause_for_players():
+	get_tree().paused = true
+
+@rpc("call_local", "reliable")
+func unpause_for_players():
+	get_tree().paused = false
+
 ## Syncs nodes for Networked Nodes on spawn to ease midsession join synchronization
 func sync_nodes_for_new_player(peer_id: int):
-	print("------Begin Sync for Peer %s------" % peer_id)
+	pause_for_players.rpc()
 	
+	print("------Begin Sync for Peer %s------" % peer_id)
 	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
 	
 	# Sync MultiHolders first because other objects need to get parented to them
@@ -21,12 +31,14 @@ func sync_nodes_for_new_player(peer_id: int):
 			continue
 		
 		print("[Syncing Node %s] to [Peer: %s]" % [net_node.net_id, peer_id])
-		# Tell the Peer all the information it needs to get this Networked Node through sync_state
+		# Tell the Peer all the information it needs to get this NetworkedNode up to date through sync_state
 		sync_networked_node.rpc_id(peer_id, net_node.net_id, net_node.SCENE_ID, net_node.sync_state)
 
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	print("-----Finished Sync for Peer %s-----" % peer_id)
 	print("[Result] %d/%d Nodes needed syncing for %s" % [net_nodes.size() - not_synced, net_nodes.size(), peer_id])
+	
+	unpause_for_players.rpc()
 
 @rpc("any_peer", "reliable")
 func sync_networked_node(net_id: int, net_scene_id: int, sync_state : PackedByteArray):

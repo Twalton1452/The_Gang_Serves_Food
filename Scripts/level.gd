@@ -53,4 +53,4 @@ func update_health_bar(health_value):
 func _on_player_spawner_spawned(node):
 	node.position = spawn_point.position
 	if node.is_multiplayer_authority():
-		node.health_changed.connect(update_health_bar)
+		node.health_changed.connect(update_health_bar)	
