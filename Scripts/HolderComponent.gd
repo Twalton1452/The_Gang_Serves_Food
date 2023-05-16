@@ -71,30 +71,30 @@ func swap_items_with(holder: HolderComponent):
 func _on_interactable_component_interacted(_node : InteractableComponent, player : Player):
 	# Player placing Item
 	if player.c_holder.is_holding_item():
-		# Swap Items - This Holder is currently holding something
+		# This Holder is currently holding something
 		if is_holding_item():
 			
 			# Player is holding a Plate, put this onto it if available
 			if player.c_holder.get_held_item() is MultiHolderComponent:
-				# Place the whole Plate here
-				if can_hold_holders:
-					release_item_to(player.c_holder.get_held_item())
+				var multi_h = player.c_holder.get_held_item() as MultiHolderComponent
 				# Give this Holder's item to Player's Holder
-				elif player.c_holder.get_held_item().has_space_for_item(get_held_item()):
-					release_item_to(player.c_holder.get_held_item())
+				if multi_h.has_space_for_item(get_held_item()):
+					release_item_to(multi_h)
 				return
 			
 			swap_items_with(player.c_holder)
 		# Holding nothing - Attempt to take from Player
 		else:
-			# Player holding Plate
+			# Player holding Plate - This Holder doesn't accept Plates - Nothing on this Holder
 			if not can_hold_holders and player.c_holder.get_held_item() is MultiHolderComponent:
+				var multi_h = player.c_holder.get_held_item() as MultiHolderComponent
 				# Take an item off the Player's Plate, put it onto this
-				if player.c_holder.get_held_item().is_holding_item():
-					player.c_holder.get_held_item().release_item_to(self)
+				if multi_h.is_holding_item():
+					multi_h.release_item_to(self)
+				return
+			
 			# Take Player's item
-			else:
-				player.c_holder.release_item_to(self)
+			player.c_holder.release_item_to(self)
 	# Player taking Item - Player not holding anything
 	elif is_holding_item():
 		release_item_to(player.c_holder)
