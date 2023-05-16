@@ -31,6 +31,13 @@ func _on_interactable_component_interacted(_node : InteractableComponent, player
 	elif player.c_holder.get_held_item() is MultiHolderComponent:
 		if is_holding_item():
 			release_item_to(player.c_holder.get_held_item())
+		
+		if not player.c_holder.get_held_item().is_holding_item():
+			if ingredient_scene == null:
+				player.c_holder.release_item_to(self)
+			# Taking Player's item if it matches
+			elif player.c_holder.get_held_item().scene_file_path == ingredient_scene.resource_path:
+				player.c_holder.release_item_to(self)
 	# Taking Player's item no matter what
 	elif ingredient_scene == null:
 		player.c_holder.release_item_to(self)

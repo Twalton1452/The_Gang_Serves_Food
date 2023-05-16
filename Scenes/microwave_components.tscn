@@ -9,7 +9,7 @@
 size = Vector3(0.228572, 0.180694, 0.0217883)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nxpsc"]
-size = Vector3(0.184246, 0.0656887, 0.109807)
+size = Vector3(0.184246, 0.0656887, 0.141997)
 
 [node name="kitchenMicrowave" instance=ExtResource("1_1gdom")]
 

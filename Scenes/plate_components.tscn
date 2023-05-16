@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://Scripts/HolderComponent.gd" id="3_tbja8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kpxjo"]
-size = Vector3(0.087787, 0.0183977, 0.171531)
+size = Vector3(0.0742614, 0.0183977, 0.096682)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0ri12"]
 size = Vector3(0.0675428, 0.02522, 0.0663167)

@@ -2,7 +2,7 @@ extends NetworkedNode3D
 class_name HolderComponent
 
 signal started_holding(node: Node3D)
-signal released_holding(node: Node3D)
+#signal released_holding(node: Node3D)
 
 @export var can_hold_holders = true
 
@@ -59,7 +59,7 @@ func hold_item(item: Node3D):
 
 func release_item_to(holder: HolderComponent):	
 	var item = get_held_item()
-	released_holding.emit(item)
+	#released_holding.emit(item)
 	holder.hold_item(item)
 	
 func swap_items_with(holder: HolderComponent):
@@ -76,13 +76,25 @@ func _on_interactable_component_interacted(_node : InteractableComponent, player
 			
 			# Player is holding a Plate, put this onto it if available
 			if player.c_holder.get_held_item() is MultiHolderComponent:
-				release_item_to(player.c_holder.get_held_item())
+				# Place the whole Plate here
+				if can_hold_holders:
+					release_item_to(player.c_holder.get_held_item())
+				# Give this Holder's item to Player's Holder
+				elif player.c_holder.get_held_item().has_space_for_item(get_held_item()):
+					release_item_to(player.c_holder.get_held_item())
 				return
 			
 			swap_items_with(player.c_holder)
-		# Take Player's item
+		# Holding nothing - Attempt to take from Player
 		else:
-			player.c_holder.release_item_to(self)
+			# Player holding Plate
+			if not can_hold_holders and player.c_holder.get_held_item() is MultiHolderComponent:
+				# Take an item off the Player's Plate, put it onto this
+				if player.c_holder.get_held_item().is_holding_item():
+					player.c_holder.get_held_item().release_item_to(self)
+			# Take Player's item
+			else:
+				player.c_holder.release_item_to(self)
 	# Player taking Item - Player not holding anything
 	elif is_holding_item():
 		release_item_to(player.c_holder)
