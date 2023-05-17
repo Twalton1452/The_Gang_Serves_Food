@@ -1,0 +1,51 @@
+[gd_scene load_steps=13 format=3 uid="uid://c3dvrxry2sldv"]
+
+[ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_vh1lo"]
+[ext_resource type="PackedScene" uid="uid://nrwlyvyr6gwi" path="res://3d_models/Kenneys_Furniture/wallCorner.glb" id="2_qisf1"]
+[ext_resource type="PackedScene" uid="uid://sck7w7ojkug5" path="res://3d_models/Kenneys_Furniture/wallCornerRond.glb" id="3_50iml"]
+[ext_resource type="PackedScene" uid="uid://bsn483wm5t85y" path="res://3d_models/Kenneys_Furniture/wallDoorway.glb" id="4_1rux2"]
+[ext_resource type="PackedScene" uid="uid://bvjit4lsovbr3" path="res://3d_models/Kenneys_Furniture/wallDoorwayWide.glb" id="5_vjhkl"]
+[ext_resource type="PackedScene" uid="uid://dbl6o10ha2aaj" path="res://3d_models/Kenneys_Furniture/wallHalf.glb" id="6_nmawa"]
+[ext_resource type="PackedScene" uid="uid://i7st3vdotqiu" path="res://3d_models/Kenneys_Furniture/wallWindow.glb" id="7_tofea"]
+[ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="8_grgkd"]
+[ext_resource type="PackedScene" uid="uid://ca8ttfxkdt4xm" path="res://3d_models/Kenneys_Furniture/floorCorner.glb" id="9_sge26"]
+[ext_resource type="PackedScene" uid="uid://dalmxnsjapf0i" path="res://3d_models/Kenneys_Furniture/floorCornerRound.glb" id="10_g7hfu"]
+[ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="11_ppa3e"]
+[ext_resource type="PackedScene" uid="uid://bvdp5gi2uwgf5" path="res://3d_models/Kenneys_Furniture/floorHalf.glb" id="12_v5kym"]
+
+[node name="Structure" type="Node3D"]
+
+[node name="wall" parent="." instance=ExtResource("1_vh1lo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+
+[node name="wallCorner" parent="." instance=ExtResource("2_qisf1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="wallCornerRond" parent="." instance=ExtResource("3_50iml")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+
+[node name="wallDoorway" parent="." instance=ExtResource("4_1rux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="wallDoorwayWide" parent="." instance=ExtResource("5_vjhkl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+
+[node name="wallHalf" parent="." instance=ExtResource("6_nmawa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="wallWindow" parent="." instance=ExtResource("7_tofea")]
+
+[node name="wallWindowSlide" parent="." instance=ExtResource("8_grgkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+
+[node name="floorCorner" parent="." instance=ExtResource("9_sge26")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 1)
+
+[node name="floorCornerRound" parent="." instance=ExtResource("10_g7hfu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 1)
+
+[node name="floorFull" parent="." instance=ExtResource("11_ppa3e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1)
+
+[node name="floorHalf" parent="." instance=ExtResource("12_v5kym")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)

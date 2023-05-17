@@ -1,0 +1,31 @@
+[gd_scene load_steps=8 format=3 uid="uid://blqhubtrpnsad"]
+
+[ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/cabinet_components.tscn" id="1_8l5lu"]
+[ext_resource type="PackedScene" uid="uid://cspma4eqnxob5" path="res://Scenes/fridge_components.tscn" id="2_xi3de"]
+[ext_resource type="PackedScene" uid="uid://cdhj2idf4x5iv" path="res://Scenes/microwave_components.tscn" id="3_sb5yu"]
+[ext_resource type="PackedScene" uid="uid://cc85g7fimsk2a" path="res://Scenes/patty_box_components.tscn" id="4_pvx81"]
+[ext_resource type="PackedScene" uid="uid://be5imvxe13rct" path="res://Scenes/plate_components.tscn" id="5_eeicc"]
+[ext_resource type="PackedScene" uid="uid://bglfjhi23ex76" path="res://Scenes/plate_stack_holder_components.tscn" id="6_s0k2i"]
+[ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/stove_components.tscn" id="7_q665t"]
+
+[node name="UseableComponents" type="Node3D"]
+
+[node name="kitchenCabinet" parent="." instance=ExtResource("1_8l5lu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+
+[node name="Fridge" parent="." instance=ExtResource("2_xi3de")]
+
+[node name="kitchenMicrowave" parent="." instance=ExtResource("3_sb5yu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="PattyBox" parent="." instance=ExtResource("4_pvx81")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+
+[node name="Plate" parent="." instance=ExtResource("5_eeicc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+
+[node name="PlateStackHolder" parent="." instance=ExtResource("6_s0k2i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="kitchenStove" parent="." instance=ExtResource("7_q665t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 1)
