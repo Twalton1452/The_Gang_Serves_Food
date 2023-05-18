@@ -43,7 +43,7 @@ func is_holding(item: Node3D):
 			return true
 
 func hold_item(item: Node3D):
-	#print("HOLDING %s" % item.net_id)
+	#print("HOLDING %s" % item.networked_id)
 	for holder in c_holders:
 		if holder.is_holding_item():
 			continue

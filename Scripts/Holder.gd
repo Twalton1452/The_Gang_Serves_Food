@@ -30,7 +30,7 @@ func hold_item(item: Node3D):
 	if item is Holder and not can_hold_holders:
 		return
 	
-	#print("HOLDING %s" % item.net_id)
+	#print("HOLDING %s" % item.networked_id)
 	if not item.is_inside_tree():
 		add_child(item, true)
 	elif not is_holding(item):

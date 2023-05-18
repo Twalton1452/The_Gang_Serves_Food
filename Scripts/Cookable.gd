@@ -41,6 +41,14 @@ func get_sync_state() -> PackedByteArray:
 
 func _ready():
 	#super()
+	if obj_to_color == null:
+		for child in get_children():
+			if child is MeshInstance3D:
+				obj_to_color = child
+				print("%s didn't have a MeshInstance3D assigned so it looked in its children and found: %s" % [name, obj_to_color.name])
+				break
+	assert(obj_to_color != null, "%s doesn't have a MeshInstance3D assigned to obj_to_color" % name)
+
 	material_to_color = obj_to_color.get_active_material(0)#.get_surface_override_material(0)
 	evaluate_cook_rate()
 

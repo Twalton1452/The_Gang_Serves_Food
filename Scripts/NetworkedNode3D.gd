@@ -12,7 +12,7 @@ class_name NetworkedNode3D
 # The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
 # This is pulled off the Interactable this is attached to
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.PATTY
-var net_id = -1
+var networked_id = -1
 var sync_state : set = set_sync_state, get = get_sync_state
 
 # Used by the MidsessionSync script to see if it should update the Peer on spawn to reduce bandwidth
@@ -35,7 +35,7 @@ func set_sync_state(value: PackedByteArray):
 
 func get_sync_state() -> PackedByteArray:
 	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called somehow
-	assert(net_id != -1, "%s has -1 net_id when trying to get_sync_state" % name)
+	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
 	
 	# Default properties to Sync
 	var path_to_parent = StringName(p_node.get_parent().get_path()).to_utf8_buffer()
@@ -52,7 +52,7 @@ func get_sync_state() -> PackedByteArray:
 	return buf
 
 func _ready():
-	net_id = NetworkingUtils.generate_id()
+	networked_id = NetworkingUtils.generate_id()
 	add_to_group(str(SceneIds.SCENES.NETWORKED))
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID
@@ -77,6 +77,6 @@ func _exit_tree():
 #		NOTIFICATION_UNPARENTED:
 #			changed = true
 #		NOTIFICATION_PREDELETE:
-#			print_debug("Not Implemented Yet. Tell the Syncronizer this net_id so midsession joins know. Deleting %s, id: " % [name, net_id])
+#			print_debug("Not Implemented Yet. Tell the Syncronizer this networked_id so midsession joins know. Deleting %s, id: " % [name, networked_id])
 #			changed = true
 

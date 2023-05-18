@@ -7,12 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://i7st3vdotqiu" path="res://3d_models/Kenneys_Furniture/wallWindow.glb" id="3_6vamh"]
 [ext_resource type="PackedScene" uid="uid://bvjit4lsovbr3" path="res://3d_models/Kenneys_Furniture/wallDoorwayWide.glb" id="3_21ak5"]
 [ext_resource type="PackedScene" uid="uid://bsn483wm5t85y" path="res://3d_models/Kenneys_Furniture/wallDoorway.glb" id="4_2i7t1"]
-[ext_resource type="PackedScene" uid="uid://c8f0jt5feollv" path="res://3d_models/Kenneys_Furniture/plantSmall1.glb" id="5_7igg5"]
 [ext_resource type="PackedScene" uid="uid://ck3bb6tnvaowq" path="res://3d_models/Kenneys_Furniture/kitchenCabinetCornerRound.glb" id="7_6t36f"]
 [ext_resource type="PackedScene" uid="uid://c4hh6x4ekialm" path="res://3d_models/Kenneys_Furniture/kitchenCoffeeMachine.glb" id="8_bwfvy"]
 [ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="10_b6sav"]
 [ext_resource type="PackedScene" uid="uid://cpb5xjyhdnwqr" path="res://3d_models/Kenneys_Furniture/kitchenSink.glb" id="11_t52rp"]
 [ext_resource type="PackedScene" uid="uid://bwqlq831iqp56" path="res://Scenes/holders/fridge_components.tscn" id="12_xj5b4"]
+[ext_resource type="PackedScene" uid="uid://qp0n17xt4bgl" path="res://Scenes/foods/tomato.tscn" id="15_05axt"]
 [ext_resource type="PackedScene" uid="uid://cpy8etfbd2bwm" path="res://3d_models/Kenneys_Furniture/tableCloth.glb" id="15_s1kwc"]
 [ext_resource type="PackedScene" uid="uid://blhyqxbfnxe40" path="res://3d_models/Kenneys_Furniture/chairCushion.glb" id="16_4dkdq"]
 [ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/holders/stove_components.tscn" id="16_eiaux"]
@@ -183,9 +183,6 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 0.4, 0, 1, 0, -4.37114e-08, 5, 0
 [node name="wallDoorway" parent="Walls" instance=ExtResource("4_2i7t1")]
 transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 5, 0, 8)
 
-[node name="plantSmall1" parent="." instance=ExtResource("5_7igg5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.0311442, 0.154551)
-
 [node name="Tables" type="Node3D" parent="."]
 
 [node name="tableCloth" parent="Tables" instance=ExtResource("15_s1kwc")]
@@ -326,6 +323,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43, 0, 0)
 [node name="kitchenCabinet3" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.86, 0, 0)
 
+[node name="Tomato" parent="Testing/kitchenCabinet3/Holder" index="2" instance=ExtResource("15_05axt")]
+
 [node name="kitchenCabinet4" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.29, 0, 0)
 
@@ -345,3 +344,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.203835, 0.4268, -0.188657)
 
 [editable path="roof"]
 [editable path="floor"]
+[editable path="Testing/kitchenCabinet3"]
