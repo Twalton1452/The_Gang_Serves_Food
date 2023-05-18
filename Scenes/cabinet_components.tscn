@@ -24,3 +24,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.214746, 0.432201, -0.201099
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HolderComponent" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00380686, -0.0171087)
 shape = SubResource("BoxShape3D_mrq08")
+
+[editable path="kitchenCabinet(Clone)/door/RotatableComponent"]

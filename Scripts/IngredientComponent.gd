@@ -23,6 +23,7 @@ func hold_item(item: Node3D):
 		
 
 func interact(player : Player):
+	interacted.emit(player)
 	# Player Taking Item from this Holder
 	if not player.c_holder.is_holding_item():
 		# We have something to give the Player

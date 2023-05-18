@@ -18,7 +18,7 @@ func sync_nodes_for_new_player(peer_id: int):
 	
 	# Sync MultiHolders first because other objects need to get parented to them
 	net_nodes.sort_custom(func(a, b):
-		if a is MultiHolderComponent and not b is MultiHolderComponent:
+		if a.priority_sync_order < b.priority_sync_order:
 			return true
 		return false
 	)

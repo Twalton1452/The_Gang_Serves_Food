@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://cknjc0vjk4j6s"]
+[gd_scene load_steps=4 format=3 uid="uid://cknjc0vjk4j6s"]
 
 [ext_resource type="Script" path="res://Scripts/CookableComponent.gd" id="1_va81s"]
 [ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="2_4n3xu"]
+[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="3_wyd0g"]
 
 [node name="CookableComponent" type="Area3D"]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_va81s")
 gradient = ExtResource("2_4n3xu")
+
+[node name="NetworkedNode3D" type="Node3D" parent="."]
+script = ExtResource("3_wyd0g")

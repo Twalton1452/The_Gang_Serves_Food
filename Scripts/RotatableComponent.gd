@@ -9,8 +9,7 @@ var og_rot : Vector3
 var in_progress = false
 
 func set_sync_state(value) -> int:
-	#var continuing_offset = super(value)
-	var continuing_offset = 0
+	var continuing_offset = super(value)
 	is_rotated = bool(value.decode_u8(continuing_offset))
 	in_progress = bool(value.decode_u8(continuing_offset + 1))
 	
@@ -20,8 +19,7 @@ func set_sync_state(value) -> int:
 	return continuing_offset + 2
 
 func get_sync_state() -> PackedByteArray:
-	#var buf = super()
-	var buf = PackedByteArray()
+	var buf = super()
 	var end_of_parent_buf = buf.size()
 	buf.resize(end_of_parent_buf + 2)
 	buf.encode_u8(end_of_parent_buf, is_rotated) # u8 is 1 byte
@@ -35,7 +33,8 @@ func _ready():
 	tar_rot.y = deg_to_rad(tar_rot.y)
 	tar_rot.z = deg_to_rad(tar_rot.z)
 	
-func interact(_player: Player):
+func interact(player: Player):
+	super(player)
 	rotate_parent()
 
 func secondary_interact(_player: Player):

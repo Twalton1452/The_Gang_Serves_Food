@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://be5imvxe13rct"]
+[gd_scene load_steps=10 format=3 uid="uid://be5imvxe13rct"]
 
+[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="2_307k2"]
 [ext_resource type="Script" path="res://Scripts/MultiHolderComponent.gd" id="2_rrfqx"]
 [ext_resource type="Script" path="res://Scripts/HolderComponent.gd" id="3_tbja8"]
 
@@ -53,6 +54,10 @@ size = Vector3(0.0675428, 0.02522, 0.0663167)
 
 [node name="Plate" type="Area3D"]
 script = ExtResource("2_rrfqx")
+
+[node name="NetworkedNode3D" type="Node3D" parent="."]
+script = ExtResource("2_307k2")
+priority_sync_order = -1
 
 [node name="Cube" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0, 0)

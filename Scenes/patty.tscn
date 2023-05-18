@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://effhc27p2nda"]
+[gd_scene load_steps=8 format=3 uid="uid://effhc27p2nda"]
 
 [ext_resource type="Script" path="res://Scripts/CookableComponent.gd" id="2_vh6g7"]
+[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="3_bcn4p"]
 [ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="3_hpc4y"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u0b6k"]
@@ -57,3 +58,6 @@ cast_shadow = 0
 mesh = SubResource("ArrayMesh_bc4ni")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_gb37g")
+
+[node name="NetworkedNode3D" type="Node3D" parent="."]
+script = ExtResource("3_bcn4p")
