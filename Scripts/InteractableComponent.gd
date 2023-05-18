@@ -5,8 +5,8 @@ class_name InteractableComponent
 signal interacted(node : InteractableComponent, player : Player)
 signal secondary_interacted(node : InteractableComponent, player : Player)
 
-func interact(player : Player, secondary = false):
-	if not secondary:
-		interacted.emit(self, player)
-	else:
-		secondary_interacted.emit(self, player)
+func interact(_player : Player):
+	pass
+
+func secondary_interact(_player : Player):
+	pass

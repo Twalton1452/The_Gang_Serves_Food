@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://cc85g7fimsk2a"]
+[gd_scene load_steps=6 format=3 uid="uid://cc85g7fimsk2a"]
 
 [ext_resource type="PackedScene" uid="uid://bhm43rjjcejqy" path="res://3d_models/BrownBox.blend" id="1_0hbu4"]
-[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="3_skm6r"]
 [ext_resource type="PackedScene" uid="uid://bei81b4d8anq0" path="res://Scenes/components/ingredient_component.tscn" id="4_g51o6"]
 [ext_resource type="PackedScene" uid="uid://effhc27p2nda" path="res://Scenes/patty.tscn" id="5_baeti"]
 
@@ -14,65 +13,63 @@ albedo_color = Color(0.811765, 0.443137, 0.423529, 1)
 
 [node name="PattyBox" instance=ExtResource("1_0hbu4")]
 
-[node name="InteractableComponent" parent="." index="1" instance=ExtResource("3_skm6r")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableComponent" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0486675, 0)
-shape = SubResource("BoxShape3D_ewkhx")
-
-[node name="IngredientComponent" parent="." index="2" instance=ExtResource("4_g51o6")]
+[node name="IngredientComponent" parent="." index="1" instance=ExtResource("4_g51o6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00457682, 0)
 ingredient_scene = ExtResource("5_baeti")
 
-[node name="Patty" parent="IngredientComponent" index="0" instance=ExtResource("5_baeti")]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="IngredientComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0486675, 0)
+shape = SubResource("BoxShape3D_ewkhx")
+
+[node name="Patty" parent="IngredientComponent" index="1" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0531011, 0.0105862, 0)
 
 [node name="Patty" parent="IngredientComponent/Patty" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_h8k2p")
 
-[node name="Patty2" parent="IngredientComponent" index="1" instance=ExtResource("5_baeti")]
+[node name="Patty2" parent="IngredientComponent" index="2" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0105862, 0)
 
-[node name="Patty3" parent="IngredientComponent" index="2" instance=ExtResource("5_baeti")]
+[node name="Patty3" parent="IngredientComponent" index="3" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0531011, 0.0183581, 0)
 
-[node name="Patty4" parent="IngredientComponent" index="3" instance=ExtResource("5_baeti")]
+[node name="Patty4" parent="IngredientComponent" index="4" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0183581, 0)
 
-[node name="Patty5" parent="IngredientComponent" index="4" instance=ExtResource("5_baeti")]
+[node name="Patty5" parent="IngredientComponent" index="5" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0531011, 0.0262209, 0)
 
-[node name="Patty6" parent="IngredientComponent" index="5" instance=ExtResource("5_baeti")]
+[node name="Patty6" parent="IngredientComponent" index="6" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0262209, 0)
 
-[node name="Patty7" parent="IngredientComponent" index="6" instance=ExtResource("5_baeti")]
+[node name="Patty7" parent="IngredientComponent" index="7" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0531011, 0.0339928, 0)
 
-[node name="Patty8" parent="IngredientComponent" index="7" instance=ExtResource("5_baeti")]
+[node name="Patty8" parent="IngredientComponent" index="8" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0339928, 0)
 
-[node name="Patty9" parent="IngredientComponent" index="8" instance=ExtResource("5_baeti")]
+[node name="Patty9" parent="IngredientComponent" index="9" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0531011, 0.0417192, 0)
 
-[node name="Patty10" parent="IngredientComponent" index="9" instance=ExtResource("5_baeti")]
+[node name="Patty10" parent="IngredientComponent" index="10" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0417192, 0)
 
-[node name="Patty11" parent="IngredientComponent" index="10" instance=ExtResource("5_baeti")]
+[node name="Patty11" parent="IngredientComponent" index="11" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0531011, 0.0494911, 0)
 
-[node name="Patty12" parent="IngredientComponent" index="11" instance=ExtResource("5_baeti")]
+[node name="Patty12" parent="IngredientComponent" index="12" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0494911, 0)
 
-[node name="Patty13" parent="IngredientComponent" index="12" instance=ExtResource("5_baeti")]
+[node name="Patty13" parent="IngredientComponent" index="13" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0531011, 0.0573539, 0)
 
-[node name="Patty14" parent="IngredientComponent" index="13" instance=ExtResource("5_baeti")]
+[node name="Patty14" parent="IngredientComponent" index="14" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0573539, 0)
 
-[node name="Patty15" parent="IngredientComponent" index="14" instance=ExtResource("5_baeti")]
+[node name="Patty15" parent="IngredientComponent" index="15" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0531011, 0.0651258, 0)
 
-[node name="Patty16" parent="IngredientComponent" index="15" instance=ExtResource("5_baeti")]
+[node name="Patty16" parent="IngredientComponent" index="16" instance=ExtResource("5_baeti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051654, 0.0651258, 0)
 
 [editable path="IngredientComponent/Patty"]

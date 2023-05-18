@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://svv4s2y3bd8r"]
+[gd_scene load_steps=6 format=3 uid="uid://svv4s2y3bd8r"]
 
 [ext_resource type="PackedScene" uid="uid://bawrceikdujgg" path="res://3d_models/Kenneys_Furniture/kitchenCabinet.glb" id="1_wh3he"]
-[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_wqbks"]
 [ext_resource type="PackedScene" uid="uid://c28hpirne8typ" path="res://Scenes/components/rotatable_component.tscn" id="3_xcfly"]
 [ext_resource type="PackedScene" uid="uid://cem03x0wqpatv" path="res://Scenes/components/holder_component.tscn" id="4_2xbp0"]
 
@@ -13,20 +12,15 @@ size = Vector3(0.416618, 0.0207907, 0.42565)
 
 [node name="kitchenCabinet" instance=ExtResource("1_wh3he")]
 
-[node name="InteractableComponent" parent="kitchenCabinet(Clone)/door" index="0" instance=ExtResource("2_wqbks")]
+[node name="RotatableComponent" parent="kitchenCabinet(Clone)/door" index="0" instance=ExtResource("3_xcfly")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenCabinet(Clone)/door/InteractableComponent" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenCabinet(Clone)/door/RotatableComponent" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.187023, 0.140577, 0.00736533)
 shape = SubResource("BoxShape3D_oy36d")
 
-[node name="RotatableComponent" parent="kitchenCabinet(Clone)/door" index="1" instance=ExtResource("3_xcfly")]
-
-[node name="InteractableComponent" parent="." index="1" instance=ExtResource("2_wqbks")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.214746, 0.427868, -0.201099)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableComponent" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00052613, -0.0171087)
-shape = SubResource("BoxShape3D_mrq08")
-
-[node name="HolderComponent" parent="." index="2" instance=ExtResource("4_2xbp0")]
+[node name="HolderComponent" parent="." index="1" instance=ExtResource("4_2xbp0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.214746, 0.432201, -0.201099)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HolderComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00380686, -0.0171087)
+shape = SubResource("BoxShape3D_mrq08")

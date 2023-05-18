@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" path="res://Scripts/CookerComponent.gd" id="1_34ogp"]
 
-[node name="CookerComponent" type="Node3D"]
+[node name="CookerComponent" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_34ogp")
 
 [node name="CookingTicksTimer" type="Timer" parent="."]

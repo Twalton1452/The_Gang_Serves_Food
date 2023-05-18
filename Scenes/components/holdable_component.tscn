@@ -2,5 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/HoldableComponent.gd" id="1_akoq4"]
 
-[node name="HoldableComponent" type="Node3D"]
+[node name="HoldableComponent" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_akoq4")

@@ -1,8 +1,9 @@
-extends NetworkedNode3D
+extends InteractableComponent
 class_name HoldableComponent
 
 func set_sync_state(value) -> int:
-	var continuing_offset = super(value)
+	#var continuing_offset = super(value)
+	var continuing_offset = 0
 	var is_being_held = bool(value.decode_u8(continuing_offset))
 	if is_being_held:
 		(get_parent() as HolderComponent).hold_item(self)
@@ -10,7 +11,8 @@ func set_sync_state(value) -> int:
 	return continuing_offset + 1
 
 func get_sync_state() -> PackedByteArray:
-	var buf = super()
+	#var buf = super()
+	var buf = PackedByteArray()
 	var end_of_parent_buf = buf.size()
 	var is_being_held = get_parent() is HolderComponent
 	buf.resize(end_of_parent_buf + 1)

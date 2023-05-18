@@ -2,5 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/IngredientComponent.gd" id="1_na0uy"]
 
-[node name="IngredientComponent" type="Node3D"]
+[node name="IngredientComponent" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_na0uy")

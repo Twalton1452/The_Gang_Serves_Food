@@ -1,26 +1,10 @@
-extends NetworkedNode3D
+extends InteractableComponent
 class_name HolderComponent
 
-signal started_holding(node: Node3D)
+#signal started_holding(node: Node3D)
 #signal released_holding(node: Node3D)
 
 @export var can_hold_holders = true
-
-var c_interactable : InteractableComponent
-
-func _ready():
-	super()
-	connect_signals.call_deferred()
-
-func connect_signals():
-	# Look up and down for an InteractableComponent
-	c_interactable = get_node("InteractableComponent") if get_node_or_null("InteractableComponent") != null else get_node_or_null("../InteractableComponent")
-	# This is likely to be a Player's hand, they don't have hitboxes around them
-	if c_interactable == null:
-		return
-	
-	c_interactable.interacted.connect(_on_interactable_component_interacted)
-	c_interactable.secondary_interacted.connect(_on_interactable_component_secondary_interacted)
 
 func get_held_items() -> Array[Node]:
 	if get_child_count() > 0:
@@ -54,12 +38,10 @@ func hold_item(item: Node3D):
 		add_child(item, true)
 	elif not is_holding(item):
 		item.reparent(self, false)
-	started_holding.emit(item)
 	item.position = Vector3.ZERO
 
-func release_item_to(holder: HolderComponent):	
+func release_item_to(holder: HolderComponent):
 	var item = get_held_item()
-	#released_holding.emit(item)
 	holder.hold_item(item)
 	
 func swap_items_with(holder: HolderComponent):
@@ -68,7 +50,7 @@ func swap_items_with(holder: HolderComponent):
 	holder.hold_item(curr_item)
 
 # Left Clicking Holder
-func _on_interactable_component_interacted(_node : InteractableComponent, player : Player):
+func interact(player : Player):
 	# Player placing Item
 	if player.c_holder.is_holding_item():
 		# This Holder is currently holding something
@@ -100,7 +82,7 @@ func _on_interactable_component_interacted(_node : InteractableComponent, player
 		release_item_to(player.c_holder)
 
 # Right Clicking Holder
-func _on_interactable_component_secondary_interacted(_node : InteractableComponent, player : Player):
+func secondary_interact(player : Player):
 	# Player trying to place Item
 	if player.c_holder.is_holding_item():
 		

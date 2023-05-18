@@ -341,9 +341,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.631786, -0.00307983, -0.86
 [node name="kitchenCabinet" parent="." instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.48635, -0.00308084, -0.876345)
 
-[node name="CollisionShape3D" parent="kitchenCabinet/InteractableComponent" index="0"]
-disabled = true
-
 [node name="kitchenMicrowave" parent="kitchenCabinet/HolderComponent" index="0" instance=ExtResource("27_iyq41")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.126509, 0, 0.108076)
 
@@ -352,9 +349,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15356, 0.182115, -0.106568)
 
 [node name="kitchenCabinet3" parent="." instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.91198, -0.00308084, -0.876345)
-
-[node name="CollisionShape3D" parent="kitchenCabinet3/InteractableComponent" index="0"]
-disabled = true
 
 [node name="PlateStackHolder" parent="kitchenCabinet3/HolderComponent" index="0" instance=ExtResource("24_ovivh")]
 
@@ -375,9 +369,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.41899, -0.00308042, -2.422
 [node name="door" parent="kitchenCabinet4/kitchenCabinet(Clone)" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0268443, 0.085086, -0.03)
 
-[node name="CollisionShape3D" parent="kitchenCabinet4/InteractableComponent" index="0"]
-disabled = true
-
 [node name="TopBun" parent="kitchenCabinet4/HolderComponent" index="0" instance=ExtResource("22_wdr14")]
 transform = Transform3D(0.937319, -0.348474, 0, 0.348474, 0.937319, 0, 0, 0, 1, -0.0536766, 0.00730807, 0)
 
@@ -385,9 +376,6 @@ transform = Transform3D(0.937319, -0.348474, 0, 0.348474, 0.937319, 0, 0, 0, 1, 
 
 [node name="kitchenCabinet5" parent="." instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96421, -0.00308048, -2.45916)
-
-[node name="CollisionShape3D" parent="kitchenCabinet5/InteractableComponent" index="0"]
-disabled = true
 
 [node name="Tomato1" parent="kitchenCabinet5/HolderComponent" index="0" instance=ExtResource("26_lq3vh")]
 
@@ -402,7 +390,6 @@ transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -2.76576
 [editable path="roof"]
 [editable path="floor"]
 [editable path="kitchenStoveTest"]
-[editable path="kitchenStoveTest/kitchenStove(Clone)/door/InteractableComponent"]
 [editable path="kitchenCabinet"]
 [editable path="kitchenCabinet3"]
 [editable path="kitchenCabinet2"]

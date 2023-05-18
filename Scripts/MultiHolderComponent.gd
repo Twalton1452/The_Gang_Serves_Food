@@ -4,7 +4,7 @@ class_name MultiHolderComponent
 var c_holders : Array[HolderComponent]
 
 func _ready():
-	super()
+	#super()
 	
 	for child in get_children():
 		if child is HolderComponent:

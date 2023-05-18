@@ -1,16 +1,16 @@
-extends NetworkedNode3D
+extends InteractableComponent
 class_name RotatableComponent
 
 ## Set in degrees, but converted to radians on _ready for the Tween
 @export var tar_rot = Vector3(0.0, -90.0, 0.0)
 @export var is_rotated = false
 
-var connector : InteractableComponent
 var og_rot : Vector3
 var in_progress = false
 
 func set_sync_state(value) -> int:
-	var continuing_offset = super(value)
+	#var continuing_offset = super(value)
+	var continuing_offset = 0
 	is_rotated = bool(value.decode_u8(continuing_offset))
 	in_progress = bool(value.decode_u8(continuing_offset + 1))
 	
@@ -20,7 +20,8 @@ func set_sync_state(value) -> int:
 	return continuing_offset + 2
 
 func get_sync_state() -> PackedByteArray:
-	var buf = super()
+	#var buf = super()
+	var buf = PackedByteArray()
 	var end_of_parent_buf = buf.size()
 	buf.resize(end_of_parent_buf + 2)
 	buf.encode_u8(end_of_parent_buf, is_rotated) # u8 is 1 byte
@@ -28,35 +29,28 @@ func get_sync_state() -> PackedByteArray:
 	return buf
 
 func _ready():
-	super()
+	#super()
 	og_rot = get_parent().rotation
 	tar_rot.x = deg_to_rad(tar_rot.x)
 	tar_rot.y = deg_to_rad(tar_rot.y)
 	tar_rot.z = deg_to_rad(tar_rot.z)
 	
-	connect_signals.call_deferred()
+func interact(_player: Player):
+	rotate_parent()
 
-func connect_signals():
-	connector = get_node_or_null("../InteractableComponent")
-	if connector == null:
-		return
-	
-	connector.interacted.connect(_on_interactable_component_interacted)
+func secondary_interact(_player: Player):
+	interact(_player)
 
-func _on_interactable_component_interacted(node, _player):
-	changed = true
-	rotate_parent(node)
-
-func rotate_parent(node):
+func rotate_parent():
 	if in_progress:
 		return
 	in_progress = true
 
 	var t = create_tween()
 	if is_rotated:
-		t.tween_property(node.get_parent(), "rotation", og_rot, 0.3).set_ease(Tween.EASE_IN)
+		t.tween_property(get_parent(), "rotation", og_rot, 0.3).set_ease(Tween.EASE_IN)
 	else:
-		t.tween_property(node.get_parent(), "rotation", tar_rot, 0.3).set_ease(Tween.EASE_OUT)
+		t.tween_property(get_parent(), "rotation", tar_rot, 0.3).set_ease(Tween.EASE_OUT)
 
 	await t.finished
 	in_progress = false

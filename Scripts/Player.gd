@@ -106,7 +106,7 @@ func interact() -> void:
 @rpc("call_local")
 func secondary_interact() -> void:
 	var interactable = interact_ray_cast.get_collider() as InteractableComponent
-	interactable.interact(self, true)
+	interactable.secondary_interact(self)
 
 ## Left over example code from boilerplate
 @rpc("call_local")

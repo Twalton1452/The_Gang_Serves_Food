@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bglfjhi23ex76"]
+[gd_scene load_steps=5 format=3 uid="uid://bglfjhi23ex76"]
 
 [ext_resource type="PackedScene" uid="uid://cj82gq64tqgkv" path="res://3d_models/PlateStackHolder.blend" id="1_kaax1"]
-[ext_resource type="PackedScene" uid="uid://dq6tp44ylnin7" path="res://Scenes/components/interactable_component.tscn" id="2_alfkn"]
 [ext_resource type="PackedScene" uid="uid://be5imvxe13rct" path="res://Scenes/plate_components.tscn" id="2_lyxfo"]
 [ext_resource type="PackedScene" uid="uid://bei81b4d8anq0" path="res://Scenes/components/ingredient_component.tscn" id="3_gitd8"]
 
@@ -10,80 +9,78 @@ size = Vector3(0.2825, 0.226671, 0.351227)
 
 [node name="PlateStackHolder" instance=ExtResource("1_kaax1")]
 
-[node name="InteractableComponent" parent="." index="1" instance=ExtResource("2_alfkn")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableComponent" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0896733, 0)
-shape = SubResource("BoxShape3D_s5fsb")
-
-[node name="IngredientComponent" parent="." index="2" instance=ExtResource("3_gitd8")]
+[node name="IngredientComponent" parent="." index="1" instance=ExtResource("3_gitd8")]
 ingredient_scene = ExtResource("2_lyxfo")
 stacking_spacing = Vector3(0, 0.006, 0)
 
-[node name="Plate" parent="IngredientComponent" index="0" instance=ExtResource("2_lyxfo")]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="IngredientComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0896733, 0)
+shape = SubResource("BoxShape3D_s5fsb")
 
-[node name="Plate2" parent="IngredientComponent" index="1" instance=ExtResource("2_lyxfo")]
+[node name="Plate" parent="IngredientComponent" index="1" instance=ExtResource("2_lyxfo")]
+
+[node name="Plate2" parent="IngredientComponent" index="2" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00648129, 0)
 
-[node name="Plate3" parent="IngredientComponent" index="2" instance=ExtResource("2_lyxfo")]
+[node name="Plate3" parent="IngredientComponent" index="3" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0143401, 0)
 
-[node name="Plate4" parent="IngredientComponent" index="3" instance=ExtResource("2_lyxfo")]
+[node name="Plate4" parent="IngredientComponent" index="4" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0208214, 0)
 
-[node name="Plate5" parent="IngredientComponent" index="4" instance=ExtResource("2_lyxfo")]
+[node name="Plate5" parent="IngredientComponent" index="5" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0274878, 0)
 
-[node name="Plate6" parent="IngredientComponent" index="5" instance=ExtResource("2_lyxfo")]
+[node name="Plate6" parent="IngredientComponent" index="6" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0339691, 0)
 
-[node name="Plate7" parent="IngredientComponent" index="6" instance=ExtResource("2_lyxfo")]
+[node name="Plate7" parent="IngredientComponent" index="7" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0418279, 0)
 
-[node name="Plate8" parent="IngredientComponent" index="7" instance=ExtResource("2_lyxfo")]
+[node name="Plate8" parent="IngredientComponent" index="8" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0483091, 0)
 
-[node name="Plate9" parent="IngredientComponent" index="8" instance=ExtResource("2_lyxfo")]
+[node name="Plate9" parent="IngredientComponent" index="9" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0550472, 0)
 
-[node name="Plate10" parent="IngredientComponent" index="9" instance=ExtResource("2_lyxfo")]
+[node name="Plate10" parent="IngredientComponent" index="10" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0615285, 0)
 
-[node name="Plate11" parent="IngredientComponent" index="10" instance=ExtResource("2_lyxfo")]
+[node name="Plate11" parent="IngredientComponent" index="11" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0693873, 0)
 
-[node name="Plate12" parent="IngredientComponent" index="11" instance=ExtResource("2_lyxfo")]
+[node name="Plate12" parent="IngredientComponent" index="12" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0758686, 0)
 
-[node name="Plate13" parent="IngredientComponent" index="12" instance=ExtResource("2_lyxfo")]
+[node name="Plate13" parent="IngredientComponent" index="13" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.082535, 0)
 
-[node name="Plate14" parent="IngredientComponent" index="13" instance=ExtResource("2_lyxfo")]
+[node name="Plate14" parent="IngredientComponent" index="14" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0890163, 0)
 
-[node name="Plate15" parent="IngredientComponent" index="14" instance=ExtResource("2_lyxfo")]
+[node name="Plate15" parent="IngredientComponent" index="15" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0968751, 0)
 
-[node name="Plate16" parent="IngredientComponent" index="15" instance=ExtResource("2_lyxfo")]
+[node name="Plate16" parent="IngredientComponent" index="16" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103356, 0)
 
-[node name="Plate17" parent="IngredientComponent" index="16" instance=ExtResource("2_lyxfo")]
+[node name="Plate17" parent="IngredientComponent" index="17" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.108725, 0)
 
-[node name="Plate18" parent="IngredientComponent" index="17" instance=ExtResource("2_lyxfo")]
+[node name="Plate18" parent="IngredientComponent" index="18" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.116584, 0)
 
-[node name="Plate19" parent="IngredientComponent" index="18" instance=ExtResource("2_lyxfo")]
+[node name="Plate19" parent="IngredientComponent" index="19" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.123065, 0)
 
-[node name="Plate20" parent="IngredientComponent" index="19" instance=ExtResource("2_lyxfo")]
+[node name="Plate20" parent="IngredientComponent" index="20" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.129731, 0)
 
-[node name="Plate21" parent="IngredientComponent" index="20" instance=ExtResource("2_lyxfo")]
+[node name="Plate21" parent="IngredientComponent" index="21" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.136213, 0)
 
-[node name="Plate22" parent="IngredientComponent" index="21" instance=ExtResource("2_lyxfo")]
+[node name="Plate22" parent="IngredientComponent" index="22" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.144072, 0)
 
-[node name="Plate23" parent="IngredientComponent" index="22" instance=ExtResource("2_lyxfo")]
+[node name="Plate23" parent="IngredientComponent" index="23" instance=ExtResource("2_lyxfo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.150553, 0)

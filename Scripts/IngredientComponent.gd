@@ -15,13 +15,14 @@ func hold_item(item: Node3D):
 	
 	if get_child_count() < max_amount:
 		super(item)
-		if get_child_count() > 1:
+		# 2 to account for CollisionShape3D
+		if get_child_count() > 2:
 			item.position = get_child(-2).position + stacking_spacing
 		else:
 			item.position = Vector3.ZERO
 		
 
-func _on_interactable_component_interacted(_node : InteractableComponent, player : Player):
+func interact(player : Player):
 	# Player Taking Item from this Holder
 	if not player.c_holder.is_holding_item():
 		# We have something to give the Player
