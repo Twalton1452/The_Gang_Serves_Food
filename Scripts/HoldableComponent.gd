@@ -17,3 +17,5 @@ func get_sync_state() -> PackedByteArray:
 	buf.encode_u8(end_of_parent_buf, is_being_held) # u8 is 1 byte
 	return buf
 
+func _secondary_interact(_player: Player):
+	pass

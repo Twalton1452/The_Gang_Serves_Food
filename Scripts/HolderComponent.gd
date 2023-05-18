@@ -56,10 +56,10 @@ func _interact(player : Player):
 		# This Holder is currently holding something
 		if is_holding_item():
 			
-			# Player is holding a Plate, put this onto it if available
+			# Player is holding a Plate
 			if player.c_holder.get_held_item() is MultiHolderComponent:
 				var multi_h = player.c_holder.get_held_item() as MultiHolderComponent
-				# Give this Holder's item to Player's Holder
+				# Put item onto Plate if space is available
 				if multi_h.has_space_for_item(get_held_item()):
 					release_item_to(multi_h)
 				return

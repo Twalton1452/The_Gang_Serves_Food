@@ -23,7 +23,10 @@ func set_sync_state(value: PackedByteArray):
 	var path_to_parent = value.slice(7, 7 + path_size).get_string_from_utf8()
 	var new_parent = get_node(path_to_parent)
 	if p_node.get_parent() != new_parent:
-		p_node.reparent(new_parent, false)
+		if new_parent is HolderComponent:
+			new_parent.hold_item(p_node)
+		else:
+			p_node.reparent(new_parent, false)
 		p_node.position = sync_pos
 	# Give the rest of the sync_state to the node to handle
 	p_node.sync_state = value.slice(7 + path_size)
