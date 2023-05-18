@@ -17,5 +17,16 @@ func get_sync_state() -> PackedByteArray:
 	buf.encode_u8(end_of_parent_buf, is_being_held) # u8 is 1 byte
 	return buf
 
-func _secondary_interact(_player: Player):
-	pass
+func _secondary_interact(player: Player):
+	if not player.c_holder.is_holding_item():
+		return
+	
+	var p_item
+	if player.c_holder.get_held_item() is MultiHolderComponent:
+		if player.c_holder.is_holding_item():
+			p_item = player.c_holder.get_held_item().get_held_item()
+		else:
+			return
+	else:
+		p_item = player.c_holder.get_held_item()
+	FoodCombiner.combine(self, p_item)

@@ -24,14 +24,20 @@ func stop_cooking():
 	tick_timer.stop()
 
 func _on_cooking_ticks_timer_timeout():
+	var cooked = false
+	
 	# Cook everything on the Multiholder
 	if get_held_item() is MultiHolderComponent:
 		var multi_h : MultiHolderComponent = get_held_item()
 		for item in multi_h.get_held_items():
 			if item is CookableComponent:
 				(item as CookableComponent).cook(power)
+				cooked = true
 	else:
 		for cookable in get_children().filter(func(c): return c is CookableComponent):
 			(cookable as CookableComponent).cook(power)
-		
-	tick_timer.start()
+			cooked = true
+	
+	# Keep cookin if there is something to cook
+	if cooked:
+		tick_timer.start()

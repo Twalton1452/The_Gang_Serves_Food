@@ -1,9 +1,6 @@
 extends InteractableComponent
 class_name HolderComponent
 
-#signal started_holding(node: Node3D)
-#signal released_holding(node: Node3D)
-
 @export var can_hold_holders = true
 
 func get_held_items() -> Array[Node]:

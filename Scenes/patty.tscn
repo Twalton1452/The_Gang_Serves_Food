@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://effhc27p2nda"]
+[gd_scene load_steps=9 format=3 uid="uid://effhc27p2nda"]
 
 [ext_resource type="Script" path="res://Scripts/CookableComponent.gd" id="2_vh6g7"]
 [ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="3_bcn4p"]
@@ -47,7 +47,12 @@ shadow_mesh = SubResource("ArrayMesh_ierox")
 resource_local_to_scene = true
 albedo_color = Color(0.811765, 0.443137, 0.423529, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_vtxtv"]
+size = Vector3(0.101098, 0.0114527, 0.104601)
+
 [node name="Patty" type="Area3D" node_paths=PackedStringArray("obj_to_color")]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("2_vh6g7")
 gradient = ExtResource("3_hpc4y")
 obj_to_color = NodePath("Patty")
@@ -61,3 +66,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_gb37g")
 
 [node name="NetworkedNode3D" type="Node3D" parent="."]
 script = ExtResource("3_bcn4p")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00600621, 0)
+shape = SubResource("BoxShape3D_vtxtv")
