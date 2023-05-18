@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://effhc27p2nda"]
 
-[ext_resource type="Script" path="res://Scripts/CookableComponent.gd" id="2_vh6g7"]
+[ext_resource type="Script" path="res://Scripts/CookableComponent.gd" id="1_c3p3d"]
 [ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="3_bcn4p"]
 [ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="3_hpc4y"]
 
@@ -53,7 +53,7 @@ size = Vector3(0.101098, 0.0114527, 0.104601)
 [node name="Patty" type="Area3D" node_paths=PackedStringArray("obj_to_color")]
 collision_layer = 4
 collision_mask = 0
-script = ExtResource("2_vh6g7")
+script = ExtResource("1_c3p3d")
 gradient = ExtResource("3_hpc4y")
 obj_to_color = NodePath("Patty")
 

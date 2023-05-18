@@ -5,6 +5,8 @@ class_name InteractableComponent
 signal interacted(player : Player)
 signal secondary_interacted(player : Player)
 
+#@export var highlight_mesh : MeshInstance3D
+
 var sync_state : set = set_sync_state, get = get_sync_state
 
 func set_sync_state(_value : PackedByteArray) -> int:
@@ -31,3 +33,12 @@ func secondary_interact(player : Player):
 	secondary_interacted.emit(player)
 	return _secondary_interact(player)
 
+func show_outline():
+	pass
+#	if highlight_mesh:
+#		highlight_mesh.show()
+
+func hide_outline():
+	pass
+#	if highlight_mesh:
+#		highlight_mesh.hide()
