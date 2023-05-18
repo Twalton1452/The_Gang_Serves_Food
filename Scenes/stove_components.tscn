@@ -38,7 +38,7 @@ shape = SubResource("BoxShape3D_1tpb2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.133402, 0.442529, -0.184244)
 
 [node name="CookerComponent" parent="kitchenStove(Clone)/Burner1" index="0" instance=ExtResource("5_ejadq")]
-power = null
+power = 0.3
 can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner1/CookerComponent" index="1"]
@@ -49,7 +49,7 @@ shape = SubResource("BoxShape3D_l0a6h")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.298861, 0.442529, -0.184244)
 
 [node name="CookerComponent" parent="kitchenStove(Clone)/Burner2" index="0" instance=ExtResource("5_ejadq")]
-power = null
+power = 0.3
 can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner2/CookerComponent" index="1"]
@@ -59,7 +59,7 @@ shape = SubResource("BoxShape3D_c54w5")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.298861, 0.442529, -0.323453)
 
 [node name="CookerComponent" parent="kitchenStove(Clone)/Burner3" index="0" instance=ExtResource("5_ejadq")]
-power = null
+power = 0.3
 can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner3/CookerComponent" index="1"]
@@ -69,7 +69,7 @@ shape = SubResource("BoxShape3D_uj8ef")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131944, 0.442529, -0.323453)
 
 [node name="CookerComponent" parent="kitchenStove(Clone)/Burner4" index="0" instance=ExtResource("5_ejadq")]
-power = null
+power = 0.3
 can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner4/CookerComponent" index="1"]
@@ -79,7 +79,7 @@ shape = SubResource("BoxShape3D_q361a")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.205968, 0.225668, -0.144904)
 
 [node name="CookerComponent" parent="kitchenStove(Clone)/OvenTop" index="0" instance=ExtResource("5_ejadq")]
-power = 1.0
+power = 0.8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/OvenTop/CookerComponent" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0030705, 0.00614673, -0.0824598)
@@ -89,7 +89,7 @@ shape = SubResource("BoxShape3D_kvf7u")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.205968, 0.0949426, -0.144904)
 
 [node name="CookerComponent" parent="kitchenStove(Clone)/OvenBottom" index="0" instance=ExtResource("5_ejadq")]
-power = 1.0
+power = 0.8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/OvenBottom/CookerComponent" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.082)
