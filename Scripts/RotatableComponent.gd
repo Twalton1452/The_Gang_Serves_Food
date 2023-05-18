@@ -33,12 +33,11 @@ func _ready():
 	tar_rot.y = deg_to_rad(tar_rot.y)
 	tar_rot.z = deg_to_rad(tar_rot.z)
 	
-func interact(player: Player):
-	super(player)
+func _interact(_player: Player):
 	rotate_parent()
 
-func secondary_interact(_player: Player):
-	interact(_player)
+func _secondary_interact(player: Player):
+	interact(player)
 
 func rotate_parent():
 	if in_progress:

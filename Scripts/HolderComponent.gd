@@ -50,8 +50,7 @@ func swap_items_with(holder: HolderComponent):
 	holder.hold_item(curr_item)
 
 # Left Clicking Holder
-func interact(player : Player):
-	super(player)
+func _interact(player : Player):
 	# Player placing Item
 	if player.c_holder.is_holding_item():
 		# This Holder is currently holding something
@@ -83,7 +82,7 @@ func interact(player : Player):
 		release_item_to(player.c_holder)
 
 # Right Clicking Holder
-func secondary_interact(player : Player):
+func _secondary_interact(player : Player):
 	# Player trying to place Item
 	if player.c_holder.is_holding_item():
 		

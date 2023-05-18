@@ -22,8 +22,7 @@ func hold_item(item: Node3D):
 			item.position = Vector3.ZERO
 		
 
-func interact(player : Player):
-	interacted.emit(player)
+func _interact(player : Player):
 	# Player Taking Item from this Holder
 	if not player.c_holder.is_holding_item():
 		# We have something to give the Player
