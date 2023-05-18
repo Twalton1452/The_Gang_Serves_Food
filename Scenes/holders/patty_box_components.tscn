@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://c57h4qirynfrb"]
+
+[ext_resource type="PackedScene" uid="uid://bhm43rjjcejqy" path="res://3d_models/BrownBox.blend" id="1_6y4kb"]
+[ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="2_ac440"]
+[ext_resource type="PackedScene" uid="uid://effhc27p2nda" path="res://Scenes/foods/patty.tscn" id="3_bcyji"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ewkhx"]
+size = Vector3(0.125764, 0.0783116, 0.112653)
+
+[node name="PattyBox" instance=ExtResource("1_6y4kb")]
+
+[node name="Box" parent="." index="0"]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.75, 0, 0, 0)
+
+[node name="StackingHolder" parent="." index="1" instance=ExtResource("2_ac440")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.009, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000983924, 0.0326973, 0)
+shape = SubResource("BoxShape3D_ewkhx")
+
+[node name="Patty" parent="StackingHolder" index="1" instance=ExtResource("3_bcyji")]
+
+[node name="Patty2" parent="StackingHolder" index="2" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00780634, 0)
+
+[node name="Patty3" parent="StackingHolder" index="3" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0156993, 0)
+
+[node name="Patty4" parent="StackingHolder" index="4" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0235056, 0)
+
+[node name="Patty5" parent="StackingHolder" index="5" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0314991, 0)
+
+[node name="Patty6" parent="StackingHolder" index="6" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0393055, 0)
+
+[node name="Patty7" parent="StackingHolder" index="7" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0471984, 0)
+
+[node name="Patty8" parent="StackingHolder" index="8" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0550047, 0)
+
+[node name="Patty9" parent="StackingHolder" index="9" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0629181, 0)
+
+[node name="Patty10" parent="StackingHolder" index="10" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0707244, 0)
+
+[node name="Patty11" parent="StackingHolder" index="11" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0786174, 0)
+
+[node name="Patty12" parent="StackingHolder" index="12" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0864237, 0)
+
+[node name="Patty13" parent="StackingHolder" index="13" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0944172, 0)
+
+[node name="Patty14" parent="StackingHolder" index="14" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.102224, 0)
+
+[node name="Patty15" parent="StackingHolder" index="15" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.110116, 0)
+
+[node name="Patty16" parent="StackingHolder" index="16" instance=ExtResource("3_bcyji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.117923, 0)

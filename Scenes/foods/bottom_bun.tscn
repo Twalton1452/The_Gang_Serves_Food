@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5gj507vfr25p"]
+
+[ext_resource type="PackedScene" uid="uid://igad4n71g06j" path="res://3d_models/BottomBun.blend" id="1_idmvt"]
+
+[node name="BottomBun" instance=ExtResource("1_idmvt")]

@@ -1,12 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://blqhubtrpnsad"]
+[gd_scene load_steps=8 format=3]
 
-[ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/cabinet_components.tscn" id="1_8l5lu"]
-[ext_resource type="PackedScene" uid="uid://cspma4eqnxob5" path="res://Scenes/fridge_components.tscn" id="2_xi3de"]
-[ext_resource type="PackedScene" uid="uid://cdhj2idf4x5iv" path="res://Scenes/microwave_components.tscn" id="3_sb5yu"]
-[ext_resource type="PackedScene" uid="uid://cc85g7fimsk2a" path="res://Scenes/patty_box_components.tscn" id="4_pvx81"]
-[ext_resource type="PackedScene" uid="uid://be5imvxe13rct" path="res://Scenes/plate_components.tscn" id="5_eeicc"]
-[ext_resource type="PackedScene" uid="uid://bglfjhi23ex76" path="res://Scenes/plate_stack_holder_components.tscn" id="6_s0k2i"]
-[ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/stove_components.tscn" id="7_q665t"]
+[ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="1_8l5lu"]
+[ext_resource type="PackedScene" uid="uid://cspma4eqnxob5" path="res://Scenes/holders/fridge_components.tscn" id="2_xi3de"]
+[ext_resource type="PackedScene" uid="uid://cdhj2idf4x5iv" path="res://Scenes/holders/microwave_components.tscn" id="3_sb5yu"]
+[ext_resource type="PackedScene" uid="uid://cf14c8iupmhk4" path="res://Scenes/holders/patty_box_components.tscn" id="4_pvx81"]
+[ext_resource type="PackedScene" uid="uid://be5imvxe13rct" path="res://Scenes/holders/plate_components.tscn" id="5_eeicc"]
+[ext_resource type="PackedScene" uid="uid://bglfjhi23ex76" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="6_s0k2i"]
+[ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/holders/stove_components.tscn" id="7_q665t"]
 
 [node name="UseableComponents" type="Node3D"]
 

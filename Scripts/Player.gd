@@ -9,7 +9,7 @@ signal health_changed(health_value)
 @onready var gun_ray_cast = $Camera3D/GunRayCast3D
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
 @onready var face_sprite = $FaceSprite
-@onready var c_holder : HolderComponent = $Camera3D/HolderComponent
+@onready var c_holder : Holder = $Camera3D/Holder
 
 
 const SPEED = 4.0
@@ -100,12 +100,12 @@ func pick_emotive_face(id = -1):
 
 @rpc("call_local")
 func interact() -> void:
-	var interactable = interact_ray_cast.get_collider() as InteractableComponent
+	var interactable = interact_ray_cast.get_collider() as Interactable
 	interactable.interact(self)
 
 @rpc("call_local")
 func secondary_interact() -> void:
-	var interactable = interact_ray_cast.get_collider() as InteractableComponent
+	var interactable = interact_ray_cast.get_collider() as Interactable
 	interactable.secondary_interact(self)
 
 ## Left over example code from boilerplate

@@ -1,8 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://be5imvxe13rct"]
+[gd_scene load_steps=10 format=3 uid="uid://i1fsr68tupru"]
 
-[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="2_307k2"]
-[ext_resource type="Script" path="res://Scripts/MultiHolderComponent.gd" id="2_rrfqx"]
-[ext_resource type="Script" path="res://Scripts/HolderComponent.gd" id="3_tbja8"]
+[ext_resource type="Script" path="res://Scripts/MultiHolder.gd" id="1_h3fsn"]
+[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="2_o77dx"]
+[ext_resource type="Script" path="res://Scripts/Holder.gd" id="3_5elsy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j66e6"]
 resource_name = "Material"
@@ -53,10 +53,10 @@ size = Vector3(0.0675428, 0.02522, 0.0663167)
 size = Vector3(0.0675428, 0.02522, 0.0663167)
 
 [node name="Plate" type="Area3D"]
-script = ExtResource("2_rrfqx")
+script = ExtResource("1_h3fsn")
 
 [node name="NetworkedNode3D" type="Node3D" parent="."]
-script = ExtResource("2_307k2")
+script = ExtResource("2_o77dx")
 priority_sync_order = -1
 
 [node name="Cube" type="MeshInstance3D" parent="."]
@@ -66,7 +66,7 @@ skeleton = NodePath("")
 
 [node name="Main" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0477687, 0.005896, 0)
-script = ExtResource("3_tbja8")
+script = ExtResource("3_5elsy")
 can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Main"]
@@ -75,7 +75,7 @@ shape = SubResource("BoxShape3D_kpxjo")
 
 [node name="Side" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0554797, 0.005896, -0.0499425)
-script = ExtResource("3_tbja8")
+script = ExtResource("3_5elsy")
 can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Side"]
@@ -84,7 +84,7 @@ shape = SubResource("BoxShape3D_0ri12")
 
 [node name="Side2" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0554797, 0.005896, 0.049072)
-script = ExtResource("3_tbja8")
+script = ExtResource("3_5elsy")
 can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Side2"]

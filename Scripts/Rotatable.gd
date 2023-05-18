@@ -1,5 +1,5 @@
-extends InteractableComponent
-class_name RotatableComponent
+extends Interactable
+class_name Rotatable
 
 ## Set in degrees, but converted to radians on _ready for the Tween
 @export var tar_rot = Vector3(0.0, -90.0, 0.0)

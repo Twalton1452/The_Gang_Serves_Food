@@ -1,9 +1,13 @@
 extends Area3D
-class_name InteractableComponent
+class_name Interactable
 
 # Maybe rename these to: Pickup / (Combine/Interact)
 signal interacted(player : Player)
 signal secondary_interacted(player : Player)
+
+# This SCENE_ID will point to the instantiatable Scene in SceneIds.gd
+# Will also be used for interactable on interactable interactions like combining food
+@export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.PATTY
 
 #@export var highlight_mesh : MeshInstance3D
 

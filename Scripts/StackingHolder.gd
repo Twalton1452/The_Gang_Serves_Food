@@ -1,11 +1,11 @@
-extends HolderComponent
-class_name IngredientComponent
+extends Holder
+class_name StackingHolder
 
 @export var ingredient_scene : PackedScene
 @export var max_amount = 99
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
 
-# Overriding Holder method for Right click stacking in HolderComponent
+# Overriding Holder method for Right click stacking in Holder
 func has_space_for_item(item: Node3D) -> bool:
 	var acceptable_item = ingredient_scene == null or item != null and item.scene_file_path == ingredient_scene.resource_path
 	return acceptable_item and len(get_held_items()) < max_amount
@@ -31,8 +31,8 @@ func _interact(player : Player):
 		if is_holding_item():
 			release_item_to(player.c_holder)
 	# Player is holding a Plate, put this onto it
-	elif player.c_holder.get_held_item() is MultiHolderComponent:
-		var multi_h : MultiHolderComponent = player.c_holder.get_held_item()
+	elif player.c_holder.get_held_item() is MultiHolder:
+		var multi_h : MultiHolder = player.c_holder.get_held_item()
 		if is_holding_item():
 			release_item_to(multi_h)
 		

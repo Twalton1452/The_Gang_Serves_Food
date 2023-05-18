@@ -1,14 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://cspma4eqnxob5"]
+[gd_scene load_steps=8 format=3 uid="uid://bwqlq831iqp56"]
 
 [ext_resource type="PackedScene" uid="uid://dr60d8lik1jhv" path="res://3d_models/Kenneys_Furniture/kitchenFridge.glb" id="1_7cp4a"]
-[ext_resource type="PackedScene" uid="uid://c28hpirne8typ" path="res://Scenes/components/rotatable_component.tscn" id="3_58gvr"]
-[ext_resource type="PackedScene" uid="uid://cgdeg0ylwgf77" path="res://Scenes/brown_box.tscn" id="4_yjxx3"]
+[ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_ef4us"]
+[ext_resource type="PackedScene" uid="uid://c2ega3lnm1rjf" path="res://Scenes/holders/brown_box.tscn" id="4_yjxx3"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_hajab"]
-size = Vector3(0.414506, 0.209362, 0.0458187)
+[sub_resource type="BoxShape3D" id="BoxShape3D_kxaqi"]
+size = Vector3(0.403279, 0.216239, 0.0375138)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_xppdi"]
-size = Vector3(0.403937, 0.582219, 0.0381829)
+[sub_resource type="BoxShape3D" id="BoxShape3D_o1e37"]
+size = Vector3(0.402848, 0.605351, 0.0375138)
 
 [sub_resource type="BoxMesh" id="BoxMesh_rv0he"]
 
@@ -18,18 +18,17 @@ size = Vector3(0.403937, 0.582219, 0.0381829)
 
 [node name="kitchenFridge" parent="." instance=ExtResource("1_7cp4a")]
 
-[node name="RotatableComponent" parent="kitchenFridge/kitchenFridge(Clone)/doorFreezer" index="0" instance=ExtResource("3_58gvr")]
+[node name="Rotatable" parent="kitchenFridge/kitchenFridge(Clone)/doorFreezer" index="0" instance=ExtResource("2_ef4us")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.188125, 0.0988156, 0.00787203)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/doorFreezer/RotatableComponent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18568, 0.104617, 0.013337)
-shape = SubResource("BoxShape3D_hajab")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/doorFreezer/Rotatable"]
+shape = SubResource("BoxShape3D_kxaqi")
 
-[node name="RotatableComponent" parent="kitchenFridge/kitchenFridge(Clone)/doorFridge" index="0" instance=ExtResource("3_58gvr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.67638e-08, 7.45058e-09, 0)
+[node name="Rotatable" parent="kitchenFridge/kitchenFridge(Clone)/doorFridge" index="0" instance=ExtResource("2_ef4us")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.189703, 0.299515, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/doorFridge/RotatableComponent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.187532, 0.315334, 0.0377477)
-shape = SubResource("BoxShape3D_xppdi")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/doorFridge/Rotatable"]
+shape = SubResource("BoxShape3D_o1e37")
 
 [node name="StaticBody3D" parent="kitchenFridge/kitchenFridge(Clone)" index="2"]
 input_ray_pickable = false

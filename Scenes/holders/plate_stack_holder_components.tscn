@@ -1,0 +1,84 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0wct3k6mqsl4"]
+
+[ext_resource type="PackedScene" uid="uid://cj82gq64tqgkv" path="res://3d_models/PlateStackHolder.blend" id="1_kaax1"]
+[ext_resource type="PackedScene" uid="uid://i1fsr68tupru" path="res://Scenes/holders/plate_components.tscn" id="2_lyxfo"]
+[ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="3_gitd8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s5fsb"]
+size = Vector3(0.171371, 0.225305, 0.314048)
+
+[node name="PlateStackHolder" instance=ExtResource("1_kaax1")]
+
+[node name="StackingHolder" parent="." index="1" instance=ExtResource("3_gitd8")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0896733, 0)
+shape = SubResource("BoxShape3D_s5fsb")
+
+[node name="Plate" parent="StackingHolder" index="1" instance=ExtResource("2_lyxfo")]
+
+[node name="Plate2" parent="StackingHolder" index="2" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00648129, 0)
+
+[node name="Plate3" parent="StackingHolder" index="3" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0143401, 0)
+
+[node name="Plate4" parent="StackingHolder" index="4" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0208214, 0)
+
+[node name="Plate5" parent="StackingHolder" index="5" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0274878, 0)
+
+[node name="Plate6" parent="StackingHolder" index="6" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0339691, 0)
+
+[node name="Plate7" parent="StackingHolder" index="7" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0418279, 0)
+
+[node name="Plate8" parent="StackingHolder" index="8" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0483091, 0)
+
+[node name="Plate9" parent="StackingHolder" index="9" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0550472, 0)
+
+[node name="Plate10" parent="StackingHolder" index="10" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0615285, 0)
+
+[node name="Plate11" parent="StackingHolder" index="11" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0693873, 0)
+
+[node name="Plate12" parent="StackingHolder" index="12" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0758686, 0)
+
+[node name="Plate13" parent="StackingHolder" index="13" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.082535, 0)
+
+[node name="Plate14" parent="StackingHolder" index="14" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0890163, 0)
+
+[node name="Plate15" parent="StackingHolder" index="15" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0968751, 0)
+
+[node name="Plate16" parent="StackingHolder" index="16" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103356, 0)
+
+[node name="Plate17" parent="StackingHolder" index="17" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.108725, 0)
+
+[node name="Plate18" parent="StackingHolder" index="18" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.116584, 0)
+
+[node name="Plate19" parent="StackingHolder" index="19" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.123065, 0)
+
+[node name="Plate20" parent="StackingHolder" index="20" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.129731, 0)
+
+[node name="Plate21" parent="StackingHolder" index="21" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.136213, 0)
+
+[node name="Plate22" parent="StackingHolder" index="22" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.144072, 0)
+
+[node name="Plate23" parent="StackingHolder" index="23" instance=ExtResource("2_lyxfo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.150553, 0)

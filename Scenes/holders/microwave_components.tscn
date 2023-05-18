@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://cdhj2idf4x5iv"]
+
+[ext_resource type="PackedScene" uid="uid://b30hc26360tau" path="res://3d_models/Kenneys_Furniture/kitchenMicrowave.glb" id="1_1gdom"]
+[ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_bearh"]
+[ext_resource type="PackedScene" uid="uid://d3y6xmhkuoht5" path="res://Scenes/components/cooker.tscn" id="3_bscym"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pmmh6"]
+size = Vector3(0.193689, 0.13668, 0.0143231)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cfjuu"]
+size = Vector3(0.190923, 0.0656887, 0.140943)
+
+[node name="kitchenMicrowave" instance=ExtResource("1_1gdom")]
+
+[node name="Rotatable" parent="kitchenMicrowave(Clone)/Group" index="0" instance=ExtResource("2_bearh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0986587, 0.0724436, 0.00754765)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenMicrowave(Clone)/Group/Rotatable" index="1"]
+shape = SubResource("BoxShape3D_pmmh6")
+
+[node name="Cooker" parent="kitchenMicrowave(Clone)" index="1" instance=ExtResource("3_bscym")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.117244, 0.0254075, -0.0893087)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenMicrowave(Clone)/Cooker" index="2"]
+shape = SubResource("BoxShape3D_cfjuu")

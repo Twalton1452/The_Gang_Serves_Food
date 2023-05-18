@@ -1,8 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://dm5x7oexer5o7"]
+[gd_scene load_steps=19 format=3 uid="uid://rdrleinbk66r"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_ybpai"]
-[ext_resource type="PackedScene" uid="uid://cem03x0wqpatv" path="res://Scenes/components/holder_component.tscn" id="2_iorh3"]
 [ext_resource type="PackedScene" uid="uid://j4ykwt0h6c4r" path="res://3d_models/Pistol.blend" id="2_rnvw1"]
+[ext_resource type="Script" path="res://Scripts/Holder.gd" id="2_xw32p"]
 [ext_resource type="Texture2D" uid="uid://e4pjkdypimg1" path="res://addons/kenney_particle_pack/star_06.png" id="3_wwdcx"]
 [ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="5_nhbnr"]
 
@@ -178,8 +178,9 @@ shape = SubResource("CapsuleShape3D_opbun")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.243105, 0)
 
-[node name="HolderComponent" parent="Camera3D" instance=ExtResource("2_iorh3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, -0.108, -0.166)
+[node name="Holder" type="Area3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.121156, -0.109819, -0.165641)
+script = ExtResource("2_xw32p")
 
 [node name="Pistol" parent="Camera3D" instance=ExtResource("2_rnvw1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)

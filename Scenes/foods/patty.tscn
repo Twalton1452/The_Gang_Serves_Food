@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://effhc27p2nda"]
+[gd_scene load_steps=8 format=3 uid="uid://effhc27p2nda"]
 
-[ext_resource type="Script" path="res://Scripts/CookableComponent.gd" id="1_c3p3d"]
-[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="3_bcn4p"]
-[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="3_hpc4y"]
+[ext_resource type="Script" path="res://Scripts/Food.gd" id="1_vmnmo"]
+[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="3_1ycum"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u0b6k"]
 resource_name = "Patty"
@@ -50,12 +49,10 @@ albedo_color = Color(0.811765, 0.443137, 0.423529, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_vtxtv"]
 size = Vector3(0.101098, 0.0114527, 0.104601)
 
-[node name="Patty" type="Area3D" node_paths=PackedStringArray("obj_to_color")]
+[node name="Patty" type="Area3D"]
 collision_layer = 4
 collision_mask = 0
-script = ExtResource("1_c3p3d")
-gradient = ExtResource("3_hpc4y")
-obj_to_color = NodePath("Patty")
+script = ExtResource("1_vmnmo")
 
 [node name="Patty" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000462138, 0)
@@ -65,7 +62,7 @@ skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_gb37g")
 
 [node name="NetworkedNode3D" type="Node3D" parent="."]
-script = ExtResource("3_bcn4p")
+script = ExtResource("3_1ycum")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00600621, 0)

@@ -1,6 +1,6 @@
 extends RayCast3D
 
-var looking_at : InteractableComponent = null
+var looking_at : Interactable = null
 
 func _physics_process(_delta):
 	

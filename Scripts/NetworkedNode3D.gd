@@ -1,15 +1,17 @@
 extends Node3D
 class_name NetworkedNode3D
 
-# Every NetworkedNode3D is automatically in the NETWORKED group once _ready happens
-# The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
-@export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.PATTY
+
 # The lower the number the more important it is to sync
 @export var priority_sync_order = 0
 
 # Sync with this node
 @onready var p_node = get_parent()
 
+# Every NetworkedNode3D is automatically in the NETWORKED group once _ready happens
+# The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
+# This is pulled off the Interactable this is attached to
+var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.PATTY
 var net_id = -1
 var sync_state : set = set_sync_state, get = get_sync_state
 
@@ -23,7 +25,7 @@ func set_sync_state(value: PackedByteArray):
 	var path_to_parent = value.slice(7, 7 + path_size).get_string_from_utf8()
 	var new_parent = get_node(path_to_parent)
 	if p_node.get_parent() != new_parent:
-		if new_parent is HolderComponent:
+		if new_parent is Holder:
 			new_parent.hold_item(p_node)
 		else:
 			p_node.reparent(new_parent, false)
@@ -52,7 +54,8 @@ func get_sync_state() -> PackedByteArray:
 func _ready():
 	net_id = NetworkingUtils.generate_id()
 	add_to_group(str(SceneIds.SCENES.NETWORKED))
-	if p_node is InteractableComponent:
+	if p_node is Interactable:
+		SCENE_ID = p_node.SCENE_ID
 		p_node.interacted.connect(_on_interaction)
 
 func _on_interaction(_player: Player):

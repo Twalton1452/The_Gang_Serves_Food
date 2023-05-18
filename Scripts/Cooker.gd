@@ -1,4 +1,4 @@
-extends HolderComponent
+extends Holder
 class_name CookerComponent
 
 @export var power : float = 0.5
@@ -7,13 +7,13 @@ class_name CookerComponent
 
 func hold_item(node: Node3D):
 	super(node)
-	if node is CookableComponent or node is MultiHolderComponent:
+	if node is Cookable or node is MultiHolder:
 		begin_cooking()
 	else:
 		#print("%s isn't cookable, but i'll hold on to it" % node.name)
 		pass
 
-func release_item_to(holder: HolderComponent):
+func release_item_to(holder: Holder):
 	super(holder)
 	stop_cooking()
 
@@ -27,15 +27,15 @@ func _on_cooking_ticks_timer_timeout():
 	var cooked = false
 	
 	# Cook everything on the Multiholder
-	if get_held_item() is MultiHolderComponent:
-		var multi_h : MultiHolderComponent = get_held_item()
+	if get_held_item() is MultiHolder:
+		var multi_h : MultiHolder = get_held_item()
 		for item in multi_h.get_held_items():
-			if item is CookableComponent:
-				(item as CookableComponent).cook(power)
+			if item is Cookable:
+				(item as Cookable).cook(power)
 				cooked = true
 	else:
-		for cookable in get_children().filter(func(c): return c is CookableComponent):
-			(cookable as CookableComponent).cook(power)
+		for cookable in get_children().filter(func(c): return c is Cookable):
+			(cookable as Cookable).cook(power)
 			cooked = true
 	
 	# Keep cookin if there is something to cook

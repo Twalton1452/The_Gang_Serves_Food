@@ -1,5 +1,5 @@
-extends HoldableComponent
-class_name CookableComponent
+extends Holdable
+class_name Cookable
 
 enum CookStates {
 	RAW,
@@ -44,7 +44,6 @@ func _ready():
 	#super()
 	material_to_color = obj_to_color.get_active_material(0)#.get_surface_override_material(0)
 	evaluate_cook_rate()
-	add_to_group(str(SceneIds.SCENES.COOKABLE))
 
 func cook(power: float):
 	if cook_state == CookStates.BURNED:
