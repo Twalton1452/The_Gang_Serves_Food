@@ -18,8 +18,7 @@ enum CookStates {
 @export var cooked_cook_rate = 0.04
 @export var burning_cook_rate = 0.05
 
-# Only exposed for the Synchronizer
-@export var cook_progress : float = 0.0
+var cook_progress : float = 0.0
 
 var material_to_color : BaseMaterial3D
 var cooked_percent = 0.4

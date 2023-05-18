@@ -8,7 +8,7 @@
 size = Vector3(0.413302, 0.318294, 0.0431138)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7dfli"]
-size = Vector3(0.438414, 0.0388268, 0.414984)
+size = Vector3(0.411643, 0.0388268, 0.414984)
 
 [node name="kitchenCabinet" instance=ExtResource("1_wh3he")]
 
@@ -19,7 +19,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.178621, 0.127549, 0)
 shape = SubResource("BoxShape3D_f0jbv")
 
 [node name="Holder" parent="." index="1" instance=ExtResource("3_5ll8x")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21111, 0.416876, -0.213584)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21111, 0.426545, -0.213584)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder" index="1"]
 shape = SubResource("BoxShape3D_7dfli")

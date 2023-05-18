@@ -1,4 +1,4 @@
-extends Holdable
+extends Cookable
 class_name Food
 
 ## This class will be the base item that ingredients get combined into

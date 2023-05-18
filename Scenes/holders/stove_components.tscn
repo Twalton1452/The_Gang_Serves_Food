@@ -38,6 +38,7 @@ shape = SubResource("BoxShape3D_xyk0s")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.133402, 0.442529, -0.184244)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner1" index="0" instance=ExtResource("3_jfae0")]
+can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner1/Cooker" index="2"]
 shape = SubResource("BoxShape3D_4ekfo")
@@ -46,6 +47,7 @@ shape = SubResource("BoxShape3D_4ekfo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.298861, 0.442529, -0.184244)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner2" index="0" instance=ExtResource("3_jfae0")]
+can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner2/Cooker" index="2"]
 shape = SubResource("BoxShape3D_nibh8")
@@ -54,6 +56,7 @@ shape = SubResource("BoxShape3D_nibh8")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.298861, 0.442529, -0.323453)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner3" index="0" instance=ExtResource("3_jfae0")]
+can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner3/Cooker" index="2"]
 shape = SubResource("BoxShape3D_ghs3m")
@@ -62,6 +65,7 @@ shape = SubResource("BoxShape3D_ghs3m")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131944, 0.442529, -0.323453)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner4" index="0" instance=ExtResource("3_jfae0")]
+can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner4/Cooker" index="2"]
 shape = SubResource("BoxShape3D_8pwa0")
