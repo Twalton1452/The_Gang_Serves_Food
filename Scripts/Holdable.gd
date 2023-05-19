@@ -17,6 +17,14 @@ func get_sync_state() -> PackedByteArray:
 	buf.encode_u8(end_of_parent_buf, is_being_held) # u8 is 1 byte
 	return buf
 
+func _interact(player: Player):
+	# Player takes this item
+	if not player.c_holder.is_holding_item() and get_parent() is Holder:
+		get_parent().release_item_to(player.c_holder)
+	# Put onto Plate
+	elif player.c_holder.get_held_item() is MultiHolder and get_parent() is Holder:
+		get_parent().release_item_to(player.c_holder.get_held_item())
+
 func _secondary_interact(player: Player):
 	if not player.c_holder.is_holding_item():
 		return

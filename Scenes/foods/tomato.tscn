@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="3_14n6c"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wakld"]
+resource_local_to_scene = true
 albedo_texture = ExtResource("2_yuckk")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1hpgu"]
@@ -50,9 +51,12 @@ shadow_mesh = SubResource("ArrayMesh_awvxy")
 size = Vector3(0.0896912, 0.010335, 0.088842)
 
 [node name="Tomato" type="Area3D" node_paths=PackedStringArray("obj_to_color")]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_lpxhx")
 gradient = ExtResource("2_8x4xp")
 obj_to_color = NodePath("Cylinder")
+SCENE_ID = 4
 
 [node name="Cylinder" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
