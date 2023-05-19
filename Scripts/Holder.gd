@@ -48,7 +48,7 @@ func swap_items_with(holder: Holder):
 	# Infinitely taking from them, but not giving
 	# Happens when you interact with the MultiHolder itself with an item in your hand
 	if get_held_item() is MultiHolder or holder.get_held_item() is MultiHolder:
-		print("[NYI] No Swapping for MultiHolders")
+		print_verbose("[NYI] No Swapping for MultiHolders")
 		return
 	
 	var curr_item = get_held_item()
@@ -103,8 +103,6 @@ func _secondary_interact(player : Player):
 		
 		# This Holder has no space for the Plated item
 		if not has_space_for_item(multi_h.get_held_item()):
-			print("aint got no space dawg")
-			print(get_parent().name)
 			return
 		
 		# Player trying to place items from their Multi-holder onto our empty Holder
