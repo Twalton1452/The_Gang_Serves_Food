@@ -17,7 +17,7 @@ func get_sync_state() -> PackedByteArray:
 	buf.encode_u8(end_of_parent_buf, is_being_held) # u8 is 1 byte
 	return buf
 
-func _interact(player: Player):	
+func _interact(player: Player):
 	# Item free floating, just take it
 	if not get_parent() is Holder:
 		player.c_holder.hold_item(self)
@@ -29,9 +29,9 @@ func _interact(player: Player):
 	# Put this Item onto the Player's MultiHolder
 	elif player.c_holder.get_held_item() is MultiHolder:
 		get_parent().release_item_to(player.c_holder.get_held_item())
-	# Put Player's item onto this Item's Holder
-	elif player.c_holder.get_held_item() is Holdable:
-		player.c_holder.release_item_to(get_parent())
+	# Swap Items if there is something on both sides
+	elif get_parent().is_holding_item() and player.c_holder.get_held_item() is Holdable:
+		player.c_holder.swap_items_with(get_parent())
 
 func _secondary_interact(player: Player):
 	if not player.c_holder.is_holding_item():

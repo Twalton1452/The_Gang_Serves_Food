@@ -27,10 +27,12 @@ func is_holding(item: Node3D):
 			return true
 
 func hold_item(item: Node3D) -> void:
-	if item != null and item is Holder and not can_hold_holders and has_space_for_item(item):
+	if item == null or not has_space_for_item(item) or (item is Holder and not can_hold_holders):
 		return
 	
-	#print("HOLDING %s" % item.networked_id)
+	hold_item_unsafe(item)
+
+func hold_item_unsafe(item: Node3D) -> void:
 	if not item.is_inside_tree():
 		add_child(item, true)
 	elif not is_holding(item):
@@ -50,8 +52,10 @@ func swap_items_with(holder: Holder):
 		return
 	
 	var curr_item = get_held_item()
-	holder.release_item_to(self)
-	holder.hold_item(curr_item)
+	var holder_item = holder.get_held_item()
+	
+	holder.hold_item_unsafe(curr_item)
+	hold_item_unsafe(holder_item)
 
 # Left Clicking Holder
 func _interact(player : Player):
