@@ -320,6 +320,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43, 0, 0)
 
 [node name="kitchenCabinet2" parent="Testing" instance=ExtResource("10_b6sav")]
 
+[node name="PattyBox" parent="Testing/kitchenCabinet2/Holder" index="2" instance=ExtResource("23_ym7y0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00727499, 0.000255018, 0.024927)
+
 [node name="kitchenCabinet3" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.86, 0, 0)
 
@@ -337,11 +340,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43, 0, 0)
 [node name="PlateStackHolder" parent="Testing" instance=ExtResource("24_ovivh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.67077, 0.455059, -0.221001)
 
-[node name="PattyBox" parent="Testing" instance=ExtResource("23_ym7y0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.203835, 0.4268, -0.188657)
-
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]
 
 [editable path="roof"]
 [editable path="floor"]
+[editable path="Testing/kitchenCabinet2"]
 [editable path="Testing/kitchenCabinet3"]

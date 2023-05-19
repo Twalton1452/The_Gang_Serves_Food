@@ -66,6 +66,9 @@ skeleton = NodePath("")
 
 [node name="Main" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0477687, 0.005896, 0)
+collision_layer = 4
+collision_mask = 0
+priority = 1.0
 script = ExtResource("3_5elsy")
 can_hold_holders = false
 
@@ -75,6 +78,9 @@ shape = SubResource("BoxShape3D_kpxjo")
 
 [node name="Side" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0554797, 0.005896, -0.0499425)
+collision_layer = 4
+collision_mask = 0
+priority = 1.0
 script = ExtResource("3_5elsy")
 can_hold_holders = false
 
@@ -84,6 +90,9 @@ shape = SubResource("BoxShape3D_0ri12")
 
 [node name="Side2" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0554797, 0.005896, 0.049072)
+collision_layer = 4
+collision_mask = 0
+priority = 1.0
 script = ExtResource("3_5elsy")
 can_hold_holders = false
 

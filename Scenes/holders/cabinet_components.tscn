@@ -8,7 +8,7 @@
 size = Vector3(0.413302, 0.318294, 0.0431138)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7dfli"]
-size = Vector3(0.411643, 0.0388268, 0.414984)
+size = Vector3(0.411643, 0.0126033, 0.414984)
 
 [node name="kitchenCabinet" instance=ExtResource("1_wh3he")]
 

@@ -26,8 +26,8 @@ func is_holding(item: Node3D):
 		if child == item:
 			return true
 
-func hold_item(item: Node3D):
-	if item is Holder and not can_hold_holders:
+func hold_item(item: Node3D) -> void:
+	if item != null and item is Holder and not can_hold_holders and has_space_for_item(item):
 		return
 	
 	#print("HOLDING %s" % item.networked_id)
@@ -42,6 +42,13 @@ func release_item_to(holder: Holder):
 	holder.hold_item(item)
 	
 func swap_items_with(holder: Holder):
+	# Causing issues with a combination of a MultiHolder that has multiple StackingHolders
+	# Infinitely taking from them, but not giving
+	# Happens when you interact with the MultiHolder itself with an item in your hand
+	if get_held_item() is MultiHolder or holder.get_held_item() is MultiHolder:
+		print("[NYI] No Swapping for MultiHolders")
+		return
+	
 	var curr_item = get_held_item()
 	holder.release_item_to(self)
 	holder.hold_item(curr_item)
@@ -60,7 +67,7 @@ func _interact(player : Player):
 				if multi_h.has_space_for_item(get_held_item()):
 					release_item_to(multi_h)
 				return
-			
+				
 			swap_items_with(player.c_holder)
 		# Holding nothing - Attempt to take from Player
 		else:
@@ -85,13 +92,17 @@ func _secondary_interact(player : Player):
 		
 		# Player trying to Right Click this Holder with just an Item
 		if not player.c_holder.get_held_item() is MultiHolder:
-			# Combine?
 			return
 		
-		# Holder has no space - Combining didn't take place
-		if not has_space_for_item(player.c_holder.get_held_item().get_held_item()):
+		# Player confirmed to have MultiHolder, likely Plate
+		var multi_h : MultiHolder = player.c_holder.get_held_item()
+		
+		# This Holder has no space for the Plated item
+		if not has_space_for_item(multi_h.get_held_item()):
+			print("aint got no space dawg")
+			print(get_parent().name)
 			return
 		
 		# Player trying to place items from their Multi-holder onto our empty Holder
-		if player.c_holder.get_held_item().is_holding_item():
-			player.c_holder.get_held_item().release_item_to(self)
+		if multi_h.is_holding_item():
+			multi_h.release_item_to(self)

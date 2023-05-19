@@ -30,5 +30,5 @@ enum CombineRule {
 func combine_attempt(_food: Food):
 	pass
 
-func _secondary_interact(_player: Player):
-	pass
+func _secondary_interact(player: Player):
+	super(player)

@@ -7,7 +7,7 @@ signal secondary_interacted(player : Player)
 
 # This SCENE_ID will point to the instantiatable Scene in SceneIds.gd
 # Will also be used for interactable on interactable interactions like combining food
-@export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.PATTY
+@export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.NETWORKED
 
 #@export var highlight_mesh : MeshInstance3D
 

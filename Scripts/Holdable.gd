@@ -17,24 +17,40 @@ func get_sync_state() -> PackedByteArray:
 	buf.encode_u8(end_of_parent_buf, is_being_held) # u8 is 1 byte
 	return buf
 
-func _interact(player: Player):
-	# Player takes this item
-	if not player.c_holder.is_holding_item() and get_parent() is Holder:
+func _interact(player: Player):	
+	# Item free floating, just take it
+	if not get_parent() is Holder:
+		player.c_holder.hold_item(self)
+		return
+		
+	# Player not holding anything - Take this item
+	if not player.c_holder.is_holding_item():
 		get_parent().release_item_to(player.c_holder)
-	# Put onto Plate
-	elif player.c_holder.get_held_item() is MultiHolder and get_parent() is Holder:
+	# Put this Item onto the Player's MultiHolder
+	elif player.c_holder.get_held_item() is MultiHolder:
 		get_parent().release_item_to(player.c_holder.get_held_item())
+	# Put Player's item onto this Item's Holder
+	elif player.c_holder.get_held_item() is Holdable:
+		player.c_holder.release_item_to(get_parent())
 
 func _secondary_interact(player: Player):
 	if not player.c_holder.is_holding_item():
 		return
 	
+	
 	var p_item
+	# Player holding Plate
 	if player.c_holder.get_held_item() is MultiHolder:
+		# Something on the Plate
 		if player.c_holder.is_holding_item():
 			p_item = player.c_holder.get_held_item().get_held_item()
 		else:
 			return
 	else:
 		p_item = player.c_holder.get_held_item()
+	
+	if get_parent() is StackingHolder and p_item != null:
+		get_parent().hold_item(p_item)
+		return
+		
 	FoodCombiner.combine(self, p_item)
