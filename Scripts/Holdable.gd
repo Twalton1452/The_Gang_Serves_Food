@@ -21,36 +21,18 @@ func _interact(player: Player):
 	# Item free floating, just take it
 	if not get_parent() is Holder:
 		player.c_holder.hold_item(self)
-		return
-		
-	# Player not holding anything - Take this item
-	if not player.c_holder.is_holding_item():
-		get_parent().release_item_to(player.c_holder)
-	# Put this Item onto the Player's MultiHolder
-	elif player.c_holder.get_held_item() is MultiHolder:
-		get_parent().release_item_to(player.c_holder.get_held_item())
-	# Swap Items if there is something on both sides
-	elif get_parent().is_holding_item() and player.c_holder.get_held_item() is Holdable:
-		player.c_holder.swap_items_with(get_parent())
+	# Let the Holder take care of the interaction
+	else:
+		(get_parent() as Holder).interact(player)
 
 func _secondary_interact(player: Player):
 	if not player.c_holder.is_holding_item():
 		return
 	
-	
-	var p_item
-	# Player holding Plate
-	if player.c_holder.get_held_item() is MultiHolder:
-		# Something on the Plate
-		if player.c_holder.is_holding_item():
-			p_item = player.c_holder.get_held_item().get_held_item()
-		else:
-			return
-	else:
-		p_item = player.c_holder.get_held_item()
-	
-	if get_parent() is StackingHolder and p_item != null:
-		get_parent().hold_item(p_item)
-		return
-		
-	FoodCombiner.combine(self, p_item)
+	# Get the Player's item to see if we can Combine!
+	# Don't combine off a MultiHolder in the Player's Hand because that could get weird fast
+	if not player.c_holder.get_held_item() is MultiHolder:
+		Combiner.combine(player, self)
+	# If combination can't take place, maybe a standard secondary interaction can
+	elif get_parent() is Holder:
+		(get_parent() as Holder).secondary_interact(player)

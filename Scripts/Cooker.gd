@@ -28,8 +28,8 @@ func _on_cooking_ticks_timer_timeout():
 	
 	# Cook everything on the Multiholder
 	if get_held_item() is MultiHolder:
-		var multi_h : MultiHolder = get_held_item()
-		for item in multi_h.get_held_items():
+		var multi_h_items : Array[Node] = get_held_item().get_held_items()
+		for item in multi_h_items:
 			if item is Cookable:
 				(item as Cookable).cook(power)
 				cooked = true
