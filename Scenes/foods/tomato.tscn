@@ -1,7 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://qp0n17xt4bgl"]
+[gd_scene load_steps=10 format=3 uid="uid://gucubnkf1reo"]
 
 [ext_resource type="Script" path="res://Scripts/Food.gd" id="1_lpxhx"]
-[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="2_8x4xp"]
+[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/food_gradients/patty_cook_gradient.tres" id="2_pwqhe"]
 [ext_resource type="Texture2D" uid="uid://y2en35l2bjh3" path="res://3d_models/Tomato1_Tomato Base.png" id="2_yuckk"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="3_14n6c"]
 
@@ -54,7 +54,9 @@ size = Vector3(0.0896912, 0.010335, 0.088842)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_lpxhx")
-gradient = ExtResource("2_8x4xp")
+rule = 3
+stacking_spacing = Vector3(0, 0.01, 0)
+gradient = ExtResource("2_pwqhe")
 obj_to_color = NodePath("Cylinder")
 SCENE_ID = 4
 

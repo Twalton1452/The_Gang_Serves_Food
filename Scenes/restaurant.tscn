@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=25 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -12,10 +12,14 @@
 [ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="10_b6sav"]
 [ext_resource type="PackedScene" uid="uid://cpb5xjyhdnwqr" path="res://3d_models/Kenneys_Furniture/kitchenSink.glb" id="11_t52rp"]
 [ext_resource type="PackedScene" uid="uid://bwqlq831iqp56" path="res://Scenes/holders/fridge_components.tscn" id="12_xj5b4"]
-[ext_resource type="PackedScene" uid="uid://qp0n17xt4bgl" path="res://Scenes/foods/tomato.tscn" id="15_05axt"]
+[ext_resource type="PackedScene" uid="uid://gucubnkf1reo" path="res://Scenes/foods/tomato.tscn" id="15_05axt"]
 [ext_resource type="PackedScene" uid="uid://cpy8etfbd2bwm" path="res://3d_models/Kenneys_Furniture/tableCloth.glb" id="15_s1kwc"]
 [ext_resource type="PackedScene" uid="uid://blhyqxbfnxe40" path="res://3d_models/Kenneys_Furniture/chairCushion.glb" id="16_4dkdq"]
 [ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/holders/stove_components.tscn" id="16_eiaux"]
+[ext_resource type="Script" path="res://Scripts/StackingHolder.gd" id="17_802kh"]
+[ext_resource type="PackedScene" uid="uid://dfg1k7gfdbgmw" path="res://Scenes/foods/patty.tscn" id="18_7tuta"]
+[ext_resource type="PackedScene" uid="uid://blqi6mmnnc2we" path="res://Scenes/foods/bottom_bun.tscn" id="19_kyo0t"]
+[ext_resource type="PackedScene" uid="uid://8lkh6825ij50" path="res://Scenes/foods/top_bun.tscn" id="20_euh6s"]
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
 [ext_resource type="Script" path="res://Scripts/MidsessionJoinSyncer.gd" id="24_gdwhe"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
@@ -331,6 +335,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.86, 0, 0)
 [node name="kitchenCabinet4" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.29, 0, 0)
 
+[node name="StackingHolder" type="Area3D" parent="Testing/kitchenCabinet4/Holder" index="2"]
+script = ExtResource("17_802kh")
+is_organized = true
+
+[node name="Patty" parent="Testing/kitchenCabinet4/Holder/StackingHolder" instance=ExtResource("18_7tuta")]
+
+[node name="Tomato" parent="Testing/kitchenCabinet4/Holder/StackingHolder" instance=ExtResource("15_05axt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0108662, 0)
+
+[node name="BottomBun" parent="Testing/kitchenCabinet4/Holder/StackingHolder" instance=ExtResource("19_kyo0t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0173065, 0)
+
+[node name="TopBun" parent="Testing/kitchenCabinet4/Holder/StackingHolder" instance=ExtResource("20_euh6s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0339447, 0)
+
 [node name="Fridge" parent="Testing" instance=ExtResource("12_xj5b4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72, 0, 0)
 
@@ -346,3 +365,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.67077, 0.455059, -0.221001)
 [editable path="floor"]
 [editable path="Testing/kitchenCabinet2"]
 [editable path="Testing/kitchenCabinet3"]
+[editable path="Testing/kitchenCabinet4"]

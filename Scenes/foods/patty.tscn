@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://effhc27p2nda"]
+[gd_scene load_steps=9 format=3 uid="uid://dfg1k7gfdbgmw"]
 
 [ext_resource type="Script" path="res://Scripts/Food.gd" id="1_vmnmo"]
-[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="2_eb6im"]
+[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/food_gradients/patty_cook_gradient.tres" id="2_67uhe"]
 [ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="3_1ycum"]
 [ext_resource type="Material" uid="uid://b60lm8s0trq5f" path="res://Materials/Patty_mat.tres" id="3_s7cyn"]
 
@@ -49,7 +49,9 @@ size = Vector3(0.101098, 0.0114527, 0.104601)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_vmnmo")
-gradient = ExtResource("2_eb6im")
+rule = 1
+stacking_spacing = Vector3(0, 0.01, 0)
+gradient = ExtResource("2_67uhe")
 obj_to_color = NodePath("Patty")
 
 [node name="Patty" type="MeshInstance3D" parent="."]

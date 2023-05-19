@@ -2,8 +2,10 @@ extends Cookable
 class_name Food
 
 enum CombineRule {
-	BOTTOM,
-	MIDDLE,
+	BASE,
+	SUB_BASE,
+	INTERMEDIATE,
+	SUB_TOP,
 	TOP,
 	
 	ANYWHERE,
@@ -11,6 +13,7 @@ enum CombineRule {
 }
 
 @export var rule : CombineRule = CombineRule.ANYWHERE
+@export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
 
 ## This class will be the base item that ingredients get combined into
 ## Example structure for a Burger will be flat and look like:

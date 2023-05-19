@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bbo5sack7m81"]
+[gd_scene load_steps=8 format=3 uid="uid://8lkh6825ij50"]
 
 [ext_resource type="Script" path="res://Scripts/Food.gd" id="1_wjj1o"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_2u2tk"]
-[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/patty_cook_gradient.tres" id="2_n4u5g"]
+[ext_resource type="Gradient" uid="uid://bkf1ebfa3yil8" path="res://Resources/food_gradients/bun_cook_gradient.tres" id="2_sas88"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e78pq"]
 resource_name = "Bun"
@@ -50,7 +50,9 @@ size = Vector3(0.0957409, 0.0229991, 0.0998766)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_wjj1o")
-gradient = ExtResource("2_n4u5g")
+rule = 4
+stacking_spacing = Vector3(0, 0.009, 0)
+gradient = ExtResource("2_sas88")
 obj_to_color = NodePath("Bun")
 SCENE_ID = 3
 
