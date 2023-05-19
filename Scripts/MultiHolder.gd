@@ -18,7 +18,9 @@ func get_held_items() -> Array[Node]:
 	var items : Array[Node] = []
 	
 	for c_holder in c_holders:
-		if c_holder.is_holding_item():
+		if c_holder is StackingHolder or c_holder is MultiHolder:
+			items.append_array(c_holder.get_held_items())
+		elif c_holder.is_holding_item():
 			items.push_back(c_holder.get_held_item())
 	return items
 
