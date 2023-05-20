@@ -6,6 +6,14 @@ class_name StackingHolder
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
 @export var is_organized = false
 
+func _ready():
+	var i : int = 1
+	var held_items = get_held_items()
+	while i < len(held_items):
+		var held_item = held_items[i]
+		held_item.position = held_items[i - 1].position + (held_item.stacking_spacing if held_item is Food else stacking_spacing)
+		i += 1
+
 # Overriding Holder method for Right click stacking in Holder
 func has_space_for_item(item: Node3D) -> bool:
 	var acceptable_item = ingredient_scene == null or item != null and item.scene_file_path == ingredient_scene.resource_path
@@ -22,9 +30,8 @@ func hold_item(item: Node3D):
 		if is_organized:
 			organize_items()
 		else:
-			# 2 to account for CollisionShape3D
 			if len(held_items) > 1:
-				item.position = held_items[-1].position + stacking_spacing
+				item.position = held_items[-1].position + item.stacking_spacing if item is Food else stacking_spacing
 			else:
 				item.position = Vector3.ZERO
 

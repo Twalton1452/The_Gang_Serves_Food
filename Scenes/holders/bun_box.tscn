@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqv2bfql04h12"]
+
+[ext_resource type="PackedScene" uid="uid://dhncnl67jot6g" path="res://Scenes/holders/double_holder_box.tscn" id="1_wpekr"]
+[ext_resource type="PackedScene" uid="uid://blqi6mmnnc2we" path="res://Scenes/foods/bottom_bun.tscn" id="2_qlkw3"]
+[ext_resource type="PackedScene" uid="uid://8lkh6825ij50" path="res://Scenes/foods/top_bun.tscn" id="3_mr4v2"]
+
+[node name="DoubleHolderBox" instance=ExtResource("1_wpekr")]
+
+[node name="StackingHolder" parent="." index="2"]
+ingredient_scene = ExtResource("2_qlkw3")
+can_hold_holders = false
+
+[node name="BottomBun" parent="StackingHolder" index="1" instance=ExtResource("2_qlkw3")]
+
+[node name="BottomBun2" parent="StackingHolder" index="2" instance=ExtResource("2_qlkw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0162052, 0)
+
+[node name="BottomBun3" parent="StackingHolder" index="3" instance=ExtResource("2_qlkw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0328011, 0)
+
+[node name="BottomBun4" parent="StackingHolder" index="4" instance=ExtResource("2_qlkw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0490063, 0)
+
+[node name="BottomBun5" parent="StackingHolder" index="5" instance=ExtResource("2_qlkw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.065076, 0)
+
+[node name="BottomBun6" parent="StackingHolder" index="6" instance=ExtResource("2_qlkw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0812812, 0)
+
+[node name="BottomBun7" parent="StackingHolder" index="7" instance=ExtResource("2_qlkw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0978771, 0)
+
+[node name="BottomBun8" parent="StackingHolder" index="8" instance=ExtResource("2_qlkw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.114082, 0)
+
+[node name="StackingHolder2" parent="." index="3"]
+ingredient_scene = ExtResource("3_mr4v2")
+can_hold_holders = false
+
+[node name="TopBun" parent="StackingHolder2" index="1" instance=ExtResource("3_mr4v2")]
+
+[node name="TopBun2" parent="StackingHolder2" index="2" instance=ExtResource("3_mr4v2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0175753, 0)
+
+[node name="TopBun3" parent="StackingHolder2" index="3" instance=ExtResource("3_mr4v2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0343326, 0)
+
+[node name="TopBun4" parent="StackingHolder2" index="4" instance=ExtResource("3_mr4v2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.051908, 0)
+
+[node name="TopBun5" parent="StackingHolder2" index="5" instance=ExtResource("3_mr4v2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0689799, 0)
+
+[node name="TopBun6" parent="StackingHolder2" index="6" instance=ExtResource("3_mr4v2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0865552, 0)
+
+[node name="TopBun7" parent="StackingHolder2" index="7" instance=ExtResource("3_mr4v2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103313, 0)
+
+[node name="TopBun8" parent="StackingHolder2" index="8" instance=ExtResource("3_mr4v2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.120888, 0)
