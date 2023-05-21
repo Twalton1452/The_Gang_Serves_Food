@@ -79,6 +79,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0518014, 0.009, -0.0090246
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000983924, 0.0326973, 0)
 shape = SubResource("BoxShape3D_ewkhx")
+disabled = true
 
 [node name="Patty" parent="StackingHolder" instance=ExtResource("3_bcyji")]
 
@@ -133,6 +134,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0545318, 0.009, -0.00902466
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000983924, 0.0326973, 0)
 shape = SubResource("BoxShape3D_ewkhx")
+disabled = true
 
 [node name="Patty" parent="StackingHolder2" instance=ExtResource("3_bcyji")]
 

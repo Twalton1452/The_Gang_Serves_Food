@@ -10,6 +10,9 @@
 ingredient_scene = ExtResource("2_qlkw3")
 can_hold_holders = false
 
+[node name="CollisionShape3D" parent="StackingHolder" index="0"]
+disabled = true
+
 [node name="BottomBun" parent="StackingHolder" index="1" instance=ExtResource("2_qlkw3")]
 
 [node name="BottomBun2" parent="StackingHolder" index="2" instance=ExtResource("2_qlkw3")]
@@ -36,6 +39,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.114082, 0)
 [node name="StackingHolder2" parent="." index="3"]
 ingredient_scene = ExtResource("3_mr4v2")
 can_hold_holders = false
+
+[node name="CollisionShape3D" parent="StackingHolder2" index="0"]
+disabled = true
 
 [node name="TopBun" parent="StackingHolder2" index="1" instance=ExtResource("3_mr4v2")]
 

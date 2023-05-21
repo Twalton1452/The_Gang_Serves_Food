@@ -16,6 +16,7 @@ stacking_spacing = Vector3(0, 0.006, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0896733, 0)
 shape = SubResource("BoxShape3D_s5fsb")
+disabled = true
 
 [node name="Plate" parent="StackingHolder" index="1" instance=ExtResource("2_lyxfo")]
 

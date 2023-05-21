@@ -35,11 +35,19 @@ func hold_item(item: Node3D):
 				item.position = held_items[-1].position + held_items[-1].stacking_spacing if held_items[-1] is Food else stacking_spacing
 			else:
 				item.position = Vector3.ZERO
+	# Don't need the fall back collider if we can interact with the items on the Holder
+	if get_node_or_null("CollisionShape3D") != null:
+		$CollisionShape3D.disabled = true
 
 func release_item_to(holder: Holder):
 	super(holder)
-	if destroy_on_empty and len(get_held_items()) == 1:
-		Combiner.destroy_combination(self)
+	if destroy_on_empty:
+		if len(get_held_items()) == 1:
+			Combiner.destroy_combination(self)
+	elif len(get_held_items()) == 0:
+		# Fall back collider so you can still stack when no items are there
+		if get_node_or_null("CollisionShape3D") != null:
+			$CollisionShape3D.disabled = false
 
 func organize_items():
 	var held_items = get_held_items()

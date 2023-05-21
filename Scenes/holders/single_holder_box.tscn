@@ -60,7 +60,9 @@ shape = SubResource("ConcavePolygonShape3D_1lrfs")
 
 [node name="StackingHolder" parent="." instance=ExtResource("2_vwo48")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0132073, 0)
+can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0198227, 0)
 shape = SubResource("BoxShape3D_gpe3u")
+disabled = true
