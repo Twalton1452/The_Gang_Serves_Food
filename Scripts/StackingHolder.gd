@@ -12,7 +12,7 @@ func _ready():
 	var held_items = get_held_items()
 	while i < len(held_items):
 		var held_item = held_items[i]
-		held_item.position = held_items[i - 1].position + (held_item.stacking_spacing if held_item is Food else stacking_spacing)
+		held_item.position = held_items[i - 1].position + (held_items[i - 1].stacking_spacing if held_item is Food else stacking_spacing)
 		i += 1
 
 # Overriding Holder method for Right click stacking in Holder
@@ -28,54 +28,26 @@ func hold_item(item: Node3D):
 	if len(held_items) < max_amount:
 		super(item)
 		
-		if is_organized:
-			organize_items()
-		else:
-			if len(held_items) > 1:
-				item.position = held_items[-1].position + held_items[-1].stacking_spacing if held_items[-1] is Food else stacking_spacing
-			else:
-				item.position = Vector3.ZERO
+		stack_items()
 	# Don't need the fall back collider if we can interact with the items on the Holder
 	if get_node_or_null("CollisionShape3D") != null:
 		$CollisionShape3D.disabled = true
 
+func stack_items():
+	var held_items = get_held_items()
+	if len(held_items) > 1:
+		var new_item = held_items[-1]
+		new_item.position = held_items[-2].position + held_items[-2].stacking_spacing if held_items[-2] is Food else stacking_spacing
+#	else:
+#		new_item.position = Vector3.ZERO
+
 func release_item_to(holder: Holder):
 	super(holder)
-	if destroy_on_empty:
-		if len(get_held_items()) == 1:
-			Combiner.destroy_combination(self)
-	elif len(get_held_items()) == 0:
+	if len(get_held_items()) == 0:
 		# Fall back collider so you can still stack when no items are there
 		if get_node_or_null("CollisionShape3D") != null:
 			$CollisionShape3D.disabled = false
-
-func organize_items():
-	var held_items = get_held_items()
-	# Check for everything to be organizable first
-	for held_item in held_items:
-		if not held_item is Food:
-			return
 	
-	# Sort according to the Rule's set in the Editor for that Scene
-	(held_items as Array[Food]).sort_custom(func(a,b):
-		if a.rule < b.rule:
-			return 1
-		return 0
-	)
-	
-	# Establish a base
-	# move_child doesn't really matter too much, but it'll be organized
-	move_child(held_items[0], 0)
-	held_items[0].position = Vector3.ZERO
-	
-	# Move the rest of the children according to the newly sorted array
-	var i : int = 1
-	while i < len(held_items):
-		var held_item = held_items[i]
-		move_child(held_item, i)
-		held_item.position = held_items[i - 1].position + held_items[i - 1].stacking_spacing
-		i += 1
-
 func _interact(player : Player):
 	# Player Taking Item from this Holder
 	if not player.c_holder.is_holding_item():

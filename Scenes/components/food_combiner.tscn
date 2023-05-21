@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dbux8704g4o5m"]
+[gd_scene load_steps=4 format=3 uid="uid://dbux8704g4o5m"]
 
 [ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="1_4ncca"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_his7f"]
+[ext_resource type="Script" path="res://Scripts/CombinedFoodHolder.gd" id="2_uebj5"]
 
 [node name="FoodCombiner" instance=ExtResource("1_4ncca")]
+script = ExtResource("2_uebj5")
 max_amount = 20
 is_organized = true
 destroy_on_empty = true

@@ -8,7 +8,8 @@ static func combine(player: Player, resting: Holdable):
 		return
 	
 	var resting_p = resting.get_parent()
-	var is_exactly_holder = resting_p is Holder and not resting_p is MultiHolder and not resting_p is StackingHolder
+	var is_exactly_holder = resting_p is Holder and not resting_p is MultiHolder and \
+							not resting_p is StackingHolder and not CombinedFoodHolder
 	
 	# Player is combining with an item on a counter (Simple Holder)
 	if is_exactly_holder:
@@ -22,8 +23,11 @@ static func combine(player: Player, resting: Holdable):
 		player.c_holder.release_item_to(combiner)
 	# Don't combine in-hand if Player is holding a Plate or a box of Food
 	elif not player.c_holder.get_held_item() is MultiHolder:
+		# Player is trying to pull off a Multi/Stacking Holder to continue combining in their hand
+		if player.c_holder.get_held_item() is CombinedFoodHolder:
+			resting_p.release_item_to(player.c_holder.get_held_item())
 		# Player has 1 ingredient and trying to start a combination
-		if not player.c_holder.get_held_item() is StackingHolder:
+		elif not player.c_holder.get_held_item() is StackingHolder:
 			var combiner : StackingHolder = load("res://Scenes/components/food_combiner.tscn").instantiate()
 			var networked_node : NetworkedNode3D = combiner.get_node("NetworkedNode3D")
 			
@@ -32,15 +36,10 @@ static func combine(player: Player, resting: Holdable):
 			resting_p.release_item_to(combiner)
 			player.c_holder.release_item_to(combiner)
 			player.c_holder.hold_item(combiner)
-		# Player is trying to pull off a Multi/Stacking Holder to continue combining in their hand
-		# TODO: Refactor StackingHolder here to be "CombinerHolder" or something
-		elif player.c_holder.get_held_item() is StackingHolder and player.c_holder.get_held_item().destroy_on_empty:
-			resting_p.release_item_to(player.c_holder.get_held_item())
-		
 
 ## When a Food Combination gets down to 1 item, it will call this method
 ## We need to reparent the 1 item to the parent of the Holder we're destroying
-static func destroy_combination(s_holder: StackingHolder):
+static func destroy_combination(s_holder: CombinedFoodHolder):
 	var s_holder_p : Holder = s_holder.get_parent()
 	var left_over_item = s_holder.get_held_item()
 	

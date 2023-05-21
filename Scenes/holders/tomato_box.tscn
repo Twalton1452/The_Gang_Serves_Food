@@ -5,6 +5,9 @@
 
 [node name="SmallBrownBox" instance=ExtResource("1_hseja")]
 
+[node name="CollisionShape3D" parent="StackingHolder" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0211701, 0)
+
 [node name="Tomato" parent="StackingHolder" index="1" instance=ExtResource("2_45rb6")]
 
 [node name="Tomato2" parent="StackingHolder" index="2" instance=ExtResource("2_45rb6")]
