@@ -38,7 +38,6 @@ shape = SubResource("BoxShape3D_xyk0s")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.133402, 0.442529, -0.184244)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner1" index="0" instance=ExtResource("3_jfae0")]
-can_hold_holders = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner1/Cooker" index="2"]
 shape = SubResource("BoxShape3D_4ekfo")

@@ -319,6 +319,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.79795, 0, -1.24027)
 [node name="kitchenCabinet" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43, 0, 0)
 
+[node name="CollisionShape3D" parent="Testing/kitchenCabinet/Holder" index="1"]
+disabled = true
+
+[node name="PlateStackHolder" parent="Testing/kitchenCabinet/Holder" index="2" instance=ExtResource("24_ovivh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0296599, 0.028514, -0.00741696)
+
 [node name="kitchenCabinet2" parent="Testing" instance=ExtResource("10_b6sav")]
 
 [node name="PattyBox" parent="Testing/kitchenCabinet2/Holder" index="2" instance=ExtResource("23_ym7y0")]
@@ -349,13 +355,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72, 0, 0)
 [node name="kitchenStove" parent="Testing" instance=ExtResource("16_eiaux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43, 0, 0)
 
-[node name="PlateStackHolder" parent="Testing" instance=ExtResource("24_ovivh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.67077, 0.455059, -0.221001)
-
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]
 
 [editable path="roof"]
 [editable path="floor"]
+[editable path="Testing/kitchenCabinet"]
 [editable path="Testing/kitchenCabinet2"]
 [editable path="Testing/kitchenCabinet3"]
 [editable path="Testing/kitchenCabinet5"]

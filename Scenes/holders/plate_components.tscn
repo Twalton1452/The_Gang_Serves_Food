@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://i1fsr68tupru"]
+[gd_scene load_steps=11 format=3 uid="uid://i1fsr68tupru"]
 
 [ext_resource type="Script" path="res://Scripts/MultiHolder.gd" id="1_h3fsn"]
 [ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="2_o77dx"]
@@ -43,6 +43,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_m583d")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_tjd7u"]
+points = PackedVector3Array(0.0809337, 0.00414286, 0.152381, -0.0809337, -0.00538095, -0.152381, -0.0999963, -0.00538095, -0.147608, 0.0999963, -0.00538095, 0.147608, 0.133318, 0.00414286, -0.123802, -0.147608, 0.00414286, 0.0999963, -0.123802, -0.00538095, 0.133318, -0.142835, 0.00414286, -0.109513, 0.152381, -0.00538095, -0.0809337, 0.152381, 0.00414286, 0.0809337, -0.152381, -0.00538095, -0.0809337, 0.0999963, -0.00538095, -0.147608, -0.0809337, 0.00414286, -0.152381, -0.0809337, 0.00414286, 0.152381, 0.152381, -0.00538095, 0.0809337, 0.0809337, 0.00414286, -0.152381, -0.152381, -0.00538095, 0.0809337, -0.0809337, -0.00538095, 0.152381, 0.152381, 0.00414286, -0.0809337, 0.133318, 0.00414286, 0.123802, -0.152381, 0.00414286, -0.0809337, 0.142835, -0.00538095, -0.109513, 0.142835, -0.00538095, 0.109513, -0.109513, 0.00414286, 0.142835, -0.123802, -0.00538095, -0.133318, -0.123802, 0.00414286, -0.133318, -0.152381, 0.00414286, 0.0809337, 0.0809337, -0.00538095, -0.152381, 0.0809337, -0.00538095, 0.152381, -0.147608, -0.00538095, -0.0999963, 0.109513, 0.00414286, -0.142835, 0.123802, -0.00538095, -0.133318)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_kpxjo"]
 size = Vector3(0.0742614, 0.0183977, 0.096682)
 
@@ -53,7 +56,10 @@ size = Vector3(0.0675428, 0.02522, 0.0663167)
 size = Vector3(0.0675428, 0.02522, 0.0663167)
 
 [node name="Plate" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_h3fsn")
+is_pickupable = true
 
 [node name="NetworkedNode3D" type="Node3D" parent="."]
 script = ExtResource("2_o77dx")
@@ -63,6 +69,10 @@ priority_sync_order = -1
 transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0, 0)
 mesh = SubResource("ArrayMesh_7ma6y")
 skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_tjd7u")
 
 [node name="Main" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0477687, 0.005896, 0)

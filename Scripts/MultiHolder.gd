@@ -1,6 +1,8 @@
 extends Holder
 class_name MultiHolder
 
+@export var is_pickupable = false
+
 var c_holders : Array[Holder]
 
 func _ready():
@@ -44,3 +46,11 @@ func hold_item(item: Node3D) -> void:
 		if not holder.is_holding_item():
 			holder.hold_item(item)
 			break
+
+func _interact(player: Player):
+	# Let the Holder take care of the interaction
+	if is_pickupable:
+		(get_parent() as Holder).interact(player)
+	else:
+		super(player)
+	

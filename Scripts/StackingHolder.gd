@@ -4,8 +4,6 @@ class_name StackingHolder
 @export var ingredient_scene : PackedScene
 @export var max_amount = 99
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
-@export var is_organized = false
-@export var destroy_on_empty = false
 
 func _ready():
 	var i : int = 1
@@ -15,10 +13,12 @@ func _ready():
 		held_item.position = held_items[i - 1].position + (held_items[i - 1].stacking_spacing if held_item is Food else stacking_spacing)
 		i += 1
 
+func acceptable_item(item: Node3D) -> bool:
+	return (ingredient_scene == null and not item is MultiHolder) or (item != null and ingredient_scene != null and item.scene_file_path == ingredient_scene.resource_path)
+
 # Overriding Holder method for Right click stacking in Holder
 func has_space_for_item(item: Node3D) -> bool:
-	var acceptable_item = ingredient_scene == null or item != null and item.scene_file_path == ingredient_scene.resource_path
-	return acceptable_item and len(get_held_items()) < max_amount
+	return acceptable_item(item) and len(get_held_items()) < max_amount
 
 func hold_item(item: Node3D):
 	if is_holding(item):
@@ -37,7 +37,7 @@ func stack_items():
 	var held_items = get_held_items()
 	if len(held_items) > 1:
 		var new_item = held_items[-1]
-		new_item.position = held_items[-2].position + held_items[-2].stacking_spacing if held_items[-2] is Food else stacking_spacing
+		new_item.position = held_items[-2].position + (held_items[-2].stacking_spacing if held_items[-2] is Food else stacking_spacing)
 #	else:
 #		new_item.position = Vector3.ZERO
 
@@ -57,6 +57,11 @@ func _interact(player : Player):
 	# Player is holding a Plate, put this onto it
 	elif player.c_holder.get_held_item() is MultiHolder:
 		var multi_h : MultiHolder = player.c_holder.get_held_item()
+		# Player trying to put the item back onto this Holder
+		if acceptable_item(multi_h):
+			player.c_holder.release_item_to(self)
+			return
+		
 		if is_holding_item():
 			release_item_to(multi_h)
 		
@@ -66,9 +71,6 @@ func _interact(player : Player):
 			# Taking Player's item if it matches
 			elif multi_h.scene_file_path == ingredient_scene.resource_path:
 				player.c_holder.release_item_to(self)
-	# Taking Player's item no matter what
-	elif ingredient_scene == null:
-		player.c_holder.release_item_to(self)
-	# Taking Player's item if it matches
-	elif player.c_holder.get_held_item().scene_file_path == ingredient_scene.resource_path:
+	# Taking Player's item if it matches with the pre-set ingredient_scene
+	elif acceptable_item(player.c_holder.get_held_item()):
 		player.c_holder.release_item_to(self)
