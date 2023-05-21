@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbux8704g4o5m"]
+
+[ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="1_4ncca"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_his7f"]
+
+[node name="FoodCombiner" instance=ExtResource("1_4ncca")]
+max_amount = 20
+is_organized = true
+destroy_on_empty = true
+can_hold_holders = false
+SCENE_ID = 1000
+
+[node name="NetworkedNode3D" parent="." index="0" instance=ExtResource("2_his7f")]
+priority_sync_order = -1

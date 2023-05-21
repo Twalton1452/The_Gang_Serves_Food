@@ -17,7 +17,8 @@ func sync_nodes_for_new_player(peer_id: int):
 	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
 	
 	# Sync MultiHolders first because other objects need to get parented to them
-	net_nodes.sort_custom(func(a, b):
+	# Lower number for priority is sync'd first
+	net_nodes.sort_custom(func(a: NetworkedNode3D, b: NetworkedNode3D):
 		if a.priority_sync_order < b.priority_sync_order:
 			return true
 		return false
@@ -56,15 +57,16 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 		
 	# Didn't find the Networked Node, need to spawn one
 	if not synced:
-		assert(SceneIds.PATHS.has(net_scene_id), "%s does not have a SceneId PATH to instantiate from in SceneIds.gd")
+		assert(SceneIds.get_scene_from_id(net_scene_id) != null, "%s does not have a SceneId PATH to instantiate from in SceneIds.gd")
 		
 		print("[Peer %s] didn't find %s in the objects on startup. The Player must have generated this at run time. [Spawning a %s with id %s]" \
-			% [multiplayer.get_unique_id(), networked_id, SceneIds.PATHS[net_scene_id].get_state().get_node_name(0), networked_id])
+			% [multiplayer.get_unique_id(), networked_id, SceneIds.get_scene_from_id(net_scene_id).get_state().get_node_name(0), networked_id])
 		
 		# Spawn Networked Node
-		var net_scene = SceneIds.PATHS[net_scene_id].instantiate()
+		var net_scene = SceneIds.get_scene_from_id(net_scene_id).instantiate()
 		add_child(net_scene, true) # Briefly add the node into the tree so that it can call get_node from within
-		net_scene.networked_id = networked_id
-		net_scene.sync_state = sync_state
-		net_scene.changed = true
+		var net_node = net_scene.get_node("NetworkedNode3D")
+		net_node.networked_id = networked_id
+		net_node.sync_state = sync_state
+		net_node.changed = true
 

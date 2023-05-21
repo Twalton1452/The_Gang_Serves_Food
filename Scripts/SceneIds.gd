@@ -14,12 +14,18 @@ enum SCENES {
 #	HOLDABLE = 101,
 #	COOKABLE = 102,
 #	ROTATABLE = 103,
+	FOOD_COMBINER = 1000,
 }
 
-const PATHS = {
-#	SCENES.PATTY: preload("res://Scenes/foods/patty.tscn"),
-#	SCENES.BOTTOM_BUN: preload("res://Scenes/foods/bottom_bun.tscn"),
-#	SCENES.TOP_BUN: preload("res://Scenes/foods/top_bun.tscn"),
-#	SCENES.TOMATO: preload("res://Scenes/foods/tomato.tscn"),
-#	SCENES.PLATE: preload("res://Scenes/holders/plate_components.tscn"),
-}
+
+
+static func get_scene_from_id(id: SCENES) -> PackedScene:
+	var PATHS = {
+		SCENES.PATTY: load("res://Scenes/foods/patty.tscn"),
+		SCENES.BOTTOM_BUN: load("res://Scenes/foods/bottom_bun.tscn"),
+		SCENES.TOP_BUN: load("res://Scenes/foods/top_bun.tscn"),
+		SCENES.TOMATO: load("res://Scenes/foods/tomato.tscn"),
+		SCENES.PLATE: load("res://Scenes/holders/plate_components.tscn"),
+		SCENES.FOOD_COMBINER: load("res://Scenes/components/food_combiner.tscn"),
+	}
+	return PATHS[id] if PATHS.has(id) else null
