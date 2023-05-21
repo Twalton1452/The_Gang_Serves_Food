@@ -5,6 +5,7 @@ class_name StackingHolder
 @export var max_amount = 99
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
 @export var is_organized = false
+@export var destroy_on_empty = false
 
 func _ready():
 	var i : int = 1
@@ -31,9 +32,14 @@ func hold_item(item: Node3D):
 			organize_items()
 		else:
 			if len(held_items) > 1:
-				item.position = held_items[-1].position + item.stacking_spacing if item is Food else stacking_spacing
+				item.position = held_items[-1].position + held_items[-1].stacking_spacing if held_items[-1] is Food else stacking_spacing
 			else:
 				item.position = Vector3.ZERO
+
+func release_item_to(holder: Holder):
+	super(holder)
+	if destroy_on_empty and len(get_held_items()) == 1:
+		Combiner.destroy_combination(self)
 
 func organize_items():
 	var held_items = get_held_items()
@@ -59,7 +65,7 @@ func organize_items():
 	while i < len(held_items):
 		var held_item = held_items[i]
 		move_child(held_item, i)
-		held_item.position = held_items[i - 1].position + held_item.stacking_spacing
+		held_item.position = held_items[i - 1].position + held_items[i - 1].stacking_spacing
 		i += 1
 
 func _interact(player : Player):
