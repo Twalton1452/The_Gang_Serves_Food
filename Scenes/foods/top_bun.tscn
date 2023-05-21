@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://8lkh6825ij50"]
+[gd_scene load_steps=9 format=3 uid="uid://8lkh6825ij50"]
 
 [ext_resource type="Script" path="res://Scripts/Food.gd" id="1_wjj1o"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_2u2tk"]
 [ext_resource type="Gradient" uid="uid://bkf1ebfa3yil8" path="res://Resources/food_gradients/bun_cook_gradient.tres" id="2_sas88"]
+[ext_resource type="Material" uid="uid://csbc8xg3kccfe" path="res://Materials/Bun_mat.tres" id="3_mr88c"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e78pq"]
 resource_name = "Bun"
@@ -59,6 +60,7 @@ SCENE_ID = 3
 [node name="Bun" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_j4mcj")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("3_mr88c")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0102495, 0)

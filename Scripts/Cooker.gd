@@ -7,7 +7,7 @@ class_name CookerComponent
 
 func hold_item(node: Node3D):
 	super(node)
-	if node is Cookable or node is MultiHolder:
+	if node is Cookable or node is MultiHolder or node is CombinedFoodHolder:
 		begin_cooking()
 	else:
 		#print("%s isn't cookable, but i'll hold on to it" % node.name)
@@ -27,7 +27,7 @@ func _on_cooking_ticks_timer_timeout():
 	var cooked = false
 	
 	# Cook everything on the Multiholder
-	if get_held_item() is MultiHolder:
+	if get_held_item() is MultiHolder or get_held_item() is CombinedFoodHolder:
 		var multi_h_items : Array[Node] = get_held_item().get_held_items()
 		for item in multi_h_items:
 			if item is Cookable:
