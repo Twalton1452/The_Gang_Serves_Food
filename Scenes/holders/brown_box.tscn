@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2ega3lnm1rjf"]
+[gd_scene load_steps=5 format=3 uid="uid://dr0ppu0s73si0"]
 
 [ext_resource type="PackedScene" uid="uid://bhm43rjjcejqy" path="res://3d_models/BrownBox.blend" id="1_foli8"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_jipxe"]
 [ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="3_lqjuo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3wjmx"]
@@ -11,7 +12,10 @@ size = Vector3(0.112874, 0.0741163, 0.1109)
 [node name="Box" parent="." index="0"]
 transform = Transform3D(0.449212, 0, 0, 0, 1, 0, 0, 0, 0.751964, 0, 0, 0)
 
-[node name="StackingHolder" parent="." index="1" instance=ExtResource("3_lqjuo")]
+[node name="NetworkedNode3D" parent="." index="1" instance=ExtResource("2_jipxe")]
+priority_sync_order = -1
+
+[node name="StackingHolder" parent="." index="2" instance=ExtResource("3_lqjuo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0152823, 0)
 can_hold_holders = false
 

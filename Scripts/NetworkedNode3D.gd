@@ -27,6 +27,8 @@ func set_sync_state(value: PackedByteArray):
 	if p_node.get_parent() != new_parent:
 		if new_parent is Holder:
 			new_parent.hold_item(p_node)
+			if new_parent is CombinedFoodHolder:
+				new_parent.stack_items()
 		else:
 			p_node.reparent(new_parent, false)
 		p_node.position = sync_pos

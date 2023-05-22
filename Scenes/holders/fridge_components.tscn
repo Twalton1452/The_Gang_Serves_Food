@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dr60d8lik1jhv" path="res://3d_models/Kenneys_Furniture/kitchenFridge.glb" id="1_7cp4a"]
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_ef4us"]
-[ext_resource type="PackedScene" uid="uid://c2ega3lnm1rjf" path="res://Scenes/holders/brown_box.tscn" id="4_yjxx3"]
+[ext_resource type="PackedScene" uid="uid://cj1uut541x2k4" path="res://Scenes/holders/single_holder_box.tscn" id="3_dvyk0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kxaqi"]
 size = Vector3(0.403279, 0.216239, 0.0375138)
@@ -43,12 +43,6 @@ mesh = SubResource("BoxMesh_rv0he")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/Top/StaticBody3D"]
 shape = SubResource("BoxShape3D_fan4s")
 
-[node name="BrownBoxTop" parent="kitchenFridge/kitchenFridge(Clone)/Top" instance=ExtResource("4_yjxx3")]
-transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.233409, 0.847816, 0.013665)
-
-[node name="BrownBoxTop2" parent="kitchenFridge/kitchenFridge(Clone)/Top" instance=ExtResource("4_yjxx3")]
-transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, -0.248417, 0.847816, 0.013665)
-
 [node name="Bottom" type="MeshInstance3D" parent="kitchenFridge/kitchenFridge(Clone)" index="4"]
 transform = Transform3D(0.373974, 0, 0, 0, 0.02, 0, 0, 0, 0.2, 0.214339, 0.188206, -0.173867)
 cast_shadow = 0
@@ -59,13 +53,16 @@ mesh = SubResource("BoxMesh_rv0he")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenFridge/kitchenFridge(Clone)/Bottom/StaticBody3D"]
 shape = SubResource("BoxShape3D_fan4s")
 
-[node name="BrownBoxBottom" parent="kitchenFridge/kitchenFridge(Clone)/Bottom" instance=ExtResource("4_yjxx3")]
-transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, -0.324322, 0.534283, 0.013665)
+[node name="SmallBrownBox" parent="kitchenFridge/kitchenFridge(Clone)" index="5" instance=ExtResource("3_dvyk0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.130058, 0.434111, -0.16489)
 
-[node name="BrownBoxBottom2" parent="kitchenFridge/kitchenFridge(Clone)/Bottom" instance=ExtResource("4_yjxx3")]
-transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.00239873, 0.534283, 0.013665)
+[node name="SmallBrownBox2" parent="kitchenFridge/kitchenFridge(Clone)" index="6" instance=ExtResource("3_dvyk0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.299161, 0.434111, -0.16489)
 
-[node name="BrownBoxBottom3" parent="kitchenFridge/kitchenFridge(Clone)/Bottom" instance=ExtResource("4_yjxx3")]
-transform = Transform3D(2.67398, 0, 0, 0, 50, 0, 0, 0, 5, 0.326499, 0.534283, 0.013665)
+[node name="SmallBrownBox3" parent="kitchenFridge/kitchenFridge(Clone)" index="7" instance=ExtResource("3_dvyk0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.137725, 0.212161, -0.139702)
+
+[node name="SmallBrownBox4" parent="kitchenFridge/kitchenFridge(Clone)" index="8" instance=ExtResource("3_dvyk0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.296029, 0.212161, -0.139702)
 
 [editable path="kitchenFridge"]

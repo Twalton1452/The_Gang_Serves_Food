@@ -8,22 +8,22 @@
 size = Vector3(0.357523, 0.273441, 0.0219917)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4ekfo"]
-size = Vector3(0.163186, 0.0300872, 0.124441)
+size = Vector3(0.163186, 0.00692239, 0.124441)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nibh8"]
-size = Vector3(0.163186, 0.0300872, 0.124441)
+size = Vector3(0.163186, 0.00692239, 0.124441)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ghs3m"]
-size = Vector3(0.163186, 0.0300872, 0.124441)
+size = Vector3(0.163186, 0.00692239, 0.124441)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8pwa0"]
-size = Vector3(0.163186, 0.0300872, 0.124441)
+size = Vector3(0.163186, 0.00692239, 0.124441)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bcnx5"]
-size = Vector3(0.281198, 0.0300872, 0.204176)
+size = Vector3(0.281198, 0.00644293, 0.204176)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_836pg"]
-size = Vector3(0.281198, 0.0300872, 0.200432)
+size = Vector3(0.302255, 0.00644293, 0.204176)
 
 [node name="kitchenStove" instance=ExtResource("1_kvmn6")]
 
@@ -70,7 +70,7 @@ shape = SubResource("BoxShape3D_8pwa0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.205968, 0.225668, -0.144904)
 
 [node name="Cooker" parent="kitchenStove(Clone)/OvenTop" index="0" instance=ExtResource("3_jfae0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00934398, 0, -0.0188465)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00934398, -0.00270018, -0.0188465)
 power = 0.25
 power_loss_item_count_begin = 8
 

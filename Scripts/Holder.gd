@@ -47,13 +47,13 @@ func swap_items_with(holder: Holder):
 	# Causing issues with a combination of a MultiHolder that has multiple StackingHolders
 	# Infinitely taking from them, but not giving
 	# Happens when you interact with the MultiHolder itself with an item in your hand
-	if get_held_item() is MultiHolder or holder.get_held_item() is MultiHolder:
+	if self is MultiHolder or get_held_item() is MultiHolder or holder.get_held_item() is MultiHolder:
 		print_verbose("[NYI] No Swapping for MultiHolders")
 		return
 	
 	var curr_item = get_held_item()
 	var holder_item = holder.get_held_item()
-	
+
 	holder.hold_item_unsafe(curr_item)
 	hold_item_unsafe(holder_item)
 

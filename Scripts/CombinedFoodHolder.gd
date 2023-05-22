@@ -1,6 +1,9 @@
 extends StackingHolder
 class_name CombinedFoodHolder
 
+func _ready():
+	stack_items()
+
 func release_item_to(holder: Holder):
 	super(holder)
 	if len(get_held_items()) == 1:
@@ -8,6 +11,9 @@ func release_item_to(holder: Holder):
 
 func stack_items():
 	var held_items = get_held_items()
+	if len(held_items) == 0:
+		return
+	
 	# Check for everything to be organizable first
 	for held_item in held_items:
 		if not held_item is Food:
@@ -21,7 +27,8 @@ func stack_items():
 	)
 	
 	# Establish a base
-	# move_child doesn't really matter too much, but it'll be organized
+	# move_child doesn't really matter too much, because Holders 
+	# currently put and take from the last available object which auto-organizes it
 	move_child(held_items[0], 0)
 	held_items[0].position = Vector3.ZERO
 	
