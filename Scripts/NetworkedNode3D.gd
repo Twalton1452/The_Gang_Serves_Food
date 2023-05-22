@@ -52,11 +52,13 @@ func set_sync_state(value: PackedByteArray):
 	var sync_pos = Vector3(value.decode_half(0), value.decode_half(2), value.decode_half(4))
 	var path_size = value.decode_u8(6)
 	var path_to = value.slice(7, 7 + path_size).get_string_from_utf8()
-	var new_name = path_to.split("/")[-1]
-	var path_to_parent = path_to.split("/" + new_name, false)[-1]
-	#print("%s %s" % [new_name, path_to_parent])
-	get_parent().name = new_name
+	
+	var split_path : PackedStringArray = path_to.split("/")
+	var new_name = split_path[-1]
+	var path_to_parent = "/".join(split_path.slice(0, -1))
 	var new_parent = get_node(path_to_parent)
+	
+	get_parent().name = new_name
 	if p_node.get_parent() != new_parent:
 		if p_node.get_parent() is Holder and new_parent is Holder:
 			p_node.get_parent().release_this_item_to(p_node, new_parent)
