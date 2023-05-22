@@ -1,22 +1,50 @@
 extends Node3D
 class_name NetworkedNode3D
 
+## Heavy lifter of setting up synchronization at start up if a Player joins midsession
+##
+## It will automatically sync any Interactable above it (could likely do non-interactables too with tweaking)
+## The networked_id is used as an identifier between server/client to figure out what needs to be updated or created
+## Default Properties Sync'd:
+##  - position
+##	- parent
 
-# The lower the number the more important it is to sync
-@export var priority_sync_order = 0
 
-# Sync with this node
+## Some Nodes are dependent on other Node's to be under the correct parent or have some state
+## so this is a phased ordering structure to generate some consistency
+## Set the NetworkingNode3D priority_sync_order in the editor according to how it should behave
+enum SyncPriorityPhase {
+	SETUP, ## Before Nodes are sync'd [br]ex: Player info, level info
+	INIT_MOVED, ## Existing Nodes when a player joins moved [br]ex: All restaurants start with a Stove and it was moved from the Kitchen to outside
+	CREATION, ## Create parent Nodes that will have children [br]ex: Run-time generated Plate needs to be created before food can be attached to it
+	NESTED_CREATION, ## Create child Nodes that will have children [br]ex: FoodCombiner inside a run-time generated Plate
+	REPARENT, ## Reparent Nodes after everything has been generated [br]ex: Existing plates are moved
+	NESTED_REPARENT, ## Reparent child Nodes in complex parent/child relationships, unlikely to be used [br]ex: Existing plate reparented and existing patty became parented to that plate, need to wait for plate to reparent
+	INDEPENDENT, ## Things that don't need others for syncing [br]ex: Player Info	
+	DELETION, ## Delete Nodes last to make sure all the connections are setup [br]ex: Existing nodes deleted
+}
+
+## The lower the number the more important it is to sync
+@export var priority_sync_order : SyncPriorityPhase = SyncPriorityPhase.REPARENT
+
+## Sync with this parent node
 @onready var p_node = get_parent()
 
-# Every NetworkedNode3D is automatically in the NETWORKED group once _ready happens
-# The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
-# This is pulled off the Interactable this is attached to
+## Every NetworkedNode3D is automatically in the NETWORKED group once [method _ready] happens
+## The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
+## This is pulled off the Interactable this is attached to
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.PATTY
-var networked_id = -1
-var sync_state : set = set_sync_state, get = get_sync_state
 
-# Used by the MidsessionSync script to see if it should update the Peer on spawn to reduce bandwidth
-# Run-time spawns will need this set to true automatically
+## Identifier between server/client to figure out what needs to be created/updated/deleted
+## Generated during [method _ready]
+var networked_id = -1
+
+## [PackedByteArray] of information like position, path to parent
+## Appends the [member p_node] [member sync_state] to this [PackedByteArray] before sending information to the Client
+var sync_state : PackedByteArray : set = set_sync_state, get = get_sync_state
+
+## Used by the [MidsessionJoinSyncer] script to see if it should update the Peer on spawn to reduce bandwidth
+## Run-time spawns will need this set to true automatically
 var changed = false
 
 func set_sync_state(value: PackedByteArray):
@@ -27,11 +55,10 @@ func set_sync_state(value: PackedByteArray):
 	if p_node.get_parent() != new_parent:
 		if new_parent is Holder:
 			new_parent.hold_item(p_node)
-			if new_parent is CombinedFoodHolder:
-				new_parent.stack_items()
 		else:
 			p_node.reparent(new_parent, false)
 		p_node.position = sync_pos
+	
 	# Give the rest of the sync_state to the node to handle
 	p_node.sync_state = value.slice(7 + path_size)
 
@@ -70,7 +97,7 @@ func _exit_tree():
 	#print("[Changed: %s] Parent: %s" % [name, get_parent().name])
 
 # Could be useful
-# These notifications also get fired off during less-optimal times, needs logic
+# These notifications also get fired off during less-optimal times like during game start, needs logic
 # https://docs.godotengine.org/en/stable/tutorials/best_practices/godot_notifications.html
 #func _notification(what):
 #	match what:
