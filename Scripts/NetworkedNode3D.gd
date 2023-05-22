@@ -4,6 +4,7 @@ class_name NetworkedNode3D
 ## Heavy lifter of setting up synchronization at start up if a Player joins midsession
 ##
 ## It will automatically sync any Interactable above it (could likely do non-interactables too with tweaking)
+## Attach this Node as a child of another Node that could possibly Move or have State change
 ## The networked_id is used as an identifier between server/client to figure out what needs to be updated or created
 ## Default Properties Sync'd:
 ##  - position
@@ -20,7 +21,7 @@ enum SyncPriorityPhase {
 	NESTED_CREATION, ## Create child Nodes that will have children [br]ex: FoodCombiner inside a run-time generated Plate
 	REPARENT, ## Reparent Nodes after everything has been generated [br]ex: Existing plates are moved
 	NESTED_REPARENT, ## Reparent child Nodes in complex parent/child relationships, unlikely to be used [br]ex: Existing plate reparented and existing patty became parented to that plate, need to wait for plate to reparent
-	INDEPENDENT, ## Things that don't need others for syncing [br]ex: Player Info	
+	STATEFUL, ## Things that need to wait for the rest of the Nodes to finish creating/parenting [br]ex: Whether [Rotatable] is rotated or not or a [Cookable] cook progress
 	DELETION, ## Delete Nodes last to make sure all the connections are setup [br]ex: Existing nodes deleted
 }
 

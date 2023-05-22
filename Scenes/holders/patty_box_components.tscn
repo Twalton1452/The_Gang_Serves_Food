@@ -72,7 +72,7 @@ disabled = true
 shape = SubResource("ConcavePolygonShape3D_hqr13")
 
 [node name="NetworkedNode3D" parent="." instance=ExtResource("4_4lesx")]
-priority_sync_order = -1
+priority_sync_order = 1
 
 [node name="StackingHolder" parent="." instance=ExtResource("2_ac440")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0518014, 0.009, -0.00902466)

@@ -62,7 +62,7 @@ script = ExtResource("1_h3fsn")
 
 [node name="NetworkedNode3D" type="Node3D" parent="."]
 script = ExtResource("2_o77dx")
-priority_sync_order = -2
+priority_sync_order = 1
 
 [node name="Cube" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0, 0)

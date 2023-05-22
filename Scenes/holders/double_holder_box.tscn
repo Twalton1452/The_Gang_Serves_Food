@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dhncnl67jot6g"]
+[gd_scene load_steps=10 format=3 uid="uid://dhncnl67jot6g"]
 
 [ext_resource type="Script" path="res://Scripts/MultiHolder.gd" id="1_7v0mh"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_13cnm"]
 [ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="2_cmp2j"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shgei"]
@@ -62,6 +63,9 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("ConcavePolygonShape3D_r7mn6")
+
+[node name="NetworkedNode3D" parent="." instance=ExtResource("2_13cnm")]
+priority_sync_order = 1
 
 [node name="StackingHolder" parent="." instance=ExtResource("2_cmp2j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0518014, 0.009, -0.00902466)

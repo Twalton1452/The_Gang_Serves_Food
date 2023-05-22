@@ -60,7 +60,7 @@ skeleton = NodePath("")
 shape = SubResource("ConcavePolygonShape3D_1lrfs")
 
 [node name="NetworkedNode3D" parent="." instance=ExtResource("2_epodt")]
-priority_sync_order = -1
+priority_sync_order = 1
 
 [node name="StackingHolder" parent="." instance=ExtResource("2_vwo48")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0132073, 0)
