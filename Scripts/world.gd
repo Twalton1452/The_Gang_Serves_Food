@@ -17,15 +17,18 @@ func _on_host_button_pressed():
 	
 	enet_peer.create_server(PORT)
 	multiplayer.multiplayer_peer = enet_peer
-	# upnp_setup()
+	if OS.has_feature("standalone"):
+		upnp_setup()
 	
 	start_game()
 
 func _on_join_button_pressed():
 	var enet_peer = ENetMultiplayerPeer.new()
 	
-	# enet_peer.create_client(address_entry.text, PORT)
-	enet_peer.create_client("localhost", PORT)
+	if OS.has_feature("standalone"):
+		enet_peer.create_client(address_entry.text, PORT)
+	else:
+		enet_peer.create_client("localhost", PORT)
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.server_disconnected.connect(server_disconnect)
 	start_game()
