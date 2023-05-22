@@ -3,7 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://cj1uut541x2k4" path="res://Scenes/holders/single_holder_box.tscn" id="1_hseja"]
 [ext_resource type="PackedScene" uid="uid://gucubnkf1reo" path="res://Scenes/foods/tomato.tscn" id="2_45rb6"]
 
-[node name="SmallBrownBox" instance=ExtResource("1_hseja")]
+[node name="TomatoBox" instance=ExtResource("1_hseja")]
+
+[node name="StackingHolder" parent="." index="3"]
+ingredient_scene = ExtResource("2_45rb6")
 
 [node name="CollisionShape3D" parent="StackingHolder" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0211701, 0)

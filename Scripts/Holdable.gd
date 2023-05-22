@@ -26,7 +26,10 @@ func _interact(player: Player):
 		(get_parent() as Holder).interact(player)
 
 func _secondary_interact(player: Player):
+	# Player trying to take wherever this thing is
 	if not player.c_holder.is_holding_item():
+		if get_parent() is Holder:
+			(get_parent() as Holder).release_this_item_to(self, player.c_holder)
 		return
 	
 	# Get the Player's item to see if we can Combine!

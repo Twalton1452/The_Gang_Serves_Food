@@ -47,7 +47,7 @@ data = PackedVector3Array(-0.063, 0.064, 0.0737, -0.063, 0.001, -0.0737, -0.063,
 [sub_resource type="BoxShape3D" id="BoxShape3D_gpe3u"]
 size = Vector3(0.106555, 0.0543476, 0.122567)
 
-[node name="SmallBrownBox" type="Area3D"]
+[node name="SingleHolderBox" type="Area3D"]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_eg46n")

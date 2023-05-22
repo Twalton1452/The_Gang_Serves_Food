@@ -25,17 +25,27 @@ static func combine(player: Player, resting: Holdable):
 	elif not player.c_holder.get_held_item() is MultiHolder:
 		# Player is trying to pull off a Multi/Stacking Holder to continue combining in their hand
 		if player.c_holder.get_held_item() is CombinedFoodHolder:
-			resting_p.release_item_to(player.c_holder.get_held_item())
-		# Player has 1 ingredient and trying to start a combination
+			# Give from Player's CombinedFood to resting CombinedFood
+			if resting_p is CombinedFoodHolder:
+				player.c_holder.get_held_item().release_item_to(resting_p)
+			# Take from resting holder into Player's CombinedFood
+			else:
+				resting_p.release_item_to(player.c_holder.get_held_item())
+		# Player is holding 1 ingredient
 		elif not player.c_holder.get_held_item() is StackingHolder:
-			var combiner : StackingHolder = load("res://Scenes/components/food_combiner.tscn").instantiate()
-			var networked_node : NetworkedNode3D = combiner.get_node("NetworkedNode3D")
-			
-			networked_node.changed = true
-			
-			resting_p.release_item_to(combiner)
-			player.c_holder.release_item_to(combiner)
-			player.c_holder.hold_item(combiner)
+			# Player giving to a combination despite having 1 ingredient
+			if resting_p is CombinedFoodHolder:
+				player.c_holder.release_item_to(resting_p)
+			# Player trying to start a combination
+			else:
+				var combiner : StackingHolder = load("res://Scenes/components/food_combiner.tscn").instantiate()
+				var networked_node : NetworkedNode3D = combiner.get_node("NetworkedNode3D")
+				
+				networked_node.generated_at_run_time_setup()
+				
+				resting_p.release_item_to(combiner)
+				player.c_holder.release_item_to(combiner)
+				player.c_holder.hold_item(combiner)
 
 ## When a Food Combination gets down to 1 item, it will call this method
 ## We need to reparent the 1 item to the parent of the Holder we're destroying

@@ -76,6 +76,7 @@ priority_sync_order = 1
 
 [node name="StackingHolder" parent="." instance=ExtResource("2_ac440")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0518014, 0.009, -0.00902466)
+ingredient_scene = ExtResource("3_bcyji")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000983924, 0.0326973, 0)
@@ -131,6 +132,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.117923, 0)
 
 [node name="StackingHolder2" parent="." instance=ExtResource("2_ac440")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0545318, 0.009, -0.00902466)
+ingredient_scene = ExtResource("3_bcyji")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000983924, 0.0326973, 0)

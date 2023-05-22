@@ -40,7 +40,9 @@ func hold_item_unsafe(item: Node3D) -> void:
 	item.position = Vector3.ZERO
 
 func release_item_to(holder: Holder):
-	var item = get_held_item()
+	release_this_item_to(get_held_item(), holder)
+	
+func release_this_item_to(item: Node3D, holder: Holder):
 	holder.hold_item(item)
 	
 func swap_items_with(holder: Holder):

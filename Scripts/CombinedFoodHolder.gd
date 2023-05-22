@@ -9,6 +9,11 @@ func release_item_to(holder: Holder):
 	if len(get_held_items()) == 1:
 		Combiner.destroy_combination(self)
 
+func release_this_item_to(item: Node3D, holder: Holder):
+	super(item, holder)
+	if len(get_held_items()) == 1:
+		Combiner.destroy_combination(self)
+
 func stack_items():
 	var held_items = get_held_items()
 	if len(held_items) == 0:
@@ -39,3 +44,11 @@ func stack_items():
 		move_child(held_item, i)
 		held_item.position = held_items[i - 1].position + held_items[i - 1].stacking_spacing
 		i += 1
+	
+func _interact(player: Player):
+	# Item free floating, just take it
+	if not get_parent() is Holder:
+		player.c_holder.hold_item(self)
+	# Let the Holder take care of the interaction
+	else:
+		(get_parent() as Holder).interact(player)
