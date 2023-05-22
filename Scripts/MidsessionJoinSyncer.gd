@@ -64,7 +64,7 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 		
 		# Spawn Networked Node
 		var net_scene = SceneIds.get_scene_from_id(net_scene_id).instantiate()
-		add_child(net_scene, true) # Briefly add the node into the tree so that it can call get_node from within
+		add_child(net_scene) # Briefly add the node into the tree so that it can call get_node from within
 		var net_node = net_scene.get_node("NetworkedNode3D")
 		net_node.networked_id = networked_id
 		net_node.sync_state = sync_state

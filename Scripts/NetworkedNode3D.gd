@@ -51,10 +51,16 @@ var changed = false
 func set_sync_state(value: PackedByteArray):
 	var sync_pos = Vector3(value.decode_half(0), value.decode_half(2), value.decode_half(4))
 	var path_size = value.decode_u8(6)
-	var path_to_parent = value.slice(7, 7 + path_size).get_string_from_utf8()
+	var path_to = value.slice(7, 7 + path_size).get_string_from_utf8()
+	var new_name = path_to.split("/")[-1]
+	var path_to_parent = path_to.split("/" + new_name, false)[-1]
+	#print("%s %s" % [new_name, path_to_parent])
+	get_parent().name = new_name
 	var new_parent = get_node(path_to_parent)
 	if p_node.get_parent() != new_parent:
-		if new_parent is Holder:
+		if p_node.get_parent() is Holder and new_parent is Holder:
+			p_node.get_parent().release_this_item_to(p_node, new_parent)
+		elif new_parent is Holder:
 			new_parent.hold_item(p_node)
 		else:
 			p_node.reparent(new_parent, false)
@@ -68,14 +74,14 @@ func get_sync_state() -> PackedByteArray:
 	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
 	
 	# Default properties to Sync
-	var path_to_parent = StringName(p_node.get_parent().get_path()).to_utf8_buffer()
+	var path_to = StringName(p_node.get_path()).to_utf8_buffer()
 	var buf = PackedByteArray()
 	buf.resize(7)
 	buf.encode_half(0, p_node.position.x) # Half is 2 bytes
 	buf.encode_half(2, p_node.position.y) # Half is 2 bytes
 	buf.encode_half(4, p_node.position.z) # Half is 2 bytes
-	buf.encode_u8(6, path_to_parent.size()) # u8 is 1 byte
-	buf.append_array(path_to_parent) # offset = 7 here + path.size()
+	buf.encode_u8(6, path_to.size()) # u8 is 1 byte
+	buf.append_array(path_to) # offset = 7 here + path.size()
 	
 	# Node this is attached to properties to sync
 	buf.append_array(p_node.sync_state)
@@ -89,6 +95,10 @@ func _ready():
 		p_node.interacted.connect(_on_interaction)
 
 func _on_interaction(_player: Player):
+	changed = true
+
+func generated_at_run_time_setup():
+	priority_sync_order = SyncPriorityPhase.CREATION
 	changed = true
 
 # When the node changes (parents) this gets fired off
