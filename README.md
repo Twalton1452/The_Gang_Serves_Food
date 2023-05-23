@@ -8,7 +8,7 @@ The Gang Serves Food is a coop networked multiplayer game where players cooperat
 2. [Issues](#issues)
 3. [Keybinds](#keybinds)
 4. [Structure](#structure)
-5. [Nodes/Scripts](#nodes and scripts)
+5. [Scripts](#scripts)
 
 ## Getting Started
 1. Clone the repo
@@ -68,7 +68,7 @@ Useful Editor Binds
 - `MultiplayerSynchronizer` uses
 	- Player to sync their position/rotations
 
-## Nodes and Scripts
+## Scripts
 
 ### NetworkedNode3D.gd
 - extends `Node3D`
