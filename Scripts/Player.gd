@@ -93,6 +93,8 @@ func _physics_process(delta):
 		
 
 	move_and_slide()
+	if position.y < -30.0:
+		position = get_node("../../SpawnPoint").position
 
 @rpc("call_local")
 func pick_emotive_face(id = -1):
