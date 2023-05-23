@@ -71,7 +71,7 @@ Useful Editor Binds
 - `MultiplayerSynchronizer` uses
 	- Player to sync their position/rotations
 
-## Scripts
+## Nodes and Scripts
 
 ### NetworkedNode3D.gd
 - extends `Node3D` \
