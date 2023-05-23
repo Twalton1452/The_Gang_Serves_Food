@@ -27,7 +27,7 @@ func get_sync_state() -> PackedByteArray:
 	return buf
 
 func _ready():
-	#super()
+	super()
 	og_rot = get_parent().rotation
 	tar_rot.x = deg_to_rad(tar_rot.x)
 	tar_rot.y = deg_to_rad(tar_rot.y)

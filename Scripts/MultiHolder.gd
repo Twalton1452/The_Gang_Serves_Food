@@ -6,7 +6,7 @@ class_name MultiHolder
 var c_holders : Array[Holder]
 
 func _ready():
-	#super()
+	super()
 	
 	for child in get_children():
 		if child is Holder:

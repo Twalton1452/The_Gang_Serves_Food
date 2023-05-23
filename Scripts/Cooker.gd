@@ -7,7 +7,7 @@ class_name CookerComponent
 # to encourage individual cooking of items
 @export var power_loss_item_count_begin = 2
 
-@onready var tick_timer = $CookingTicksTimer
+@onready var tick_timer : Timer = $CookingTicksTimer
 
 
 func hold_item(node: Node3D):

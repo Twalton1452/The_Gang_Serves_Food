@@ -3,6 +3,12 @@ class_name Holder
 
 @export var can_hold_holders = true
 
+var is_static_holder = false
+
+func _ready():
+	super()
+	is_static_holder = not get_parent() is Holder
+
 func get_held_items() -> Array[Node]:
 	if get_child_count() > 0:
 		return get_children().filter(func(c): return c is Holdable or c is Holder)
@@ -26,8 +32,19 @@ func is_holding(item: Node3D):
 		if child == item:
 			return true
 
+func is_acceptable(item: Node3D) -> bool:
+	# Separated these if statements out for easy readability and extensibility, can condense later
+	if item == null and not has_space_for_item(item):
+		return false
+	if item is Holder and not can_hold_holders:
+		return false
+	# Don't allow Plate's or Food Containers on anything but static geometry
+	if (item is StackingHolder or item is MultiHolder) and not is_static_holder and not item is CombinedFoodHolder:
+		return false
+	return true
+
 func hold_item(item: Node3D) -> void:
-	if item == null or not has_space_for_item(item) or (item is Holder and not can_hold_holders):
+	if not is_acceptable(item):
 		return
 	
 	hold_item_unsafe(item)

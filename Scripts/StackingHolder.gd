@@ -10,6 +10,7 @@ func set_sync_state(value: PackedByteArray):
 	stack_items()
 
 func _ready():
+	super()
 	stack_items()
 
 func acceptable_item(item: Node3D) -> bool:

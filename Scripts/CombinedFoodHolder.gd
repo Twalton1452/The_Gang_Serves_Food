@@ -1,8 +1,6 @@
 extends StackingHolder
 class_name CombinedFoodHolder
 
-func _ready():
-	stack_items()
 
 func release_item_to(holder: Holder):
 	super(holder)

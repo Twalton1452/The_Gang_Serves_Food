@@ -43,7 +43,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ierox")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vtxtv"]
-size = Vector3(0.101098, 0.0114527, 0.104601)
+size = Vector3(0.0961507, 0.0114527, 0.0983049)
 
 [node name="Patty" type="Area3D" node_paths=PackedStringArray("obj_to_color")]
 collision_layer = 4

@@ -19,6 +19,9 @@ func set_sync_state(_value : PackedByteArray) -> int:
 func get_sync_state() -> PackedByteArray:
 	return PackedByteArray()
 
+func _ready():
+	pass
+
 func _interact(_player : Player):
 	pass
 
