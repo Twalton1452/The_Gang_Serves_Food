@@ -12,16 +12,36 @@ func set_sync_state(value: PackedByteArray):
 func _ready():
 	super()
 	stack_items()
+	
+	# Disable the child colliders on the MultiHolder's Holder's
+	var i : int = 0
+	var held_items = get_held_items()
+	while i < len(held_items):
+		var held_item = held_items[i]
+		if held_item is MultiHolder:
+			held_item.disable_colliders()
+		i += 1
 
 func acceptable_item(item: Node3D) -> bool:
-	return (ingredient_scene == null and not item is MultiHolder) or (item != null and ingredient_scene != null and item.scene_file_path == ingredient_scene.resource_path)
+	# Accept any item as long as its not a MultiHolder
+	if ingredient_scene == null and not item is MultiHolder:
+		return true
+	# Accept the item set by the Editor
+	if item != null and ingredient_scene != null and item.scene_file_path == ingredient_scene.resource_path:
+		# Only put MultiHolders back if they are empty
+		if item is MultiHolder:
+			return not item.is_holding_item()
+		return true
+	return false
 
 func has_space_for_item(item: Node3D) -> bool:
 	return acceptable_item(item) and len(get_held_items()) < max_amount
 
 func check_toggle_fallback_collider():
-	if get_node_or_null("CollisionShape3D") != null:
-		$CollisionShape3D.disabled = is_holding_item()
+	if is_holding_item():
+		disable_collider()
+	else:
+		enable_collider()
 
 func hold_item(item: Node3D):
 	if is_holding(item):
@@ -31,6 +51,9 @@ func hold_item(item: Node3D):
 	if len(held_items) < max_amount:
 		super(item)
 		
+		if item is MultiHolder:
+			item.disable_colliders()
+		
 		stack_items()
 	
 	check_toggle_fallback_collider()
@@ -38,6 +61,10 @@ func hold_item(item: Node3D):
 func stack_items():
 	var i : int = 1
 	var held_items = get_held_items()
+	
+	if len(held_items) > 0:
+		held_items[0].position = Vector3.ZERO
+	
 	while i < len(held_items):
 		var held_item = held_items[i]
 		held_item.position = held_items[i - 1].position + (held_items[i - 1].stacking_spacing if held_item is Food else stacking_spacing)
@@ -47,6 +74,8 @@ func release_this_item_to(item: Node3D, holder: Holder):
 	super(item, holder)
 	stack_items()
 	check_toggle_fallback_collider()
+	if item is MultiHolder and item.get_parent() == holder:
+		item.enable_colliders()
 	
 func _interact(player : Player):
 	# Player Taking Item from this Holder

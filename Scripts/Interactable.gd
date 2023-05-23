@@ -40,6 +40,17 @@ func secondary_interact(player : Player):
 	secondary_interacted.emit(player)
 	return _secondary_interact(player)
 
+func disable_collider():
+	if get_node_or_null("CollisionShape3D") != null:
+		$CollisionShape3D.disabled = true
+
+func enable_collider():
+	if get_node_or_null("CollisionShape3D") != null:
+		$CollisionShape3D.disabled = false
+
+func is_enabled() -> bool:
+	return !$CollisionShape3D.disabled if get_node_or_null("CollisionShape3D") != null else false
+
 func show_outline():
 	pass
 #	if highlight_mesh:

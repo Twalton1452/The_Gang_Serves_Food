@@ -43,7 +43,7 @@ func is_holding(item: Node3D):
 
 func hold_item(item: Node3D) -> void:
 	for holder in c_holders:
-		if not holder.is_holding_item():
+		if not holder.is_holding_item() and holder.is_enabled():
 			holder.hold_item(item)
 			break
 
@@ -53,4 +53,11 @@ func _interact(player: Player):
 		(get_parent() as Holder).interact(player)
 	else:
 		super(player)
-	
+
+func disable_colliders():
+	for holder in c_holders:
+		holder.disable_collider()
+
+func enable_colliders():
+	for holder in c_holders:
+		holder.enable_collider()
