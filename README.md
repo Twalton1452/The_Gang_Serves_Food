@@ -5,10 +5,11 @@ The Gang Serves Food is a coop networked multiplayer game where players cooperat
 
 ## Table of Contents
 1. [Getting Started](#getting-started)
-2. [Issues](#issues)
-3. [Keybinds](#keybinds)
-4. [Structure](#structure)
-5. [Scripts](#scripts)
+2. [Trello](#trello)
+3. [Issues](#issues)
+4. [Keybinds](#keybinds)
+5. [Structure](#structure)
+6. [Nodes and Scripts](#nodes-and-scripts)
 
 ## Getting Started
 1. Clone the repo
@@ -31,6 +32,8 @@ Playing with Friends
 3. The Host will need to run the `.console` version of the application because their public IP gets displayed in the console to give to their friends
 4. Friends will join after the Host gives them their public IP to enter
 
+## Trello
+There is a [Trello board](https://trello.com/b/Kye7P3Ix/the-gang-serves-food) detailing all of the features that have been implemented or need to be implemented \ 
 
 ## Issues
 There are several known issues that we're keeping an eye on related to the Godot Engine specifically:
