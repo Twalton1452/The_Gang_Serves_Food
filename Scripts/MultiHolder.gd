@@ -12,6 +12,12 @@ func _ready():
 		if child is Holder:
 			c_holders.push_back(child)
 	
+	# Enable the fallback colliders based on if there are items or not
+	if len(get_held_items()) > 0:
+		disable_colliders()
+	else:
+		enable_colliders()
+	
 	assert(len(c_holders) > 0, "MultiHolder: %s, Parent: %s, doesn't have any holders" \
 		% [name, get_parent().name])
 	
