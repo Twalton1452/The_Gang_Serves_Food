@@ -342,6 +342,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.29, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.86, 0, 0)
 
 [node name="DoubleHolderBox" parent="Testing/kitchenCabinet5/Holder" index="2" instance=ExtResource("17_l7sfd")]
+can_hold_holders = null
 
 [node name="kitchenCabinet6" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.29, 0, 0)

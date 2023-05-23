@@ -1,8 +1,6 @@
 extends Interactable
 class_name Holder
 
-@export var can_hold_holders = true
-
 var is_static_holder = false
 
 func _ready():
@@ -35,8 +33,6 @@ func is_holding(item: Node3D):
 func is_acceptable(item: Node3D) -> bool:
 	# Separated these if statements out for easy readability and extensibility, can condense later
 	if item == null and not has_space_for_item(item):
-		return false
-	if item is Holder and not can_hold_holders:
 		return false
 	# Don't allow Plate's or Food Containers on anything but static geometry
 	if (item is StackingHolder or item is MultiHolder) and not is_static_holder and not item is CombinedFoodHolder:
@@ -93,15 +89,7 @@ func _interact(player : Player):
 				
 			swap_items_with(player.c_holder)
 		# Holding nothing - Attempt to take from Player
-		else:
-			# Player holding Plate - This Holder doesn't accept Plates - Nothing on this Holder
-			if not can_hold_holders and player.c_holder.get_held_item() is MultiHolder:
-				var multi_h = player.c_holder.get_held_item() as MultiHolder
-				# Take an item off the Player's Plate, put it onto this
-				if multi_h.is_holding_item():
-					multi_h.release_item_to(self)
-				return
-			
+		else:			
 			# Take Player's item
 			player.c_holder.release_item_to(self)
 	# Player taking Item - Player not holding anything

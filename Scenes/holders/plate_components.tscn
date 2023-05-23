@@ -73,12 +73,13 @@ skeleton = NodePath("")
 transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_tjd7u")
 
-[node name="Main" type="Area3D" parent="."]
+[node name="Main" type="Area3D" parent="." node_paths=PackedStringArray("mesh_to_highlight")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0477687, 0.005896, 0)
 collision_layer = 4
 collision_mask = 0
 priority = 1.0
 script = ExtResource("3_5elsy")
+mesh_to_highlight = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Main"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00233732, 0)
