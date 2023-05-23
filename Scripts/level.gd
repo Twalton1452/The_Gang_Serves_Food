@@ -35,6 +35,7 @@ func add_player(peer_id: int):
 	player.name = str(peer_id)
 	player.position = spawn_point.position
 	players.add_child(player)
+	GameState.add_player(player)
 	if player.is_multiplayer_authority():
 		player.health_changed.connect(update_health_bar)
 
@@ -45,12 +46,15 @@ func add_player(peer_id: int):
 func delete_player(peer_id):
 	var player = players.get_node_or_null(str(peer_id))
 	if player != null:
+		GameState.remove_player(player)
 		player.queue_free()
 
 func update_health_bar(health_value):
 	health_bar.value = health_value
 
+# Triggered signal on Client side
 func _on_player_spawner_spawned(node):
+	GameState.add_player(node)
 	node.position = spawn_point.position
 	if node.is_multiplayer_authority():
 		node.health_changed.connect(update_health_bar)	

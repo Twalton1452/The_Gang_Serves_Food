@@ -14,7 +14,7 @@ The Gang Serves Food is a coop networked multiplayer game where players cooperat
 ## Getting Started
 1. Clone the repo
 2. Open with Godot 4+ [Download Latest Here](https://godotengine.org/)
-	- Project is currently on 4.0.2
+	- Project is currently on 4.0.3
 3. Hit Play in the Editor with the Project opened and "Host"
 
 Running multiple instances

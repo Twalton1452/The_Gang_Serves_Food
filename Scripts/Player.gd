@@ -56,10 +56,10 @@ func _unhandled_input(event):
 
 	if event.is_action_pressed("interact"):
 		if interact_ray_cast.is_colliding():
-			interact.rpc()
+			interact()
 	if event.is_action_pressed("secondary_interact"):
 		if interact_ray_cast.is_colliding():
-			secondary_interact.rpc()
+			secondary_interact()
 			
 
 func _physics_process(delta):
@@ -96,19 +96,19 @@ func _physics_process(delta):
 	if position.y < -30.0:
 		position = get_node("../../SpawnPoint").position
 
+func interact() -> void:
+	var interactable = interact_ray_cast.get_collider() as Interactable
+	InteractionManager.attempt_interaction(self, interactable, 0)
+	#interactable.interact(self)
+
+func secondary_interact() -> void:
+	var interactable = interact_ray_cast.get_collider() as Interactable
+	InteractionManager.attempt_interaction(self, interactable, 1)
+	#interactable.secondary_interact(self)
+
 @rpc("call_local")
 func pick_emotive_face(id = -1):
 	face_sprite.frame = id
-
-@rpc("call_local")
-func interact() -> void:
-	var interactable = interact_ray_cast.get_collider() as Interactable
-	interactable.interact(self)
-
-@rpc("call_local")
-func secondary_interact() -> void:
-	var interactable = interact_ray_cast.get_collider() as Interactable
-	interactable.secondary_interact(self)
 
 ## Left over example code from boilerplate
 @rpc("call_local")
