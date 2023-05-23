@@ -15,7 +15,7 @@ The Gang Serves Food is a coop networked multiplayer game where players cooperat
 1. Clone the repo
 2. Open with Godot 4+ [Download Latest Here](https://godotengine.org/)
 	- Project is currently on 4.0.2
-3. Hit Player and "Host"
+3. Hit Play in the Editor with the Project opened and "Host"
 
 Running multiple instances
 1. In the Editor Click Debug at the top
@@ -32,8 +32,10 @@ Playing with Friends
 3. The Host will need to run the `.console` version of the application because their public IP gets displayed in the console to give to their friends
 4. Friends will join after the Host gives them their public IP to enter
 
+
 ## Trello
-There is a [Trello board](https://trello.com/b/Kye7P3Ix/the-gang-serves-food) detailing all of the features that have been implemented or need to be implemented \ 
+There is a [Trello board](https://trello.com/b/Kye7P3Ix/the-gang-serves-food) detailing all of the features that have been implemented or need to be implemented
+
 
 ## Issues
 There are several known issues that we're keeping an eye on related to the Godot Engine specifically:
@@ -74,7 +76,7 @@ Useful Editor Binds
 ## Nodes and Scripts
 
 ### NetworkedNode3D.gd
-- extends `Node3D` \
+- `extends Node3D` \
 Used for sync'ing state between players when a Player joins midsession. Any reference to `sync_state` is because of this Node. \
 We can sync initial state by using a `PackedByteArray` and shoving any type of information in there, the onus is on the receiver to decode it in the correct format.
 - Usage:
@@ -86,7 +88,7 @@ We can sync initial state by using a `PackedByteArray` and shoving any type of i
 	- In the Editor set the `Scene Id` of the Interactable this is connected to and map it in `SceneIds.gd`. If your Scene doesn't exist in there then when a Player joins midsession and that object hasn't generated for them yet, it will look to that file path to create it
 
 ### Interactable.gd
-- extends `Area3D` \
+- `extends Area3D` \
 Base Class for all Interactables
 - Usage:
 	- Inherit from this class to add specific functionality by overriding `_interact` and `_secondary_interact` methods
@@ -163,5 +165,5 @@ Class used to define a rule when stacking an item
 	- `patty.tscn` has a rule of `SubBase` so it will go above the `bottom_bun.tscn`'s `Base`
 
 ### Combiner.gd
-- static class \
+- class of static functions \
 This class is called on by Holdable's that are secondary interacted with to sort out the logic of whether it needs to spawn a food_combiner.tscn `CombinedFoodHolder` or continue stacking
