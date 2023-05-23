@@ -9,6 +9,7 @@ signal secondary_interacted(player : Player)
 # Will also be used for interactable on interactable interactions like combining food
 @export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.NETWORKED
 
+@export var mesh_to_highlight : MeshInstance3D
 #@export var highlight_mesh : MeshInstance3D
 
 var sync_state : set = set_sync_state, get = get_sync_state

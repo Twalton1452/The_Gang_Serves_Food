@@ -12,14 +12,16 @@ size = Vector3(0.411643, 0.0126033, 0.414984)
 
 [node name="kitchenCabinet" instance=ExtResource("1_wh3he")]
 
-[node name="Rotatable" parent="kitchenCabinet(Clone)/door" index="0" instance=ExtResource("2_qrwjx")]
+[node name="Rotatable" parent="kitchenCabinet(Clone)/door" index="0" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("2_qrwjx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.178621, 0.127549, 0)
+mesh_to_highlight = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenCabinet(Clone)/door/Rotatable" index="1"]
 shape = SubResource("BoxShape3D_f0jbv")
 
-[node name="Holder" parent="." index="1" instance=ExtResource("3_5ll8x")]
+[node name="Holder" parent="." index="1" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("3_5ll8x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21111, 0.426545, -0.213584)
+mesh_to_highlight = NodePath("../kitchenCabinet(Clone)")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder" index="1"]
 shape = SubResource("BoxShape3D_7dfli")

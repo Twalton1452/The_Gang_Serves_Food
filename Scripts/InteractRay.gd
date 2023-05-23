@@ -10,9 +10,9 @@ func _physics_process(_delta):
 			looking_at.hide_outline()
 			if get_collider() != null:
 				get_collider().show_outline()
-			print("hide current")
+			#print("hide current")
 		else:
 			get_collider().show_outline()
-			print("show")
+			#print("show")
 			
 		looking_at = get_collider()
