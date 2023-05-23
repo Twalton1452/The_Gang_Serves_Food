@@ -71,7 +71,7 @@ Useful Editor Binds
 ## Scripts
 
 ### NetworkedNode3D.gd
-- extends `Node3D`
+- extends `Node3D` \
 Used for sync'ing state between players when a Player joins midsession. Any reference to `sync_state` is because of this Node. \
 We can sync initial state by using a `PackedByteArray` and shoving any type of information in there, the onus is on the receiver to decode it in the correct format.
 - Usage:
@@ -83,7 +83,7 @@ We can sync initial state by using a `PackedByteArray` and shoving any type of i
 	- In the Editor set the `Scene Id` of the Interactable this is connected to and map it in `SceneIds.gd`. If your Scene doesn't exist in there then when a Player joins midsession and that object hasn't generated for them yet, it will look to that file path to create it
 
 ### Interactable.gd
-- extends `Area3D`
+- extends `Area3D` \
 Base Class for all Interactables
 - Usage:
 	- Inherit from this class to add specific functionality by overriding `_interact` and `_secondary_interact` methods
@@ -91,7 +91,7 @@ Base Class for all Interactables
 	- They also need their Area3D Collision set to layer 3 for the Interacting Ray to pick up on it
 
 ### Rotatable.gd
-- `extends Interactable`
+- `extends Interactable` \
 Simple class when interacted with will rotate a Node with Tweens
 - Usage:
 	- Add this `res://Scenes/components/rotatable.tscn` as a child of the Scene you want to rotate and set the target rotation
@@ -160,5 +160,5 @@ Class used to define a rule when stacking an item
 	- `patty.tscn` has a rule of `SubBase` so it will go above the `bottom_bun.tscn`'s `Base`
 
 ### Combiner.gd
-- static class
+- static class \
 This class is called on by Holdable's that are secondary interacted with to sort out the logic of whether it needs to spawn a food_combiner.tscn `CombinedFoodHolder` or continue stacking
