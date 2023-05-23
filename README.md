@@ -8,7 +8,7 @@ The Gang Serves Food is a coop networked multiplayer game where players cooperat
 2. [Issues](#issues)
 3. [Keybinds](#keybinds)
 4. [Structure](#structure)
-5. [Nodes/Scripts](#Nodes/Scripts)
+5. [Nodes/Scripts](#nodes and scripts)
 
 ## Getting Started
 1. Clone the repo
@@ -68,9 +68,10 @@ Useful Editor Binds
 - `MultiplayerSynchronizer` uses
 	- Player to sync their position/rotations
 
-## Nodes/Scripts
+## Nodes and Scripts
 
 ### NetworkedNode3D.gd
+- extends `Node3D`
 Used for sync'ing state between players when a Player joins midsession. Any reference to `sync_state` is because of this Node. \
 We can sync initial state by using a `PackedByteArray` and shoving any type of information in there, the onus is on the receiver to decode it in the correct format.
 - Usage:
@@ -82,6 +83,7 @@ We can sync initial state by using a `PackedByteArray` and shoving any type of i
 	- In the Editor set the `Scene Id` of the Interactable this is connected to and map it in `SceneIds.gd`. If your Scene doesn't exist in there then when a Player joins midsession and that object hasn't generated for them yet, it will look to that file path to create it
 
 ### Interactable.gd
+- extends `Area3D`
 Base Class for all Interactables
 - Usage:
 	- Inherit from this class to add specific functionality by overriding `_interact` and `_secondary_interact` methods
