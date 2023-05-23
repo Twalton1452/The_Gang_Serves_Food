@@ -349,6 +349,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.29, 0, 0)
 [node name="kitchenCabinet7" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.72, 0, 0)
 
+[node name="kitchenCabinet8" parent="Testing" instance=ExtResource("10_b6sav")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.15, 0, 0)
+
+[node name="kitchenCabinet9" parent="Testing" instance=ExtResource("10_b6sav")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.58, 0, 0)
+
+[node name="kitchenCabinet10" parent="Testing" instance=ExtResource("10_b6sav")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.01, 0, 0)
+
 [node name="Fridge" parent="Testing" instance=ExtResource("12_xj5b4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72, 0, 0)
 

@@ -8,7 +8,7 @@ The Gang Serves Food is a coop networked multiplayer game where players cooperat
 2. [Issues](#issues)
 3. [Keybinds](#keybinds)
 4. [Structure](#structure)
-5. [Components](#components)
+5. [Nodes/Scripts](#Nodes/Scripts)
 
 ## Getting Started
 1. Clone the repo
@@ -26,17 +26,10 @@ Running multiple instances
 7. Join for the other window
 
 Playing with Friends
-There are a couple of lines of code that need to be changed so you can play with friends.
-In the future this will be an automated process
-1. In the `world.gd` script uncomment:
-	- `# upnp_setup()`
-	- `# enet_peer.create_client(address_entry.text, PORT)`
-2. In the `world.gd` script comment: 
-	- `enet_peer.create_client("localhost", PORT)`
-3. Project > Export > Export Project
-4. Zip the file and send to friends
-5. The Host will need to run the `.console` version of the application because their public IP gets displayed in the console to give to their friends
-6. Friends will join after the Host gives them their public IP to enter
+1. Project > Export > Export Project
+2. Zip the file and send to friends
+3. The Host will need to run the `.console` version of the application because their public IP gets displayed in the console to give to their friends
+4. Friends will join after the Host gives them their public IP to enter
 
 
 ## Issues
@@ -58,7 +51,7 @@ Gameplay Binds
 - Left Click to Interact
 - Right Click to secondary Interact
 	- Put food from a Plate onto a stove
-	- Combine ingredients (soon)
+	- Combine ingredients
 	
 Useful Editor Binds
 - Multi-row editing: `Ctrl + Shift + Up/Down Arrow`
@@ -75,56 +68,95 @@ Useful Editor Binds
 - `MultiplayerSynchronizer` uses
 	- Player to sync their position/rotations
 
-## Components/Scripts
+## Nodes/Scripts
 
 ### NetworkedNode3D.gd
 Used for sync'ing state between players when a Player joins midsession. Any reference to `sync_state` is because of this Node. \
 We can sync initial state by using a `PackedByteArray` and shoving any type of information in there, the onus is on the receiver to decode it in the correct format.
 - Usage:
-	- Inherit this component and in `_ready` call `super` to setup the Networking
-		- Gives this Node a `net_id` and adds it to a `SceneIds.SCENES.NETWORKED` group
-	- Override set_sync_state and get_sync_state in the child component
+	- Add this `res://Scenes/networked_node_3d.tscn` scene as a child node to the node you want state to get sync'd
+		- Gives this Node a `networked_id` and adds it to a `SceneIds.SCENES.NETWORKED` group
+	- Override set_sync_state and get_sync_state in the parent component
 		- Call `super()` to get where you left off in get_sync_state or set_sync_state
 		- These are writing bytes to the Array so you need to know the sizes of the things you are writing which can be found [here](https://docs.godotengine.org/en/stable/classes/class_packedbytearray.html)
-	- In the Editor set the `Scene Id` to the Scene mapping from `SceneIds.gd`.If your Scene doesn't exist in there then when a Player joins midsession and that object hasn't generated for them yet, it will look to that file path to create it
+	- In the Editor set the `Scene Id` of the Interactable this is connected to and map it in `SceneIds.gd`. If your Scene doesn't exist in there then when a Player joins midsession and that object hasn't generated for them yet, it will look to that file path to create it
 
-### InteractableComponent.gd
-Core Component, allows easy communication through signals between other components
+### Interactable.gd
+Base Class for all Interactables
 - Usage:
-	- Add this from `res://Scenes/Components/InteractableComponent.tscn` to a scene and a `CollisionShape3D` to trigger Interactable events
+	- Inherit from this class to add specific functionality by overriding `_interact` and `_secondary_interact` methods
+	- Interactables are all Area3D's and need a `CollisionShape3D` to trigger Interactable events
+	- They also need their Area3D Collision set to layer 3 for the Interacting Ray to pick up on it
 
-### HolderComponent.gd
-- `extends NetworkedNode3D` \
-Reparents Nodes when interacted with through the InteractableComponent "interacted" signal and "secondary_interacted" signal. \
-- Usage 1 of 2 ways: 
-	 1. Add this Scene `res://Scenes/Components/HolderComponent.tscn` and an `InteractableComponent.tscn` as a child
-	 2. Add this Scene `res://Scenes/Components/HolderComponent.tscn` and an `InteractableComponent.tscn` on the same level beneath a parent
-
-### IngredientComponent.gd
-- `extends HolderComponent` \
-Used for holding a bunch of "stuff", like Holdables or Holders.
+### Rotatable.gd
+- `extends Interactable`
+Simple class when interacted with will rotate a Node with Tweens
 - Usage:
-	- Add this Scene `res://Scenes/Components/IngredientComponent.tscn` as a child of the Top Level Node in the Scene
-	- Add an `InteractableComponent.tscn` as a sibling and setup the `CollisionShape3D` as a child
-	- The `IngredientComponent` will accept anything it's given unless you set the `IngredientScene` in the editor
+	- Add this `res://Scenes/components/rotatable.tscn` as a child of the Scene you want to rotate and set the target rotation
+
+### Holder.gd
+- `extends Interactable` \
+Reparents Nodes when interacted with. \
+- Usage:
+	 1. Add this Scene `res://Scenes/components/holder.tscn` to a Scene
+	 2. Add a `CollisionShape3D` to fit
+
+### Cooker.gd
+- `extends Holder` \
+Calls `cook` on Cookables after a Timer ticks
+- Usage:
+	- Where you would put a Holder, replace it with a Cooker
+
+### StackingHolder.gd
+- `extends Holder` \
+Used for holding a bunch of "stuff", like Holdables or Holders (Plates).
+- Usage:
+	- Add this Scene `res://Scenes/components/stacking_holder.tscn` to a Scene
+	- Add a `CollisionShape3D` as a fallback collider for when there are no items and set it to Disabled by default
+		- The collider will auto-enable when there are no items on the Stack so players can still put something down
+	- The `StackingHolder` will accept anything it's given unless you set the `IngredientScene` in the editor
 - Ex:
 	- Burger Patty box where you can pull Patty's on and off the stack
 	- Plate Stack where you can pull plates on and off the stack
 
-### MultiHolderComponent.gd
-- `extends HolderComponent` \
-Used for things that can have multiple `HolderComponent`'s inside a single Scene. \
+### CombinedFoodHolder.gd
+- `extends StackingHolder` \
+Used for stacking together different Food ingredients \
+Organizes the items by their `Food.Rule` in the Editor
+
+### MultiHolder.gd
+- `extends Holder` \
+Used for things that can have multiple `Holder`'s inside a single Scene. \
 When `hold_item(item)` is called on this it will delegate that to its child Holder's. \
 - Usage:
 	- Assign this script to the Top Level Node of the Scene
-	- Add this Scene `res://Scenes/Components/HolderComponent.tscn` as a child
-	- Add an InteractableComponent Scene `res://Scenes/Components/InteractableComponent.tscn` as a child of the newly created Holder child and setup the `CollisionShape3D` as a child of the InteractableComponent
+	- Add this Scene `res://Scenes/Components/HolderComponent.tscn` as a direct child of the `MultiHolder`
 - Ex:
 	- Plates
 
-### HoldableComponent.gd
-- `extends NetworkedNode3D` \
-Dummy node that is mostly used to sync state without directly assigning `NetworkedNode3D` scripts to nodes. \
-Also helps distinguish when a child of a Holder is truly Holdable or some other Component.
+### Holdable.gd
+- `extends Interactable` \
+Node that is mostly used to sync state and call on its parent `Holder` when interacted with \
+Helps distinguish when a child of a Holder is truly Holdable or some other Internal Component like a `CollisionShape3D`. \
+When secondary interacted with it will attempt to Combine / Stack through the `Combiner`
 - Usage:
 	- Assign this script to the Top-Level Node of the Scene
+
+### Cookable.gd
+- `extends Holdable` \
+Intermediary class between `Holdable` and `Food`, may be redundant \
+Defines how the Holdable can be cooked
+- Usage:
+	- Assign this script to the Top-Level Node of the Scene
+
+### Food.gd
+- `extends Cookable` \
+Class used to define a rule when stacking an item
+- Usage:
+	- Assign this script to the Top-Level Node of the Scene
+- Ex:
+	- `patty.tscn` has a rule of `SubBase` so it will go above the `bottom_bun.tscn`'s `Base`
+
+### Combiner.gd
+- static class
+This class is called on by Holdable's that are secondary interacted with to sort out the logic of whether it needs to spawn a food_combiner.tscn `CombinedFoodHolder` or continue stacking
