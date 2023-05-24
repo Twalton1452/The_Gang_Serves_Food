@@ -10,6 +10,7 @@ The Gang Serves Food is a coop networked multiplayer game where players cooperat
 4. [Keybinds](#keybinds)
 5. [Structure](#structure)
 6. [Nodes and Scripts](#nodes-and-scripts)
+7. [Testing Framework](#testing-framework)
 
 ## Getting Started
 1. Clone the repo
@@ -172,3 +173,6 @@ Class used to define a rule when stacking an item
 ### Combiner.gd
 - class of static functions \
 This class is called on by Holdable's that are secondary interacted with to sort out the logic of whether it needs to spawn a food_combiner.tscn `CombinedFoodHolder` or continue stacking
+
+## Testing Framework
+[GUT](https://github.com/bitwes/Gut)
