@@ -64,11 +64,11 @@ func start_game():
 # Call this function deferred and only on the main authority (server).
 func change_level(scene: PackedScene):
 	# Remove old level if any.
+	GameState.reset()
 	var level = $Level
 	for c in level.get_children():
 		level.remove_child(c)
 		c.queue_free()
-	GameState.reset()
 	# Add new level.
 	level.add_child(scene.instantiate())
 

@@ -40,6 +40,9 @@ script = ExtResource("24_gdwhe")
 [node name="SpawnPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.607102, 0.266214, -0.00944018)
 
+[node name="Players" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.543243, 0)
+
 [node name="OutsideWalls" type="Node3D" parent="."]
 
 [node name="wallWindowSlide" parent="OutsideWalls" instance=ExtResource("1_0fubg")]
@@ -309,9 +312,6 @@ light_size = 60.0
 
 [node name="Ground" parent="." instance=ExtResource("2_8d1g5")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
-
-[node name="Players" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.543243, 0)
 
 [node name="Testing" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.79795, 0, -1.24027)

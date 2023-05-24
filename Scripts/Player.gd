@@ -27,10 +27,15 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority(): return
 
+	init.call_deferred()
+
+func init():
+	if not is_multiplayer_authority(): return
+	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	pick_emotive_face.rpc(randi_range(0, face_sprite.hframes * face_sprite.vframes - 1))
-
+	
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 	
