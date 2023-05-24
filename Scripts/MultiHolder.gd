@@ -55,8 +55,11 @@ func hold_item(item: Node3D) -> void:
 
 func _interact(player: Player):
 	# Let the Holder take care of the interaction
-	if is_pickupable and get_parent() is Holder:
-		(get_parent() as Holder).interact(player)
+	if is_pickupable:
+		if get_parent() is Holder:
+			(get_parent() as Holder).interact(player)
+		elif not player.c_holder.is_holding_item():
+			player.c_holder.hold_item(self)
 	else:
 		super(player)
 

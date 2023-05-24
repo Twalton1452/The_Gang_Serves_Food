@@ -47,6 +47,11 @@ There are several known issues that we're keeping an eye on related to the Godot
 	- Seems to be caused by setting the material Local to Scene
 	- [Link to Issue 1](https://github.com/godotengine/godot/issues/67144)
 	- [Link to Issue 2](https://github.com/godotengine/godot/issues/59912#issuecomment-1128091714)
+- Error when client disconnects
+	- `E 0:00:24:0357   _process_sys: Condition "peer > 0 && !connected_peers.has(peer)" is true.`
+	- Caused by MultiplayerSynchronizer trying to send RPC's despite the player being disconnected
+	- Can be ignored when it pops up, but still annyoing to see errors!
+	- [Link to Issue](https://github.com/godotengine/godot/issues/70505)
 
 
 ## Keybinds

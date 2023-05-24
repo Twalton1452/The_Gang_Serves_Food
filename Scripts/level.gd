@@ -1,4 +1,5 @@
 extends Node
+class_name Level
 
 @onready var hud = get_node("/root/World/CanvasLayer/HUD")
 @onready var health_bar = get_node("/root/World/CanvasLayer/HUD/HealthBar")
@@ -9,6 +10,7 @@ const player_scene = preload("res://Scenes/player.tscn")
 
 func _ready():
 	hud.show()
+	GameState.level = self
 	# We only need to spawn players on the server.
 	if not multiplayer.is_server():
 		return
@@ -58,3 +60,7 @@ func _on_player_spawner_spawned(node):
 	node.position = spawn_point.position
 	if node.is_multiplayer_authority():
 		node.health_changed.connect(update_health_bar)	
+
+
+func _on_player_spawner_despawned(node):
+	GameState.remove_player(node.name.to_int())

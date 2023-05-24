@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
-[ext_resource type="Script" path="res://Scripts/level.gd" id="1_thrv2"]
+[ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
 [ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="2_8d1g5"]
 [ext_resource type="PackedScene" uid="uid://i7st3vdotqiu" path="res://3d_models/Kenneys_Furniture/wallWindow.glb" id="3_6vamh"]
 [ext_resource type="PackedScene" uid="uid://bvjit4lsovbr3" path="res://3d_models/Kenneys_Furniture/wallDoorwayWide.glb" id="3_21ak5"]
@@ -25,7 +25,7 @@
 albedo_color = Color(0.913725, 0.701961, 0.435294, 1)
 
 [node name="Restaurant" type="Node3D"]
-script = ExtResource("1_thrv2")
+script = ExtResource("1_sgx7f")
 
 [node name="Networking" type="Node" parent="."]
 
@@ -364,6 +364,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72, 0, 0)
 [node name="kitchenStove" parent="Testing" instance=ExtResource("16_eiaux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43, 0, 0)
 
+[connection signal="despawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_despawned"]
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]
 
 [editable path="roof"]
