@@ -95,6 +95,9 @@ func _interact(player : Player):
 	# Player taking Item - Player not holding anything
 	elif is_holding_item():
 		release_item_to(player.c_holder)
+	# Neither player nor this Holder has an item, likely an empty MultiHolder like a Plate
+	elif get_parent() is Holder:
+		(get_parent() as Holder).interact(player)
 
 # Right Clicking Holder
 func _secondary_interact(player : Player):
