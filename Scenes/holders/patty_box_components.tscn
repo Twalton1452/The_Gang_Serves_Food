@@ -56,7 +56,6 @@ collision_mask = 0
 priority = 1.0
 script = ExtResource("1_b1ojg")
 is_pickupable = false
-can_hold_holders = false
 
 [node name="Box" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_0h4qa")

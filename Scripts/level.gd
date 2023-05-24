@@ -18,7 +18,7 @@ func _ready():
 
 	# Spawn already connected players.
 	for id in multiplayer.get_peers():
-		add_player(id)
+		add_player(id, false)
 
 	# Spawn the local player unless this is a dedicated server export.
 	if not OS.has_feature("dedicated_server"):
@@ -30,7 +30,7 @@ func _exit_tree():
 	multiplayer.peer_connected.disconnect(add_player)
 	multiplayer.peer_disconnected.disconnect(delete_player)
 
-func add_player(peer_id: int):
+func add_player(peer_id: int, needs_sync = true):
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
 	player.position = spawn_point.position
@@ -40,13 +40,13 @@ func add_player(peer_id: int):
 		player.health_changed.connect(update_health_bar)
 
 	# Attempt to Sync nodes for non-server players
-	if peer_id != 1 and multiplayer.get_unique_id() == 1:
+	if needs_sync and peer_id != 1 and multiplayer.get_unique_id() == 1:
 		$Networking/MidsessionJoinSyncer.sync_nodes_for_new_player.call_deferred(peer_id)
 
 func delete_player(peer_id):
 	var player = players.get_node_or_null(str(peer_id))
 	if player != null:
-		GameState.remove_player(player)
+		GameState.remove_player(peer_id)
 		player.queue_free()
 
 func update_health_bar(health_value):

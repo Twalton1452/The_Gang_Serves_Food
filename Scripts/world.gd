@@ -68,6 +68,7 @@ func change_level(scene: PackedScene):
 	for c in level.get_children():
 		level.remove_child(c)
 		c.queue_free()
+	GameState.reset()
 	# Add new level.
 	level.add_child(scene.instantiate())
 

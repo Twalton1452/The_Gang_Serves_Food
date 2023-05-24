@@ -56,6 +56,7 @@ func set_sync_state(value: PackedByteArray):
 	var split_path : PackedStringArray = path_to.split("/")
 	var new_name = split_path[-1]
 	var path_to_parent = "/".join(split_path.slice(0, -1))
+	#print("syncing %s Path to Parent %s" % [new_name, path_to_parent])
 	var new_parent = get_node(path_to_parent)
 	
 	get_parent().name = new_name
@@ -91,6 +92,7 @@ func get_sync_state() -> PackedByteArray:
 
 func _ready():
 	networked_id = NetworkingUtils.generate_id()
+	generate_unique_name()
 	add_to_group(str(SceneIds.SCENES.NETWORKED))
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID
@@ -99,9 +101,18 @@ func _ready():
 func _on_interaction(_player: Player):
 	changed = true
 
+## Sets parameters required for midsession syncing
 func generated_at_run_time_setup():
 	priority_sync_order = SyncPriorityPhase.CREATION
 	changed = true
+	#print("I generated %s at run time | Path: %s" % [p_node.name, p_node.get_path()])
+
+## Keeps names unique so get_node() calls work correctly
+## When a name collision happens between child nodes it adds "@" symbol to the name
+## and the "@" symbol gets deleted when manually setting the name, so it messes with Paths
+## As long as we keep the id which will always be unique in the name Path's should resolve
+func generate_unique_name():
+	p_node.name = p_node.name + "_" + str(networked_id)
 
 # When the node changes (parents) this gets fired off
 # Can work as a delta signifier to the midsession joins

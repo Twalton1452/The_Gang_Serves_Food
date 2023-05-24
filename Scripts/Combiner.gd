@@ -13,14 +13,7 @@ static func combine(player: Player, resting: Holdable):
 	
 	# Player is combining with an item on a counter (Simple Holder)
 	if is_exactly_holder:
-		var combiner : StackingHolder = load("res://Scenes/components/food_combiner.tscn").instantiate()
-		var networked_node : NetworkedNode3D = combiner.get_node("NetworkedNode3D")
-		
-		networked_node.changed = true
-		
-		resting_p.release_item_to(combiner)
-		resting_p.hold_item(combiner)
-		player.c_holder.release_item_to(combiner)
+		spawn_combiner(resting_p, player.c_holder)
 	# Don't combine in-hand if Player is holding a Plate or a box of Food
 	elif not player.c_holder.get_held_item() is MultiHolder:
 		# Player is trying to pull off a Multi/Stacking Holder to continue combining in their hand
@@ -38,15 +31,19 @@ static func combine(player: Player, resting: Holdable):
 				player.c_holder.release_item_to(resting_p)
 			# Player trying to start a combination
 			else:
-				var combiner : StackingHolder = load("res://Scenes/components/food_combiner.tscn").instantiate()
-				var networked_node : NetworkedNode3D = combiner.get_node("NetworkedNode3D")
-				
-				networked_node.generated_at_run_time_setup()
-				
-				resting_p.release_item_to(combiner)
-				player.c_holder.release_item_to(combiner)
-				player.c_holder.hold_item(combiner)
+				spawn_combiner(player.c_holder, resting_p)
 
+static func spawn_combiner(holder_for_combination : Holder, holder_giving_up_item : Holder) -> StackingHolder:
+	var combiner : StackingHolder = load("res://Scenes/components/food_combiner.tscn").instantiate()
+	var networked_node : NetworkedNode3D = combiner.get_node("NetworkedNode3D")
+	
+	holder_giving_up_item.release_item_to(combiner)
+	holder_for_combination.release_item_to(combiner)
+	holder_for_combination.hold_item(combiner)
+	
+	networked_node.generated_at_run_time_setup()
+	return combiner
+				
 ## When a Food Combination gets down to 1 item, it will call this method
 ## We need to reparent the 1 item to the parent of the Holder we're destroying
 static func destroy_combination(s_holder: CombinedFoodHolder):

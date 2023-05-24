@@ -4,13 +4,16 @@ extends Node
 
 var players : Array[Player] = []
 
+func reset():
+	players.clear()
+
 func add_player(player : Player):
 	players.push_back(player)
 
-func remove_player(player : Player):
+func remove_player(p_id : int):
 	var i = 0
 	for p in players:
-		if p == player:
+		if p.name.to_int() == p_id:
 			break
 		i += 1
 	players.remove_at(i)
