@@ -1,12 +1,20 @@
 extends GutTest
 
+func example_stubbing():
+	# double removes implementation details of all functions in the scripts
+	# partial_double retains the functionality of the source code
+	
+	# DOUBLE_STRATEGY.INCLUDE_SUPER includes base classes like CharacterBody3D which is undesirable
+	# because it gives you errors about overriding functions in base Godot classes
+	# DOUBLE_STRATEGY.SCRIPT_ONLY includes just the scripts you've defined, which is desirable
+	# allowing you to stub/spy methods on scripts that inherit base Godot classes
+	
+	var HolderClass = load("res://Scripts/Holder.gd")
+	var holder = partial_double(HolderClass, DOUBLE_STRATEGY.SCRIPT_ONLY).new()
+	stub(holder, "is_enabled").to_return(true)
+	
 func before_all():
 	gut.p("Runs once before all tests")
-	# When getting errors about overriding methods in these base Godot classes, just ignore them
-	# Ex:
-	var HolderClass = load("res://Scripts/Holder.gd")
-	for method in Area3D.new().get_method_list():
-		ignore_method_when_doubling(HolderClass, method.name)
 
 func before_each():
 	gut.p("Runs before each test.")
