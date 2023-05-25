@@ -68,7 +68,7 @@ func swap_items_with(holder: Holder):
 	
 	var curr_item = get_held_item()
 	var holder_item = holder.get_held_item()
-
+	
 	holder.hold_item_unsafe(curr_item)
 	hold_item_unsafe(holder_item)
 
@@ -81,10 +81,16 @@ func _interact(player : Player):
 			
 			# Player is holding a Plate
 			if player.c_holder.get_held_item() is MultiHolder:
-				var multi_h = player.c_holder.get_held_item() as MultiHolder
+				var multi_h : MultiHolder = player.c_holder.get_held_item()
 				# Put item onto Plate if space is available
 				if multi_h.has_space_for_item(get_held_item()):
 					release_item_to(multi_h)
+				return
+			
+			if player.c_holder.get_held_item() is StackingHolder:
+				var stacking_h : StackingHolder = player.c_holder.get_held_item()
+				if stacking_h.acceptable_item(get_held_item()):
+					release_item_to(stacking_h)
 				return
 				
 			swap_items_with(player.c_holder)

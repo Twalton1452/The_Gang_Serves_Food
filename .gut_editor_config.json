@@ -14,7 +14,7 @@
  "hide_orphans": false,
  "ignore_pause": false,
  "include_subdirs": true,
- "inner_class": null,
+ "inner_class": "TestHolderWithHoldable",
  "junit_xml_file": "",
  "junit_xml_timestamp": false,
  "log_level": 1,
@@ -24,19 +24,19 @@
   "font_name": "CourierPrime",
   "font_size": 30,
   "hide_output_text": false,
-  "hide_result_tree": false,
+  "hide_result_tree": true,
   "hide_settings": false,
   "use_colors": false
  },
  "post_run_script": "",
  "pre_run_script": "",
  "prefix": "test_",
- "selected": null,
- "should_exit": false,
+ "selected": "test_holder_interactions.gd",
+ "should_exit": true,
  "should_exit_on_success": true,
  "should_maximize": false,
  "show_help": false,
  "suffix": ".gd",
  "tests": [],
- "unit_test_name": null
+ "unit_test_name": "test_player_has_stackingholder_of_different_type_does_nothing"
 }

@@ -32,9 +32,11 @@ class TestHolderWithNoItem extends GutTest:
 ## Each test the Holder being interacted with will start with a Holdable
 class TestHolderWithHoldable extends GutTest:
 	var PlayerScene = load("res://Scenes/player.tscn")
+	
 	var HolderClass = load("res://Scripts/Holder.gd")
 	var HoldableClass = load("res://Scripts/Holdable.gd")
 	var MultiHolderClass = load("res://Scripts/MultiHolder.gd")
+	var StackingHolderClass = load("res://Scripts/StackingHolder.gd")
 
 	var _player : Player = null
 	var _holder : Holder = null
@@ -93,6 +95,42 @@ class TestHolderWithHoldable extends GutTest:
 		assert_eq(_player.c_holder.get_held_item(), multi_h, "Player not holding MultiHolder")
 		assert_eq(_player.c_holder.get_held_item().get_held_item(), holdable, "Player's MultiHolder not holding Holdable")
 		assert_eq(len(_holder.get_held_items()), 0, "Holder holding something")
+	
+	func test_player_has_stackingholder_of_same_type_picks_up_holdable():
+		var stacking_h : StackingHolder = StackingHolderClass.new()
+		var holdable : Holdable = load("res://Scenes/foods/patty.tscn").instantiate()
+		stacking_h.ingredient_scene = load("res://Scenes/foods/patty.tscn")
+		
+		_player.c_holder.add_child(stacking_h)
+		_holder.add_child(holdable)
+		
+		assert_eq(_player.c_holder.get_held_item(), stacking_h, "Player not holding StackingHolder")
+		assert_eq(len(_player.c_holder.get_held_item().get_held_items()), 0, "Player's StackingHolder has items")
+		assert_eq(_holder.get_held_item(), holdable, "Holder not holding Holdable")
+		
+		_holder.interact(_player)
+		
+		assert_eq(_player.c_holder.get_held_item(), stacking_h, "Player not holding the StackingHolder")
+		assert_eq(_player.c_holder.get_held_item().get_held_item(), holdable, "Player not holding the Holdable")
+		assert_eq(len(_holder.get_held_items()), 0, "Holder holding something")
+	
+	func test_player_has_stackingholder_of_different_type_does_nothing():
+		var stacking_h : StackingHolder = StackingHolderClass.new()
+		var holdable : Holdable = load("res://Scenes/foods/patty.tscn").instantiate()
+		stacking_h.ingredient_scene = load("res://Scenes/foods/tomato.tscn")
+		
+		_player.c_holder.add_child(stacking_h)
+		_holder.add_child(holdable)
+		
+		assert_eq(_player.c_holder.get_held_item(), stacking_h, "Player not holding StackingHolder")
+		assert_eq(len(_player.c_holder.get_held_item().get_held_items()), 0, "Player's StackingHolder has items")
+		assert_eq(_holder.get_held_item(), holdable, "Holder not holding Holdable")
+		
+		_holder.interact(_player)
+		
+		assert_eq(_player.c_holder.get_held_item(), stacking_h, "Player not holding the StackingHolder")
+		assert_eq(len(_player.c_holder.get_held_item().get_held_items()), 0, "Player holding the Holdable")
+		assert_eq(len(_holder.get_held_items()), 1, "Holder not holding something")
 
 ## Each test the Holder being interacted with will start with a MultiHolder
 class TestHolderWithMultiHolder extends GutTest:

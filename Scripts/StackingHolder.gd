@@ -21,7 +21,7 @@ func _ready():
 		if held_item is MultiHolder:
 			held_item.disable_colliders()
 		i += 1
-
+	
 func acceptable_item(item: Node3D) -> bool:
 	# Accept any item as long as its not a MultiHolder
 	if ingredient_scene == null and not item is MultiHolder:
