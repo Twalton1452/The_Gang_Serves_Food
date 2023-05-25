@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://b3eisulvtggrn"]
+
+[ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="1_ecyme"]
+[ext_resource type="Script" path="res://Scripts/AI/Customer.gd" id="1_y4ipv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6dh6"]
+albedo_color = Color(1, 0.639216, 0.34902, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0gfwm"]
+material = SubResource("StandardMaterial3D_o6dh6")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tj46x"]
+radius = 0.175
+height = 0.7
+
+[node name="Customer" type="CharacterBody3D"]
+script = ExtResource("1_y4ipv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.2, 0)
+mesh = SubResource("CapsuleMesh_0gfwm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CapsuleShape3D_tj46x")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.7
+target_desired_distance = 0.8
+
+[node name="FaceSprite" type="Sprite3D" parent="."]
+transform = Transform3D(-0.2, 0, -3.01992e-08, 0, 0.2, 0, 3.01992e-08, 0, -0.2, 0, 0.367485, -0.182574)
+double_sided = false
+texture = ExtResource("1_ecyme")
+hframes = 4
+vframes = 3
+frame = 5
+
+[connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_navigation_finished"]
+[connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]

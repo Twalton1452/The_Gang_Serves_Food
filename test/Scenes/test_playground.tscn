@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://gqad26mxeox7"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_ahyoi"]
+vertices = PackedVector3Array(-4.9, 0.0956628, -4.9, -4.9, 0.0956628, 4.9, 4.9, 0.0956628, 4.9, 4.9, 0.0956628, -4.9)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+cell_size = 0.1
+cell_height = 0.05
+agent_height = 0.3
+agent_radius = 0.1
+agent_max_climb = 0.1
+
+[sub_resource type="BoxMesh" id="BoxMesh_os4fe"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_afdmg"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D"]
+navigation_mesh = SubResource("NavigationMesh_ahyoi")
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 0.054, 0, 0, 0, 10, 0, -0.0273372, 0)
+mesh = SubResource("BoxMesh_os4fe")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_afdmg")
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 10, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.235651, 0.971838, 0, -0.971838, 0.235651, -1.3804, 0.67902, 0.972105)
