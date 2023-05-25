@@ -6,11 +6,11 @@ The Gang Serves Food is a coop networked multiplayer game where players cooperat
 ## Table of Contents
 1. [Getting Started](#getting-started)
 2. [Trello](#trello)
-3. [Issues](#issues)
-4. [Keybinds](#keybinds)
-5. [Structure](#structure)
-6. [Nodes and Scripts](#nodes-and-scripts)
-7. [Testing Framework](#testing-framework)
+3. [Keybinds](#keybinds)
+4. [Structure](#structure)
+5. [Nodes and Scripts](#nodes-and-scripts)
+6. [Useful Tidbits](#useful-tidbits)
+7. [Issues](#issues)
 
 ## Getting Started
 1. Clone the repo
@@ -38,23 +38,6 @@ Playing with Friends
 There is a [Trello board](https://trello.com/b/Kye7P3Ix/the-gang-serves-food) detailing all of the features that have been implemented or need to be implemented
 
 
-## Issues
-There are several known issues that we're keeping an eye on related to the Godot Engine specifically:
-
-- Watched Properties being added to Synchronizer: [Link to Issue](https://github.com/godotengine/godot/pull/75467)
-	- Could tell a Synchronizer to only send updates to clients if the property changed
-- Error when bringing Patties into the scene:
-	- "servers/rendering/renderer_rd/storage_rd/material_storage.cpp:2849 - Condition "!material" is true."
-	- Seems to be caused by setting the material Local to Scene
-	- [Link to Issue 1](https://github.com/godotengine/godot/issues/67144)
-	- [Link to Issue 2](https://github.com/godotengine/godot/issues/59912#issuecomment-1128091714)
-- Error when client disconnects
-	- `E 0:00:24:0357   _process_sys: Condition "peer > 0 && !connected_peers.has(peer)" is true.`
-	- Caused by MultiplayerSynchronizer trying to send RPC's despite the player being disconnected
-	- Can be ignored when it pops up, but still annyoing to see errors!
-	- [Link to Issue](https://github.com/godotengine/godot/issues/70505)
-
-
 ## Keybinds
 Gameplay Binds
 - WASD movement
@@ -63,11 +46,12 @@ Gameplay Binds
 - Right Click to secondary Interact
 	- Put food from a Plate onto a stove
 	- Combine ingredients
-	
-Useful Editor Binds
-- Multi-row editing: `Ctrl + Shift + Up/Down Arrow`
 
 ## Structure
+
+### Testing Framework
+[GUT](https://github.com/bitwes/Gut)
+
 ### Networking
 - Authority
 	- Players currently have authority over themselves
@@ -174,5 +158,24 @@ Class used to define a rule when stacking an item
 - class of static functions \
 This class is called on by Holdable's that are secondary interacted with to sort out the logic of whether it needs to spawn a food_combiner.tscn `CombinedFoodHolder` or continue stacking
 
-## Testing Framework
-[GUT](https://github.com/bitwes/Gut)
+## Useful Tidbits
+-(Vector Math)[https://docs.godotengine.org/en/stable/tutorials/math/vector_math.html]
+- Useful Editor Binds
+	- Search documentation: F1
+	- Multi-row editing: `Ctrl + Shift + Up/Down Arrow`
+
+## Issues
+There are several known issues that we're keeping an eye on related to the Godot Engine specifically:
+
+- Watched Properties being added to Synchronizer: [Link to Issue](https://github.com/godotengine/godot/pull/75467)
+	- Could tell a Synchronizer to only send updates to clients if the property changed
+- Error when bringing Patties into the scene:
+	- "servers/rendering/renderer_rd/storage_rd/material_storage.cpp:2849 - Condition "!material" is true."
+	- Seems to be caused by setting the material Local to Scene
+	- [Link to Issue 1](https://github.com/godotengine/godot/issues/67144)
+	- [Link to Issue 2](https://github.com/godotengine/godot/issues/59912#issuecomment-1128091714)
+- Error when client disconnects
+	- `E 0:00:24:0357   _process_sys: Condition "peer > 0 && !connected_peers.has(peer)" is true.`
+	- Caused by MultiplayerSynchronizer trying to send RPC's despite the player being disconnected
+	- Can be ignored when it pops up, but still annyoing to see errors!
+	- [Link to Issue](https://github.com/godotengine/godot/issues/70505)
