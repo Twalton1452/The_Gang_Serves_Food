@@ -270,3 +270,49 @@ class TestHolderWithStackingHolder extends GutTest:
 		
 		assert_eq(_holder.get_held_item(), _stacking_h, "Holder not holding original StackingHolder")
 		assert_eq(len(_holder.get_held_item().get_held_items()), 0, "Holder's StackingHolder holding something")
+
+## Each test the Holder being interacted with will start with a CombinedFood as a child
+class TestHolderWithCombinedFoodHolder extends GutTest:
+	var PlayerScene = load("res://Scenes/player.tscn")
+	
+	var HolderClass = load("res://Scripts/Holder.gd")
+	var FoodClass = load("res://Scripts/Food.gd")
+	var MultiHolderClass = load("res://Scripts/MultiHolder.gd")
+	var CombinedFoodHolderClass = load("res://Scripts/CombinedFoodHolder.gd")
+
+	var _player : Player = null
+	var _holder : Holder = null
+	var _combined_food : CombinedFoodHolder = null
+	
+	func before_each():
+		_player = PlayerScene.instantiate()
+		_holder = HolderClass.new()
+		add_child_autoqfree(_player)
+		add_child_autoqfree(_holder)
+		_combined_food = CombinedFoodHolderClass.new()
+		_holder.add_child(_combined_food)
+		var DoubledFoodClass = double(load("res://Scripts/Food.gd"), DOUBLE_STRATEGY.SCRIPT_ONLY)
+		_combined_food.add_child(DoubledFoodClass.new())
+		_combined_food.add_child(DoubledFoodClass.new())
+		
+	func test_combinedfood_swaps_with_player_combinedfood():
+		var DoubledFoodClass = double(load("res://Scripts/Food.gd"), DOUBLE_STRATEGY.SCRIPT_ONLY)
+		var combined_food = CombinedFoodHolderClass.new()
+		_player.c_holder.add_child(combined_food)
+		combined_food.add_child(DoubledFoodClass.new())
+		combined_food.add_child(DoubledFoodClass.new())
+		combined_food.add_child(DoubledFoodClass.new())
+		
+		assert_eq(_player.c_holder.get_held_item(), combined_food, "Player not holding CombinedFood(3)")
+		assert_eq(len(_player.c_holder.get_held_item().get_held_items()), 3, "Player's CombinedFood doesn't have 3 items")
+		
+		assert_eq(_holder.get_held_item(), _combined_food, "Holder not holding CombinedFood(2)")
+		assert_eq(len(_holder.get_held_item().get_held_items()), 2, "Holder CombinedFood doesn't have 2 items")
+		
+		_holder.interact(_player)
+
+		assert_eq(_player.c_holder.get_held_item(), _combined_food, "Player not holding CombinedFood(2)")
+		assert_eq(len(_player.c_holder.get_held_item().get_held_items()), 2, "Player's CombinedFood doesn't have 2 items")
+		
+		assert_eq(_holder.get_held_item(), combined_food, "Holder not holding CombinedFood(3)")
+		assert_eq(len(_holder.get_held_item().get_held_items()), 3, "Holder CombinedFood doesn't have 3 items")

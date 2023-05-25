@@ -87,7 +87,7 @@ func _interact(player : Player):
 					release_item_to(multi_h)
 				return
 			
-			if player.c_holder.get_held_item() is StackingHolder:
+			if player.c_holder.get_held_item() is StackingHolder and not player.c_holder.get_held_item() is CombinedFoodHolder:
 				var stacking_h : StackingHolder = player.c_holder.get_held_item()
 				if stacking_h.acceptable_item(get_held_item()):
 					release_item_to(stacking_h)
