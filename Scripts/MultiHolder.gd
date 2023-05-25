@@ -3,7 +3,7 @@ class_name MultiHolder
 
 @export var is_pickupable = true
 
-var c_holders : Array[Holder]
+var c_holders : Array[Holder] = []
 
 func _ready():
 	super()
@@ -17,9 +17,6 @@ func _ready():
 		disable_colliders()
 	else:
 		enable_colliders()
-	
-	assert(len(c_holders) > 0, "MultiHolder: %s, Parent: %s, doesn't have any holders" \
-		% [name, get_parent().name])
 	
 
 func get_held_items() -> Array[Node]:
