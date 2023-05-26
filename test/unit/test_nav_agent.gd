@@ -14,7 +14,8 @@ func before_each():
 	_customer = CustomerScene.instantiate()
 	_playground.add_child(_customer)
 	_customer.position = _customer_spawn
-	var nav_agent_desired_distance = (_customer.get_node("NavigationAgent3D")as NavigationAgent3D).path_desired_distance
+	_customer.speed = 5.0
+	var nav_agent_desired_distance = (_customer.get_node("NavigationAgent3D") as NavigationAgent3D).path_desired_distance
 	_acceptable_threshold = Vector3(nav_agent_desired_distance, nav_agent_desired_distance, nav_agent_desired_distance)
 
 func test_customer_moves_to_target_and_back():

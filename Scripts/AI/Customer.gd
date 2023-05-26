@@ -5,39 +5,49 @@ class_name Customer
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 
 var speed = 1.0
-func _ready():
+
+func _ready() -> void:
+	nav_agent.velocity_computed.connect(Callable(_on_velocity_computed))
+	nav_agent.navigation_finished.connect(Callable(_on_navigation_finished))
+	nav_agent.target_reached.connect(Callable(_on_target_reached))
 	if go_to_target != null:
 		update_target_location.call_deferred(go_to_target.global_transform.origin)
+		
+## Navigation needs to be in global space.
+## Use [code]Node.global_transform.origin[/code] when passing values to this function
+func update_target_location(movement_target: Vector3):
+	nav_agent.set_target_position(movement_target)
 
 func _physics_process(_delta):
 	if nav_agent.is_navigation_finished():
 		return
-	
-	var current_location = global_transform.origin
-	var next_location = nav_agent.get_next_path_position()
-	var direction = (next_location - current_location).normalized()
-	
+
+	var next_path_position: Vector3 = nav_agent.get_next_path_position()
+	var current_agent_position: Vector3 = global_position
+	var direction = (next_path_position - current_agent_position).normalized()
+	var new_velocity: Vector3 = direction * speed
 	if not nav_agent.is_target_reached():
-		#var referenceDir = Vector3(0, 0, -1) # Customer Forward direction is -Z
-		#var correct_angle = atan2(referenceDir.x, referenceDir.z)
+		# Subtract PI (180 degrees) because our forward direction is -Z instead of +Z
 		var angle_in_rad = atan2(direction.x, direction.z) - PI
 		rotation.y = angle_in_rad
-
-	var new_velocity = direction * speed
 	
-	velocity = new_velocity
+	if nav_agent.avoidance_enabled:
+		nav_agent.set_velocity(new_velocity)
+	else:
+		_on_velocity_computed(new_velocity)
+
+## Used for when avoidance between other NavAgent's is enabled
+func _on_velocity_computed(safe_velocity: Vector3):
+	velocity = safe_velocity
 	move_and_slide()
 
-## Navigation needs to be in global space.
-## Use [code]Node.global_transform.origin[/code] when passing values to this function
-func update_target_location(target_location : Vector3):
-	nav_agent.target_position = target_location
-
-func _on_navigation_agent_3d_target_reached():
+## Final position signal
+func _on_navigation_finished():
 	pass
 	#print("%s reached its destination!" % name)
 
-
-func _on_navigation_agent_3d_navigation_finished():
+## Not totally sure what the difference between this and the "navigation_finished" signals is
+## I think this one will be emitted when certain waypoints along a path are hit?
+func _on_target_reached():
 	pass
-	#print("finished navigation")
+	#print("reached a point")
