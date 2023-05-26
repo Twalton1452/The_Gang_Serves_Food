@@ -5,7 +5,7 @@ var CustomerScene = load("res://Scenes/customer.tscn")
 
 var _playground : NavigationRegion3D = null
 var _customer : Customer = null
-var _customer_spawn = Vector3(0.0, 0.5, 0.0)
+var _customer_spawn = Vector3(0.0, 0.3, 0.0)
 var _acceptable_threshold = Vector3(.7, .7, .7)
 
 func before_each():
@@ -18,7 +18,7 @@ func before_each():
 	_acceptable_threshold = Vector3(nav_agent_desired_distance, nav_agent_desired_distance, nav_agent_desired_distance)
 
 func test_customer_moves_to_target_and_back():
-	var target = Vector3(0.0, 0.5, 2.0)
+	var target = Vector3(0.0, 0.3, 2.0)
 	assert_eq(_customer.position, _customer_spawn, "Customer isn't starting from spawn")
 	
 	_customer.update_target_location(target)

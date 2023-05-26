@@ -5,7 +5,6 @@ class_name Customer
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 
 var speed = 1.0
-
 func _ready():
 	if go_to_target != null:
 		update_target_location.call_deferred(go_to_target.global_transform.origin)
@@ -17,8 +16,12 @@ func _physics_process(_delta):
 	var current_location = global_transform.origin
 	var next_location = nav_agent.get_next_path_position()
 	var direction = (next_location - current_location).normalized()
-#	if not nav_agent.is_target_reached():
-#		look_at(position + direction)
+	
+	if not nav_agent.is_target_reached():
+		#var referenceDir = Vector3(0, 0, -1) # Customer Forward direction is -Z
+		#var correct_angle = atan2(referenceDir.x, referenceDir.z)
+		var angle_in_rad = atan2(direction.x, direction.z) - PI
+		rotation.y = angle_in_rad
 
 	var new_velocity = direction * speed
 	
@@ -31,10 +34,10 @@ func update_target_location(target_location : Vector3):
 	nav_agent.target_position = target_location
 
 func _on_navigation_agent_3d_target_reached():
-	#pass
-	print("%s reached its destination!" % name)
+	pass
+	#print("%s reached its destination!" % name)
 
 
 func _on_navigation_agent_3d_navigation_finished():
-	#pass
-	print("finished navigation")
+	pass
+	#print("finished navigation")
