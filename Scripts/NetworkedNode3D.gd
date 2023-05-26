@@ -1,4 +1,5 @@
-extends Node3D
+@icon("res://Icons/wifi.svg")
+extends Node
 class_name NetworkedNode3D
 
 ## Heavy lifter of setting up synchronization at start up if a Player joins midsession

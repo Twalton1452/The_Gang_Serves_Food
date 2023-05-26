@@ -1,3 +1,4 @@
+@icon("res://Icons/wifi.svg")
 extends Node
 
 
