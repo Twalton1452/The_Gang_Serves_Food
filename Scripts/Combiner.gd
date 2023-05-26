@@ -13,7 +13,7 @@ static func combine(player: Player, resting: Holdable):
 	
 	# Player is combining with an item on a counter (Simple Holder)
 	if is_exactly_holder:
-		spawn_combiner(resting_p, player.c_holder)
+		Combiner.spawn_combiner(resting_p, player.c_holder)
 	# Don't combine in-hand if Player is holding a Plate or a box of Food
 	elif not player.c_holder.get_held_item() is MultiHolder:
 		# Player is trying to pull off a Multi/Stacking Holder to continue combining in their hand
@@ -31,7 +31,7 @@ static func combine(player: Player, resting: Holdable):
 				player.c_holder.release_item_to(resting_p)
 			# Player trying to start a combination
 			else:
-				spawn_combiner(player.c_holder, resting_p)
+				Combiner.spawn_combiner(player.c_holder, resting_p)
 
 static func spawn_combiner(holder_for_combination : Holder, holder_giving_up_item : Holder) -> StackingHolder:
 	var combiner : StackingHolder = load("res://Scenes/components/food_combiner.tscn").instantiate()
