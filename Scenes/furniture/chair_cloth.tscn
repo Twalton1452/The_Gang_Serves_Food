@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxdnwospdbgrk"]
+
+[ext_resource type="PackedScene" uid="uid://blhyqxbfnxe40" path="res://3d_models/Kenneys_Furniture/chairCushion.glb" id="1_2bueu"]
+
+[node name="ChairCloth" instance=ExtResource("1_2bueu")]

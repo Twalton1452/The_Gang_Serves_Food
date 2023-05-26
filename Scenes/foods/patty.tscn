@@ -55,10 +55,10 @@ obj_to_color = NodePath("Patty")
 
 [node name="Patty" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000462138, 0)
+material_override = ExtResource("3_s7cyn")
 cast_shadow = 0
 mesh = SubResource("ArrayMesh_bc4ni")
 skeleton = NodePath("")
-surface_material_override/0 = ExtResource("3_s7cyn")
 
 [node name="NetworkedNode3D" type="Node3D" parent="."]
 script = ExtResource("3_1ycum")

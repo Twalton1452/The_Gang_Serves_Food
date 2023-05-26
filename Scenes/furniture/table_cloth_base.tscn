@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlqfb28we76j6"]
+
+[ext_resource type="PackedScene" uid="uid://cpy8etfbd2bwm" path="res://3d_models/Kenneys_Furniture/tableCloth.glb" id="1_u1vwo"]
+
+[node name="TableClothBase" instance=ExtResource("1_u1vwo")]
