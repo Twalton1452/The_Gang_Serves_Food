@@ -7,11 +7,15 @@ class_name CustomerManager
 
 var customer_scene = preload("res://Scenes/customer.tscn")
 var parties : Array[CustomerParty] = []
+var max_party_size = 4
 
 #func _ready():
 #	spawn_party.call_deferred(4)
 
 func spawn_party(party_size: int) -> void:
+	if party_size > max_party_size:
+		return
+	
 	var new_party = CustomerParty.new()
 	new_party.name = "Party"
 	add_child(new_party, true)
@@ -24,6 +28,8 @@ func spawn_party(party_size: int) -> void:
 	new_party.customers = party_members
 	parties.push_back(new_party)
 	
+	# TODO: When a Party is spawned and other Parties are waiting at the door
+	# Set their destination to the last person in line instead of entry_point
 	new_party.advance(restaurant.entry_point)
 
 func evaluate_parties():
