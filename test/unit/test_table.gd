@@ -35,7 +35,8 @@ var customer_params = [
 	[Node3D,Node3D,Node3D,Node3D],
 ]
 
-func test_customers_can_sit_at_available_table_and_get_up(params=use_parameters(customer_params)):
+func test_partys_can_sit_at_available_table_and_get_up(params=use_parameters(customer_params)):
+	# Arrange
 	var customers : Array[Node3D] = []
 	for param in params:
 		customers.push_back(add_child_autofree(param.new()))
@@ -43,11 +44,12 @@ func test_customers_can_sit_at_available_table_and_get_up(params=use_parameters(
 	
 	assert_eq(_table.is_empty, true, "Table isn't empty")
 	
+	# Act
 	_table.seat_customers(customers)
 	
+	# Assert
 	assert_eq(_table.is_empty, false, "Table is empty")
 	assert_signal_emitted(_table, "occupied", "occupied signal never emitted")
-	
 	for customer in customers:
 		var in_one_of_the_chairs = false
 		for chair in _chairs:
@@ -57,11 +59,12 @@ func test_customers_can_sit_at_available_table_and_get_up(params=use_parameters(
 				break
 		assert_eq(in_one_of_the_chairs, true, "A customer isn't sitting in a chair")
 	
+	# Act
 	_table.release_customers()
 	
+	# Assert
 	assert_eq(_table.is_empty, true, "Table isn't empty")
 	assert_signal_emitted(_table, "available", "available signal never emitted")
-	
 	for customer in customers:
 		var is_behind_the_chair = false
 		for chair in _chairs:
@@ -70,5 +73,36 @@ func test_customers_can_sit_at_available_table_and_get_up(params=use_parameters(
 				is_behind_the_chair = true
 				break
 		assert_eq(is_behind_the_chair, true, "A customer isn't in the transition location")
+
+var unavail_params = [
+	[Node3D],
+	[Node3D,Node3D],
+	[Node3D,Node3D,Node3D],
+	[Node3D,Node3D,Node3D,Node3D],
+]
+
+func test_partys_can_not_sit_at_unavailable_table(params=use_parameters(unavail_params)):
+	# Arrange
+	var seated_customer = add_child_autoqfree(Node3D.new())
+	_table.seat_customers([seated_customer])
 	
+	var customers : Array[Node3D] = []
+	for param in params:
+		customers.push_back(add_child_autofree(param.new()))
+		assert_eq(customers[-1].position, Vector3.ZERO, "Customer isn't starting at 0,0,0")
+	
+	assert_eq(_table.is_empty, false, "Table isn't empty")
+	
+	# Act
+	_table.seat_customers(customers)
+	
+	# Assert
+	var is_already_seated_customer_or_null = true
+	for chair in _table.chairs:
+		if chair.sitter == null or chair.sitter == seated_customer:
+			continue
+		is_already_seated_customer_or_null = false
+		break
+	assert_eq(is_already_seated_customer_or_null, true, "The party sat at an unavailable table")
+			
 
