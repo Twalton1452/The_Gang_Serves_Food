@@ -12,14 +12,16 @@ size = Vector3(0.190923, 0.0656887, 0.140943)
 
 [node name="kitchenMicrowave" instance=ExtResource("1_1gdom")]
 
-[node name="Rotatable" parent="kitchenMicrowave(Clone)/Group" index="0" instance=ExtResource("2_bearh")]
+[node name="Rotatable" parent="kitchenMicrowave(Clone)/Group" index="0" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("2_bearh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0986587, 0.0724436, 0.00754765)
+mesh_to_highlight = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenMicrowave(Clone)/Group/Rotatable" index="1"]
 shape = SubResource("BoxShape3D_pmmh6")
 
-[node name="Cooker" parent="kitchenMicrowave(Clone)" index="1" instance=ExtResource("3_bscym")]
+[node name="Cooker" parent="kitchenMicrowave(Clone)" index="1" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("3_bscym")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.117244, 0.0254075, -0.0893087)
+mesh_to_highlight = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenMicrowave(Clone)/Cooker" index="2"]
 shape = SubResource("BoxShape3D_cfjuu")

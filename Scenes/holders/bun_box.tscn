@@ -4,7 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://blqi6mmnnc2we" path="res://Scenes/foods/bottom_bun.tscn" id="2_qlkw3"]
 [ext_resource type="PackedScene" uid="uid://8lkh6825ij50" path="res://Scenes/foods/top_bun.tscn" id="3_mr4v2"]
 
-[node name="DoubleHolderBox" instance=ExtResource("1_wpekr")]
+[node name="DoubleHolderBox" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("1_wpekr")]
+mesh_to_highlight = NodePath("Box")
 
 [node name="StackingHolder" parent="." index="3"]
 ingredient_scene = ExtResource("2_qlkw3")

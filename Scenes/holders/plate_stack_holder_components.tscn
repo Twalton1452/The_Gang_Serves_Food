@@ -9,9 +9,10 @@ size = Vector3(0.171371, 0.225305, 0.314048)
 
 [node name="PlateStackHolder" instance=ExtResource("1_kaax1")]
 
-[node name="StackingHolder" parent="." index="1" instance=ExtResource("3_gitd8")]
+[node name="StackingHolder" parent="." index="1" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("3_gitd8")]
 ingredient_scene = ExtResource("2_lyxfo")
 stacking_spacing = Vector3(0, 0.006, 0)
+mesh_to_highlight = NodePath("../Holder")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0896733, 0)

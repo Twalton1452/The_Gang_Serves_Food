@@ -55,10 +55,11 @@ size = Vector3(0.0675428, 0.02522, 0.0663167)
 [sub_resource type="BoxShape3D" id="BoxShape3D_6453g"]
 size = Vector3(0.0675428, 0.02522, 0.0663167)
 
-[node name="Plate" type="Area3D"]
+[node name="Plate" type="Area3D" node_paths=PackedStringArray("mesh_to_highlight")]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_h3fsn")
+mesh_to_highlight = NodePath("Cube")
 
 [node name="NetworkedNode3D" type="Node3D" parent="."]
 script = ExtResource("2_o77dx")

@@ -50,11 +50,12 @@ data = PackedVector3Array(-0.125915, 0.0639997, 0.0736719, -0.125915, 0.00095100
 [sub_resource type="BoxShape3D" id="BoxShape3D_ewkhx"]
 size = Vector3(0.0864892, 0.0783116, 0.125337)
 
-[node name="PattyBox" type="Area3D"]
+[node name="PattyBox" type="Area3D" node_paths=PackedStringArray("mesh_to_highlight")]
 collision_layer = 4
 collision_mask = 0
 priority = 1.0
 script = ExtResource("1_b1ojg")
+mesh_to_highlight = NodePath("Box")
 
 [node name="Box" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_0h4qa")

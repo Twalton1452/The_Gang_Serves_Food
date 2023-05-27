@@ -4,7 +4,7 @@ class_name CustomerParty
 ## A group of customers makes up a CustomerParty
 ## This class will help to organize groups of Customers to tell them where to go like a family
 
-signal arrived
+signal state_changed
 
 ## The overall state of the Party, where they are at in the Lifecycle of the process
 ## does not represent individual customer emotions
@@ -25,12 +25,11 @@ enum PartyState {
 	LEAVING
 }
 
+var state : PartyState = PartyState.SPAWNING
 var customers : Array[Customer] = [] : set = set_customers
 var customer_spacing = 0.5
 var destination : Node3D = null
 var num_arrived_to_destination = 0
-var has_notified = false
-var state : PartyState = PartyState.SPAWNING
 
 func set_customers(value: Array[Customer]) -> void:
 	if not customers.is_empty():
@@ -60,7 +59,5 @@ func _on_customer_arrived():
 	num_arrived_to_destination += 1
 	
 	if num_arrived_to_destination >= len(customers):
-		if not has_notified:
-			has_notified = true
-			arrived.emit()
-			state += 1
+		state += 1
+		state_changed.emit(state)

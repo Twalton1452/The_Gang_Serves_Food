@@ -46,7 +46,7 @@ shadow_mesh = SubResource("ArrayMesh_54src")
 [sub_resource type="BoxShape3D" id="BoxShape3D_uj0fa"]
 size = Vector3(0.0943549, 0.0171342, 0.101233)
 
-[node name="BottomBun" type="Area3D" node_paths=PackedStringArray("obj_to_color")]
+[node name="BottomBun" type="Area3D" node_paths=PackedStringArray("obj_to_color", "mesh_to_highlight")]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_gd6nn")
@@ -55,6 +55,7 @@ stacking_spacing = Vector3(0, 0.015, 0)
 gradient = ExtResource("2_n7r2m")
 obj_to_color = NodePath("Bun")
 SCENE_ID = 2
+mesh_to_highlight = NodePath("Bun")
 
 [node name="Bun" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_x68n1")

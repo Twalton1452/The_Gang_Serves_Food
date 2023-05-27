@@ -17,6 +17,7 @@ func spawn_party(party_size: int) -> void:
 		return
 	
 	var new_party = CustomerParty.new()
+	new_party.state_changed.connect(_on_party_state_changed)
 	new_party.name = "Party"
 	add_child(new_party, true)
 	new_party.position = Vector3.ZERO
@@ -34,9 +35,9 @@ func spawn_party(party_size: int) -> void:
 
 func evaluate_parties():
 	for party in parties:
-		evaluate_party(party)
+		_on_party_state_changed(party)
 
-func evaluate_party(party: CustomerParty):
+func _on_party_state_changed(party: CustomerParty):
 	match party.state:
 		CustomerParty.PartyState.SPAWNING:
 			pass

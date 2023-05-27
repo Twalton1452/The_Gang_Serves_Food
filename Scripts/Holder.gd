@@ -12,7 +12,7 @@ func can_hold_this(item: Node3D) -> bool:
 
 func get_held_items() -> Array[Node]:
 	if get_child_count() > 0:
-		return get_children().filter(can_hold_this)
+		return get_children().filter(func(item): return item is Holdable or item is Holder)
 	return []
 
 func has_space_for_item(_item: Node3D) -> bool:

@@ -15,9 +15,9 @@ transform = Transform3D(0.449212, 0, 0, 0, 1, 0, 0, 0, 0.751964, 0, 0, 0)
 [node name="NetworkedNode3D" parent="." index="1" instance=ExtResource("2_jipxe")]
 priority_sync_order = 1
 
-[node name="StackingHolder" parent="." index="2" instance=ExtResource("3_lqjuo")]
+[node name="StackingHolder" parent="." index="2" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("3_lqjuo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0152823, 0)
-can_hold_holders = false
+mesh_to_highlight = NodePath("../Box")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0231387, 0)

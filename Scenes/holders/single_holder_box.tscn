@@ -47,11 +47,11 @@ data = PackedVector3Array(-0.063, 0.064, 0.0737, -0.063, 0.001, -0.0737, -0.063,
 [sub_resource type="BoxShape3D" id="BoxShape3D_gpe3u"]
 size = Vector3(0.106555, 0.0543476, 0.122567)
 
-[node name="SingleHolderBox" type="Area3D"]
+[node name="SingleHolderBox" type="Area3D" node_paths=PackedStringArray("mesh_to_highlight")]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_eg46n")
-can_hold_holders = null
+mesh_to_highlight = NodePath("Box")
 
 [node name="Box" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_3qcjd")
@@ -65,7 +65,6 @@ priority_sync_order = 1
 
 [node name="StackingHolder" parent="." instance=ExtResource("2_vwo48")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0132073, 0)
-can_hold_holders = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0198227, 0)

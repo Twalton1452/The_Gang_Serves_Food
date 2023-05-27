@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cht3tl77k1284"]
+
+[ext_resource type="Shader" path="res://Shaders/outline.gdshader" id="1_cpcvr"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_cpcvr")
+shader_parameter/outline_color = Color(0.960784, 0.560784, 0.223529, 0.556863)
+shader_parameter/outline_size = 1.0
