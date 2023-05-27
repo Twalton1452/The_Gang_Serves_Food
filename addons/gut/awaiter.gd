@@ -56,6 +56,10 @@ func wait_frames(x):
 
 
 func wait_for_signal(the_signal, x):
+	# Disconnect the previous signal if its there or else when you are
+	# waiting for the same signal multiple times in a single test it throws errors
+	if the_signal.is_connected(_signal_callback):
+		the_signal.disconnect(_signal_callback)
 	the_signal.connect(_signal_callback)
 	_signal_to_wait_on = the_signal
 	_wait_time = x
