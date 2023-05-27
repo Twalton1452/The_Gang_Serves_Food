@@ -57,6 +57,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_26lyt")
 [node name="FrontDoor" parent="NavigationRegion3D/Building" instance=ExtResource("3_21ak5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 
+[node name="EntryNavLink" type="NavigationLink3D" parent="NavigationRegion3D/Building/FrontDoor"]
+transform = Transform3D(0.401, 0, 0, 0, 0.401, 0, 0, 0, 0.401, 0.48593, 0, 0)
+start_position = Vector3(0, 0, -0.75)
+end_position = Vector3(0, 0, 0.882)
+
 [node name="Walls" type="Node3D" parent="NavigationRegion3D/Building"]
 
 [node name="wall" parent="NavigationRegion3D/Building/Walls" instance=ExtResource("1_lxx3p")]
@@ -82,6 +87,11 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 0.4, 0, 1, 0, -4.37114e-08, 5, 0
 
 [node name="wallDoorway" parent="NavigationRegion3D/Building/Walls" instance=ExtResource("4_2i7t1")]
 transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 5, 0, 8)
+
+[node name="KitchenDoorLink" type="NavigationLink3D" parent="NavigationRegion3D/Building/Walls/wallDoorway"]
+transform = Transform3D(4.34066e-09, 0, 0.364, 0, 0.364, 0, -0.364, 0, 4.34066e-09, 0.51199, 0, -0.0569)
+start_position = Vector3(-0.683, 0, 0)
+end_position = Vector3(0.63, 0, 0)
 
 [node name="Tables" type="Node3D" parent="NavigationRegion3D/Building"]
 
@@ -160,7 +170,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.7191
 [node name="chairCushion4" parent="NavigationRegion3D/Building/Tables/tableCloth6" instance=ExtResource("16_4dkdq")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.310143, 0, 0.082437)
 
-[node name="Table" parent="NavigationRegion3D/Building/Tables" instance=ExtResource("10_tuail")]
+[node name="TableFourPerson" parent="NavigationRegion3D/Building/Tables" instance=ExtResource("10_tuail")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.35423, 0.00454932, 1.80953)
 
 [node name="Kitchen" type="Node3D" parent="NavigationRegion3D/Building"]
@@ -303,22 +313,24 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 
 [node name="Ground" parent="NavigationRegion3D" instance=ExtResource("2_8d1g5")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
 
-[node name="Marker3D" type="Marker3D" parent="NavigationRegion3D"]
-transform = Transform3D(-0.954136, 0, -0.299374, 0, 1, 0, 0.299374, 0, -0.954136, 7.61694, 0.0952672, 5.64306)
+[node name="EntryWaypoint" type="Marker3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.93265, 0.0952672, -0.516297)
 
 [node name="Customer" parent="NavigationRegion3D" node_paths=PackedStringArray("go_to_target") instance=ExtResource("15_mefn0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55933, 0.167746, 0.452234)
-go_to_target = NodePath("../Marker3D")
+go_to_target = NodePath("../EntryWaypoint")
 
-[node name="EntryNavLink" type="NavigationLink3D" parent="NavigationRegion3D"]
-transform = Transform3D(0.401, 0, 0, 0, 0.401, 0, 0, 0, 0.401, 1.48593, 0, 0)
-start_position = Vector3(0, 0, -0.75)
-end_position = Vector3(0, 0, 0.882)
+[node name="Customer2" parent="NavigationRegion3D" node_paths=PackedStringArray("go_to_target") instance=ExtResource("15_mefn0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55933, 0.167746, 1.01879)
+go_to_target = NodePath("../EntryWaypoint")
 
-[node name="KitchenDoorLink" type="NavigationLink3D" parent="NavigationRegion3D"]
-transform = Transform3D(0.364, 0, 0, 0, 0.364, 0, 0, 0, 0.364, 5.0569, 0, 8.51199)
-start_position = Vector3(-0.683, 0, 0)
-end_position = Vector3(0.63, 0, 0)
+[node name="Customer3" parent="NavigationRegion3D" node_paths=PackedStringArray("go_to_target") instance=ExtResource("15_mefn0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55933, 0.167746, 1.61336)
+go_to_target = NodePath("../EntryWaypoint")
+
+[node name="Customer4" parent="NavigationRegion3D" node_paths=PackedStringArray("go_to_target") instance=ExtResource("15_mefn0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55933, 0.167746, 2.25736)
+go_to_target = NodePath("../EntryWaypoint")
 
 [node name="SpawnPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09091, 0.266214, 0.667411)

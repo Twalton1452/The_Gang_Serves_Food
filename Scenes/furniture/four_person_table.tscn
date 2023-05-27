@@ -1,40 +1,42 @@
-[gd_scene load_steps=4 format=3 uid="uid://cx11ipeseh6dx"]
+[gd_scene load_steps=5 format=3 uid="uid://cx11ipeseh6dx"]
 
+[ext_resource type="Script" path="res://Scripts/Restaurant/Table.gd" id="1_g14pa"]
 [ext_resource type="PackedScene" uid="uid://dlqfb28we76j6" path="res://Scenes/furniture/table_cloth_base.tscn" id="1_qjpgh"]
 [ext_resource type="PackedScene" uid="uid://dxdnwospdbgrk" path="res://Scenes/furniture/chair_cloth.tscn" id="2_7myk5"]
-[ext_resource type="Material" uid="uid://iq0ya8ma5cns" path="res://Materials/Table_Cloth_mat.tres" id="2_odorj"]
+[ext_resource type="Material" uid="uid://iq0ya8ma5cns" path="res://Materials/Table_Cloth_Available_mat.tres" id="2_lmh77"]
 
-[node name="Table" type="Node3D"]
+[node name="TableFourPerson" type="Node3D"]
+script = ExtResource("1_g14pa")
 
 [node name="TableClothBase" parent="." instance=ExtResource("1_qjpgh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.424617, 0, 0.224179)
 
 [node name="tableCloth(Clone)" parent="TableClothBase" index="0"]
-surface_material_override/1 = ExtResource("2_odorj")
+surface_material_override/1 = ExtResource("2_lmh77")
 
 [node name="ChairCloth" parent="." instance=ExtResource("2_7myk5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, -0.3)
 
 [node name="chairCushion(Clone)" parent="ChairCloth" index="0"]
-surface_material_override/1 = ExtResource("2_odorj")
+surface_material_override/1 = ExtResource("2_lmh77")
 
 [node name="ChairCloth4" parent="." instance=ExtResource("2_7myk5")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.1, 0, 0.3)
 
 [node name="chairCushion(Clone)" parent="ChairCloth4" index="0"]
-surface_material_override/1 = ExtResource("2_odorj")
+surface_material_override/1 = ExtResource("2_lmh77")
 
 [node name="ChairCloth2" parent="." instance=ExtResource("2_7myk5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, -0.3)
 
 [node name="chairCushion(Clone)" parent="ChairCloth2" index="0"]
-surface_material_override/1 = ExtResource("2_odorj")
+surface_material_override/1 = ExtResource("2_lmh77")
 
 [node name="ChairCloth3" parent="." instance=ExtResource("2_7myk5")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3, 0, 0.3)
 
 [node name="chairCushion(Clone)" parent="ChairCloth3" index="0"]
-surface_material_override/1 = ExtResource("2_odorj")
+surface_material_override/1 = ExtResource("2_lmh77")
 
 [editable path="TableClothBase"]
 [editable path="ChairCloth"]
