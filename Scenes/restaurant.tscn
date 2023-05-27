@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=26 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -15,7 +15,6 @@
 [ext_resource type="PackedScene" uid="uid://cx11ipeseh6dx" path="res://Scenes/furniture/four_person_table.tscn" id="10_tuail"]
 [ext_resource type="PackedScene" uid="uid://cpb5xjyhdnwqr" path="res://3d_models/Kenneys_Furniture/kitchenSink.glb" id="11_t52rp"]
 [ext_resource type="PackedScene" uid="uid://bwqlq831iqp56" path="res://Scenes/holders/fridge_components.tscn" id="12_xj5b4"]
-[ext_resource type="PackedScene" uid="uid://b3eisulvtggrn" path="res://Scenes/customer.tscn" id="15_mefn0"]
 [ext_resource type="PackedScene" uid="uid://cpy8etfbd2bwm" path="res://3d_models/Kenneys_Furniture/tableCloth.glb" id="15_s1kwc"]
 [ext_resource type="PackedScene" uid="uid://blhyqxbfnxe40" path="res://3d_models/Kenneys_Furniture/chairCushion.glb" id="16_4dkdq"]
 [ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/holders/stove_components.tscn" id="16_eiaux"]
@@ -42,9 +41,10 @@ spawn_limit = 10
 [node name="MidsessionJoinSyncer" type="Node" parent="Networking"]
 script = ExtResource("24_gdwhe")
 
-[node name="Restaurant" type="NavigationRegion3D" parent="."]
+[node name="Restaurant" type="NavigationRegion3D" parent="." node_paths=PackedStringArray("entry_point")]
 navigation_mesh = ExtResource("3_wk033")
 script = ExtResource("4_kvbc8")
+entry_point = NodePath("EntryPoint")
 
 [node name="Building" type="Node3D" parent="Restaurant"]
 
@@ -321,23 +321,8 @@ transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.40644, 0.0952672, -1.0332)
 
 [node name="CustomerManager" type="Node3D" parent="Restaurant"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.59241, 0.268635, 0.855708)
 script = ExtResource("17_losm7")
-
-[node name="Customer" parent="Restaurant/CustomerManager" node_paths=PackedStringArray("go_to_target") instance=ExtResource("15_mefn0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55933, 0.167746, 0.452234)
-go_to_target = NodePath("../../EntryPoint")
-
-[node name="Customer2" parent="Restaurant/CustomerManager" node_paths=PackedStringArray("go_to_target") instance=ExtResource("15_mefn0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55933, 0.167746, 1.01879)
-go_to_target = NodePath("../../EntryPoint")
-
-[node name="Customer3" parent="Restaurant/CustomerManager" node_paths=PackedStringArray("go_to_target") instance=ExtResource("15_mefn0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55933, 0.167746, 1.61336)
-go_to_target = NodePath("../../EntryPoint")
-
-[node name="Customer4" parent="Restaurant/CustomerManager" node_paths=PackedStringArray("go_to_target") instance=ExtResource("15_mefn0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55933, 0.167746, 2.25736)
-go_to_target = NodePath("../../EntryPoint")
 
 [node name="SpawnPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.12182, 0.266214, 1.32506)

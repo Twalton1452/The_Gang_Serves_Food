@@ -12,6 +12,12 @@ var max_party_size = 4
 #func _ready():
 #	spawn_party.call_deferred(4)
 
+func _unhandled_input(event):
+	if not is_multiplayer_authority():
+		return
+	if event.is_action_pressed("ui_page_up"):
+		spawn_party(randi_range(1, max_party_size))
+
 func spawn_party(party_size: int) -> void:
 	if party_size > max_party_size:
 		return

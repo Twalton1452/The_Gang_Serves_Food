@@ -39,10 +39,10 @@ func set_customers(value: Array[Customer]) -> void:
 	customers = value
 	var spacing = 0
 	for customer in customers:
-		add_child(customer, true)
-		customer.position = Vector3(0,0,-spacing)
 		customer.arrived.connect(_on_customer_arrived)
+		customer.position = Vector3(0,0,-spacing)
 		spacing += customer_spacing
+		add_child(customer, true)
 
 func advance(target: Node3D = null):
 	destination = target
@@ -62,4 +62,4 @@ func _on_customer_arrived():
 	if num_arrived_to_destination >= len(customers):
 		@warning_ignore("int_as_enum_without_cast")
 		state += 1
-		state_changed.emit(state)
+		state_changed.emit(self)

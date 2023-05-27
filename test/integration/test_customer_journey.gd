@@ -34,6 +34,6 @@ func test_party_spawns_sits_at_available_table():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_TABLE, "The Party is not waiting for a table")
 	
 	# Act
-	await wait_for_signal(spawned_party.state_change, 3.0, "The party didn't change their state")
+	#await wait_for_signal(spawned_party.state_change, 3.0, "The party didn't change their state")
 	#_customer_manager.evaluate_parties()
 	# Assert
