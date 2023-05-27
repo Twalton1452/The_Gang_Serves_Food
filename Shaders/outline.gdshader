@@ -10,5 +10,7 @@ void fragment() {
     vec3 normal = normalize((inv_camera_matrix * vec4(NORMAL, 0.0)).xyz);
     float fresnel = max(0.0, 1.0 - dot(view_dir, normal));
     fresnel = 1.0 / pow(fresnel, 2.0);
-    ALBEDO = mix(ALBEDO.rgb, outline_color.rgb, fresnel * outline_size);
+    ALBEDO = mix(ALBEDO.rgb, outline_color.rgb, smoothstep(fresnel * outline_size, 0.2, 0.4));
+	// kind of like xray vision when reducing the Alpha
+	// ALPHA = ALPHA * outline_color.a;
 }

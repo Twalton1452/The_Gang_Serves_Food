@@ -5,5 +5,5 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_cpcvr")
-shader_parameter/outline_color = Color(0.960784, 0.560784, 0.223529, 0.556863)
-shader_parameter/outline_size = 1.0
+shader_parameter/outline_color = Color(0.898039, 0.52549, 0.168627, 1)
+shader_parameter/outline_size = 1.379

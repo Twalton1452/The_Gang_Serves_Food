@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://e4doaul7ghk7"]
+
+[ext_resource type="Material" uid="uid://cht3tl77k1284" path="res://Materials/outline_material.tres" id="1_lse81"]
+[ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="2_4ft53"]
+[ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/holders/stove_components.tscn" id="3_01d04"]
+[ext_resource type="PackedScene" uid="uid://bwqlq831iqp56" path="res://Scenes/holders/fridge_components.tscn" id="4_vk7ee"]
+[ext_resource type="PackedScene" uid="uid://dfg1k7gfdbgmw" path="res://Scenes/foods/patty.tscn" id="5_ra1jy"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_2j3pv"]
+
+[node name="OutlineTesting" type="Node3D"]
+
+[node name="OutlineSphereTest" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54999, 0)
+mesh = SubResource("SphereMesh_2j3pv")
+surface_material_override/0 = ExtResource("1_lse81")
+
+[node name="kitchenCabinet" parent="." instance=ExtResource("2_4ft53")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.660412, 0, 0)
+
+[node name="kitchenCabinet(Clone)" parent="kitchenCabinet" index="0"]
+surface_material_override/0 = ExtResource("1_lse81")
+
+[node name="kitchenStove" parent="." instance=ExtResource("3_01d04")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.18467, 0, 0)
+
+[node name="door" parent="kitchenStove/kitchenStove(Clone)" index="0"]
+surface_material_override/0 = ExtResource("1_lse81")
+
+[node name="Fridge" parent="." instance=ExtResource("4_vk7ee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.74828, 0, 0)
+
+[node name="doorFridge" parent="Fridge/kitchenFridge/kitchenFridge(Clone)" index="1"]
+surface_material_override/0 = ExtResource("1_lse81")
+
+[node name="Patty" parent="." instance=ExtResource("5_ra1jy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.32457, 0.432618, -0.188003)
+
+[node name="Patty" parent="Patty" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0169273, 0)
+surface_material_override/0 = ExtResource("1_lse81")
+
+[editable path="kitchenCabinet"]
+[editable path="kitchenStove"]
+[editable path="Fridge"]
+[editable path="Fridge/kitchenFridge"]
+[editable path="Patty"]

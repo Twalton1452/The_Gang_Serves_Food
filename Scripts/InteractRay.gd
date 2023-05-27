@@ -1,10 +1,18 @@
 extends RayCast3D
 
+@export var highlight_enabled = false
+
 var outline_material : ShaderMaterial = preload("res://Materials/outline_material.tres")
 var current_material : BaseMaterial3D = null
 var looking_at : Interactable = null
 
+func _unhandled_input(event):
+	if event.is_action_pressed("ui_end"):
+		highlight_enabled = !highlight_enabled
+
 func _physics_process(_delta):
+	if not highlight_enabled:
+		return
 	
 	# Changed targets
 	if looking_at != get_collider():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=27 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -25,12 +25,9 @@
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
 [ext_resource type="Script" path="res://Scripts/MidsessionJoinSyncer.gd" id="24_gdwhe"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
-[ext_resource type="Material" uid="uid://cht3tl77k1284" path="res://Materials/outline_material.tres" id="26_8kl61"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26lyt"]
 albedo_color = Color(0.913725, 0.701961, 0.435294, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_2v5ce"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_sgx7f")
@@ -401,11 +398,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72, 0, 0)
 
 [node name="kitchenStove" parent="Testing" instance=ExtResource("16_eiaux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43, 0, 0)
-
-[node name="OutlineSphereTest" type="MeshInstance3D" parent="Testing"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.05128, 0.583244, 0.959552)
-mesh = SubResource("SphereMesh_2v5ce")
-surface_material_override/0 = ExtResource("26_8kl61")
 
 [connection signal="despawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_despawned"]
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]

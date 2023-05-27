@@ -53,11 +53,13 @@ func advance(target: Node3D = null):
 			customer.go_to(destination.position + Vector3(0,0,-spacing))
 			spacing += customer_spacing
 	
+	@warning_ignore("int_as_enum_without_cast")
 	state += 1
 
 func _on_customer_arrived():
 	num_arrived_to_destination += 1
 	
 	if num_arrived_to_destination >= len(customers):
+		@warning_ignore("int_as_enum_without_cast")
 		state += 1
 		state_changed.emit(state)
