@@ -7,6 +7,7 @@
 
 [node name="TableFourPerson" type="Node3D"]
 script = ExtResource("1_g14pa")
+chairs = Array[Resource("res://Scripts/Restaurant/Chair.gd")]([null, null, null, null])
 
 [node name="TableClothBase" parent="." instance=ExtResource("1_qjpgh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.424617, 0, 0.224179)
