@@ -58,8 +58,7 @@ func _on_player_spawner_spawned(node):
 	GameState.add_player(node)
 	node.position = spawn_point.position
 	if node.is_multiplayer_authority():
-		node.health_changed.connect(update_health_bar)	
-
+		node.health_changed.connect(update_health_bar)
 
 func _on_player_spawner_despawned(node):
 	GameState.remove_player(node.name.to_int())

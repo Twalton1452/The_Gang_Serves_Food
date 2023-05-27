@@ -1,6 +1,8 @@
 extends CharacterBody3D
 class_name Customer
 
+signal arrived
+
 @export var go_to_target : Node3D
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 
@@ -11,11 +13,11 @@ func _ready() -> void:
 	nav_agent.navigation_finished.connect(Callable(_on_navigation_finished))
 	nav_agent.target_reached.connect(Callable(_on_target_reached))
 	if go_to_target != null:
-		update_target_location.call_deferred(go_to_target.global_transform.origin)
+		go_to.call_deferred(go_to_target.global_transform.origin)
 		
 ## Navigation needs to be in global space.
 ## Use [code]Node.global_transform.origin[/code] when passing values to this function
-func update_target_location(movement_target: Vector3):
+func go_to(movement_target: Vector3):
 	nav_agent.set_target_position(movement_target)
 
 func _physics_process(_delta):
@@ -49,5 +51,5 @@ func _on_navigation_finished():
 ## Not totally sure what the difference between this and the "navigation_finished" signals is
 ## I think this one will be emitted when certain waypoints along a path are hit?
 func _on_target_reached():
-	pass
+	arrived.emit()
 	#print("reached a point")

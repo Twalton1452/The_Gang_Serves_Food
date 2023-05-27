@@ -19,19 +19,27 @@ func before_each():
 	_acceptable_threshold = Vector3(nav_agent_desired_distance, nav_agent_desired_distance, nav_agent_desired_distance)
 
 func test_customer_moves_to_target_and_back():
+	# Arrange
 	var target = Vector3(0.0, 0.3, 2.0)
 	assert_eq(_customer.position, _customer_spawn, "Customer isn't starting from spawn")
 	
-	_customer.update_target_location(target)
+	# Act
+	_customer.go_to(target)
 	await wait_frames(2) # Let the navmesh calculate the path after updating the target
+	
+	# Assert
 	assert_eq(_customer.nav_agent.is_target_reachable(), true, "Customer's target isn't reachable")
-	await wait_for_signal(_customer.nav_agent.navigation_finished, 3.0, "Customer never reached its destination")
+	await wait_for_signal(_customer.arrived, 3.0, "Customer never reached its destination")
 	assert_almost_eq(_customer.position, target, _acceptable_threshold, "Customer didn't make it to its target")
 	
+	# Arrange
 	target = _customer_spawn
 	
-	_customer.update_target_location(target)
+	# Act
+	_customer.go_to(target)
 	await wait_frames(2) # Let the navmesh calculate the path after updating the target
+	
+	# Assert
 	assert_eq(_customer.nav_agent.is_target_reachable(), true, "Customer's spawn isn't reachable")
-	await wait_for_signal(_customer.nav_agent.navigation_finished, 3.0, "Customer never reached back to spawn")
+	await wait_for_signal(_customer.arrived, 3.0, "Customer never reached back to spawn")
 	assert_almost_eq(_customer.position, target, _acceptable_threshold, "Customer didn't make it to its target")

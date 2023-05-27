@@ -29,6 +29,7 @@ path_desired_distance = 0.2
 target_desired_distance = 0.3
 agent_height_offset = -0.1
 radius = 0.2
+neighbor_distance = 5.0
 
 [node name="FaceSprite" type="Sprite3D" parent="."]
 transform = Transform3D(-0.2, 0, -3.01992e-08, 0, 0.2, 0, 3.01992e-08, 0, -0.2, 0, 0.367485, -0.182574)
