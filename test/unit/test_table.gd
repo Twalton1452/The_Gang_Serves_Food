@@ -16,10 +16,14 @@ func before_each():
 		_chairs.push_back(chair)
 		chair.position = Vector3(1.0 + i, 0.0, 1.0) # this is a very weird table
 		_table.add_child(chair)
-		var behind_chair = Node3D.new()
-		chair.add_child(behind_chair)
-		chair.transition_location = behind_chair
-		behind_chair.position = Vector3.BACK
+		var chair_sit_loc = Node3D.new()
+		var behind_chair_loc = Node3D.new()
+		chair.add_child(chair_sit_loc)
+		chair.add_child(behind_chair_loc)
+		chair.sitting_location = chair_sit_loc
+		chair.transition_location = behind_chair_loc
+		chair_sit_loc.position = Vector3(0.0, 0.0, 0.5)
+		behind_chair_loc.position = Vector3.BACK
 	
 	_table.chairs = _chairs
 
@@ -53,7 +57,7 @@ func test_partys_can_sit_at_available_table_and_get_up(params=use_parameters(cus
 	for customer in customers:
 		var in_one_of_the_chairs = false
 		for chair in _chairs:
-			if customer.position == chair.position:
+			if customer.global_position.is_equal_approx(chair.sitting_location.global_position):
 				assert_eq(chair.sitter, customer, "A customer has my chair position but is in a different seat")
 				in_one_of_the_chairs = true
 				break
@@ -69,7 +73,7 @@ func test_partys_can_sit_at_available_table_and_get_up(params=use_parameters(cus
 		var is_behind_the_chair = false
 		for chair in _chairs:
 			assert_eq(chair.sitter, null, "A customer is still in my chair despite being forced out")
-			if customer.position == chair.transition_location.position:
+			if customer.global_position.is_equal_approx(chair.transition_location.global_position):
 				is_behind_the_chair = true
 				break
 		assert_eq(is_behind_the_chair, true, "A customer isn't in the transition location")

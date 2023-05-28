@@ -80,6 +80,11 @@ func go_to_table(destination_table: Table):
 	state = PartyState.WALKING_TO_TABLE
 
 func sit_at_table():
+	for i in len(customers):
+		var customer : Customer = customers[i]
+		var chair : Chair = table.chairs[i]
+		chair.sit(customer)
+		
 	state = PartyState.THINKING
 
 func _on_customer_arrived():

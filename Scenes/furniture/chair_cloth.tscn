@@ -3,9 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://blhyqxbfnxe40" path="res://3d_models/Kenneys_Furniture/chairCushion.glb" id="1_2bueu"]
 [ext_resource type="Script" path="res://Scripts/Restaurant/Chair.gd" id="2_bpbhr"]
 
-[node name="ChairCloth" node_paths=PackedStringArray("transition_location") instance=ExtResource("1_2bueu")]
+[node name="ChairCloth" node_paths=PackedStringArray("sitting_location", "transition_location") instance=ExtResource("1_2bueu")]
 script = ExtResource("2_bpbhr")
+sitting_location = NodePath("SittingChairPosition")
 transition_location = NodePath("BehindChairPosition")
 
 [node name="BehindChairPosition" type="Marker3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0943762, 0, -0.380409)
+
+[node name="SittingChairPosition" type="Marker3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.094, 0, -0.086)

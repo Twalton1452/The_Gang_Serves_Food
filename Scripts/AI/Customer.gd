@@ -6,7 +6,7 @@ signal arrived
 @export var go_to_target : Node3D
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 
-var speed = 1.0
+var speed = 2.0
 
 func _ready() -> void:
 	nav_agent.velocity_computed.connect(Callable(_on_velocity_computed))
@@ -32,8 +32,8 @@ func _physics_process(_delta):
 		# Subtract PI (180 degrees) because our forward direction is -Z instead of +Z
 		var angle_in_rad = atan2(direction.x, direction.z) - PI
 		rotation.y = angle_in_rad
-		if not nav_agent.is_target_reachable():
-			print("%s can't reach its destination" % name)
+#		if not nav_agent.is_target_reachable():
+#			print("%s can't reach its destination" % name)
 	
 	if nav_agent.avoidance_enabled:
 		nav_agent.set_velocity(new_velocity)
@@ -55,3 +55,7 @@ func _on_navigation_finished():
 func _on_target_reached():
 	#print("reached target")
 	pass
+
+func _unhandled_input(event):
+	if event is InputEventKey and event.is_action_pressed("debug_pathing"):
+		nav_agent.debug_enabled = !nav_agent.debug_enabled

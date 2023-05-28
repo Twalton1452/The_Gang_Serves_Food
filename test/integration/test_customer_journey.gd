@@ -4,6 +4,7 @@ var RestaurantScene = load("res://test/Scenes/test_restaurant.tscn")
 
 var _restaurant : Restaurant = null
 var _customer_manager : CustomerManager = null
+var _acceptable_threshold = Vector3(.3, .3, .3)
 
 func before_each():
 	_restaurant = RestaurantScene.instantiate()
@@ -40,5 +41,7 @@ func test_party_full_journey():
 	
 	await wait_for_signal(spawned_party.state_changed, 2.0, "The party took too long walking to the table")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.THINKING, "The Party is not thinking at a table")
+	for chair in spawned_party.table.chairs:
+		assert_almost_eq(chair.sitter.global_position, chair.global_position, _acceptable_threshold, "The customer is not sitting in the chair correctly")
 	#_customer_manager.evaluate_parties()
 	# Assert
