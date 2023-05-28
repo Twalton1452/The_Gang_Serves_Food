@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Cookable.gd" id="1_va81s"]
 [ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/food_gradients/patty_cook_gradient.tres" id="2_4n3xu"]
-[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="3_wyd0g"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="3_wyd0g"]
 
 [node name="Cookable" type="Area3D"]
 collision_layer = 4

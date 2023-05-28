@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3y6xmhkuoht5"]
 
 [ext_resource type="Script" path="res://Scripts/Cooker.gd" id="1_34ogp"]
-[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="2_t7dk3"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="2_t7dk3"]
 
 [node name="Cooker" type="Area3D"]
 collision_layer = 4

@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
 [ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="2_8d1g5"]
+[ext_resource type="Script" path="res://Scripts/Networking/MidsessionJoinSyncer.gd" id="2_u3ntc"]
 [ext_resource type="PackedScene" uid="uid://i7st3vdotqiu" path="res://3d_models/Kenneys_Furniture/wallWindow.glb" id="3_6vamh"]
 [ext_resource type="PackedScene" uid="uid://bvjit4lsovbr3" path="res://3d_models/Kenneys_Furniture/wallDoorwayWide.glb" id="3_21ak5"]
 [ext_resource type="NavigationMesh" uid="uid://cro8mueu3lb0n" path="res://Resources/building_navmesh.tres" id="3_wk033"]
@@ -22,7 +23,6 @@
 [ext_resource type="PackedScene" uid="uid://dqv2bfql04h12" path="res://Scenes/holders/bun_box.tscn" id="17_l7sfd"]
 [ext_resource type="Script" path="res://Scripts/AI/CustomerManager.gd" id="17_losm7"]
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
-[ext_resource type="Script" path="res://Scripts/MidsessionJoinSyncer.gd" id="24_gdwhe"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26lyt"]
@@ -39,7 +39,7 @@ spawn_path = NodePath("../../Players")
 spawn_limit = 10
 
 [node name="MidsessionJoinSyncer" type="Node" parent="Networking"]
-script = ExtResource("24_gdwhe")
+script = ExtResource("2_u3ntc")
 
 [node name="Restaurant" type="NavigationRegion3D" parent="." node_paths=PackedStringArray("entry_point", "tables_root")]
 navigation_mesh = ExtResource("3_wk033")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b7ayd84j7afft"]
 
 [ext_resource type="Script" path="res://Scripts/Rotatable.gd" id="1_m00ce"]
-[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="2_3wwbm"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="2_3wwbm"]
 
 [node name="Rotatable" type="Area3D"]
 collision_layer = 4

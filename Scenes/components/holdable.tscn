@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cvcueeqbxf8ms"]
 
 [ext_resource type="Script" path="res://Scripts/Holdable.gd" id="1_p2xth"]
-[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="2_6v3vm"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="2_6v3vm"]
 
 [node name="Holdable" type="Area3D"]
 collision_layer = 4

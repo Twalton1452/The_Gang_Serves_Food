@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Food.gd" id="1_vmnmo"]
 [ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/food_gradients/patty_cook_gradient.tres" id="2_67uhe"]
-[ext_resource type="Script" path="res://Scripts/NetworkedNode3D.gd" id="3_1ycum"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="3_1ycum"]
 [ext_resource type="Material" uid="uid://b60lm8s0trq5f" path="res://Materials/Patty_mat.tres" id="3_s7cyn"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ierox"]
