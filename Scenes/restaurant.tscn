@@ -176,7 +176,6 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3101
 
 [node name="TableFourPerson" parent="Restaurant/Building/Tables" instance=ExtResource("10_tuail")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.35423, 0.00454932, 1.80953)
-chairs = Array[Resource("res://Scripts/Restaurant/Chair.gd")]([])
 
 [node name="Kitchen" type="Node3D" parent="Restaurant/Building"]
 
