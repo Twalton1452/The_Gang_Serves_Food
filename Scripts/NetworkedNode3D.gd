@@ -21,7 +21,7 @@ enum SyncPriorityPhase {
 	CREATION, ## Create parent Nodes that will have children [br]ex: Run-time generated Plate needs to be created before food can be attached to it
 	NESTED_CREATION, ## Create child Nodes that will have children [br]ex: FoodCombiner inside a run-time generated Plate
 	REPARENT, ## Reparent Nodes after everything has been generated [br]ex: Existing plates are moved
-	NESTED_REPARENT, ## Reparent child Nodes in complex parent/child relationships, unlikely to be used [br]ex: Existing plate reparented and existing patty became parented to that plate, need to wait for plate to reparent
+	NESTED_REPARENT, ## Reparent child Nodes in complex parent/child relationships [br]ex: Existing plate reparented and existing patty became parented to that plate, need to wait for plate to reparent
 	STATEFUL, ## Things that need to wait for the rest of the Nodes to finish creating/parenting [br]ex: Whether [Rotatable] is rotated or not or a [Cookable] cook progress
 	DELETION, ## Delete Nodes last to make sure all the connections are setup [br]ex: Existing nodes deleted
 }
@@ -34,8 +34,11 @@ enum SyncPriorityPhase {
 
 ## Every NetworkedNode3D is automatically in the NETWORKED group once [method _ready] happens
 ## The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
-## This is pulled off the Interactable this is attached to
-var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.PATTY
+## This is pulled off the Interactable this is attached to.
+## Needs to be set in editor for non-interactables
+var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.NETWORKED : get = get_scene_id
+## Used for simple objects that need to be spawned but have no script attached to them
+@export var override_scene_id : SceneIds.SCENES
 
 ## Identifier between server/client to figure out what needs to be created/updated/deleted
 ## Generated during [method _ready]
@@ -49,8 +52,11 @@ var sync_state : PackedByteArray : set = set_sync_state, get = get_sync_state
 ## Run-time spawns will need this set to true automatically
 var changed = false
 
+func has_additional_sync():
+	return "sync_state" in p_node
+
 func set_sync_state(value: PackedByteArray):
-	var sync_pos = Vector3(value.decode_half(0), value.decode_half(2), value.decode_half(4))
+	var global_sync_pos = Vector3(value.decode_half(0), value.decode_half(2), value.decode_half(4))
 	var path_size = value.decode_u8(6)
 	var path_to = value.slice(7, 7 + path_size).get_string_from_utf8()
 	
@@ -68,10 +74,11 @@ func set_sync_state(value: PackedByteArray):
 			new_parent.hold_item(p_node)
 		else:
 			p_node.reparent(new_parent, false)
-		p_node.position = sync_pos
+	p_node.global_position = global_sync_pos
 	
-	# Give the rest of the sync_state to the node to handle
-	p_node.sync_state = value.slice(7 + path_size)
+	if has_additional_sync():
+		# Give the rest of the sync_state to the node to handle
+		p_node.sync_state = value.slice(7 + path_size)
 
 func get_sync_state() -> PackedByteArray:
 	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called somehow
@@ -81,15 +88,23 @@ func get_sync_state() -> PackedByteArray:
 	var path_to = StringName(p_node.get_path()).to_utf8_buffer()
 	var buf = PackedByteArray()
 	buf.resize(7)
-	buf.encode_half(0, p_node.position.x) # Half is 2 bytes
-	buf.encode_half(2, p_node.position.y) # Half is 2 bytes
-	buf.encode_half(4, p_node.position.z) # Half is 2 bytes
+	buf.encode_half(0, p_node.global_position.x) # Half is 2 bytes
+	buf.encode_half(2, p_node.global_position.y) # Half is 2 bytes
+	buf.encode_half(4, p_node.global_position.z) # Half is 2 bytes
 	buf.encode_u8(6, path_to.size()) # u8 is 1 byte
 	buf.append_array(path_to) # offset = 7 here + path.size()
 	
-	# Node this is attached to properties to sync
-	buf.append_array(p_node.sync_state)
+	if has_additional_sync():
+		# Node this is attached to properties to sync
+		buf.append_array(p_node.sync_state)
 	return buf
+
+func get_scene_id() -> int:
+	if override_scene_id != SceneIds.SCENES.NETWORKED:
+		return override_scene_id
+	if has_additional_sync():
+		return p_node.SCENE_ID
+	return SCENE_ID
 
 func _ready():
 	networked_id = NetworkingUtils.generate_id()
@@ -98,6 +113,8 @@ func _ready():
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID
 		p_node.interacted.connect(_on_interaction)
+	if priority_sync_order == SyncPriorityPhase.CREATION or SyncPriorityPhase.NESTED_CREATION:
+		changed = true
 
 func _on_interaction(_player: Player):
 	changed = true

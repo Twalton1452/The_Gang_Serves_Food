@@ -15,6 +15,9 @@ enum SCENES {
 #	COOKABLE = 102,
 #	ROTATABLE = 103,
 	FOOD_COMBINER = 1000,
+	
+	CUSTOMER = 2000,
+	CUSTOMER_PARTY = 2001,
 }
 
 
@@ -25,7 +28,12 @@ static func get_scene_from_id(id: SCENES) -> PackedScene:
 		SCENES.BOTTOM_BUN: load("res://Scenes/foods/bottom_bun.tscn"),
 		SCENES.TOP_BUN: load("res://Scenes/foods/top_bun.tscn"),
 		SCENES.TOMATO: load("res://Scenes/foods/tomato.tscn"),
+		
 		SCENES.PLATE: load("res://Scenes/holders/plate_components.tscn"),
+		
 		SCENES.FOOD_COMBINER: load("res://Scenes/components/food_combiner.tscn"),
+		
+		SCENES.CUSTOMER: load("res://Scenes/customer.tscn"),
+		SCENES.CUSTOMER_PARTY: load("res://Scenes/components/party.tscn"),
 	}
 	return PATHS[id] if PATHS.has(id) else null

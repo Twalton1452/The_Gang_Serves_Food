@@ -6,6 +6,7 @@ class_name CustomerManager
 @onready var restaurant : Restaurant = get_parent()
 
 var customer_scene = preload("res://Scenes/customer.tscn")
+var party_scene = preload("res://Scenes/components/party.tscn")
 var parties : Array[CustomerParty] = []
 var max_party_size = 4
 
@@ -23,9 +24,8 @@ func spawn_party(party_size: int) -> void:
 	if party_size > max_party_size:
 		return
 	
-	var new_party = CustomerParty.new()
+	var new_party = party_scene.instantiate()
 	new_party.state_changed.connect(_on_party_state_changed)
-	new_party.name = "Party"
 	add_child(new_party, true)
 	new_party.position = Vector3.ZERO
 	

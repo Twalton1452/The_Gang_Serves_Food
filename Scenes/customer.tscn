@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://b3eisulvtggrn"]
+[gd_scene load_steps=7 format=3 uid="uid://b3eisulvtggrn"]
 
 [ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="1_ecyme"]
 [ext_resource type="Script" path="res://Scripts/AI/Customer.gd" id="1_y4ipv"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="3_lb4gl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6dh6"]
 albedo_color = Color(1, 0.639216, 0.34902, 1)
@@ -38,3 +39,6 @@ texture = ExtResource("1_ecyme")
 hframes = 4
 vframes = 3
 frame = 5
+
+[node name="NetworkedNode3D" parent="." instance=ExtResource("3_lb4gl")]
+priority_sync_order = 3
