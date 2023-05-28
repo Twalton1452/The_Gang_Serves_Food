@@ -17,6 +17,7 @@ func _unhandled_input(event):
 		return
 	if event.is_action_pressed("ui_page_up"):
 		spawn_party(randi_range(1, max_party_size))
+		#spawn_party(randi_range(1, 1))
 
 func spawn_party(party_size: int) -> void:
 	if party_size > max_party_size:
@@ -37,31 +38,23 @@ func spawn_party(party_size: int) -> void:
 	
 	# TODO: When a Party is spawned and other Parties are waiting at the door
 	# Set their destination to the last person in line instead of entry_point
-	new_party.advance(restaurant.entry_point)
-
-func evaluate_parties():
-	for party in parties:
-		_on_party_state_changed(party)
+	if len(parties) > 1 and parties[-1].state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
+		new_party.wait_in_line(parties[-1])
+	else:
+		new_party.go_to_entry(restaurant.entry_point)
 
 func _on_party_state_changed(party: CustomerParty):
 	match party.state:
-		CustomerParty.PartyState.SPAWNING:
-			pass
-		CustomerParty.PartyState.WALKING_TO_ENTRY:
-			pass
 		CustomerParty.PartyState.WAITING_FOR_TABLE:
-			pass
-		CustomerParty.PartyState.WALKING_TO_TABLE:
-			pass
-		CustomerParty.PartyState.ORDERING:
-			pass
-		CustomerParty.PartyState.WAITING_FOR_FOOD:
-			pass
-		CustomerParty.PartyState.EATING:
-			pass
-		CustomerParty.PartyState.PAYING:
-			pass
+			check_for_available_table_for(party)
 		CustomerParty.PartyState.LEAVING:
 			pass
-			
+
+func check_for_available_table_for(party: CustomerParty):
+	var table = restaurant.get_next_available_table_for(party)
+	# No table's are available yet
+	# They will have to wait for existing parties to leave
+	if table == null:
+		return
 	
+	party.go_to_table(table)

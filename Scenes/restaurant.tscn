@@ -41,10 +41,11 @@ spawn_limit = 10
 [node name="MidsessionJoinSyncer" type="Node" parent="Networking"]
 script = ExtResource("24_gdwhe")
 
-[node name="Restaurant" type="NavigationRegion3D" parent="." node_paths=PackedStringArray("entry_point")]
+[node name="Restaurant" type="NavigationRegion3D" parent="." node_paths=PackedStringArray("entry_point", "tables_root")]
 navigation_mesh = ExtResource("3_wk033")
 script = ExtResource("4_kvbc8")
 entry_point = NodePath("EntryPoint")
+tables_root = NodePath("Building/Tables")
 
 [node name="Building" type="Node3D" parent="Restaurant"]
 

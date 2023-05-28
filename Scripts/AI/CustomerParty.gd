@@ -4,32 +4,40 @@ class_name CustomerParty
 ## A group of customers makes up a CustomerParty
 ## This class will help to organize groups of Customers to tell them where to go like a family
 
-signal state_changed
+signal state_changed(party: CustomerParty)
 
 ## The overall state of the Party, where they are at in the Lifecycle of the process
 ## does not represent individual customer emotions
 enum PartyState {
-	SPAWNING,
-	WALKING_TO_ENTRY,
+	SPAWNING = 0,
 	
-	WAITING_FOR_TABLE,
-	WALKING_TO_TABLE,
+	WAITING_IN_LINE = 1,
+	WALKING_TO_ENTRY = 2,
 	
-	THINKING,
-	ORDERING,
+	WAITING_FOR_TABLE = 3,
+	WALKING_TO_TABLE = 4,
 	
-	WAITING_FOR_FOOD,
-	EATING,
+	THINKING = 5,
+	ORDERING = 6,
 	
-	PAYING,
-	LEAVING
+	WAITING_FOR_FOOD = 7,
+	EATING = 8,
+	
+	PAYING = 9,
+	LEAVING = 10,
 }
 
-var state : PartyState = PartyState.SPAWNING
+var state : PartyState = PartyState.SPAWNING : set = set_state
 var customers : Array[Customer] = [] : set = set_customers
 var customer_spacing = 0.5
 var destination : Node3D = null
+var table : Table = null
 var num_arrived_to_destination = 0
+
+
+func set_state(value: PartyState) -> void:
+	state = value
+	state_changed.emit(self)
 
 func set_customers(value: Array[Customer]) -> void:
 	if not customers.is_empty():
@@ -44,8 +52,13 @@ func set_customers(value: Array[Customer]) -> void:
 		spacing += customer_spacing
 		add_child(customer, true)
 
-func advance(target: Node3D = null):
+func wait_in_line(_party: CustomerParty) -> void:
+	pass
+	#state = PartyState.WAITING_IN_LINE
+
+func go_to_entry(target: Node3D = null):
 	destination = target
+	num_arrived_to_destination = 0
 	
 	if destination != null:
 		var spacing = 0.0
@@ -53,13 +66,41 @@ func advance(target: Node3D = null):
 			customer.go_to(destination.position + Vector3(0,0,-spacing))
 			spacing += customer_spacing
 	
-	@warning_ignore("int_as_enum_without_cast")
-	state += 1
+	state = PartyState.WALKING_TO_ENTRY
+
+func go_to_table(destination_table: Table):
+	num_arrived_to_destination = 0
+	table = destination_table
+	
+	for i in len(customers):
+		var customer : Customer = customers[i]
+		var chair : Chair = table.chairs[i]
+		customer.go_to(chair.transition_location.global_position)
+	
+	state = PartyState.WALKING_TO_TABLE
+
+func sit_at_table():
+	state = PartyState.THINKING
 
 func _on_customer_arrived():
 	num_arrived_to_destination += 1
 	
 	if num_arrived_to_destination >= len(customers):
-		@warning_ignore("int_as_enum_without_cast")
-		state += 1
-		state_changed.emit(self)
+		advance_party_state()
+
+func advance_party_state():
+	match state:
+		PartyState.WALKING_TO_ENTRY:
+			state = PartyState.WAITING_FOR_TABLE
+		PartyState.WALKING_TO_TABLE:
+			sit_at_table()
+		PartyState.ORDERING:
+			pass
+		PartyState.WAITING_FOR_FOOD:
+			pass
+		PartyState.EATING:
+			pass
+		PartyState.PAYING:
+			pass
+		PartyState.LEAVING:
+			pass

@@ -7,7 +7,6 @@
 
 [node name="TableFourPerson" type="Node3D"]
 script = ExtResource("1_g14pa")
-chairs = Array[Resource("res://Scripts/Restaurant/Chair.gd")]([null, null, null, null])
 
 [node name="TableClothBase" parent="." instance=ExtResource("1_qjpgh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.424617, 0, 0.224179)
@@ -19,12 +18,6 @@ surface_material_override/1 = ExtResource("2_lmh77")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, -0.3)
 
 [node name="chairCushion(Clone)" parent="ChairCloth" index="0"]
-surface_material_override/1 = ExtResource("2_lmh77")
-
-[node name="ChairCloth4" parent="." instance=ExtResource("2_7myk5")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.1, 0, 0.3)
-
-[node name="chairCushion(Clone)" parent="ChairCloth4" index="0"]
 surface_material_override/1 = ExtResource("2_lmh77")
 
 [node name="ChairCloth2" parent="." instance=ExtResource("2_7myk5")]
@@ -39,8 +32,14 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3, 0
 [node name="chairCushion(Clone)" parent="ChairCloth3" index="0"]
 surface_material_override/1 = ExtResource("2_lmh77")
 
+[node name="ChairCloth4" parent="." instance=ExtResource("2_7myk5")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.1, 0, 0.3)
+
+[node name="chairCushion(Clone)" parent="ChairCloth4" index="0"]
+surface_material_override/1 = ExtResource("2_lmh77")
+
 [editable path="TableClothBase"]
 [editable path="ChairCloth"]
-[editable path="ChairCloth4"]
 [editable path="ChairCloth2"]
 [editable path="ChairCloth3"]
+[editable path="ChairCloth4"]

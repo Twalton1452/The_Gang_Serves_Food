@@ -17,10 +17,11 @@ agent_max_climb = 0.1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j34sd"]
 
-[node name="TestRestaurant" type="NavigationRegion3D" node_paths=PackedStringArray("entry_point")]
+[node name="TestRestaurant" type="NavigationRegion3D" node_paths=PackedStringArray("entry_point", "tables_root")]
 navigation_mesh = SubResource("NavigationMesh_uffqi")
 script = ExtResource("1_lad8h")
 entry_point = NodePath("EntryPoint")
+tables_root = NodePath("Tables")
 
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 0.054, 0, 0, 0, 10, 0, -0.3, 0)

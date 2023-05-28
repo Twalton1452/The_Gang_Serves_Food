@@ -32,6 +32,8 @@ func _physics_process(_delta):
 		# Subtract PI (180 degrees) because our forward direction is -Z instead of +Z
 		var angle_in_rad = atan2(direction.x, direction.z) - PI
 		rotation.y = angle_in_rad
+		if not nav_agent.is_target_reachable():
+			print("%s can't reach its destination" % name)
 	
 	if nav_agent.avoidance_enabled:
 		nav_agent.set_velocity(new_velocity)
@@ -45,11 +47,11 @@ func _on_velocity_computed(safe_velocity: Vector3):
 
 ## Final position signal
 func _on_navigation_finished():
-	pass
+	arrived.emit()
 	#print("%s reached its destination!" % name)
 
 ## Not totally sure what the difference between this and the "navigation_finished" signals is
 ## I think this one will be emitted when certain waypoints along a path are hit?
 func _on_target_reached():
-	arrived.emit()
-	#print("reached a point")
+	#print("reached target")
+	pass
