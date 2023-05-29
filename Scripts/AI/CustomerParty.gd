@@ -27,20 +27,36 @@ enum PartyState {
 	LEAVING = 10,
 }
 
-var state : PartyState = PartyState.SPAWNING : set = set_state
-var customers : Array[Customer] = [] : set = set_customers
 var customer_spacing = 0.5
-var destination : Node3D = null
-var table : Table = null
-var num_arrived_to_destination = 0
-
+var customers : Array[Customer] = [] : set = set_customers
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER_PARTY
 
+# Saved/Loaded State
+var state : PartyState = PartyState.SPAWNING : set = set_state
+var num_arrived_to_destination = 0
+var table : Table = null
+
 func set_sync_state(reader: ByteReader) -> void:
-	pass
+	state = reader.read_int() as PartyState
+	num_arrived_to_destination = reader.read_int()
+	var has_table = reader.read_bool()
+	if has_table:
+		table = get_node(reader.read_path_to())
+	(get_parent() as CustomerManager).sync_party(self)
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	writer.write_int(state)
+	writer.write_int(num_arrived_to_destination)
+	writer.write_bool(table != null)
+	if table:
+		writer.write_path_to(table)
 	return writer
+
+func sync_customer(customer: Customer) -> void:
+	customer.arrived.connect(_on_customer_arrived)
+	customers.push_back(customer)
+	if table:
+		table.chairs[-1].sit(customer)
 
 func set_state(value: PartyState) -> void:
 	state = value
@@ -63,15 +79,13 @@ func wait_in_line(_party: CustomerParty) -> void:
 	pass
 	#state = PartyState.WAITING_IN_LINE
 
-func go_to_entry(target: Node3D = null):
-	destination = target
+func go_to_entry(target: Node3D):
 	num_arrived_to_destination = 0
 	
-	if destination != null:
-		var spacing = 0.0
-		for customer in customers:
-			customer.go_to(destination.position + Vector3(0,0,-spacing))
-			spacing += customer_spacing
+	var spacing = 0.0
+	for customer in customers:
+		customer.go_to(target.position + Vector3(0,0,-spacing))
+		spacing += customer_spacing
 	
 	state = PartyState.WALKING_TO_ENTRY
 

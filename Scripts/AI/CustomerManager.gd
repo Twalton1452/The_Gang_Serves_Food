@@ -20,6 +20,9 @@ func _unhandled_input(event):
 		#spawn_party(randi_range(1, max_party_size))
 		spawn_party(4)
 
+func sync_party(party: CustomerParty):
+	party.state_changed.connect(_on_party_state_changed)
+
 func spawn_party(party_size: int) -> void:
 	if party_size > max_party_size:
 		return
