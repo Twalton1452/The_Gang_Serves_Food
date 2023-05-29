@@ -105,7 +105,7 @@ func _ready():
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID
 		p_node.interacted.connect(_on_interaction)
-	if priority_sync_order == SyncPriorityPhase.CREATION or SyncPriorityPhase.NESTED_CREATION:
+	if priority_sync_order == SyncPriorityPhase.CREATION or priority_sync_order == SyncPriorityPhase.NESTED_CREATION:
 		changed = true
 
 func _on_interaction(_player: Player):

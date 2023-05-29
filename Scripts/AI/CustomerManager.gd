@@ -16,13 +16,15 @@ var max_party_size = 4
 func _unhandled_input(event):
 	if not is_multiplayer_authority():
 		return
+	
 	if event.is_action_pressed("ui_page_up"):
 		#spawn_party(randi_range(1, max_party_size))
-		spawn_party(4)
+		spawn_party.rpc(4)
 
 func sync_party(party: CustomerParty):
 	party.state_changed.connect(_on_party_state_changed)
 
+@rpc("authority", "call_local")
 func spawn_party(party_size: int) -> void:
 	if party_size > max_party_size:
 		return

@@ -15,7 +15,7 @@ func unpause_for_players():
 func sync_nodes_for_new_player(peer_id: int):
 	pause_for_players.rpc()
 	
-	print("------Begin Sync for Peer %s------" % peer_id)
+	print_verbose("------Begin Sync for Peer %s------" % peer_id)
 	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
 	
 	# Sync MultiHolders first because other objects need to get parented to them
@@ -33,12 +33,12 @@ func sync_nodes_for_new_player(peer_id: int):
 			not_synced += 1
 			continue
 		
-		print("[Syncing Node %s] to [Peer: %s]" % [net_node.networked_id, peer_id])
+		print_verbose("[Syncing Node %s] to [Peer: %s]" % [net_node.networked_id, peer_id])
 		# Tell the Peer all the information it needs to get this NetworkedNode up to date through sync_state
 		sync_networked_node.rpc_id(peer_id, net_node.networked_id, net_node.SCENE_ID, net_node.get_sync_state().data)
 
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
-	print("-----Finished Sync for Peer %s-----" % peer_id)
+	print_verbose("-----Finished Sync for Peer %s-----" % peer_id)
 	print("[Result] %d/%d Nodes needed syncing for %s" % [net_nodes.size() - not_synced, net_nodes.size(), peer_id])
 	
 	unpause_for_players.rpc()
@@ -61,7 +61,7 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 	if not synced:
 		assert(SceneIds.get_scene_from_id(net_scene_id) != null, "%s does not have a SceneId PATH to instantiate from in SceneIds.gd")
 		
-		print("[Peer %s] didn't find %s in the objects on startup. The Player must have generated this at run time. [Spawning a %s with id %s]" \
+		print_verbose("[Peer %s] didn't find %s in the objects on startup. The Player must have generated this at run time. [Spawning a %s with id %s]" \
 			% [multiplayer.get_unique_id(), networked_id, SceneIds.get_scene_from_id(net_scene_id).get_state().get_node_name(0), networked_id])
 		
 		# Spawn Networked Node

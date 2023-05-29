@@ -38,6 +38,7 @@ var table : Table = null
 
 func set_sync_state(reader: ByteReader) -> void:
 	state = reader.read_int() as PartyState
+	customers.resize(reader.read_int()) # fill arrays with null
 	num_arrived_to_destination = reader.read_int()
 	var has_table = reader.read_bool()
 	if has_table:
@@ -46,6 +47,7 @@ func set_sync_state(reader: ByteReader) -> void:
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_int(state)
+	writer.write_int(customers.size())
 	writer.write_int(num_arrived_to_destination)
 	writer.write_bool(table != null)
 	if table:
@@ -54,9 +56,12 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 
 func sync_customer(customer: Customer) -> void:
 	customer.arrived.connect(_on_customer_arrived)
-	customers.push_back(customer)
-	if table:
-		table.chairs[-1].sit(customer)
+	
+	var i = customers.find(null)
+	customers[i] = customer
+	# When there are no more null's we've finished the sync for customers
+	if i == len(customers) - 1 and table and state > PartyState.WALKING_TO_TABLE:
+		sit_at_table()
 
 func set_state(value: PartyState) -> void:
 	state = value
@@ -103,6 +108,7 @@ func go_to_table(destination_table: Table):
 func sit_at_table():
 	for i in len(customers):
 		var customer : Customer = customers[i]
+		customer.disable_physics()
 		var chair : Chair = table.chairs[i]
 		chair.sit(customer)
 		
@@ -110,11 +116,16 @@ func sit_at_table():
 
 func _on_customer_arrived():
 	num_arrived_to_destination += 1
+	if not is_multiplayer_authority():
+		return
+	
 	
 	if num_arrived_to_destination >= len(customers):
-		advance_party_state()
+		advance_party_state.rpc()
 
+@rpc("authority", "call_local")
 func advance_party_state():
+	#print("Advancing state because %s sent a message %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id()])
 	match state:
 		PartyState.WALKING_TO_ENTRY:
 			state = PartyState.WAITING_FOR_TABLE

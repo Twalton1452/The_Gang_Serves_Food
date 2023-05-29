@@ -7,6 +7,7 @@ signal arrived
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 
 var speed = 3.0
+var target_position = Vector3.ZERO
 
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER
 
@@ -15,9 +16,11 @@ func set_sync_state(reader: ByteReader) -> void:
 	var in_progress = reader.read_bool()
 	if in_progress:
 		go_to(sync_tar_pos)
+	else:
+		disable_physics()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
-	writer.write_vector3(nav_agent.target_position)
+	writer.write_vector3(target_position)
 	writer.write_bool(!nav_agent.is_navigation_finished())
 	return writer
 
@@ -31,6 +34,8 @@ func _ready() -> void:
 ## Navigation needs to be in global space.
 ## Use [code]Node.global_transform.origin[/code] when passing values to this function
 func go_to(movement_target: Vector3):
+	enable_physics()
+	target_position = movement_target
 	nav_agent.set_target_position(movement_target)
 
 func _physics_process(_delta):
@@ -71,6 +76,12 @@ func _on_navigation_finished():
 func _on_target_reached():
 	#print("reached target")
 	pass
+
+func disable_physics():
+	set_physics_process(false)
+
+func enable_physics():
+	set_physics_process(true)
 
 func _unhandled_input(event):
 	if event is InputEventKey and event.is_action_pressed("debug_pathing"):
