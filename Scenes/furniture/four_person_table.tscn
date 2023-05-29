@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://cx11ipeseh6dx"]
+[gd_scene load_steps=7 format=3 uid="uid://cx11ipeseh6dx"]
 
 [ext_resource type="Script" path="res://Scripts/Restaurant/Table.gd" id="1_g14pa"]
 [ext_resource type="PackedScene" uid="uid://dlqfb28we76j6" path="res://Scenes/furniture/table_cloth_base.tscn" id="1_qjpgh"]
 [ext_resource type="PackedScene" uid="uid://dxdnwospdbgrk" path="res://Scenes/furniture/chair_cloth.tscn" id="2_7myk5"]
 [ext_resource type="Material" uid="uid://iq0ya8ma5cns" path="res://Materials/Table_Cloth_Available_mat.tres" id="2_lmh77"]
+[ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="5_882we"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fj2mp"]
+size = Vector3(0.22168, 0.0474899, 0.187379)
 
 [node name="TableFourPerson" type="Node3D"]
 script = ExtResource("1_g14pa")
@@ -37,6 +41,30 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.1, 
 
 [node name="chairCushion(Clone)" parent="ChairCloth4" index="0"]
 surface_material_override/1 = ExtResource("2_lmh77")
+
+[node name="Holder" parent="." instance=ExtResource("5_882we")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.343, -0.11)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder"]
+shape = SubResource("BoxShape3D_fj2mp")
+
+[node name="Holder2" parent="." instance=ExtResource("5_882we")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.343, -0.11)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder2"]
+shape = SubResource("BoxShape3D_fj2mp")
+
+[node name="Holder3" parent="." instance=ExtResource("5_882we")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.343, 0.11)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder3"]
+shape = SubResource("BoxShape3D_fj2mp")
+
+[node name="Holder4" parent="." instance=ExtResource("5_882we")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.343, 0.11)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder4"]
+shape = SubResource("BoxShape3D_fj2mp")
 
 [editable path="TableClothBase"]
 [editable path="ChairCloth"]
