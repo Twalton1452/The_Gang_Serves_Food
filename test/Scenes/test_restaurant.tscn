@@ -33,13 +33,13 @@ mesh = SubResource("BoxMesh_llqj0")
 shape = SubResource("BoxShape3D_j34sd")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.035, 3.268, -0.893)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.507739, 3.268, -0.893)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.235651, 0.971838, 0, -0.971838, 0.235651, 6.35895, 0.67902, -5.75935)
 
 [node name="CustomerManager" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.95956, -0.0761087, -1.84848)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16681, -0.0761087, 0.325852)
 script = ExtResource("2_cc21q")
 
 [node name="Tables" type="Node3D" parent="."]
@@ -48,4 +48,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.093, -0.256064, 0.527)
 [node name="TableFourPerson" parent="Tables" instance=ExtResource("3_ufn6n")]
 
 [node name="EntryPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.809515, 0.0213599, 0.336683)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.16827, 0.0213599, 0.518187)

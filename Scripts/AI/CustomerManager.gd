@@ -23,13 +23,16 @@ func _unhandled_input(event):
 
 func sync_party(party: CustomerParty):
 	party.state_changed.connect(_on_party_state_changed)
+	# Node tree's resolve bottom to top, so when we're syncing to maintain the same order as the server,
+	# Assign back-to-front : The first node sync'd needs to be the last one in the array
+	parties.push_front(party)
 
 @rpc("authority", "call_local")
 func spawn_party(party_size: int) -> void:
 	if party_size > max_party_size:
 		return
 	
-	var new_party = party_scene.instantiate()
+	var new_party : CustomerParty = party_scene.instantiate()
 	new_party.state_changed.connect(_on_party_state_changed)
 	add_child(new_party, true)
 	new_party.position = Vector3.ZERO
@@ -39,14 +42,15 @@ func spawn_party(party_size: int) -> void:
 		party_members.push_back(customer_scene.instantiate() as Customer)
 	
 	new_party.customers = party_members
-	parties.push_back(new_party)
 	
 	# TODO: When a Party is spawned and other Parties are waiting at the door
 	# Set their destination to the last person in line instead of entry_point
-	if len(parties) > 1 and parties[-1].state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
+	if len(parties) > 0 and parties[-1].state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
 		new_party.wait_in_line(parties[-1])
 	else:
 		new_party.go_to_entry(restaurant.entry_point)
+	
+	parties.push_back(new_party)
 
 func _on_party_state_changed(party: CustomerParty):
 	match party.state:

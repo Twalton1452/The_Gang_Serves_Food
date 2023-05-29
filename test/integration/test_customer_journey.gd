@@ -45,3 +45,30 @@ func test_party_full_journey():
 		assert_almost_eq(chair.sitter.global_position, chair.global_position, _acceptable_threshold, "The customer is not sitting in the chair correctly")
 	#_customer_manager.evaluate_parties()
 	# Assert
+
+func test_party_can_wait_in_line():
+	# Arrange
+	var num_customers_to_spawn = 4
+	_restaurant.tables = []
+	
+	# Act
+	_customer_manager.spawn_party(num_customers_to_spawn)
+	
+	var table_wait_party = _customer_manager.parties[0]
+	for customer in table_wait_party.customers:
+		customer.speed = 3.0 # Go faster for the test
+	await wait_for_signal(table_wait_party.state_changed, 3.0, "The first party took too long to get to the Entry")
+	assert_eq(table_wait_party.state, CustomerParty.PartyState.WAITING_FOR_TABLE, "The first Party is not waiting for a table")
+	
+	# Act
+	_customer_manager.spawn_party(num_customers_to_spawn)
+	
+	var line_wait_party = _customer_manager.parties[1]
+	for customer in line_wait_party.customers:
+		customer.speed = 3.0 # Go faster for the test
+	assert_eq(line_wait_party.state, CustomerParty.PartyState.WALKING_TO_LINE, "The second Party is not waiting in line")
+	await wait_for_signal(line_wait_party.state_changed, 3.0, "The second party took too long to get to the Entry")
+	assert_eq(line_wait_party.state, CustomerParty.PartyState.WAITING_IN_LINE, "The second Party is not waiting in line")
+	
+	# Assert
+	assert_eq(len(_customer_manager.parties), 2, "There are not the correct number of parties")
