@@ -28,7 +28,7 @@ shape = SubResource("CapsuleShape3D_tj46x")
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.2
 target_desired_distance = 0.3
-agent_height_offset = -0.1
+agent_height_offset = 0.1
 radius = 0.2
 neighbor_distance = 5.0
 
