@@ -1,7 +1,7 @@
 extends Node3D
 class_name CustomerManager
 
-@export var max_parties = 5
+@export var max_parties = 10
 
 @onready var restaurant : Restaurant = get_parent()
 

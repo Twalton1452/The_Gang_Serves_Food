@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=24 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -16,8 +16,6 @@
 [ext_resource type="PackedScene" uid="uid://cx11ipeseh6dx" path="res://Scenes/furniture/four_person_table.tscn" id="10_tuail"]
 [ext_resource type="PackedScene" uid="uid://cpb5xjyhdnwqr" path="res://3d_models/Kenneys_Furniture/kitchenSink.glb" id="11_t52rp"]
 [ext_resource type="PackedScene" uid="uid://bwqlq831iqp56" path="res://Scenes/holders/fridge_components.tscn" id="12_xj5b4"]
-[ext_resource type="PackedScene" uid="uid://cpy8etfbd2bwm" path="res://3d_models/Kenneys_Furniture/tableCloth.glb" id="15_s1kwc"]
-[ext_resource type="PackedScene" uid="uid://blhyqxbfnxe40" path="res://3d_models/Kenneys_Furniture/chairCushion.glb" id="16_4dkdq"]
 [ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/holders/stove_components.tscn" id="16_eiaux"]
 [ext_resource type="PackedScene" uid="uid://l12dq331fblk" path="res://Scenes/holders/tomato_box.tscn" id="16_ketst"]
 [ext_resource type="PackedScene" uid="uid://dqv2bfql04h12" path="res://Scenes/holders/bun_box.tscn" id="17_l7sfd"]
@@ -99,83 +97,23 @@ end_position = Vector3(0.63, 0, 0)
 
 [node name="Tables" type="Node3D" parent="Restaurant/Building"]
 
-[node name="tableCloth" parent="Restaurant/Building/Tables" instance=ExtResource("15_s1kwc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.96102, 0.00454932, 2.0235)
-
-[node name="chairCushion" parent="Restaurant/Building/Tables/tableCloth" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.555615, 0, -0.580662)
-
-[node name="chairCushion2" parent="Restaurant/Building/Tables/tableCloth" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146603, 0, -0.580662)
-
-[node name="chairCushion3" parent="Restaurant/Building/Tables/tableCloth" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.719156, 0, 0.082437)
-
-[node name="chairCushion4" parent="Restaurant/Building/Tables/tableCloth" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.310143, 0, 0.082437)
-
-[node name="tableCloth2" parent="Restaurant/Building/Tables" instance=ExtResource("15_s1kwc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.96102, 0.00454932, 2.0235)
-
-[node name="chairCushion" parent="Restaurant/Building/Tables/tableCloth2" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.555615, 0, -0.580662)
-
-[node name="chairCushion2" parent="Restaurant/Building/Tables/tableCloth2" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146603, 0, -0.580662)
-
-[node name="chairCushion3" parent="Restaurant/Building/Tables/tableCloth2" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.719156, 0, 0.082437)
-
-[node name="chairCushion4" parent="Restaurant/Building/Tables/tableCloth2" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.310143, 0, 0.082437)
-
-[node name="tableCloth4" parent="Restaurant/Building/Tables" instance=ExtResource("15_s1kwc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.96102, 0.00454932, 4.0235)
-
-[node name="chairCushion" parent="Restaurant/Building/Tables/tableCloth4" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.555615, 0, -0.580662)
-
-[node name="chairCushion2" parent="Restaurant/Building/Tables/tableCloth4" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146603, 0, -0.580662)
-
-[node name="chairCushion3" parent="Restaurant/Building/Tables/tableCloth4" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.719156, 0, 0.082437)
-
-[node name="chairCushion4" parent="Restaurant/Building/Tables/tableCloth4" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.310143, 0, 0.082437)
-
-[node name="tableCloth5" parent="Restaurant/Building/Tables" instance=ExtResource("15_s1kwc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.96102, 0.00454932, 4.0235)
-
-[node name="chairCushion" parent="Restaurant/Building/Tables/tableCloth5" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.555615, 0, -0.580662)
-
-[node name="chairCushion2" parent="Restaurant/Building/Tables/tableCloth5" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146603, 0, -0.580662)
-
-[node name="chairCushion3" parent="Restaurant/Building/Tables/tableCloth5" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.719156, 0, 0.082437)
-
-[node name="chairCushion4" parent="Restaurant/Building/Tables/tableCloth5" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.310143, 0, 0.082437)
-
-[node name="tableCloth6" parent="Restaurant/Building/Tables" instance=ExtResource("15_s1kwc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96102, 0.00454932, 4.0235)
-
-[node name="chairCushion" parent="Restaurant/Building/Tables/tableCloth6" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.555615, 0, -0.580662)
-
-[node name="chairCushion2" parent="Restaurant/Building/Tables/tableCloth6" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146603, 0, -0.580662)
-
-[node name="chairCushion3" parent="Restaurant/Building/Tables/tableCloth6" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.719156, 0, 0.082437)
-
-[node name="chairCushion4" parent="Restaurant/Building/Tables/tableCloth6" instance=ExtResource("16_4dkdq")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.310143, 0, 0.082437)
-
 [node name="TableFourPerson" parent="Restaurant/Building/Tables" instance=ExtResource("10_tuail")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.35423, 0.00454932, 1.80953)
+
+[node name="TableFourPerson2" parent="Restaurant/Building/Tables" instance=ExtResource("10_tuail")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.2834, 0.00454938, 1.74817)
+
+[node name="TableFourPerson3" parent="Restaurant/Building/Tables" instance=ExtResource("10_tuail")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3251, 0.00454932, 3.86018)
+
+[node name="TableFourPerson4" parent="Restaurant/Building/Tables" instance=ExtResource("10_tuail")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.30654, 0.00454932, 3.67196)
+
+[node name="TableFourPerson5" parent="Restaurant/Building/Tables" instance=ExtResource("10_tuail")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.39323, 0.00454932, 3.79419)
+
+[node name="TableFourPerson6" parent="Restaurant/Building/Tables" instance=ExtResource("10_tuail")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3642, 0.00454932, 1.81695)
 
 [node name="Kitchen" type="Node3D" parent="Restaurant/Building"]
 
