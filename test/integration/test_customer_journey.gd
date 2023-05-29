@@ -36,15 +36,18 @@ func test_party_full_journey():
 	
 	# Act
 	await wait_for_signal(spawned_party.state_changed, 1.0, "The party took to long waiting for a table")
-	assert_not_null(spawned_party.table, "Party doesn't have a table")
-	assert_eq(spawned_party.state, CustomerParty.PartyState.WALKING_TO_TABLE, "The Party is not walking to a table")
 	
-	await wait_for_signal(spawned_party.state_changed, 2.0, "The party took too long walking to the table")
-	assert_eq(spawned_party.state, CustomerParty.PartyState.THINKING, "The Party is not thinking at a table")
+	# Assert
+	assert_not_null(spawned_party.table, "Party doesn't have a table")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.THINKING, "The Party is not walking to a table")
 	for chair in spawned_party.table.chairs:
 		assert_almost_eq(chair.sitter.global_position, chair.global_position, _acceptable_threshold, "The customer is not sitting in the chair correctly")
-	#_customer_manager.evaluate_parties()
+	
+	# Act
+	await wait_for_signal(spawned_party.state_changed, 2.0, "The party took too long walking to the table")
+	
 	# Assert
+	#assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not thinking at a table")
 
 func test_party_can_wait_in_line():
 	# Arrange

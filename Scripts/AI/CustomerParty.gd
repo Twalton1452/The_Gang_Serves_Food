@@ -65,8 +65,6 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 func sync_customer(customer: Customer) -> void:
 	customer.arrived.connect(_on_customer_arrived)
 	
-	# Node tree's resolve bottom to top, so when we're syncing to maintain the same order as the server,
-	# Assign back-to-front : The first node sync'd needs to be the last one in the array
 	var i = customers.rfind(null)
 	customers[i] = customer
 	
@@ -124,14 +122,31 @@ func go_to_table(destination_table: Table):
 	table.lock_for_party_in_transit()
 	target_pos = table.global_position
 	
+	var available_chairs = table.chairs.duplicate()
+	
 	for i in len(customers):
 		var customer : Customer = customers[i]
-		var chair : Chair = table.chairs[i]
+		var chair_index : int = get_farthest_chair_for(customer, available_chairs)
+		var chair : Chair = available_chairs[chair_index]
+		available_chairs.remove_at(chair_index)
 		customer.go_to(chair.transition_location.global_position)
 	
 	state = PartyState.WALKING_TO_TABLE
 
-# TODO: Customers try to sit in the farthest -> closest chair
+## Seat customers at tables given their farthest chair to reduce potential collisions between them
+func get_farthest_chair_for(customer: Customer, chairs: Array[Chair]) -> int:
+	var dist = 0.0
+	var greatest_dist_index = -1
+	
+	for i in len(chairs):
+		var chair : Chair = table.chairs[i]
+		var customer_chair_dist = chair.global_position.distance_to(customer.global_position)
+		if customer_chair_dist > dist:
+			dist = customer_chair_dist
+			greatest_dist_index = i
+	
+	return greatest_dist_index
+
 func sit_at_table():
 	for i in len(customers):
 		var customer : Customer = customers[i]

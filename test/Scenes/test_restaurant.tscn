@@ -39,7 +39,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.5077
 transform = Transform3D(1, 0, 0, 0, 0.235651, 0.971838, 0, -0.971838, 0.235651, 6.35895, 0.67902, -5.75935)
 
 [node name="CustomerManager" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16681, -0.0761087, 0.325852)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.13263, -0.0761087, -0.620693)
 script = ExtResource("2_cc21q")
 
 [node name="Tables" type="Node3D" parent="."]
@@ -48,4 +48,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.093, -0.256064, 0.527)
 [node name="TableFourPerson" parent="Tables" instance=ExtResource("3_ufn6n")]
 
 [node name="EntryPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.16827, 0.0213599, 0.518187)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00833, 0.0213599, -0.764376)
