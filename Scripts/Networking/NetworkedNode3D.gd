@@ -11,6 +11,7 @@ class_name NetworkedNode3D
 ##  - position
 ##	- parent
 
+var ByteWriterClass = load("res://Scripts/Networking/ByteWriter.gd")
 
 ## Some Nodes are dependent on other Node's to be under the correct parent or have some state
 ## so this is a phased ordering structure to generate some consistency
@@ -44,21 +45,16 @@ var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.NETWORKED : get = get_scene_id
 ## Generated during [method _ready]
 var networked_id = -1
 
-## [PackedByteArray] of information like position, path to parent
-## Appends the [member p_node] [member sync_state] to this [PackedByteArray] before sending information to the Client
-var sync_state : PackedByteArray : set = set_sync_state, get = get_sync_state
-
 ## Used by the [MidsessionJoinSyncer] script to see if it should update the Peer on spawn to reduce bandwidth
 ## Run-time spawns will need this set to true automatically
 var changed = false
 
 func has_additional_sync():
-	return "sync_state" in p_node
+	return "set_sync_state" in p_node or "get_sync_state" in p_node
 
-func set_sync_state(value: PackedByteArray):
-	var global_sync_pos = Vector3(value.decode_half(0), value.decode_half(2), value.decode_half(4))
-	var path_size = value.decode_u8(6)
-	var path_to = value.slice(7, 7 + path_size).get_string_from_utf8()
+func set_sync_state(reader: ByteReader):
+	var global_sync_pos = reader.read_vector3()
+	var path_to = reader.read_path_to()
 	
 	var split_path : PackedStringArray = path_to.split("/")
 	var new_name = split_path[-1]
@@ -78,26 +74,22 @@ func set_sync_state(value: PackedByteArray):
 	
 	if has_additional_sync():
 		# Give the rest of the sync_state to the node to handle
-		p_node.sync_state = value.slice(7 + path_size)
+		p_node.set_sync_state(reader)
 
-func get_sync_state() -> PackedByteArray:
+func get_sync_state() -> ByteWriter:
+	var writer : ByteWriter = ByteWriterClass.new()
+	
 	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called somehow
 	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
 	
 	# Default properties to Sync
-	var path_to = StringName(p_node.get_path()).to_utf8_buffer()
-	var buf = PackedByteArray()
-	buf.resize(7)
-	buf.encode_half(0, p_node.global_position.x) # Half is 2 bytes
-	buf.encode_half(2, p_node.global_position.y) # Half is 2 bytes
-	buf.encode_half(4, p_node.global_position.z) # Half is 2 bytes
-	buf.encode_u8(6, path_to.size()) # u8 is 1 byte
-	buf.append_array(path_to) # offset = 7 here + path.size()
+	writer.write_vector3(p_node.global_position)
+	writer.write_path_to(p_node)
 	
 	if has_additional_sync():
 		# Node this is attached to properties to sync
-		buf.append_array(p_node.sync_state)
-	return buf
+		p_node.get_sync_state(writer)
+	return writer
 
 func get_scene_id() -> int:
 	if override_scene_id != SceneIds.SCENES.NETWORKED:

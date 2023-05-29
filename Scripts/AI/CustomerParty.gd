@@ -35,15 +35,12 @@ var table : Table = null
 var num_arrived_to_destination = 0
 
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER_PARTY
-var sync_state : PackedByteArray : set = set_sync_state, get = get_sync_state
 
-func set_sync_state(value: PackedByteArray) -> void:
+func set_sync_state(reader: ByteReader) -> void:
 	pass
 
-func get_sync_state() -> PackedByteArray:
-	var buf = PackedByteArray()
-	buf.resize(7)
-	return buf
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	return writer
 
 func set_state(value: PartyState) -> void:
 	state = value

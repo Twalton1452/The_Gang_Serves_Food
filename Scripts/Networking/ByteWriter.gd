@@ -42,7 +42,10 @@ func write_str(s: String):
 	var s_buf = StringName(s).to_utf8_buffer()
 	encode_u8(s_buf.size())
 	append_array(s_buf)
-	
+
+func write_float(v: float):
+	encode_half(v)
+
 func write_bool(b: bool):
 	encode_u8(b)
 

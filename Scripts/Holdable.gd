@@ -1,21 +1,16 @@
 extends Interactable
 class_name Holdable
-
-func set_sync_state(value) -> int:
-	var continuing_offset = super(value)
-	var is_being_held = bool(value.decode_u8(continuing_offset))
+	
+func set_sync_state(reader: ByteReader) -> void:
+	super(reader)
+	var is_being_held = reader.read_bool()
 	if is_being_held:
 		(get_parent() as Holder).hold_item(self)
-	
-	return continuing_offset + 1 # + 1 because the u8
 
-func get_sync_state() -> PackedByteArray:
-	var buf = super()
-	var end_of_parent_buf = buf.size()
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	var is_being_held = get_parent() is Holder
-	buf.resize(end_of_parent_buf + 1)
-	buf.encode_u8(end_of_parent_buf, is_being_held) # u8 is 1 byte
-	return buf
+	writer.write_bool(is_being_held)
+	return writer
 
 func _interact(player: Player):
 	# Item free floating, just take it

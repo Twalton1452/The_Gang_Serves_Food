@@ -25,19 +25,15 @@ var cooked_percent = 0.4
 var burning_percent = 0.8
 var cook_state : CookStates = CookStates.RAW
 
-func set_sync_state(value) -> int:
-	var continuing_offset = super(value)
-	cook_progress = value.decode_half(continuing_offset)
+func set_sync_state(reader: ByteReader) -> void:
+	super(reader)
+	cook_progress = reader.read_float()
 	evaluate_cook_rate()
-	
-	return continuing_offset + 2
 
-func get_sync_state() -> PackedByteArray:
-	var buf = super()
-	var end_of_parent_buf = buf.size()
-	buf.resize(end_of_parent_buf + 2)
-	buf.encode_half(end_of_parent_buf, cook_progress) # half is 2 bytes
-	return buf
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	super(writer)
+	writer.write_float(cook_progress) # half is 2 bytes
+	return writer
 
 func _ready():
 	#super()

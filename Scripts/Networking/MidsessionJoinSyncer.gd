@@ -1,6 +1,7 @@
 @icon("res://Icons/wifi.svg")
 extends Node
 
+var ByteReaderClass = load("res://Scripts/Networking/ByteReader.gd")
 
 @rpc("call_local", "reliable")
 func pause_for_players():
@@ -34,7 +35,7 @@ func sync_nodes_for_new_player(peer_id: int):
 		
 		print("[Syncing Node %s] to [Peer: %s]" % [net_node.networked_id, peer_id])
 		# Tell the Peer all the information it needs to get this NetworkedNode up to date through sync_state
-		sync_networked_node.rpc_id(peer_id, net_node.networked_id, net_node.SCENE_ID, net_node.sync_state)
+		sync_networked_node.rpc_id(peer_id, net_node.networked_id, net_node.SCENE_ID, net_node.get_sync_state().data)
 
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	print("-----Finished Sync for Peer %s-----" % peer_id)
@@ -45,7 +46,7 @@ func sync_nodes_for_new_player(peer_id: int):
 @rpc("any_peer", "reliable")
 func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : PackedByteArray):
 	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
-	
+	var sync_state_reader : ByteReader = ByteReaderClass.new(sync_state)
 	#print("[Peer %s] received request to [sync Node %s]" % [multiplayer.get_unique_id(), networked_id])
 	var synced = false
 
@@ -53,7 +54,7 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 	for net_node in net_nodes:
 		# Found the Networked Node
 		if net_node.networked_id == networked_id:
-			net_node.sync_state = sync_state
+			net_node.set_sync_state(sync_state_reader)
 			synced = true
 		
 	# Didn't find the Networked Node, need to spawn one
@@ -68,6 +69,6 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 		add_child(net_scene) # Briefly add the node into the tree so that it can call get_node from within
 		var net_node = net_scene.get_node("NetworkedNode3D")
 		net_node.networked_id = networked_id
-		net_node.sync_state = sync_state
+		net_node.set_sync_state(sync_state_reader)
 		net_node.changed = true
 

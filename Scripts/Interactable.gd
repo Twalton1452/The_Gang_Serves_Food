@@ -11,13 +11,11 @@ signal secondary_interacted(player : Player)
 
 @export var mesh_to_highlight : MeshInstance3D
 
-var sync_state : set = set_sync_state, get = get_sync_state
+func set_sync_state(_reader : ByteReader) -> void:
+	pass
 
-func set_sync_state(_value : PackedByteArray) -> int:
-	return 0
-
-func get_sync_state() -> PackedByteArray:
-	return PackedByteArray()
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	return writer
 
 func _ready():
 	pass

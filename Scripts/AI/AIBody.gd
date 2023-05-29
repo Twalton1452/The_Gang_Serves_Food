@@ -9,22 +9,17 @@ signal arrived
 var speed = 3.0
 
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER
-var sync_state : PackedByteArray : set = set_sync_state, get = get_sync_state
 
-func set_sync_state(value: PackedByteArray) -> void:
-	var sync_tar_pos = Vector3(value.decode_half(0), value.decode_half(2), value.decode_half(4))
-	var in_progress = value.decode_u8(6)
+func set_sync_state(reader: ByteReader) -> void:
+	var sync_tar_pos = reader.read_vector3()
+	var in_progress = reader.read_bool()
 	if in_progress:
 		go_to(sync_tar_pos)
 
-func get_sync_state() -> PackedByteArray:
-	var buf = PackedByteArray()
-	buf.resize(7)
-	buf.encode_half(0, nav_agent.target_position.x) # Half is 2 bytes
-	buf.encode_half(2, nav_agent.target_position.y) # Half is 2 bytes
-	buf.encode_half(4, nav_agent.target_position.z) # Half is 2 bytes
-	buf.encode_u8(6, !nav_agent.is_navigation_finished()) # u8 is 1 byte
-	return buf
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	writer.write_vector3(nav_agent.target_position)
+	writer.write_bool(!nav_agent.is_navigation_finished())
+	return writer
 
 func _ready() -> void:
 	nav_agent.velocity_computed.connect(Callable(_on_velocity_computed))

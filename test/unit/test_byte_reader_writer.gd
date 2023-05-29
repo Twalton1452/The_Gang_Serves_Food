@@ -27,6 +27,14 @@ func test_can_read_write_int():
 	var read_value = _reader.read_int()
 	assert_eq(read_value, ev, "Didn't read the value back correctly")
 
+func test_can_read_write_float():
+	var ev = 0.5
+	_writer.write_float(ev)
+	assert_eq(_writer.offset, 2, "Incorrect offset after writing float")
+	
+	var read_value = _reader.read_float()
+	assert_eq(read_value, ev, "Didn't read the value back correctly")
+
 func test_can_read_write_path():
 	var some_node = Node3D.new()
 	add_child_autoqfree(some_node)
