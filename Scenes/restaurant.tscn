@@ -318,7 +318,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
 
 [node name="EntryPoint" type="Marker3D" parent="Restaurant"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.40644, 0.0952672, -1.0332)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.97322, 0.0952672, -1.0332)
 
 [node name="CustomerManager" type="Node3D" parent="Restaurant"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.59294, 0.268635, 0.884276)

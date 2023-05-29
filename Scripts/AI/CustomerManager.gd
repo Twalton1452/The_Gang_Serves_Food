@@ -1,30 +1,42 @@
 extends Node3D
 class_name CustomerManager
 
-@export var max_parties = 10
+@export var max_parties = 5
 
 @onready var restaurant : Restaurant = get_parent()
 
 var customer_scene = preload("res://Scenes/customer.tscn")
 var party_scene = preload("res://Scenes/components/party.tscn")
 var parties : Array[CustomerParty] = []
+var min_party_size = 1
 var max_party_size = 4
+var min_wait_to_spawn_sec = 3.0
+var max_wait_to_spawn_sec = 15.0
 
-#func _ready():
-#	spawn_party.call_deferred(4)
+func _ready():
+	if not is_multiplayer_authority():
+		return
+	
+	start_customer_spawning()
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority():
 		return
 	
 	if event.is_action_pressed("ui_page_up"):
-		#spawn_party(randi_range(1, max_party_size))
+		#spawn_party.rpc(randi_range(min_wait_to_spawn_sec, max_party_size))
 		spawn_party.rpc(4)
 
 func sync_party(party: CustomerParty):
 	party.state_changed.connect(_on_party_state_changed)
 	parties.push_back(party)
 	NetworkingUtils.sort_array_by_net_id(parties)
+
+func start_customer_spawning():
+	await get_tree().create_timer(randf_range(min_wait_to_spawn_sec, max_wait_to_spawn_sec)).timeout
+	spawn_party.rpc(randi_range(min_party_size, max_party_size))
+	if len(parties) < max_parties:
+		start_customer_spawning()
 
 @rpc("authority", "call_local")
 func spawn_party(party_size: int) -> void:
