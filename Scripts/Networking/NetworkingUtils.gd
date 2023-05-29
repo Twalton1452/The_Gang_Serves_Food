@@ -16,3 +16,10 @@ func generate_id() -> int:
 # Keeping the og_name might be redundant data, but helpful during development
 func generate_network_safe_name(og_name: String) -> String:
 	return og_name + "_" + str(generate_id())
+
+func sort_array_by_net_id(arr: Array) -> void:
+	arr.sort_custom(func(a: Node, b: Node):
+		if a.get_node("NetworkedNode3D").networked_id < b.get_node("NetworkedNode3D").networked_id:
+			return true
+		return false
+	)

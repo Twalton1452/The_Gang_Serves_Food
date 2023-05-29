@@ -45,7 +45,9 @@ func set_sync_state(reader: ByteReader) -> void:
 	target_pos = reader.read_vector3()
 	var has_table = reader.read_bool()
 	if has_table:
-		table = get_node(reader.read_path_to())
+		table = get_node(reader.read_path_to()) as Table
+		table.is_empty = reader.read_bool()
+		table.party_in_transit = reader.read_bool()
 	(get_parent() as CustomerManager).sync_party(self)
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
@@ -56,6 +58,8 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_bool(table != null)
 	if table:
 		writer.write_path_to(table)
+		writer.write_bool(table.is_empty)
+		writer.write_bool(table.party_in_transit)
 	return writer
 
 func sync_customer(customer: Customer) -> void:
@@ -65,9 +69,13 @@ func sync_customer(customer: Customer) -> void:
 	# Assign back-to-front : The first node sync'd needs to be the last one in the array
 	var i = customers.rfind(null)
 	customers[i] = customer
+	
 	# When we've reached the beginning of the array we've finished the sync for customers
-	if i == 0 and table and state > PartyState.WALKING_TO_TABLE:
-		sit_at_table()
+	if i == 0:
+		NetworkingUtils.sort_array_by_net_id(customers)
+		
+		if table and state > PartyState.WALKING_TO_TABLE:
+			sit_at_table()
 
 func set_state(value: PartyState) -> void:
 	state = value
@@ -113,6 +121,8 @@ func go_to_entry(entry: Node3D):
 func go_to_table(destination_table: Table):
 	num_arrived_to_destination = 0
 	table = destination_table
+	table.lock_for_party_in_transit()
+	target_pos = table.global_position
 	
 	for i in len(customers):
 		var customer : Customer = customers[i]
@@ -121,6 +131,7 @@ func go_to_table(destination_table: Table):
 	
 	state = PartyState.WALKING_TO_TABLE
 
+# TODO: Customers try to sit in the farthest -> closest chair
 func sit_at_table():
 	for i in len(customers):
 		var customer : Customer = customers[i]

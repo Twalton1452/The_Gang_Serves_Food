@@ -7,12 +7,16 @@ signal available
 @export var chairs : Array[Chair] = []
 
 var is_empty = true
+var party_in_transit = false
 
 func _ready():
 	if chairs.is_empty():
 		for child in get_children():
 			if child is Chair:
 				chairs.push_back(child)
+
+func is_available_for(party_size: int) -> bool:
+	return is_empty and not party_in_transit and table_can_hold_party(party_size)
 
 func table_can_hold_party(party_size : int) -> bool:
 	if party_size > len(chairs) or not is_empty:
@@ -22,6 +26,9 @@ func table_can_hold_party(party_size : int) -> bool:
 		if chair.sitter != null:
 			return false
 	return true
+
+func lock_for_party_in_transit():
+	party_in_transit = true
 
 func seat_customers(customers: Array[Node3D]) -> bool:
 	if not table_can_hold_party(len(customers)):
@@ -33,6 +40,7 @@ func seat_customers(customers: Array[Node3D]) -> bool:
 		chair_index += 1
 	
 	is_empty = false
+	party_in_transit = false
 	occupied.emit()
 	return true
 

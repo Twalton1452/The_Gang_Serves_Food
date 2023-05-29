@@ -23,9 +23,8 @@ func _unhandled_input(event):
 
 func sync_party(party: CustomerParty):
 	party.state_changed.connect(_on_party_state_changed)
-	# Node tree's resolve bottom to top, so when we're syncing to maintain the same order as the server,
-	# Assign back-to-front : The first node sync'd needs to be the last one in the array
-	parties.push_front(party)
+	parties.push_back(party)
+	NetworkingUtils.sort_array_by_net_id(parties)
 
 @rpc("authority", "call_local")
 func spawn_party(party_size: int) -> void:
@@ -49,7 +48,6 @@ func spawn_party(party_size: int) -> void:
 		new_party.wait_in_line(parties[-1])
 	else:
 		new_party.go_to_entry(restaurant.entry_point)
-	
 	parties.push_back(new_party)
 
 func _on_party_state_changed(party: CustomerParty):
@@ -67,3 +65,18 @@ func check_for_available_table_for(party: CustomerParty):
 		return
 	
 	party.go_to_table(table)
+	move_the_line.call_deferred()
+
+func move_the_line():
+	#var in_line_parties = parties.filter(func(p): return p.state == CustomerParty.PartyState.WAITING_IN_LINE)
+	#for i in len(in_line_parties):
+	var sent_a_party_to_door = false
+	for i in len(parties):
+		var party = parties[i]
+		if party.state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
+			if not sent_a_party_to_door:
+				sent_a_party_to_door = true
+				party.go_to_entry(restaurant.entry_point)
+			else:
+				party.wait_in_line(parties[i-1])
+	

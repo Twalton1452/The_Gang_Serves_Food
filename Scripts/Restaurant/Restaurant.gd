@@ -13,6 +13,6 @@ func _ready():
 
 func get_next_available_table_for(party: CustomerParty) -> Table:
 	for table in tables:
-		if table.table_can_hold_party(len(party.customers)):
+		if table.is_available_for(len(party.customers)):
 			return table
 	return null
