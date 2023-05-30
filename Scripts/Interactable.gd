@@ -3,8 +3,8 @@ extends Area3D
 class_name Interactable
 
 # Maybe rename these to: Pickup / (Combine/Interact)
-signal interacted()
-signal secondary_interacted()
+signal interacted
+signal secondary_interacted
 
 # This SCENE_ID will point to the instantiatable Scene in SceneIds.gd
 @export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.NETWORKED

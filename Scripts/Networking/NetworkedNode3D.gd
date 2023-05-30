@@ -108,7 +108,7 @@ func _ready():
 	if priority_sync_order == SyncPriorityPhase.CREATION or priority_sync_order == SyncPriorityPhase.NESTED_CREATION:
 		changed = true
 
-func _on_interaction(_player: Player):
+func _on_interaction():
 	changed = true
 
 ## Sets parameters required for midsession syncing
