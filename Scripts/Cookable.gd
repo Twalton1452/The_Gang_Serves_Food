@@ -36,7 +36,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	return writer
 
 func _ready():
-	#super()
+	super()
 	if obj_to_color == null:
 		for child in get_children():
 			if child is MeshInstance3D:

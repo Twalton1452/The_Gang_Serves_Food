@@ -79,7 +79,7 @@ func set_sync_state(reader: ByteReader):
 func get_sync_state() -> ByteWriter:
 	var writer : ByteWriter = ByteWriterClass.new()
 	
-	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called somehow
+	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called
 	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
 	
 	# Default properties to Sync
@@ -118,28 +118,17 @@ func generated_at_run_time_setup():
 	#print("I generated %s at run time | Path: %s" % [p_node.name, p_node.get_path()])
 
 ## Keeps names unique so get_node() calls work correctly
-## When a name collision happens between child nodes it adds "@" symbol to the name
+## Note: When there are two child nodes with the same name it adds "@" symbol to the name of the most recent
 ## and the "@" symbol gets deleted when manually setting the name, so it messes with Paths
 ## As long as we keep the id which will always be unique in the name Path's should resolve
 func generate_unique_name():
-	p_node.name = p_node.name + "_" + str(networked_id)
+	if OS.has_feature("standalone"):
+		p_node.name = str(networked_id)
+	else:
+		p_node.name = p_node.name + "_" + str(networked_id) # useful for debugging
 
 # When the node changes (parents) this gets fired off
 # Can work as a delta signifier to the midsession joins
 func _exit_tree():
 	changed = true
 	#print("[Changed: %s] Parent: %s" % [name, get_parent().name])
-
-# Could be useful
-# These notifications also get fired off during less-optimal times like during game start, needs logic
-# https://docs.godotengine.org/en/stable/tutorials/best_practices/godot_notifications.html
-#func _notification(what):
-#	match what:
-#		NOTIFICATION_PARENTED:
-#			changed = true
-#		NOTIFICATION_UNPARENTED:
-#			changed = true
-#		NOTIFICATION_PREDELETE:
-#			print_debug("Not Implemented Yet. Tell the Syncronizer this networked_id so midsession joins know. Deleting %s, id: " % [name, networked_id])
-#			changed = true
-

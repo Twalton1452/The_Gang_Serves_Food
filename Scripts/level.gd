@@ -24,7 +24,7 @@ func _ready():
 
 	# Spawn the local player unless this is a dedicated server export.
 	if not OS.has_feature("dedicated_server"):
-		add_player(1)
+		add_player(GameState.SERVER_ID)
 
 func _exit_tree():
 	if not multiplayer.is_server():

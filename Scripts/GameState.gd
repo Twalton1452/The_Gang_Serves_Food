@@ -1,6 +1,8 @@
 extends Node
 
 ## Autoloaded
+var SERVER_ID = 1
+
 
 var players : Array[Player] = []
 var level : Level : set = set_level
@@ -32,7 +34,8 @@ func remove_player(p_id : int):
 	if is_multiplayer_authority():
 		cleanup_disconnecting_player.rpc(p_id)
 		await get_tree().create_timer(3.0).timeout
-		players[i].queue_free()
+		if players.size() >= i and players[i] != null:
+			players[i].queue_free()
 	
 	players.remove_at(i)
 
