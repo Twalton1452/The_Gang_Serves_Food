@@ -51,3 +51,11 @@ func test_can_read_write_str():
 	
 	var read_value = _reader.read_str()
 	assert_eq(read_value, ev)
+
+func test_can_read_write_int_array():
+	var ev : Array[int] = [2, 1, 1, 2, 5, 6, 50, 1000, 2000]
+	
+	_writer.write_int_array(ev)
+	
+	var read_value : Array[int] = _reader.read_int_array()
+	assert_eq_deep(read_value, ev)

@@ -18,6 +18,7 @@ func _ready():
 		return
 	
 	start_customer_spawning()
+	restaurant.menu.new_menu.connect(_on_new_restaurant_menu_available)
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority():
@@ -66,6 +67,8 @@ func _on_party_state_changed(party: CustomerParty):
 	match party.state:
 		CustomerParty.PartyState.WAITING_FOR_TABLE:
 			check_for_available_table_for(party)
+		CustomerParty.PartyState.THINKING:
+			draft_order_for(party)
 		CustomerParty.PartyState.LEAVING:
 			pass
 
@@ -91,4 +94,18 @@ func move_the_line():
 				party.go_to_entry(restaurant.entry_point)
 			else:
 				party.wait_in_line(parties[i-1])
+
+func _on_new_restaurant_menu_available(menu: Menu) -> void:
+	if menu == null:
+		return
 	
+	for i in len(parties):
+		var party = parties[i]
+		if party.state == CustomerParty.PartyState.THINKING:
+			draft_order_for(party)
+
+func draft_order_for(party: CustomerParty):
+	if not restaurant.menu.is_menu_available():
+		return
+	
+	party.order_from(restaurant.menu)

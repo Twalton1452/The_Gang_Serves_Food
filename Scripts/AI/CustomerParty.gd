@@ -28,6 +28,7 @@ enum PartyState {
 	LEAVING = 11,
 }
 
+var think_time_sec = 2.0
 var customer_spacing = 0.5
 var customers : Array[Customer] = [] : set = set_customers
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER_PARTY
@@ -155,6 +156,14 @@ func sit_at_table():
 		chair.sit(customer)
 		
 	state = PartyState.THINKING
+
+func order_from(menu: Menu) -> void:
+	await get_tree().create_timer(think_time_sec).timeout
+	
+	for customer in customers:
+		customer.order_from(menu)
+	
+	state = PartyState.ORDERING
 
 func _on_customer_arrived():
 	num_arrived_to_destination += 1

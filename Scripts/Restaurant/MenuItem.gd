@@ -9,6 +9,7 @@ var dish : Array[SceneIds.SCENES] = []
 
 func _ready():
 	dish_holder.interacted.connect(_on_holder_changed)
+	dish_holder.secondary_interacted.connect(_on_holder_changed)
 	_on_holder_changed()
 
 func _on_holder_changed():
@@ -28,3 +29,6 @@ func extract_scene_ids_from(holder: Holder) -> Array[SceneIds.SCENES]:
 
 func get_dish() -> Array[SceneIds.SCENES]:
 	return dish
+
+func is_dish_available() -> bool:
+	return not dish.is_empty()

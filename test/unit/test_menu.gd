@@ -23,7 +23,7 @@ func test_extracts_scene_ids_from_combined_food():
 	_menu_item._on_holder_changed()
 	
 	# Act
-	var main = _menu.mains[0].dish
+	var main = _menu.main_items[0].dish
 	
 	# Assert
 	assert_eq(main, ev, "main dish had something different")
@@ -38,7 +38,7 @@ func test_extracts_scene_ids_from_combined_food():
 #	_menu_item.dish_holder.hold_item(multi_holder)
 #
 #	# Act
-#	var main = _menu.mains[0].dish
+#	var main = _menu.main_items[0].dish
 #
 #	# Assert
 #	assert_eq(main, ev, "main dish had something different")

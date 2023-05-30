@@ -1,4 +1,4 @@
-extends GutTest
+extends TestingUtils
 
 var RestaurantScene = load("res://test/Scenes/test_restaurant.tscn")
 
@@ -16,10 +16,16 @@ func before_each():
 func test_party_full_journey():
 	# Arrange 
 	var num_customers_to_spawn = 4
+	var menu_item : Array[SceneIds.SCENES] = [SceneIds.SCENES.BOTTOM_BUN, SceneIds.SCENES.PATTY, SceneIds.SCENES.TOMATO, SceneIds.SCENES.TOP_BUN]
+	var combined_food_holder = create_combined_food(menu_item)
+	
+	(_restaurant.menu.get_child(-1) as MenuItem).dish_holder.hold_item(combined_food_holder)
+	(_restaurant.menu.get_child(-1) as MenuItem)._on_holder_changed()
 	
 	# Act
 	_customer_manager.spawn_party(num_customers_to_spawn)
 	var spawned_party = _customer_manager.parties[0]
+	spawned_party.think_time_sec = 0.1
 	for customer in spawned_party.customers:
 		customer.speed = 3.0 # Go faster for the test
 	await wait_frames(2) # Let the physics process tick to calculate nav_agent path's
@@ -45,9 +51,9 @@ func test_party_full_journey():
 	
 	# Act
 	await wait_for_signal(spawned_party.state_changed, 2.0, "The party took too long walking to the table")
-	#assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not ordering")
-#	for customer in spawned_party.customers:
-#		assert_not_null(customer.desired_food, "Customer doesn't want food")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not ordering")
+	for customer in spawned_party.customers:
+		assert_eq(customer.order, menu_item, "Customer doesn't want food")
 	
 	# Assert
 	#assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not thinking at a table")

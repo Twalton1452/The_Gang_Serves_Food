@@ -41,6 +41,15 @@ func read_path_to() -> String:
 func read_vector3() -> Vector3:
 	return Vector3(decode_half(), decode_half(), decode_half())
 
+## Max length of 256, Max values inside 65535
+func read_int_array() -> Array[int]:
+	var size = decode_u8()
+	var decoded_arr : Array[int] = []
+	var starting_offset = offset
+	while offset < starting_offset + size:
+		decoded_arr.push_back(read_int())
+	return decoded_arr
+
 func read_bool() -> bool:
 	return bool(decode_u8())
 

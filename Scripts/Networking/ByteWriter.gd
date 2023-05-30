@@ -27,13 +27,19 @@ func append_array(arr: PackedByteArray) -> void:
 	offset += arr.size()
 	data.append_array(arr)
 
-
+## Max value 256,256,256
 func write_vector3(vec3: Vector3):
 	encode_half(vec3.x) 
 	encode_half(vec3.y)
 	encode_half(vec3.z)
 
-func write_path_to(node: Node):
+## Max length of 256, Max values inside 65535
+func write_int_array(arr: Array[int]) -> void:
+	encode_u8(arr.size() * 2) # 2 for each byte from u16
+	for num in arr:
+		write_int(num)
+
+func write_path_to(node: Node) -> void:
 	var path_to = StringName(node.get_path()).to_utf8_buffer()
 	encode_u8(path_to.size())
 	append_array(path_to)
@@ -43,12 +49,14 @@ func write_str(s: String):
 	encode_u8(s_buf.size())
 	append_array(s_buf)
 
+## Max value 256
 func write_float(v: float):
 	encode_half(v)
 
 func write_bool(b: bool):
 	encode_u8(b)
 
+## Max value 65535
 func write_int(v: int):
 	encode_u16(v)
 

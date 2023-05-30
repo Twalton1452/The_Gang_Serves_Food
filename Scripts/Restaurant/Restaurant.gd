@@ -3,6 +3,7 @@ class_name Restaurant
 
 @export var entry_point : Node3D
 @export var tables_root : Node3D
+@export var menu : Menu
 
 var tables : Array[Table]
 
