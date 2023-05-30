@@ -41,5 +41,13 @@ func test_can_read_write_path():
 	
 	_writer.write_path_to(some_node)
 	
-	var read_value = _reader.read_string()
+	var read_value = _reader.read_path_to()
 	assert_eq(get_node(read_value), some_node)
+
+func test_can_read_write_str():
+	var ev = "Testy"
+	
+	_writer.write_str(ev)
+	
+	var read_value = _reader.read_str()
+	assert_eq(read_value, ev)

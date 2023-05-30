@@ -32,7 +32,7 @@ func decode_utf8_str() -> String:
 	offset += str_size
 	return utf8_str
 
-func read_string() -> String:
+func read_str() -> String:
 	return decode_utf8_str()
 
 func read_path_to() -> String:
