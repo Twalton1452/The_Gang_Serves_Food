@@ -14,7 +14,7 @@ func before_each():
 	#watch_signals(_customer_manager)
 
 func test_party_full_journey():
-	# Arrange
+	# Arrange 
 	var num_customers_to_spawn = 4
 	
 	# Act
@@ -31,7 +31,7 @@ func test_party_full_journey():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WALKING_TO_ENTRY, "The Party is not walking to the entry")
 	await wait_for_signal(spawned_party.state_changed, 3.0, "The party took too long to get to the Entry")
 	# Note: Should be WAITING_FOR_TABLE for a single frame, but the wait_for_signal processes AFTER the logic happens
-	# So CustomerManager is handling it before we can check on the state.
+	# So the Party transitions from WALKING_TO_ENTRY to WAITING_FOR_TABLE for less than a frame and then goes to WALKING_TO_TABLE
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WALKING_TO_TABLE, "The Party is not waiting for a table")
 	
 	# Act
@@ -45,6 +45,9 @@ func test_party_full_journey():
 	
 	# Act
 	await wait_for_signal(spawned_party.state_changed, 2.0, "The party took too long walking to the table")
+	#assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not ordering")
+#	for customer in spawned_party.customers:
+#		assert_not_null(customer.desired_food, "Customer doesn't want food")
 	
 	# Assert
 	#assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not thinking at a table")

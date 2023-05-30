@@ -18,26 +18,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.424617, 0, 0.224179)
 [node name="tableCloth(Clone)" parent="TableClothBase" index="0"]
 surface_material_override/1 = ExtResource("2_lmh77")
 
-[node name="ChairCloth" parent="." instance=ExtResource("2_7myk5")]
+[node name="ChairCloth" parent="." node_paths=PackedStringArray("holder") instance=ExtResource("2_7myk5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, -0.375)
+holder = NodePath("../Holder")
 
 [node name="chairCushion(Clone)" parent="ChairCloth" index="0"]
 surface_material_override/1 = ExtResource("2_lmh77")
 
-[node name="ChairCloth2" parent="." instance=ExtResource("2_7myk5")]
+[node name="ChairCloth2" parent="." node_paths=PackedStringArray("holder") instance=ExtResource("2_7myk5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, -0.375)
+holder = NodePath("../Holder2")
 
 [node name="chairCushion(Clone)" parent="ChairCloth2" index="0"]
 surface_material_override/1 = ExtResource("2_lmh77")
 
-[node name="ChairCloth3" parent="." instance=ExtResource("2_7myk5")]
+[node name="ChairCloth3" parent="." node_paths=PackedStringArray("holder") instance=ExtResource("2_7myk5")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3, 0, 0.375)
+holder = NodePath("../Holder3")
 
 [node name="chairCushion(Clone)" parent="ChairCloth3" index="0"]
 surface_material_override/1 = ExtResource("2_lmh77")
 
-[node name="ChairCloth4" parent="." instance=ExtResource("2_7myk5")]
+[node name="ChairCloth4" parent="." node_paths=PackedStringArray("holder") instance=ExtResource("2_7myk5")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.1, 0, 0.375)
+holder = NodePath("../Holder4")
 
 [node name="chairCushion(Clone)" parent="ChairCloth4" index="0"]
 surface_material_override/1 = ExtResource("2_lmh77")

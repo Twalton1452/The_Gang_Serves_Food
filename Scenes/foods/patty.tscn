@@ -46,6 +46,7 @@ script = ExtResource("1_vmnmo")
 rule = 1
 gradient = ExtResource("2_67uhe")
 obj_to_color = NodePath("Patty")
+SCENE_ID = 1
 mesh_to_highlight = NodePath("Patty")
 
 [node name="Patty" type="MeshInstance3D" parent="."]

@@ -3,6 +3,7 @@ class_name Chair
 
 @export var sitting_location : Node3D
 @export var transition_location : Node3D
+@export var holder : Holder
 var sitter : Node3D = null
 
 func sit(customer: Node3D) -> void:
