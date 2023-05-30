@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=27 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -16,8 +16,11 @@
 [ext_resource type="PackedScene" uid="uid://cx11ipeseh6dx" path="res://Scenes/furniture/four_person_table.tscn" id="10_tuail"]
 [ext_resource type="PackedScene" uid="uid://cpb5xjyhdnwqr" path="res://3d_models/Kenneys_Furniture/kitchenSink.glb" id="11_t52rp"]
 [ext_resource type="PackedScene" uid="uid://bwqlq831iqp56" path="res://Scenes/holders/fridge_components.tscn" id="12_xj5b4"]
+[ext_resource type="PackedScene" uid="uid://bqk6io71er4qi" path="res://Scenes/furniture/aesthetic/lamp_square_ceiling.tscn" id="13_mmvm6"]
+[ext_resource type="Script" path="res://Scripts/Restaurant/Menu.gd" id="15_6mlv6"]
 [ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/holders/stove_components.tscn" id="16_eiaux"]
 [ext_resource type="PackedScene" uid="uid://l12dq331fblk" path="res://Scenes/holders/tomato_box.tscn" id="16_ketst"]
+[ext_resource type="PackedScene" uid="uid://dhvdilcb12bjf" path="res://Scenes/furniture/menu_item_stand.tscn" id="16_n3yt3"]
 [ext_resource type="PackedScene" uid="uid://dqv2bfql04h12" path="res://Scenes/holders/bun_box.tscn" id="17_l7sfd"]
 [ext_resource type="Script" path="res://Scripts/AI/CustomerManager.gd" id="17_losm7"]
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
@@ -131,20 +134,20 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 8.0338
 
 [node name="Lights" type="Node3D" parent="Restaurant/Building"]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Restaurant/Building/Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.96786, 1.10088, 6.29969)
-light_energy = 0.5
-light_size = 60.0
+[node name="lampSquareCeiling3" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.32771, 1.02604, 2.83044)
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="Restaurant/Building/Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.96786, 0.908885, 2.83044)
-light_energy = 0.5
-light_size = 60.0
+[node name="lampSquareCeiling4" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.21414, 1.02604, 2.83044)
 
-[node name="OmniLight3D3" type="OmniLight3D" parent="Restaurant/Building/Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.29374, 0.989138, 7.46648)
-light_energy = 0.5
-light_size = 60.0
+[node name="lampSquareCeiling" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.29374, 1.02451, 7.46648)
+
+[node name="lampSquareCeiling2" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.96786, 1.03253, 2.82309)
+
+[node name="lampSquareCeiling5" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.96786, 1.03253, 6.45748)
 
 [node name="OutsideWalls" type="Node3D" parent="Restaurant/Building"]
 
@@ -251,6 +254,12 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 
 
 [node name="wall36" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 1)
+
+[node name="Menu" type="Node3D" parent="Restaurant/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.148526, 5.96046e-08, 4.60768)
+script = ExtResource("15_6mlv6")
+
+[node name="MenuItemStand" parent="Restaurant/Building/Menu" instance=ExtResource("16_n3yt3")]
 
 [node name="Ground" parent="Restaurant" instance=ExtResource("2_8d1g5")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)

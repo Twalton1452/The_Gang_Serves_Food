@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqk6io71er4qi"]
+
+[ext_resource type="PackedScene" uid="uid://dh6lf6b81e23" path="res://3d_models/Kenneys_Furniture/lampSquareCeiling.glb" id="1_bw3wr"]
+
+[node name="lampSquareCeiling" instance=ExtResource("1_bw3wr")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055624, -0.01402, -0.0608945)
+light_energy = 0.2
+light_size = 60.0
