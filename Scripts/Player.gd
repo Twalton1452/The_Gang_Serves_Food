@@ -27,6 +27,12 @@ var color : Color = Color.WHITE
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 
+# Remove when upgrading to 4.1
+# Work around for getting errors when deleting a player
+# https://github.com/godotengine/godot/issues/67144#issuecomment-1467005282
+func _exit_tree(): # When someone calls queue_free() here
+	$MeshInstance3D.set("surface_material_override/0", null)
+
 func _ready():
 	if not is_multiplayer_authority(): return
 

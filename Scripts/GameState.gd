@@ -34,7 +34,7 @@ func remove_player(p_id : int):
 	if is_multiplayer_authority():
 		cleanup_disconnecting_player.rpc(p_id)
 		await get_tree().create_timer(3.0).timeout
-		if players.size() >= i and players[i] != null:
+		if i < players.size() and players[i] != null:
 			players[i].queue_free()
 	
 	players.remove_at(i)
@@ -51,3 +51,4 @@ func cleanup_disconnecting_player(p_id: int):
 		interactable.enable_collider()
 
 	player.hide()
+	

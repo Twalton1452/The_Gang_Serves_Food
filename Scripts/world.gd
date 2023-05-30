@@ -4,6 +4,7 @@ extends Node
 @onready var address_entry = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/AddressEntry
 
 const PORT = 9998
+var connected = false
 
 func _ready():
 	get_tree().paused = true
@@ -12,8 +13,10 @@ func _ready():
 	$CanvasLayer/MainMenu/MarginContainer/VBoxContainer/ColorPickerButton.color_changed.emit(random_color)
 
 func _unhandled_input(event):
-	if event.is_action_pressed("quit"):
-		get_tree().quit()
+	if event.is_action_pressed("options"):
+		# show menu instead
+		#get_tree().quit()
+		_on_quit_button_pressed()
 
 func _on_host_button_pressed():
 	var enet_peer = ENetMultiplayerPeer.new()
@@ -56,6 +59,7 @@ func upnp_setup():
 	print("Success! Join Address: %s" % upnp.query_external_address())
 
 func start_game():
+	connected = true
 	main_menu.hide()
 	get_tree().paused = false
 	
@@ -84,3 +88,6 @@ func _input(event):
 
 func _on_color_picker_button_color_changed(color):
 	$CanvasLayer/MainMenu/MeshInstance2D.self_modulate = color
+
+func _on_quit_button_pressed():
+	get_tree().quit.call_deferred()

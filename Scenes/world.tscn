@@ -44,7 +44,7 @@ anchor_bottom = 1.0
 offset_left = 386.0
 offset_top = 226.0
 offset_right = -379.0
-offset_bottom = -87.0
+offset_bottom = -132.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -85,6 +85,10 @@ tooltip_text = "Player Color"
 text = "Color"
 color = Color(1, 1, 1, 1)
 edit_alpha = false
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/MainMenu"]
 position = Vector2(-41, 205)
@@ -153,3 +157,4 @@ spawn_limit = 1
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
