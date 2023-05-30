@@ -20,20 +20,20 @@ enum SCENES {
 	CUSTOMER_PARTY = 2001,
 }
 
+const PATHS = {
+	SCENES.PATTY: "res://Scenes/foods/patty.tscn",
+	SCENES.BOTTOM_BUN: "res://Scenes/foods/bottom_bun.tscn",
+	SCENES.TOP_BUN: "res://Scenes/foods/top_bun.tscn",
+	SCENES.TOMATO: "res://Scenes/foods/tomato.tscn",
+	
+	SCENES.PLATE: "res://Scenes/holders/plate_components.tscn",
+	
+	SCENES.FOOD_COMBINER: "res://Scenes/components/food_combiner.tscn",
+	
+	SCENES.CUSTOMER: "res://Scenes/customer.tscn",
+	SCENES.CUSTOMER_PARTY: "res://Scenes/components/party.tscn",
+}
 
 
 static func get_scene_from_id(id: SCENES) -> PackedScene:
-	var PATHS = {
-		SCENES.PATTY: load("res://Scenes/foods/patty.tscn"),
-		SCENES.BOTTOM_BUN: load("res://Scenes/foods/bottom_bun.tscn"),
-		SCENES.TOP_BUN: load("res://Scenes/foods/top_bun.tscn"),
-		SCENES.TOMATO: load("res://Scenes/foods/tomato.tscn"),
-		
-		SCENES.PLATE: load("res://Scenes/holders/plate_components.tscn"),
-		
-		SCENES.FOOD_COMBINER: load("res://Scenes/components/food_combiner.tscn"),
-		
-		SCENES.CUSTOMER: load("res://Scenes/customer.tscn"),
-		SCENES.CUSTOMER_PARTY: load("res://Scenes/components/party.tscn"),
-	}
-	return PATHS[id] if PATHS.has(id) else null
+	return load(PATHS[id]) if PATHS.has(id) else null
