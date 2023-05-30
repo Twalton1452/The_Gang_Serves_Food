@@ -59,13 +59,13 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 		
 	# Didn't find the Networked Node, need to spawn one
 	if not synced:
-		assert(SceneIds.get_scene_from_id(net_scene_id) != null, "%s does not have a SceneId PATH to instantiate from in SceneIds.gd")
+		assert(SceneIds.PATHS[net_scene_id] != null, "%s does not have a SceneId PATH to instantiate from in SceneIds.gd")
 		
 		print_verbose("[Peer %s] didn't find %s in the objects on startup. The Player must have generated this at run time. [Spawning a %s with id %s]" \
-			% [multiplayer.get_unique_id(), networked_id, SceneIds.get_scene_from_id(net_scene_id).get_state().get_node_name(0), networked_id])
+			% [multiplayer.get_unique_id(), networked_id, SceneIds.PATHS[net_scene_id].get_state().get_node_name(0), networked_id])
 		
 		# Spawn Networked Node
-		var net_scene = SceneIds.get_scene_from_id(net_scene_id).instantiate()
+		var net_scene = SceneIds.PATHS[net_scene_id].instantiate()
 		add_child(net_scene) # Briefly add the node into the tree so that it can call get_node from within
 		var net_node = net_scene.get_node("NetworkedNode3D")
 		net_node.networked_id = networked_id

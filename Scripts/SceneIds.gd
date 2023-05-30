@@ -1,5 +1,8 @@
+extends Node
+
+## Autoloaded
+
 ## Class for mapping scenes to Ids to transfer over the network easily
-class_name SceneIds
 
 enum SCENES {
 	NETWORKED = 0,
@@ -20,20 +23,16 @@ enum SCENES {
 	CUSTOMER_PARTY = 2001,
 }
 
-const PATHS = {
-	SCENES.PATTY: "res://Scenes/foods/patty.tscn",
-	SCENES.BOTTOM_BUN: "res://Scenes/foods/bottom_bun.tscn",
-	SCENES.TOP_BUN: "res://Scenes/foods/top_bun.tscn",
-	SCENES.TOMATO: "res://Scenes/foods/tomato.tscn",
+var PATHS = {
+	SCENES.PATTY: preload("res://Scenes/foods/patty.tscn"),
+	SCENES.BOTTOM_BUN: preload("res://Scenes/foods/bottom_bun.tscn"),
+	SCENES.TOP_BUN: preload("res://Scenes/foods/top_bun.tscn"),
+	SCENES.TOMATO: preload("res://Scenes/foods/tomato.tscn"),
 	
-	SCENES.PLATE: "res://Scenes/holders/plate_components.tscn",
+	SCENES.PLATE: preload("res://Scenes/holders/plate_components.tscn"),
 	
-	SCENES.FOOD_COMBINER: "res://Scenes/components/food_combiner.tscn",
+	SCENES.FOOD_COMBINER: preload("res://Scenes/components/food_combiner.tscn"),
 	
-	SCENES.CUSTOMER: "res://Scenes/customer.tscn",
-	SCENES.CUSTOMER_PARTY: "res://Scenes/components/party.tscn",
+	SCENES.CUSTOMER: preload("res://Scenes/customer.tscn"),
+	SCENES.CUSTOMER_PARTY: preload("res://Scenes/components/party.tscn"),
 }
-
-
-static func get_scene_from_id(id: SCENES) -> PackedScene:
-	return load(PATHS[id]) if PATHS.has(id) else null

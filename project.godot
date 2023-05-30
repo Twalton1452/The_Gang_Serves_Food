@@ -17,9 +17,10 @@ config/icon="res://kitchenStove_SE.png"
 
 [autoload]
 
+SceneIds="*res://Scripts/SceneIds.gd"
 NetworkingUtils="*res://Scripts/Networking/NetworkingUtils.gd"
-InteractionManager="*res://Scripts/InteractionManager.gd"
 GameState="*res://Scripts/GameState.gd"
+InteractionManager="*res://Scripts/InteractionManager.gd"
 
 [display]
 
