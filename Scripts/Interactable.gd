@@ -3,8 +3,8 @@ extends Area3D
 class_name Interactable
 
 # Maybe rename these to: Pickup / (Combine/Interact)
-signal interacted(player : Player)
-signal secondary_interacted(player : Player)
+signal interacted()
+signal secondary_interacted()
 
 # This SCENE_ID will point to the instantiatable Scene in SceneIds.gd
 @export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.NETWORKED
@@ -26,8 +26,9 @@ func _interact(_player : Player):
 # Calls an internal _interact method so we dont have to keep calling "super()"
 # to make sure the "interacted" signal is emitted
 func interact(player : Player):
-	interacted.emit(player)
-	return _interact(player)
+	var result = _interact(player)
+	interacted.emit()
+	return result
 
 func _secondary_interact(_player : Player):
 	pass
@@ -35,8 +36,9 @@ func _secondary_interact(_player : Player):
 # Calls an internal _secondary_interact method so we dont have to keep calling "super()"
 # to make sure the "secondary_interacted" signal is emitted
 func secondary_interact(player : Player):
-	secondary_interacted.emit(player)
-	return _secondary_interact(player)
+	var result = _secondary_interact(player)
+	secondary_interacted.emit()
+	return result
 
 func disable_collider():
 	if get_node_or_null("CollisionShape3D") != null:
