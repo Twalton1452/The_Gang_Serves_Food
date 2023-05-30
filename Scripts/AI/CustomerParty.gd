@@ -140,7 +140,7 @@ func get_farthest_chair_for(customer: Customer, chairs: Array[Chair]) -> int:
 	var greatest_dist_index = -1
 	
 	for i in len(chairs):
-		var chair : Chair = table.chairs[i]
+		var chair : Chair = chairs[i]
 		var customer_chair_dist = chair.global_position.distance_to(customer.global_position)
 		if customer_chair_dist > dist:
 			dist = customer_chair_dist
