@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://rdrleinbk66r"]
+[gd_scene load_steps=21 format=3 uid="uid://rdrleinbk66r"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_ybpai"]
 [ext_resource type="PackedScene" uid="uid://j4ykwt0h6c4r" path="res://3d_models/Pistol.blend" id="2_rnvw1"]
@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="5_nhbnr"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_5oit5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tkehj"]
+resource_local_to_scene = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_opbun"]
 
@@ -171,6 +174,7 @@ script = ExtResource("1_ybpai")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_5oit5")
+surface_material_override/0 = SubResource("StandardMaterial3D_tkehj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)

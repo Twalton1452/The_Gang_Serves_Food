@@ -7,6 +7,9 @@ const PORT = 9998
 
 func _ready():
 	get_tree().paused = true
+	var random_color = Color(randf(),randf(),randf(),1.0)
+	$CanvasLayer/MainMenu/MarginContainer/VBoxContainer/ColorPickerButton.color = random_color
+	$CanvasLayer/MainMenu/MarginContainer/VBoxContainer/ColorPickerButton.color_changed.emit(random_color)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("quit"):
@@ -78,3 +81,6 @@ func _input(event):
 		return
 	if event.is_action("ui_home") and Input.is_action_just_pressed("ui_home"):
 		change_level.call_deferred(load("res://Scenes/restaurant.tscn"))
+
+func _on_color_picker_button_color_changed(color):
+	$CanvasLayer/MainMenu/MeshInstance2D.self_modulate = color

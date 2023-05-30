@@ -21,6 +21,9 @@ var gravity = 20.0
 var look_speed = .005
 var health = 3
 
+# Settings
+var color : Color = Color.WHITE
+
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 
@@ -35,7 +38,11 @@ func init():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	pick_emotive_face.rpc(randi_range(0, face_sprite.hframes * face_sprite.vframes - 1))
-	
+
+func set_color(col: Color):
+	color = col
+	$MeshInstance3D.get_active_material(0).albedo_color = color
+
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 	
