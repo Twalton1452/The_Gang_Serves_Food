@@ -44,7 +44,7 @@ var state : PartyState = PartyState.SPAWNING : set = set_state
 var num_arrived_to_destination = 0
 var table : Table = null
 var target_pos : Vector3
-var num_customers_required_to_advance = 4
+var num_customers_required_to_advance = 1
 
 func set_sync_state(reader: ByteReader) -> void:
 	state = reader.read_int() as PartyState
@@ -131,15 +131,12 @@ func wait_in_line(ahead_party: CustomerParty) -> void:
 		
 	send_customers_to(ahead_party.target_pos + Vector3(customer_spacing,0,0))
 
-func go_to_entry(entry: Node3D):
-	num_arrived_to_destination = 0
-	
+func go_to_entry(entry: Node3D):	
 	send_customers_to(entry.global_position)
 	
 	state = PartyState.WALKING_TO_ENTRY
 
 func go_to_table(destination_table: Table):
-	num_arrived_to_destination = 0
 	table = destination_table
 	table.lock_for_party_in_transit()
 	target_pos = table.global_position
@@ -204,6 +201,8 @@ func pay() -> void:
 
 func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 	table.release_customers()
+	table = null
+	target_pos = exit_point.global_position
 	await get_tree().create_timer(wait_before_leave_time_sec).timeout
 	
 	var customers_ordered_by_closest_to_door = customers.duplicate()
@@ -212,7 +211,6 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 			return true
 		return false
 	)
-	
 	for customer in customers_ordered_by_closest_to_door:
 		await get_tree().create_timer(wait_between_customers_leaving).timeout
 		customer.go_to(exit_point.global_position)

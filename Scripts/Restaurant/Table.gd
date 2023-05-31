@@ -48,4 +48,5 @@ func release_customers():
 	for chair in chairs:
 		chair.force_sitter_out()
 	is_empty = true
+	party_in_transit = false
 	available.emit()

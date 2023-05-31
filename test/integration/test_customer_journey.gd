@@ -91,6 +91,7 @@ func test_party_full_journey():
 	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never paid")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME, "Party is not leaving")
 	assert_eq(spawned_party.num_customers_required_to_advance, 1, "Only 1 customer needs to make it to the exit zone")
+	assert_null(spawned_party.table)
 	
 	await wait_for_signal(spawned_party.state_changed, 3.0, "Party never started leaving")
 	# Can't assert GONE_HOME state because the wait time on wait_for_signal, party is already deleted before being able to check
