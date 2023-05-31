@@ -2,6 +2,7 @@ extends GutTest
 
 var TableClass = load("res://Scripts/Restaurant/Table.gd")
 var ChairClass = load("res://Scripts/Restaurant/Chair.gd")
+var CustomerClass = double(load("res://Scripts/AI/Customer.gd"), DOUBLE_STRATEGY.SCRIPT_ONLY)
 
 var _table : Table = null
 var _chairs : Array[Chair] = []
@@ -33,15 +34,15 @@ func after_each():
 	_table.chairs.clear()
 
 var customer_params = [
-	[Node3D],
-	[Node3D,Node3D],
-	[Node3D,Node3D,Node3D],
-	[Node3D,Node3D,Node3D,Node3D],
+	[CustomerClass],
+	[CustomerClass,CustomerClass],
+	[CustomerClass,CustomerClass,CustomerClass],
+	[CustomerClass,CustomerClass,CustomerClass,CustomerClass],
 ]
 
 func test_partys_can_sit_at_available_table_and_get_up(params=use_parameters(customer_params)):
 	# Arrange
-	var customers : Array[Node3D] = []
+	var customers : Array[Customer] = []
 	for param in params:
 		customers.push_back(add_child_autofree(param.new()))
 		assert_eq(customers[-1].position, Vector3.ZERO, "Customer isn't starting at 0,0,0")
@@ -79,18 +80,18 @@ func test_partys_can_sit_at_available_table_and_get_up(params=use_parameters(cus
 		assert_eq(is_behind_the_chair, true, "A customer isn't in the transition location")
 
 var unavail_params = [
-	[Node3D],
-	[Node3D,Node3D],
-	[Node3D,Node3D,Node3D],
-	[Node3D,Node3D,Node3D,Node3D],
+	[CustomerClass],
+	[CustomerClass,CustomerClass],
+	[CustomerClass,CustomerClass,CustomerClass],
+	[CustomerClass,CustomerClass,CustomerClass,CustomerClass],
 ]
 
 func test_partys_can_not_sit_at_unavailable_table(params=use_parameters(unavail_params)):
 	# Arrange
-	var seated_customer = add_child_autoqfree(Node3D.new())
+	var seated_customer = add_child_autoqfree(CustomerClass.new())
 	_table.seat_customers([seated_customer])
 	
-	var customers : Array[Node3D] = []
+	var customers : Array[Customer] = []
 	for param in params:
 		customers.push_back(add_child_autofree(param.new()))
 		assert_eq(customers[-1].position, Vector3.ZERO, "Customer isn't starting at 0,0,0")

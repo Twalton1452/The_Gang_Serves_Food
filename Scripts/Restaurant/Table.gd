@@ -1,8 +1,8 @@
 extends Node3D
 class_name Table
 
-signal occupied
-signal available
+signal occupied(table: Table)
+signal available(table: Table)
 
 @export var chairs : Array[Chair] = []
 
@@ -30,7 +30,7 @@ func table_can_hold_party(party_size : int) -> bool:
 func lock_for_party_in_transit():
 	party_in_transit = true
 
-func seat_customers(customers: Array[Node3D]) -> bool:
+func seat_customers(customers: Array[Customer]) -> bool:
 	if not table_can_hold_party(len(customers)):
 		return false
 	
@@ -41,7 +41,7 @@ func seat_customers(customers: Array[Node3D]) -> bool:
 	
 	is_empty = false
 	party_in_transit = false
-	occupied.emit()
+	occupied.emit(self)
 	return true
 
 func release_customers():
@@ -49,4 +49,4 @@ func release_customers():
 		chair.force_sitter_out()
 	is_empty = true
 	party_in_transit = false
-	available.emit()
+	available.emit(self)

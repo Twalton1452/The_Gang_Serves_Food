@@ -1,7 +1,7 @@
 extends Node3D
 class_name CustomerManager
 
-@export var max_parties = 1
+@export var max_parties = 10
 
 @onready var restaurant : Restaurant = get_parent()
 
@@ -9,7 +9,7 @@ var customer_scene = preload("res://Scenes/customer.tscn")
 var party_scene = preload("res://Scenes/components/party.tscn")
 var parties : Array[CustomerParty] = []
 var min_party_size = 1
-var max_party_size = 1
+var max_party_size = 4
 var min_wait_to_spawn_sec = 3.0
 var max_wait_to_spawn_sec = 15.0
 
@@ -19,6 +19,7 @@ func _ready():
 	
 	start_customer_spawning()
 	restaurant.menu.new_menu.connect(_on_new_restaurant_menu_available)
+	restaurant.table_became_available.connect(_on_table_became_available)
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority():
@@ -49,6 +50,7 @@ func spawn_party(party_size: int) -> void:
 	
 	var new_party : CustomerParty = party_scene.instantiate()
 	new_party.state_changed.connect(_on_party_state_changed)
+	new_party.advance_state.connect(_on_advance_party_state)
 	add_child(new_party, true)
 	new_party.position = Vector3.ZERO
 	
@@ -58,29 +60,23 @@ func spawn_party(party_size: int) -> void:
 	
 	new_party.customers = party_members
 	
-	# TODO: When a Party is spawned and other Parties are waiting at the door
-	# Set their destination to the last person in line instead of entry_point
 	if len(parties) > 0 and parties[-1].state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
 		new_party.wait_in_line(parties[-1])
 	else:
 		new_party.go_to_entry(restaurant.entry_point)
 	parties.push_back(new_party)
 
-func _on_party_state_changed(party: CustomerParty):
-	match party.state:
-		CustomerParty.PartyState.WAITING_FOR_TABLE:
-			check_for_available_table_for(party)
-		CustomerParty.PartyState.THINKING:
-			draft_order_for(party)
-		CustomerParty.PartyState.LEAVING_FOR_HOME:
-			send_customers_home(party)
-		CustomerParty.PartyState.GONE_HOME:
-			clean_up_party(party)
+func _on_table_became_available(table: Table):
+	for i in len(parties):
+		var party = parties[i]
+		if party.state == CustomerParty.PartyState.WAITING_FOR_TABLE:
+			party.go_to_table(table)
+			move_the_line.call_deferred()
+			break
 
 func check_for_available_table_for(party: CustomerParty):
 	var table = restaurant.get_next_available_table_for(party)
-	# No table's are available yet
-	# They will have to wait for existing parties to leave
+	
 	if table == null:
 		return
 	
@@ -88,8 +84,6 @@ func check_for_available_table_for(party: CustomerParty):
 	move_the_line.call_deferred()
 
 func move_the_line():
-	#var in_line_parties = parties.filter(func(p): return p.state == CustomerParty.PartyState.WAITING_IN_LINE)
-	#for i in len(in_line_parties):
 	var sent_a_party_to_door = false
 	for i in len(parties):
 		var party = parties[i]
@@ -125,3 +119,48 @@ func clean_up_party(party: CustomerParty) -> void:
 		return
 	parties.remove_at(i)
 	NetworkingUtils.send_item_for_deletion(party)
+
+func _on_party_state_changed(party: CustomerParty):
+	match party.state:
+		CustomerParty.PartyState.WAITING_FOR_TABLE:
+			check_for_available_table_for(party)
+		CustomerParty.PartyState.THINKING:
+			draft_order_for(party)
+		CustomerParty.PartyState.LEAVING_FOR_HOME:
+			send_customers_home(party)
+		CustomerParty.PartyState.GONE_HOME:
+			clean_up_party(party)
+
+func _on_advance_party_state(party: CustomerParty):
+	notify_advance_party_state.rpc(StringName(party.name).to_utf8_buffer())
+	
+@rpc("authority", "call_local")
+func notify_advance_party_state(node_name: PackedByteArray):
+	var party : CustomerParty = get_node_or_null(node_name.get_string_from_utf8())
+	if party == null:
+		return
+	
+	party.num_customers_required_to_advance = len(party.customers)
+	#print("Advancing state because %s sent a message %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id()])
+	match party.state:
+		CustomerParty.PartyState.WALKING_TO_LINE:
+			party.state = CustomerParty.PartyState.WAITING_IN_LINE
+		CustomerParty.PartyState.WALKING_TO_ENTRY:
+			party.state = CustomerParty.PartyState.WAITING_FOR_TABLE
+		CustomerParty.PartyState.WAITING_FOR_TABLE: pass # handled by _on_party_state_changed
+		CustomerParty.PartyState.WALKING_TO_TABLE:
+			party.sit_at_table()
+		CustomerParty.PartyState.THINKING: pass # handled by _on_party_state_changed
+		CustomerParty.PartyState.ORDERING:
+			party.state = CustomerParty.PartyState.WAITING_FOR_FOOD
+		CustomerParty.PartyState.WAITING_FOR_FOOD:
+			party.eat_food()
+		CustomerParty.PartyState.EATING:
+			party.state = CustomerParty.PartyState.WAITING_TO_PAY
+			party.num_customers_required_to_advance = 1
+		CustomerParty.PartyState.WAITING_TO_PAY:
+			party.pay()
+		CustomerParty.PartyState.PAYING: pass # just a wait phase for now
+		CustomerParty.PartyState.LEAVING_FOR_HOME:
+			party.state = CustomerParty.PartyState.GONE_HOME
+		CustomerParty.PartyState.GONE_HOME: pass # handled by _on_party_state_changed

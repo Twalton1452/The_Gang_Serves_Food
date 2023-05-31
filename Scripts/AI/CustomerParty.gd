@@ -5,6 +5,7 @@ class_name CustomerParty
 ## This class will help to organize groups of Customers to tell them where to go like a family
 
 signal state_changed(party: CustomerParty)
+signal advance_state(party: CustomerParty)
 
 ## The overall state of the Party, where they are at in the Lifecycle of the process
 ## does not represent individual customer emotions
@@ -221,31 +222,5 @@ func _on_customer_arrived():
 		return
 	
 	if num_arrived_to_destination >= num_customers_required_to_advance:
-		advance_party_state.rpc()
-
-@rpc("authority", "call_local")
-func advance_party_state():
-	num_customers_required_to_advance = len(customers)
-	#print("Advancing state because %s sent a message %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id()])
-	match state:
-		PartyState.WALKING_TO_LINE:
-			state = PartyState.WAITING_IN_LINE
-		PartyState.WALKING_TO_ENTRY:
-			state = PartyState.WAITING_FOR_TABLE
-		PartyState.WAITING_FOR_TABLE: pass # handled by CustomerManager
-		PartyState.WALKING_TO_TABLE:
-			sit_at_table()
-		PartyState.THINKING: pass # handled by CustomerManager
-		PartyState.ORDERING:
-			state = PartyState.WAITING_FOR_FOOD
-		PartyState.WAITING_FOR_FOOD:
-			eat_food()
-		PartyState.EATING:
-			state = PartyState.WAITING_TO_PAY
-			num_customers_required_to_advance = 1
-		PartyState.WAITING_TO_PAY:
-			pay()
-		PartyState.PAYING: pass # just a wait phase for now
-		PartyState.LEAVING_FOR_HOME:
-			state = PartyState.GONE_HOME
-		PartyState.GONE_HOME: pass # handled by CustomerManager
+		#advance_party_state.rpc()
+		advance_state.emit(self)

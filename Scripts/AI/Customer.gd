@@ -13,6 +13,12 @@ var order : Array[SceneIds.SCENES]
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
 	(get_parent() as CustomerParty).sync_customer(self)
+	var is_interactable_enabled = reader.read_bool()
+	if is_interactable_enabled:
+		interactable.enable_collider()
+	else:
+		interactable.disable_collider()
+	
 	var has_order = reader.read_bool()
 	if has_order:
 		var to_be_order : Array[int] = reader.read_int_array()
@@ -23,6 +29,8 @@ func set_sync_state(reader: ByteReader) -> void:
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
 	var has_order = order.size() > 0
+	var interactable_enabled = interactable.is_enabled()
+	writer.write_bool(interactable_enabled)
 	writer.write_bool(has_order)
 	if has_order:
 		writer.write_int_array(order as Array[int])
@@ -37,7 +45,8 @@ func _exit_tree():
 	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
 		sitting_chair.holder.interacted.disconnect(evaluate_food)
 		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
-	$MeshInstance3D.material_override = null
+	if get_node_or_null("MeshInstance3D") != null:
+		$MeshInstance3D.material_override = null
 
 func set_chair(value: Chair):
 	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
