@@ -37,7 +37,7 @@ func lock_for_party_in_transit():
 	color = Color.DIM_GRAY
 	party_in_transit = true
 
-func seat_customers(customers: Array[Customer]) -> bool:
+func seat_customers(customers: Array[Node3D]) -> bool:
 	if not table_can_hold_party(len(customers)):
 		return false
 	
