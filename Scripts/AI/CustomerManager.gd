@@ -12,6 +12,7 @@ var min_party_size = 1
 var max_party_size = 4
 var min_wait_to_spawn_sec = 3.0
 var max_wait_to_spawn_sec = 15.0
+var is_spawning = false
 
 func _ready():
 	if not is_multiplayer_authority():
@@ -35,6 +36,9 @@ func sync_party(party: CustomerParty):
 	NetworkingUtils.sort_array_by_net_id(parties)
 
 func start_customer_spawning():
+	if not is_multiplayer_authority():
+		return
+	is_spawning = true
 	if GameState.state != GameState.Phase.OPEN_FOR_BUSINESS:
 		return
 	
@@ -42,6 +46,8 @@ func start_customer_spawning():
 	spawn_party.rpc(randi_range(min_party_size, max_party_size))
 	if len(parties) < max_parties:
 		start_customer_spawning()
+	else:
+		is_spawning = false
 
 @rpc("authority", "call_local")
 func spawn_party(party_size: int) -> void:
@@ -134,6 +140,8 @@ func clean_up_party(party: CustomerParty) -> void:
 		return
 	parties.remove_at(i)
 	NetworkingUtils.send_item_for_deletion(party)
+	if not is_spawning:
+		start_customer_spawning()
 
 func _on_party_state_changed(party: CustomerParty):
 	match party.state:
