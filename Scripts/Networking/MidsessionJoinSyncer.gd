@@ -81,10 +81,10 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 		num_nodes_syncd += 1
 	
 	if num_nodes_syncd == total_num_nodes_to_sync:
-		print("[Peer %s] finished sync with Server for %s nodes" % [multiplayer.get_unique_id(), num_nodes_syncd])
+		print("[Peer %s] finished sync with Server for %s/%s nodes" % [multiplayer.get_unique_id(), num_nodes_syncd, total_num_nodes_to_sync])
 		finished_syncing()
 	elif num_nodes_syncd > total_num_nodes_to_sync:
-		print("[Peer %s] is syncing beyond the number of nodes intended" % [multiplayer.get_unique_id(), num_nodes_syncd])
+		print("[Peer %s] is syncing beyond the number of nodes intended %s/%s" % [multiplayer.get_unique_id(), num_nodes_syncd, total_num_nodes_to_sync])
 
 ## Client's game state is sync'd at this point
 ## Sync player specific settings between all clients/server

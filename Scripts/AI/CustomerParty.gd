@@ -89,9 +89,9 @@ func sync_customer(customer: Customer) -> void:
 
 func set_state(value: PartyState) -> void:
 	state = value
-	print("Party has advanced to state: %s" % str(state))
 	num_arrived_to_destination = 0
 	emit_state_changed.call_deferred()
+	#print("Party has advanced to state: %s" % str(state))
 
 func emit_state_changed():
 	state_changed.emit(self)

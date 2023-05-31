@@ -37,6 +37,7 @@ func _exit_tree():
 	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
 		sitting_chair.holder.interacted.disconnect(evaluate_food)
 		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
+	$MeshInstance3D.material_override = null
 
 func set_chair(value: Chair):
 	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
@@ -49,7 +50,7 @@ func set_chair(value: Chair):
 		sitting_chair.holder.secondary_interacted.connect(evaluate_food)
 
 func evaluate_food():
-	if not sitting_chair.holder.is_holding_item():
+	if not sitting_chair.holder.is_holding_item() or len(order) == 0:
 		return
 		
 	var item_on_the_table = sitting_chair.holder.get_held_item()
