@@ -25,3 +25,4 @@ func force_sitter_out() -> void:
 	sitter.rotation.x = 0
 	sitter.rotation.z = 0
 	sitter = null
+	holder.enable_collider()
