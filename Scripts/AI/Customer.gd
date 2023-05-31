@@ -28,6 +28,10 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		writer.write_int_array(order as Array[int])
 	return writer
 
+func _ready():
+	interactable.interacted.connect(_on_player_interacted)
+	interactable.secondary_interacted.connect(_on_player_interacted)
+
 func _exit_tree():
 	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
 		sitting_chair.holder.interacted.disconnect(evaluate_food)
@@ -85,7 +89,7 @@ func notify_peers_of_order(order_data: PackedByteArray):
 	interactable.enable_collider()
 	#print("%s sent me (%s) an order %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id(), order])
 
-func _interact(_player: Player) -> void:
+func _on_player_interacted() -> void:
 	player_interacted_with.emit()
 	interactable.disable_collider()
 
