@@ -12,23 +12,24 @@ enum PartyState {
 	SPAWNING = 0,
 	
 	WALKING_TO_LINE = 1,
-	WAITING_IN_LINE = 2,
+	WAITING_IN_LINE = 2, # PATIENCE - Walking forward only when the party ahead walks forward
 	
-	WALKING_TO_ENTRY = 3,
-	WAITING_FOR_TABLE = 4,
+	WALKING_TO_ENTRY = 3, # First in line walking to the door
+	WAITING_FOR_TABLE = 4, # PATIENCE - At the front door waiting to be told a table is ready
 	WALKING_TO_TABLE = 5,
 	
-	THINKING = 6,
-	ORDERING = 7,
+	THINKING = 6, # Wait Phase before ordering for more realism
+	ORDERING = 7, # PATIENCE - Waiting for player to take their order
 	
-	WAITING_FOR_FOOD = 8,
-	EATING = 9,
+	WAITING_FOR_FOOD = 8, # PATIENCE - Waiting for player to deliver food
+	EATING = 9, # Wait Phase before paying for more realism
 	
-	PAYING = 10,
-	LEAVING = 11,
+	PAYING = 10, # PATIENCE - Waiting for player to help them pay
+	LEAVING = 11, # Traveling to the kill zone
 }
 
 var think_time_sec = 2.0
+var eating_time_sec = 2.0
 var customer_spacing = 0.5
 var customers : Array[Customer] = [] : set = set_customers
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER_PARTY
@@ -65,6 +66,8 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 
 func sync_customer(customer: Customer) -> void:
 	customer.arrived.connect(_on_customer_arrived)
+	customer.player_took_order.connect(_on_customer_arrived)
+	customer.got_order.connect(_on_customer_arrived)
 	
 	var i = customers.rfind(null)
 	customers[i] = customer
@@ -78,6 +81,10 @@ func sync_customer(customer: Customer) -> void:
 
 func set_state(value: PartyState) -> void:
 	state = value
+	num_arrived_to_destination = 0
+	emit_state_changed.call_deferred()
+
+func emit_state_changed():
 	state_changed.emit(self)
 
 func set_customers(value: Array[Customer]) -> void:
@@ -89,6 +96,9 @@ func set_customers(value: Array[Customer]) -> void:
 	var spacing = 0
 	for customer in customers:
 		customer.arrived.connect(_on_customer_arrived)
+		customer.player_took_order.connect(_on_customer_arrived)
+		customer.got_order.connect(_on_customer_arrived)
+		
 		customer.position = Vector3(0,0,-spacing)
 		spacing += customer_spacing
 		add_child(customer, true)
@@ -182,15 +192,18 @@ func advance_party_state():
 			state = PartyState.WAITING_IN_LINE
 		PartyState.WALKING_TO_ENTRY:
 			state = PartyState.WAITING_FOR_TABLE
+		PartyState.WAITING_FOR_TABLE: pass # handled by CustomerManager
 		PartyState.WALKING_TO_TABLE:
 			sit_at_table()
+		PartyState.THINKING: pass # handled by CustomerManager
 		PartyState.ORDERING:
-			pass
+			state = PartyState.WAITING_FOR_FOOD
 		PartyState.WAITING_FOR_FOOD:
-			pass
+			state = PartyState.EATING
+			# Decrease patience
 		PartyState.EATING:
-			pass
+			await get_tree().create_timer(eating_time_sec).timeout
+			state = PartyState.PAYING
 		PartyState.PAYING:
 			pass
-		PartyState.LEAVING:
-			pass
+		PartyState.LEAVING: pass # handled by CustomerManager

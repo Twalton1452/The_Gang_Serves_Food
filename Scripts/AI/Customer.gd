@@ -1,7 +1,12 @@
 extends AIBody
 class_name Customer
 
-var sitting_chair : Chair = null
+signal player_took_order
+signal got_order
+
+@onready var interactable : Interactable = $Interactable
+
+var sitting_chair : Chair = null : set = set_chair
 var order : Array[SceneIds.SCENES]
 
 func set_sync_state(reader: ByteReader) -> void:
@@ -22,6 +27,37 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		writer.write_int_array(order as Array[int])
 	return writer
 
+func _exit_tree():
+	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
+		sitting_chair.holder.interacted.disconnect(evaluate_food)
+		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
+
+func set_chair(value: Chair):
+	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
+		sitting_chair.holder.interacted.disconnect(evaluate_food)
+		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
+	
+	sitting_chair = value
+	sitting_chair.holder.interacted.connect(evaluate_food)
+	sitting_chair.holder.secondary_interacted.connect(evaluate_food)
+
+func evaluate_food():
+	if not sitting_chair.holder.is_holding_item():
+		return
+		
+	var item_on_the_table = sitting_chair.holder.get_held_item()
+	if not item_on_the_table is CombinedFoodHolder:
+		return
+		
+	var foods = item_on_the_table.get_held_items()
+	if order.size() != foods.size():
+		return
+	else:
+		for i in len(foods):
+			if (foods[i] as Food).SCENE_ID != order[i]:
+				return
+		got_order.emit()
+
 func order_from(menu: Menu):
 	if not is_multiplayer_authority():
 		return
@@ -32,6 +68,7 @@ func order_from(menu: Menu):
 	var writer = ByteWriter.new()
 	writer.write_int_array(order as Array[int])
 	notify_peers_of_order.rpc(writer.data)
+	interactable.enable_collider()
 
 @rpc("authority")
 func notify_peers_of_order(order_data: PackedByteArray):
@@ -40,4 +77,9 @@ func notify_peers_of_order(order_data: PackedByteArray):
 	order = []
 	for item in to_be_order:
 		order.push_back(item)
+	interactable.enable_collider()
 	#print("%s sent me (%s) an order %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id(), order])
+
+func _interact(_player: Player) -> void:
+	player_took_order.emit()
+	interactable.disable_collider()

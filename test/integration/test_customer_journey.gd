@@ -17,15 +17,16 @@ func test_party_full_journey():
 	# Arrange 
 	var num_customers_to_spawn = 4
 	var menu_item : Array[SceneIds.SCENES] = [SceneIds.SCENES.BOTTOM_BUN, SceneIds.SCENES.PATTY, SceneIds.SCENES.TOMATO, SceneIds.SCENES.TOP_BUN]
-	var combined_food_holder = create_combined_food(menu_item)
+	var menu_item_dish = create_combined_food(menu_item)
 	
-	(_restaurant.menu.get_child(-1) as MenuItem).dish_holder.hold_item(combined_food_holder)
+	(_restaurant.menu.get_child(-1) as MenuItem).dish_holder.hold_item(menu_item_dish)
 	(_restaurant.menu.get_child(-1) as MenuItem)._on_holder_changed()
 	
 	# Act
 	_customer_manager.spawn_party(num_customers_to_spawn)
 	var spawned_party = _customer_manager.parties[0]
 	spawned_party.think_time_sec = 0.1
+	spawned_party.eating_time_sec = 0.1
 	for customer in spawned_party.customers:
 		customer.speed = 3.0 # Go faster for the test
 	await wait_frames(2) # Let the physics process tick to calculate nav_agent path's
@@ -50,13 +51,32 @@ func test_party_full_journey():
 		assert_almost_eq(chair.sitter.global_position, chair.global_position, _acceptable_threshold, "The customer is not sitting in the chair correctly")
 	
 	# Act
-	await wait_for_signal(spawned_party.state_changed, 2.0, "The party took too long walking to the table")
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Party took too long to think about their order")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not ordering")
 	for customer in spawned_party.customers:
 		assert_eq(customer.order, menu_item, "Customer doesn't want food")
 	
-	# Assert
-	#assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not thinking at a table")
+	for customer in spawned_party.customers:
+		customer.player_took_order.emit() # pretend the player interacted with them
+	
+	await wait_for_signal(spawned_party.state_changed, 1.0, "The party didn't order")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_FOOD, "Party isn't waiting for their food")
+	
+	for chair in _restaurant.tables[0].chairs:
+		chair.holder.hold_item(menu_item_dish.duplicate())
+		chair.holder.interacted.emit() # pretend the player put the item down
+	
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Party never got their food")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.EATING, "Party is not eating")
+	
+	for chair in _restaurant.tables[0].chairs:
+		assert_eq(chair.holder.is_holding_item(), false, "There is still food on the table")
+	
+#	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never ate their food")
+#	assert_eq(spawned_party.state, CustomerParty.PartyState.PAYING, "Party is not paying")
+#
+#	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never paid")
+#	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING, "Party is not leaving")
 
 func test_party_can_wait_in_line():
 	# Arrange

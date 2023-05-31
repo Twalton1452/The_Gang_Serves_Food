@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b3eisulvtggrn"]
+[gd_scene load_steps=8 format=3 uid="uid://b3eisulvtggrn"]
 
 [ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="1_ecyme"]
 [ext_resource type="Script" path="res://Scripts/AI/Customer.gd" id="1_y4ipv"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="3_lb4gl"]
+[ext_resource type="PackedScene" uid="uid://lpq3y6po8xfj" path="res://Scenes/components/interactable.tscn" id="4_yblyl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6dh6"]
 albedo_color = Color(1, 0.639216, 0.34902, 1)
@@ -42,3 +43,11 @@ frame = 5
 
 [node name="NetworkedNode3D" parent="." instance=ExtResource("3_lb4gl")]
 priority_sync_order = 3
+
+[node name="Interactable" parent="." node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("4_yblyl")]
+mesh_to_highlight = NodePath("../MeshInstance3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CapsuleShape3D_tj46x")
+disabled = true

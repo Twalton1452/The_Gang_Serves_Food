@@ -4,14 +4,15 @@ class_name Chair
 @export var sitting_location : Node3D
 @export var transition_location : Node3D
 @export var holder : Holder
-var sitter : Node3D = null
+var sitter : Customer = null
 
-func sit(customer: Node3D) -> void:
+func sit(customer: Customer) -> void:
 	if sitter != null:
 		print("they sittin in mah fuckin chair m8")
 		return
 	
 	sitter = customer
+	sitter.sitting_chair = self
 #	if sitter.get_node_or_null("CollisionShape3D") != null:
 #		sitter.get_node("CollisionShape3D").set_deferred("disabled", true)
 #		await get_tree().physics_frame
@@ -22,6 +23,7 @@ func sit(customer: Node3D) -> void:
 func force_sitter_out() -> void:
 	if sitter == null:
 		return
+	sitter.sitting_chair = null
 	sitter.look_at_from_position(transition_location.global_position, sitting_location.global_position, Vector3.UP)
 	#sitter.rotationy = -sitter.rotation.y
 #	if sitter.get_node_or_null("CollisionShape3D") != null:
