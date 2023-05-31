@@ -175,6 +175,15 @@ func order_from(menu: Menu) -> void:
 	
 	state = PartyState.ORDERING
 
+func eat_food() -> void:
+	state = PartyState.EATING
+	await get_tree().create_timer(eating_time_sec).timeout
+		
+	for customer in customers:
+		customer.eat()
+	
+	state = PartyState.PAYING
+
 func _on_customer_arrived():
 	num_arrived_to_destination += 1
 	if not is_multiplayer_authority():
@@ -199,10 +208,8 @@ func advance_party_state():
 		PartyState.ORDERING:
 			state = PartyState.WAITING_FOR_FOOD
 		PartyState.WAITING_FOR_FOOD:
-			state = PartyState.EATING
-			# Decrease patience
+			eat_food()
 		PartyState.EATING:
-			await get_tree().create_timer(eating_time_sec).timeout
 			state = PartyState.PAYING
 		PartyState.PAYING:
 			pass

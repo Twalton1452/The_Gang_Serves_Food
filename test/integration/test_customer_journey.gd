@@ -69,11 +69,11 @@ func test_party_full_journey():
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Party never got their food")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.EATING, "Party is not eating")
 	
+	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never ate their food")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.PAYING, "Party is not paying")
+	
 	for chair in _restaurant.tables[0].chairs:
 		assert_eq(chair.holder.is_holding_item(), false, "There is still food on the table")
-	
-#	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never ate their food")
-#	assert_eq(spawned_party.state, CustomerParty.PartyState.PAYING, "Party is not paying")
 #
 #	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never paid")
 #	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING, "Party is not leaving")

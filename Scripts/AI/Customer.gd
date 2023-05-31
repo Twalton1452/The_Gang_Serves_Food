@@ -57,6 +57,8 @@ func evaluate_food():
 			if (foods[i] as Food).SCENE_ID != order[i]:
 				return
 		got_order.emit()
+		# Don't let the player interact with the food while the customer is about to eat
+		sitting_chair.holder.disable_collider()
 
 func order_from(menu: Menu):
 	if not is_multiplayer_authority():
@@ -83,3 +85,19 @@ func notify_peers_of_order(order_data: PackedByteArray):
 func _interact(_player: Player) -> void:
 	player_took_order.emit()
 	interactable.disable_collider()
+
+func eat() -> void:
+	if not is_multiplayer_authority():
+		return
+	
+	if not sitting_chair.holder.is_holding_item():
+		print_debug("The food should be there, but it isnt. I'm trying to delete it")
+		return
+		
+	var food = sitting_chair.holder.get_held_item()
+	if not food is CombinedFoodHolder:
+		print_debug("The food is not a CombinedFoodHolder, IDK what this is eating")
+		return
+	
+	NetworkingUtils.send_item_for_deletion(food)
+	
