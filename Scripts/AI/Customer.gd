@@ -8,33 +8,67 @@ signal ate_food
 @onready var interactable : Interactable = $Interactable
 
 var sitting_chair : Chair = null : set = set_chair
-var order : Array[SceneIds.SCENES]
+var order : Array[SceneIds.SCENES] : set = set_order
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
 	(get_parent() as CustomerParty).sync_customer(self)
-	var is_interactable_enabled = reader.read_bool()
-	if is_interactable_enabled:
+	
+	var is_interactable = reader.read_bool()
+	if is_interactable:
 		interactable.enable_collider()
 	else:
 		interactable.disable_collider()
 	
+	var is_sitting = reader.read_bool()
+	if is_sitting:
+		var chair = reader.read_path_to()
+		sitting_chair = get_node(chair)
+		sitting_chair.sit(self)
+	
 	var has_order = reader.read_bool()
 	if has_order:
 		var to_be_order : Array[int] = reader.read_int_array()
-		order = []
-		for item in to_be_order:
-			order.push_back(item)
+		order = to_be_order as Array[SceneIds.SCENES]
+		evaluate_food()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
+	
+	writer.write_bool(interactable.is_enabled())
+	
+	var is_sitting = sitting_chair != null
+	writer.write_bool(is_sitting)
+	if is_sitting:
+		writer.write_path_to(sitting_chair)
+		
 	var has_order = order.size() > 0
-	var interactable_enabled = interactable.is_enabled()
-	writer.write_bool(interactable_enabled)
 	writer.write_bool(has_order)
 	if has_order:
 		writer.write_int_array(order as Array[int])
 	return writer
+
+func set_order(value) -> void:
+	# customer has new order
+	if len(value) > 0:
+		interactable.enable_collider()
+	# resetting customer order
+	else:
+		interactable.disable_collider()
+	order = value
+
+func set_chair(value: Chair):
+	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
+		sitting_chair.holder.interacted.disconnect(evaluate_food)
+		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
+	
+	sitting_chair = value
+	if sitting_chair != null:
+		disable_physics()
+		sitting_chair.holder.interacted.connect(evaluate_food)
+		sitting_chair.holder.secondary_interacted.connect(evaluate_food)
+	else:
+		enable_physics()
 
 func _ready():
 	super()
@@ -48,18 +82,8 @@ func _exit_tree():
 	if get_node_or_null("MeshInstance3D") != null:
 		$MeshInstance3D.material_override = null
 
-func set_chair(value: Chair):
-	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
-		sitting_chair.holder.interacted.disconnect(evaluate_food)
-		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
-	
-	sitting_chair = value
-	if sitting_chair != null:
-		sitting_chair.holder.interacted.connect(evaluate_food)
-		sitting_chair.holder.secondary_interacted.connect(evaluate_food)
-
 func evaluate_food():
-	if not sitting_chair.holder.is_holding_item() or len(order) == 0:
+	if sitting_chair == null or not sitting_chair.holder.is_holding_item() or len(order) == 0 or interactable.is_enabled():
 		return
 		
 	var item_on_the_table = sitting_chair.holder.get_held_item()
@@ -83,34 +107,17 @@ func evaluate_food():
 func order_from(menu: Menu):
 	if not is_multiplayer_authority():
 		return
-	
-	order = menu.main_items[0].dish
+	order = menu.generate_order_for(self)
 	#print("Order is %s" % [order])
-	
-	var writer = ByteWriter.new()
-	writer.write_int_array(order as Array[int])
-	notify_peers_of_order.rpc(writer.data)
-	interactable.enable_collider()
-
-@rpc("authority")
-func notify_peers_of_order(order_data: PackedByteArray):
-	var reader = ByteReader.new(order_data)
-	var to_be_order : Array[int] = reader.read_int_array()
-	order = []
-	for item in to_be_order:
-		order.push_back(item)
-	interactable.enable_collider()
-	#print("%s sent me (%s) an order %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id(), order])
 
 func _on_player_interacted() -> void:
 	player_interacted_with.emit()
 	interactable.disable_collider()
 
 func eat() -> void:
-	interactable.enable_collider()
-	ate_food.emit()
 	if not is_multiplayer_authority():
 		return
+	ate_food.emit()
 	
 	if not sitting_chair.holder.is_holding_item():
 		print_debug("The food should be there, but it isnt. I'm trying to delete it")

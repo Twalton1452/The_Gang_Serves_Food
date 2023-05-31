@@ -104,10 +104,24 @@ func _on_new_restaurant_menu_available(menu: Menu) -> void:
 			draft_order_for(party)
 
 func draft_order_for(party: CustomerParty):
-	if not restaurant.menu.is_menu_available():
+	if not restaurant.menu.is_menu_available() or not is_multiplayer_authority():
 		return
-	
 	party.order_from(restaurant.menu)
+	
+	var party_index = parties.find(party)
+	var writer = ByteWriter.new()
+	for customer in party.customers:
+		writer.write_int_array(customer.order as Array[int])
+	
+	notify_peers_of_order.rpc(party_index, writer.data)
+
+@rpc("authority")
+func notify_peers_of_order(party_index: int, order_data: PackedByteArray):
+	var reader = ByteReader.new(order_data)
+	var party : CustomerParty = parties[party_index]
+	for customer in party.customers:
+		customer.order = reader.read_int_array() as Array[SceneIds.SCENES]
+	party.state = CustomerParty.PartyState.ORDERING
 
 func send_customers_home(party: CustomerParty) -> void:
 	party.go_home(restaurant.entry_point, restaurant.exit_point)
@@ -140,7 +154,6 @@ func notify_advance_party_state(node_name: PackedByteArray):
 	if party == null:
 		return
 	
-	party.num_customers_required_to_advance = len(party.customers)
 	#print("Advancing state because %s sent a message %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id()])
 	match party.state:
 		CustomerParty.PartyState.WALKING_TO_LINE:
@@ -152,12 +165,11 @@ func notify_advance_party_state(node_name: PackedByteArray):
 			party.sit_at_table()
 		CustomerParty.PartyState.THINKING: pass # handled by _on_party_state_changed
 		CustomerParty.PartyState.ORDERING:
-			party.state = CustomerParty.PartyState.WAITING_FOR_FOOD
+			party.wait_for_food()
 		CustomerParty.PartyState.WAITING_FOR_FOOD:
 			party.eat_food()
 		CustomerParty.PartyState.EATING:
-			party.state = CustomerParty.PartyState.WAITING_TO_PAY
-			party.num_customers_required_to_advance = 1
+			party.wait_to_pay()
 		CustomerParty.PartyState.WAITING_TO_PAY:
 			party.pay()
 		CustomerParty.PartyState.PAYING: pass # just a wait phase for now

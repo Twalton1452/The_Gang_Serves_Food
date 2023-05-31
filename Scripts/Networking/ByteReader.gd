@@ -41,6 +41,9 @@ func read_path_to() -> String:
 func read_vector3() -> Vector3:
 	return Vector3(decode_half(), decode_half(), decode_half())
 
+func read_color() -> Color:
+	return Color(decode_half(),decode_half(),decode_half(),decode_half())
+
 ## Max length of 256, Max values inside 65535
 func read_int_array() -> Array[int]:
 	var size = decode_u8()

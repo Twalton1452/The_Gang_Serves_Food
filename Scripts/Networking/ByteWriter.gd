@@ -33,6 +33,12 @@ func write_vector3(vec3: Vector3):
 	encode_half(vec3.y)
 	encode_half(vec3.z)
 
+func write_color(color: Color):
+	encode_half(color.r)
+	encode_half(color.g)
+	encode_half(color.b)
+	encode_half(color.a)
+
 ## Max length of 256, Max values inside 65535
 func write_int_array(arr: Array[int]) -> void:
 	encode_u8(arr.size() * 2) # 2 for each byte from u16

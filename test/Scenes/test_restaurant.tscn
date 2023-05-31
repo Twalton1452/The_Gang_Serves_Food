@@ -55,7 +55,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.093, -0.256064, 0.527)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00833, 0.0213599, -0.764376)
 
 [node name="ExitPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00833, 0.0213599, 2.04487)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.145675, 0.0213599, 0.399959)
 
 [node name="Menu" type="Node3D" parent="."]
 script = ExtResource("4_ntk4o")

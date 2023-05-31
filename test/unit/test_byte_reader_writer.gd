@@ -59,3 +59,14 @@ func test_can_read_write_int_array():
 	
 	var read_value : Array[int] = _reader.read_int_array()
 	assert_eq_deep(read_value, ev)
+
+func test_can_read_write_color():
+	var ev : Color = Color.FOREST_GREEN
+	
+	_writer.write_color(ev)
+	
+	var read_value = _reader.read_color()
+	assert_almost_eq(read_value.r, ev.r, 0.02)
+	assert_almost_eq(read_value.g, ev.g, 0.02)
+	assert_almost_eq(read_value.b, ev.b, 0.02)
+	assert_almost_eq(read_value.a, ev.a, 0.02)

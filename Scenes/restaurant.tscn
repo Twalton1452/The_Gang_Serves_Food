@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=29 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -23,6 +23,8 @@
 [ext_resource type="PackedScene" uid="uid://dhvdilcb12bjf" path="res://Scenes/furniture/menu_item_stand.tscn" id="16_n3yt3"]
 [ext_resource type="PackedScene" uid="uid://dqv2bfql04h12" path="res://Scenes/holders/bun_box.tscn" id="17_l7sfd"]
 [ext_resource type="Script" path="res://Scripts/AI/CustomerManager.gd" id="17_losm7"]
+[ext_resource type="PackedScene" uid="uid://dbux8704g4o5m" path="res://Scenes/components/food_combiner.tscn" id="18_32clx"]
+[ext_resource type="PackedScene" uid="uid://dfg1k7gfdbgmw" path="res://Scenes/foods/patty.tscn" id="19_rvwxk"]
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
 
@@ -258,10 +260,19 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 1)
 
 [node name="Menu" type="Node3D" parent="Restaurant/Building"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.148526, 5.96046e-08, 4.60768)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.250838, 5.96046e-08, 2.95843)
 script = ExtResource("15_6mlv6")
 
 [node name="MenuItemStand" parent="Restaurant/Building/Menu" instance=ExtResource("16_n3yt3")]
+
+[node name="FoodCombiner" parent="Restaurant/Building/Menu/MenuItemStand/Holder" index="2" instance=ExtResource("18_32clx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000477016, 0)
+
+[node name="Patty" parent="Restaurant/Building/Menu/MenuItemStand/Holder/FoodCombiner" instance=ExtResource("19_rvwxk")]
+
+[node name="Patty2" parent="Restaurant/Building/Menu/MenuItemStand/Holder/FoodCombiner" instance=ExtResource("19_rvwxk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00817773, 0)
+rule = 5
 
 [node name="Ground" parent="Restaurant" instance=ExtResource("2_8d1g5")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
@@ -277,13 +288,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.59294, 0.268635, 0.884276)
 script = ExtResource("17_losm7")
 
 [node name="SpawnPoint" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.12182, 0.266214, 1.32506)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.68118, 0.266214, 7.28253)
 
 [node name="Players" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.543243, 0)
 
 [node name="Testing" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.79795, 0, -1.24027)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.547329, 0, 5.54082)
 
 [node name="kitchenCabinet" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43, 0, 0)
@@ -342,6 +353,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43, 0, 0)
 [editable path="Restaurant/Building/roof"]
 [editable path="Restaurant/Building/floor"]
 [editable path="Restaurant/Building/Walls/wallDoorway"]
+[editable path="Restaurant/Building/Menu/MenuItemStand"]
 [editable path="Testing/kitchenCabinet"]
 [editable path="Testing/kitchenCabinet2"]
 [editable path="Testing/kitchenCabinet3"]

@@ -25,11 +25,14 @@ func sort_array_by_net_id(arr: Array) -> void:
 	)
 
 func send_item_for_deletion(item: Node) -> void:
+	if not is_multiplayer_authority():
+		return
+	
 	var networked_node_3d = item.get_node_or_null("NetworkedNode3D")
 	if networked_node_3d != null:
 		delete_item_for_everyone_by_networked_id.rpc(networked_node_3d.networked_id)
 	else:
-		delete_item_for_everyone_by_path(StringName(item.get_path()).to_utf8_buffer())
+		delete_item_for_everyone_by_path.rpc(StringName(item.get_path()).to_utf8_buffer())
 
 @rpc("authority", "call_local")
 func delete_item_for_everyone_by_networked_id(networked_id: int):

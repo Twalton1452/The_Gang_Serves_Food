@@ -2,14 +2,12 @@
 
 [ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="1_ecyme"]
 [ext_resource type="Script" path="res://Scripts/AI/Customer.gd" id="1_y4ipv"]
+[ext_resource type="Material" uid="uid://b1ewi76qgu2kb" path="res://Materials/Customer_mat.tres" id="2_d1acn"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="3_lb4gl"]
 [ext_resource type="PackedScene" uid="uid://lpq3y6po8xfj" path="res://Scenes/components/interactable.tscn" id="4_yblyl"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6dh6"]
-albedo_color = Color(1, 0.639216, 0.34902, 1)
-
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0gfwm"]
-material = SubResource("StandardMaterial3D_o6dh6")
+material = ExtResource("2_d1acn")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tj46x"]
 radius = 0.175
@@ -30,8 +28,9 @@ shape = SubResource("CapsuleShape3D_tj46x")
 path_desired_distance = 0.2
 target_desired_distance = 0.3
 agent_height_offset = 0.1
+avoidance_enabled = true
 radius = 0.2
-neighbor_distance = 5.0
+neighbor_distance = 0.3
 
 [node name="FaceSprite" type="Sprite3D" parent="."]
 transform = Transform3D(-0.2, 0, -3.01992e-08, 0, 0.2, 0, 3.01992e-08, 0, -0.2, 0, 0.367485, -0.182574)

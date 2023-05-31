@@ -39,6 +39,7 @@ var wait_between_customers_leaving = 0.2
 var customer_spacing = 0.5
 var customers : Array[Customer] = [] : set = set_customers
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER_PARTY
+var required_interaction_states = [PartyState.ORDERING, PartyState.WAITING_TO_PAY]
 
 # Saved/Loaded State
 var state : PartyState = PartyState.SPAWNING : set = set_state
@@ -58,6 +59,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		table = get_node(reader.read_path_to()) as Table
 		table.is_empty = reader.read_bool()
 		table.party_in_transit = reader.read_bool()
+		table.color = reader.read_color()
 	(get_parent() as CustomerManager).sync_party(self)
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
@@ -71,6 +73,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		writer.write_path_to(table)
 		writer.write_bool(table.is_empty)
 		writer.write_bool(table.party_in_transit)
+		writer.write_color(table.color)
 	return writer
 
 func sync_customer(customer: Customer) -> void:
@@ -85,13 +88,17 @@ func sync_customer(customer: Customer) -> void:
 	# When we've reached the beginning of the array we've finished the sync for customers
 	if i == 0:
 		NetworkingUtils.sort_array_by_net_id(customers)
-		if table and state > PartyState.WALKING_TO_TABLE:
-			sit_at_table()
 
 func set_state(value: PartyState) -> void:
 	state = value
 	num_arrived_to_destination = 0
+	num_customers_required_to_advance = len(customers)
 	emit_state_changed.call_deferred()
+	if table:
+		if state in required_interaction_states:
+			table.color = Color.GOLD
+		else:
+			table.color = Color.FOREST_GREEN
 	#print("Party has advanced to state: %s" % str(state))
 
 func emit_state_changed():
@@ -170,11 +177,11 @@ func get_farthest_chair_for(customer: Customer, chairs: Array[Chair]) -> int:
 func sit_at_table():
 	for i in len(customers):
 		var customer : Customer = customers[i]
-		customer.disable_physics()
 		var chair : Chair = table.chairs[i]
 		chair.sit(customer)
 		
 	state = PartyState.THINKING
+
 
 func order_from(menu: Menu) -> void:
 	await get_tree().create_timer(think_time_sec).timeout
@@ -183,6 +190,13 @@ func order_from(menu: Menu) -> void:
 		customer.order_from(menu)
 	
 	state = PartyState.ORDERING
+	num_customers_required_to_advance = 1
+
+func wait_for_food():
+	state = CustomerParty.PartyState.WAITING_FOR_FOOD
+	for customer in customers:
+		customer.interactable.disable_collider()
+		customer.evaluate_food()
 
 func eat_food() -> void:
 	state = PartyState.EATING
@@ -190,7 +204,14 @@ func eat_food() -> void:
 		
 	for customer in customers:
 		customer.eat()
+
+func wait_to_pay() -> void:
+	for customer in customers:
+		customer.interactable.enable_collider()
 	
+	state = CustomerParty.PartyState.WAITING_TO_PAY
+	num_customers_required_to_advance = 1
+
 func pay() -> void:
 	state = PartyState.PAYING
 	await get_tree().create_timer(paying_time_sec).timeout

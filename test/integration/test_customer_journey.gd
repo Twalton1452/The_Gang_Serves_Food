@@ -26,6 +26,8 @@ func test_party_full_journey():
 	# Stops the random party generation
 	_customer_manager.min_party_size = 999
 	_customer_manager.max_party_size = 999
+	_customer_manager.min_wait_to_spawn_sec = 998
+	_customer_manager.max_wait_to_spawn_sec = 999
 	
 	# Act
 	_customer_manager.spawn_party(num_customers_to_spawn)
@@ -35,6 +37,7 @@ func test_party_full_journey():
 	spawned_party.paying_time_sec = 0.1
 	spawned_party.wait_before_leave_time_sec = 0.1
 	for customer in spawned_party.customers:
+		watch_signals(customer)
 		customer.speed = 3.0 # Go faster for the test
 	await wait_frames(2) # Let the physics process tick to calculate nav_agent path's
 	
@@ -60,11 +63,15 @@ func test_party_full_journey():
 	# Act
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Party took too long to think about their order")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not ordering")
+	assert_eq(spawned_party.num_customers_required_to_advance, 1, "Player should only need to talk to 1 customer to initiate waiting for food")
 	for customer in spawned_party.customers:
 		assert_eq(customer.order, menu_item, "Customer doesn't want food")
+		assert_eq(customer.interactable.is_enabled(), true, "Customer isn't interactable when they should be")
+	
+	spawned_party.customers[0]._on_player_interacted() # pretend the player interacted with a customer
 	
 	for customer in spawned_party.customers:
-		customer.player_interacted_with.emit() # pretend the player interacted with the customers
+		assert_eq(customer.interactable.is_enabled(), false, "Customer is interactable when they shouldn't be")
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "The party didn't order")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_FOOD, "Party isn't waiting for their food")
@@ -79,15 +86,29 @@ func test_party_full_journey():
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Party never ate their food")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_TO_PAY, "Party is not waiting to pay")
 	assert_eq(spawned_party.num_customers_required_to_advance, 1, "Player should only need to talk to 1 customer to initiate paying")
-	
+	var player_interactions = 0
+	for customer in spawned_party.customers:
+		player_interactions += get_signal_emit_count(customer, "player_interacted_with")
+		assert_signal_emit_count(customer, "got_order", 1)
+		assert_signal_emit_count(customer, "ate_food", 1)
+		assert_eq(customer.interactable.is_enabled(), true, "Customer isn't interactable when they should be")
+	assert_eq(player_interactions, 1, "Customers were not interacted with the expected number of times")
+		
 	for chair in _restaurant.tables[0].chairs:
 		assert_eq(chair.holder.is_holding_item(), false, "There is still food on the table")
 	
-	spawned_party.customers[0].player_interacted_with.emit() # pretend the player interacted with a customer
+	spawned_party.customers[0]._on_player_interacted() # pretend the player interacted with a customer
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Player never took the customer's money")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.PAYING, "Party is not paying")
-
+	
+	player_interactions = 0
+	for customer in spawned_party.customers:
+		player_interactions += get_signal_emit_count(customer, "player_interacted_with")
+		assert_signal_emit_count(customer, "got_order", 1)
+		assert_signal_emit_count(customer, "ate_food", 1)
+	assert_eq(player_interactions, 2, "Customers were not interacted with the expected number of times")
+	
 	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never paid")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME, "Party is not leaving")
 	assert_eq(spawned_party.num_customers_required_to_advance, 1, "Only 1 customer needs to make it to the exit zone")

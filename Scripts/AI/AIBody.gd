@@ -39,6 +39,8 @@ func go_to(movement_target: Vector3):
 	enable_physics()
 	target_position = movement_target
 	nav_agent.set_target_position(movement_target)
+	rotation.x = 0
+	rotation.z = 0
 
 func _physics_process(_delta):
 	if nav_agent.is_navigation_finished():
