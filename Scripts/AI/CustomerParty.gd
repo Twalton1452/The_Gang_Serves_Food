@@ -18,18 +18,20 @@ enum PartyState {
 	WAITING_FOR_TABLE = 4, # PATIENCE - At the front door waiting to be told a table is ready
 	WALKING_TO_TABLE = 5,
 	
-	THINKING = 6, # Wait Phase before ordering for more realism
+	THINKING = 6, # Wait Phase before transitioning to ordering for more realism
 	ORDERING = 7, # PATIENCE - Waiting for player to take their order
 	
 	WAITING_FOR_FOOD = 8, # PATIENCE - Waiting for player to deliver food
-	EATING = 9, # Wait Phase before paying for more realism
+	EATING = 9, # Wait Phase before transitioning to paying for more realism
 	
-	PAYING = 10, # PATIENCE - Waiting for player to help them pay
-	LEAVING = 11, # Traveling to the kill zone
+	WAITING_TO_PAY = 10, # PATIENCE - Waiting for player to help them pay
+	PAYING = 11, # Wait Phase before transitioning to leaving for more realism
+	LEAVING = 12, # Traveling to the kill zone
 }
 
 var think_time_sec = 2.0
 var eating_time_sec = 2.0
+var paying_time_sec = 2.0
 var customer_spacing = 0.5
 var customers : Array[Customer] = [] : set = set_customers
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER_PARTY
@@ -66,7 +68,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 
 func sync_customer(customer: Customer) -> void:
 	customer.arrived.connect(_on_customer_arrived)
-	customer.player_took_order.connect(_on_customer_arrived)
+	customer.player_interacted_with.connect(_on_customer_arrived)
 	customer.got_order.connect(_on_customer_arrived)
 	
 	var i = customers.rfind(null)
@@ -96,7 +98,7 @@ func set_customers(value: Array[Customer]) -> void:
 	var spacing = 0
 	for customer in customers:
 		customer.arrived.connect(_on_customer_arrived)
-		customer.player_took_order.connect(_on_customer_arrived)
+		customer.player_interacted_with.connect(_on_customer_arrived)
 		customer.got_order.connect(_on_customer_arrived)
 		
 		customer.position = Vector3(0,0,-spacing)
@@ -182,7 +184,11 @@ func eat_food() -> void:
 	for customer in customers:
 		customer.eat()
 	
-	state = PartyState.PAYING
+	state = PartyState.WAITING_TO_PAY
+
+func pay() -> void:
+	await get_tree().create_timer(paying_time_sec).timeout
+	state = PartyState.LEAVING
 
 func _on_customer_arrived():
 	num_arrived_to_destination += 1
@@ -210,7 +216,9 @@ func advance_party_state():
 		PartyState.WAITING_FOR_FOOD:
 			eat_food()
 		PartyState.EATING:
+			state = PartyState.WAITING_TO_PAY
+		PartyState.WAITING_TO_PAY:
 			state = PartyState.PAYING
 		PartyState.PAYING:
-			pass
+			pay()
 		PartyState.LEAVING: pass # handled by CustomerManager

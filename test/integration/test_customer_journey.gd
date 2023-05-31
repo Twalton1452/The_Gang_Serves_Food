@@ -27,6 +27,7 @@ func test_party_full_journey():
 	var spawned_party = _customer_manager.parties[0]
 	spawned_party.think_time_sec = 0.1
 	spawned_party.eating_time_sec = 0.1
+	spawned_party.paying_time_sec = 0.1
 	for customer in spawned_party.customers:
 		customer.speed = 3.0 # Go faster for the test
 	await wait_frames(2) # Let the physics process tick to calculate nav_agent path's
@@ -57,7 +58,7 @@ func test_party_full_journey():
 		assert_eq(customer.order, menu_item, "Customer doesn't want food")
 	
 	for customer in spawned_party.customers:
-		customer.player_took_order.emit() # pretend the player interacted with them
+		customer.player_interacted_with.emit() # pretend the player interacted with them
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "The party didn't order")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_FOOD, "Party isn't waiting for their food")
@@ -69,14 +70,20 @@ func test_party_full_journey():
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Party never got their food")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.EATING, "Party is not eating")
 	
-	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never ate their food")
-	assert_eq(spawned_party.state, CustomerParty.PartyState.PAYING, "Party is not paying")
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Party never ate their food")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_TO_PAY, "Party is not waiting to pay")
 	
 	for chair in _restaurant.tables[0].chairs:
 		assert_eq(chair.holder.is_holding_item(), false, "There is still food on the table")
-#
-#	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never paid")
-#	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING, "Party is not leaving")
+	
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Player never took the customer's money")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.PAYING, "Party is not paying")
+
+	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never paid")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING, "Party is not leaving")
+	
+	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
+	assert_null(spawned_party, "Party never got deleted after leaving")
 
 func test_party_can_wait_in_line():
 	# Arrange

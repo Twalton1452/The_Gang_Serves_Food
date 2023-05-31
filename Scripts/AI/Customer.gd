@@ -1,7 +1,7 @@
 extends AIBody
 class_name Customer
 
-signal player_took_order
+signal player_interacted_with
 signal got_order
 
 @onready var interactable : Interactable = $Interactable
@@ -83,10 +83,11 @@ func notify_peers_of_order(order_data: PackedByteArray):
 	#print("%s sent me (%s) an order %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id(), order])
 
 func _interact(_player: Player) -> void:
-	player_took_order.emit()
+	player_interacted_with.emit()
 	interactable.disable_collider()
 
 func eat() -> void:
+	interactable.enable_collider()
 	if not is_multiplayer_authority():
 		return
 	
