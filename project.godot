@@ -21,6 +21,7 @@ SceneIds="*res://Scripts/SceneIds.gd"
 NetworkingUtils="*res://Scripts/Networking/NetworkingUtils.gd"
 GameState="*res://Scripts/GameState.gd"
 InteractionManager="*res://Scripts/InteractionManager.gd"
+NetworkedPartyManager="*res://Scripts/Networking/NetworkedPartyManager.gd"
 
 [display]
 

@@ -13,6 +13,8 @@ var state : Phase = Phase.OPEN_FOR_BUSINESS
 var players : Array[Player] = []
 var level : Level : set = set_level
 
+var money : float = 0.0 # Good use case for "Watched" Property in Godot 4.1
+
 func set_level(l: Level):
 	level = l
 

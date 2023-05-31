@@ -5,7 +5,6 @@ class_name CustomerParty
 ## This class will help to organize groups of Customers to tell them where to go like a family
 
 signal state_changed(party: CustomerParty)
-signal advance_state(party: CustomerParty)
 
 ## The overall state of the Party, where they are at in the Lifecycle of the process
 ## does not represent individual customer emotions
@@ -101,6 +100,9 @@ func set_state(value: PartyState) -> void:
 			table.color = Color.FOREST_GREEN
 	#print("Party has advanced to state: %s" % str(state))
 
+func _ready():
+	add_to_group(str(SceneIds.SCENES.CUSTOMER_PARTY))
+
 func emit_state_changed():
 	state_changed.emit(self)
 
@@ -136,7 +138,7 @@ func wait_in_line(ahead_party: CustomerParty) -> void:
 	# Calculate the spacing for how many customers are in the ahead party
 	# Then add a distance behind them
 	# var spacing_behind_party = (len(ahead_party.customers) * customer_spacing) + customer_spacing
-		
+
 	send_customers_to(ahead_party.target_pos + Vector3(customer_spacing,0,0))
 
 func go_to_entry(entry: Node3D):
@@ -186,11 +188,7 @@ func sit_at_table():
 func order_from(menu: Menu) -> void:
 	await get_tree().create_timer(think_time_sec).timeout
 	
-	for customer in customers:
-		customer.order_from(menu)
-	
-	state = PartyState.ORDERING
-	num_customers_required_to_advance = 1
+	NetworkedPartyManager.order_from(self, menu)
 
 func wait_for_food():
 	state = CustomerParty.PartyState.WAITING_FOR_FOOD
@@ -217,13 +215,12 @@ func pay() -> void:
 	await get_tree().create_timer(paying_time_sec).timeout
 	
 	# TODO: GIVE THE PLAYERS MONEYYYYY
-	
-	state = PartyState.LEAVING_FOR_HOME
-	num_customers_required_to_advance = 1
+	NetworkedPartyManager.pay(self)
 
 func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
-	table.release_customers()
-	table = null
+	if table != null:
+		table.release_customers()
+		table = null
 	target_pos = exit_point.global_position
 	await get_tree().create_timer(wait_before_leave_time_sec).timeout
 	
@@ -243,5 +240,27 @@ func _on_customer_arrived():
 		return
 	
 	if num_arrived_to_destination >= num_customers_required_to_advance:
-		#advance_party_state.rpc()
-		advance_state.emit(self)
+		NetworkedPartyManager.advance_party_state(self)
+
+func advance_party_state():
+	match state:
+		PartyState.WALKING_TO_LINE:
+			state = PartyState.WAITING_IN_LINE
+		PartyState.WALKING_TO_ENTRY:
+			state = PartyState.WAITING_FOR_TABLE
+		PartyState.WAITING_FOR_TABLE: pass # handled by _on_party_state_changed
+		PartyState.WALKING_TO_TABLE:
+			sit_at_table()
+		PartyState.THINKING: pass # handled by _on_party_state_changed
+		PartyState.ORDERING:
+			wait_for_food()
+		PartyState.WAITING_FOR_FOOD:
+			eat_food()
+		PartyState.EATING:
+			wait_to_pay()
+		PartyState.WAITING_TO_PAY:
+			pay()
+		PartyState.PAYING: pass # just a wait phase for now
+		PartyState.LEAVING_FOR_HOME:
+			state = PartyState.GONE_HOME
+		PartyState.GONE_HOME: pass # handled by _on_party_state_changed

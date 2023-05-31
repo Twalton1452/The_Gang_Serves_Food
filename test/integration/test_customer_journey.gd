@@ -10,6 +10,7 @@ func before_each():
 	_restaurant = RestaurantScene.instantiate()
 	add_child_autoqfree(_restaurant)
 	_customer_manager = _restaurant.get_node("CustomerManager")
+	_customer_manager.max_parties = 1
 	_customer_manager.restaurant = _restaurant
 	#watch_signals(_customer_manager)
 

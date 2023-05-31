@@ -10,17 +10,15 @@ var party_scene = preload("res://Scenes/components/party.tscn")
 var parties : Array[CustomerParty] = []
 var min_party_size = 1
 var max_party_size = 4
-var min_wait_to_spawn_sec = 3.0
-var max_wait_to_spawn_sec = 15.0
-var is_spawning = false
+var min_wait_to_spawn_sec = 1.0
+var max_wait_to_spawn_sec = 2.0
+var is_spawning = true
 
 func _ready():
-	if not is_multiplayer_authority():
-		return
+	restaurant.table_became_available.connect(_on_table_became_available)
+	restaurant.menu.new_menu.connect(_on_new_restaurant_menu_available)
 	
 	start_customer_spawning()
-	restaurant.menu.new_menu.connect(_on_new_restaurant_menu_available)
-	restaurant.table_became_available.connect(_on_table_became_available)
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority():
@@ -38,13 +36,14 @@ func sync_party(party: CustomerParty):
 func start_customer_spawning():
 	if not is_multiplayer_authority():
 		return
-	is_spawning = true
-	if GameState.state != GameState.Phase.OPEN_FOR_BUSINESS:
+	
+	if not is_spawning or GameState.state != GameState.Phase.OPEN_FOR_BUSINESS:
 		return
 	
 	await get_tree().create_timer(randf_range(min_wait_to_spawn_sec, max_wait_to_spawn_sec)).timeout
-	spawn_party.rpc(randi_range(min_party_size, max_party_size))
+	
 	if len(parties) < max_parties:
+		spawn_party.rpc(randi_range(min_party_size, max_party_size))
 		start_customer_spawning()
 	else:
 		is_spawning = false
@@ -56,7 +55,6 @@ func spawn_party(party_size: int) -> void:
 	
 	var new_party : CustomerParty = party_scene.instantiate()
 	new_party.state_changed.connect(_on_party_state_changed)
-	new_party.advance_state.connect(_on_advance_party_state)
 	add_child(new_party, true)
 	new_party.position = Vector3.ZERO
 	
@@ -72,24 +70,25 @@ func spawn_party(party_size: int) -> void:
 		new_party.go_to_entry(restaurant.entry_point)
 	parties.push_back(new_party)
 
-func _on_table_became_available(table: Table):
-	for i in len(parties):
-		var party = parties[i]
+func _on_table_became_available(_table: Table):
+	for party in parties:
 		if party.state == CustomerParty.PartyState.WAITING_FOR_TABLE:
-			party.go_to_table(table)
-			move_the_line.call_deferred()
-			break
+			if check_for_available_table_for(party):
+				break
 
-func check_for_available_table_for(party: CustomerParty):
+func check_for_available_table_for(party: CustomerParty) -> bool:
 	var table = restaurant.get_next_available_table_for(party)
 	
 	if table == null:
-		return
+		return false
 	
 	party.go_to_table(table)
 	move_the_line.call_deferred()
+	return true
 
 func move_the_line():
+	if not is_multiplayer_authority():
+		print("how many times does this get called")
 	var sent_a_party_to_door = false
 	for i in len(parties):
 		var party = parties[i]
@@ -110,25 +109,10 @@ func _on_new_restaurant_menu_available(menu: Menu) -> void:
 			draft_order_for(party)
 
 func draft_order_for(party: CustomerParty):
-	if not restaurant.menu.is_menu_available() or not is_multiplayer_authority():
+	if not restaurant.menu.is_menu_available():
 		return
-	await party.order_from(restaurant.menu)
 	
-	var party_index = parties.find(party)
-	var writer = ByteWriter.new()
-	for customer in party.customers:
-		writer.write_int_array(customer.order as Array[int])
-	
-	notify_peers_of_order.rpc(party_index, writer.data)
-
-@rpc("authority")
-func notify_peers_of_order(party_index: int, order_data: PackedByteArray):
-	var reader = ByteReader.new(order_data)
-	var party : CustomerParty = parties[party_index]
-	
-	for customer in party.customers:
-		customer.order = reader.read_int_array() as Array[SceneIds.SCENES]
-	party.state = CustomerParty.PartyState.ORDERING
+	party.order_from(restaurant.menu)
 
 func send_customers_home(party: CustomerParty) -> void:
 	party.go_home(restaurant.entry_point, restaurant.exit_point)
@@ -153,36 +137,3 @@ func _on_party_state_changed(party: CustomerParty):
 			send_customers_home(party)
 		CustomerParty.PartyState.GONE_HOME:
 			clean_up_party(party)
-
-func _on_advance_party_state(party: CustomerParty):
-	notify_advance_party_state.rpc(StringName(party.name).to_utf8_buffer())
-	
-@rpc("authority", "call_local")
-func notify_advance_party_state(node_name: PackedByteArray):
-	var party_name = node_name.get_string_from_utf8()
-	var party : CustomerParty = get_node_or_null(party_name)
-	if party == null:
-		return
-	
-	#print("Advancing state because %s sent a message %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id()])
-	match party.state:
-		CustomerParty.PartyState.WALKING_TO_LINE:
-			party.state = CustomerParty.PartyState.WAITING_IN_LINE
-		CustomerParty.PartyState.WALKING_TO_ENTRY:
-			party.state = CustomerParty.PartyState.WAITING_FOR_TABLE
-		CustomerParty.PartyState.WAITING_FOR_TABLE: pass # handled by _on_party_state_changed
-		CustomerParty.PartyState.WALKING_TO_TABLE:
-			party.sit_at_table()
-		CustomerParty.PartyState.THINKING: pass # handled by _on_party_state_changed
-		CustomerParty.PartyState.ORDERING:
-			party.wait_for_food()
-		CustomerParty.PartyState.WAITING_FOR_FOOD:
-			party.eat_food()
-		CustomerParty.PartyState.EATING:
-			party.wait_to_pay()
-		CustomerParty.PartyState.WAITING_TO_PAY:
-			party.pay()
-		CustomerParty.PartyState.PAYING: pass # just a wait phase for now
-		CustomerParty.PartyState.LEAVING_FOR_HOME:
-			party.state = CustomerParty.PartyState.GONE_HOME
-		CustomerParty.PartyState.GONE_HOME: pass # handled by _on_party_state_changed
