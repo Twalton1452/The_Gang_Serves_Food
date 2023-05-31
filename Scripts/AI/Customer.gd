@@ -80,7 +80,7 @@ func _exit_tree():
 		sitting_chair.holder.interacted.disconnect(evaluate_food)
 		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
 	if get_node_or_null("MeshInstance3D") != null:
-		$MeshInstance3D.material_override = null
+		$MeshInstance3D.set("surface_material_override/0", null)
 
 func evaluate_food():
 	if sitting_chair == null or not sitting_chair.holder.is_holding_item() or len(order) == 0 or interactable.is_enabled():

@@ -11,9 +11,10 @@ func set_sync_state(reader: ByteReader) -> void:
 
 func _ready():
 	super()
-	stack_items()
+	stack_items.call_deferred()
 	
 	# Disable the child colliders on the MultiHolder's Holder's
+	# So things like Plate's can't be given food while they are stacked
 	var i : int = 0
 	var held_items = get_held_items()
 	while i < len(held_items):

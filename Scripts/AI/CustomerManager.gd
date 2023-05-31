@@ -87,8 +87,6 @@ func check_for_available_table_for(party: CustomerParty) -> bool:
 	return true
 
 func move_the_line():
-	if not is_multiplayer_authority():
-		print("how many times does this get called")
 	var sent_a_party_to_door = false
 	for i in len(parties):
 		var party = parties[i]
