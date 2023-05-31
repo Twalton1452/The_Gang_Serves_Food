@@ -29,6 +29,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	return writer
 
 func _ready():
+	super()
 	interactable.interacted.connect(_on_player_interacted)
 	interactable.secondary_interacted.connect(_on_player_interacted)
 

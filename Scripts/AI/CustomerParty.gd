@@ -131,7 +131,7 @@ func wait_in_line(ahead_party: CustomerParty) -> void:
 		
 	send_customers_to(ahead_party.target_pos + Vector3(customer_spacing,0,0))
 
-func go_to_entry(entry: Node3D):	
+func go_to_entry(entry: Node3D):
 	send_customers_to(entry.global_position)
 	
 	state = PartyState.WALKING_TO_ENTRY
