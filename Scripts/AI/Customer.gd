@@ -67,6 +67,8 @@ func evaluate_food():
 		# Don't let the player interact with the food while the customer is about to eat
 		sitting_chair.holder.disable_collider()
 		sitting_chair.holder.get_held_item().disable_collider()
+		for food in foods:
+			(food as Food).disable_collider()
 
 func order_from(menu: Menu):
 	if not is_multiplayer_authority():
