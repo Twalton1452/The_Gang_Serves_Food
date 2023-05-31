@@ -14,6 +14,7 @@ radius = 0.175
 height = 0.7
 
 [node name="Customer" type="CharacterBody3D"]
+collision_layer = 8
 script = ExtResource("1_y4ipv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -28,9 +29,7 @@ shape = SubResource("CapsuleShape3D_tj46x")
 path_desired_distance = 0.2
 target_desired_distance = 0.3
 agent_height_offset = 0.1
-avoidance_enabled = true
-radius = 0.2
-neighbor_distance = 0.3
+path_max_distance = 0.51
 
 [node name="FaceSprite" type="Sprite3D" parent="."]
 transform = Transform3D(-0.2, 0, -3.01992e-08, 0, 0.2, 0, 3.01992e-08, 0, -0.2, 0, 0.367485, -0.182574)
