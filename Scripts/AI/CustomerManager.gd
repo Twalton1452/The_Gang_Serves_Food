@@ -106,7 +106,7 @@ func _on_new_restaurant_menu_available(menu: Menu) -> void:
 func draft_order_for(party: CustomerParty):
 	if not restaurant.menu.is_menu_available() or not is_multiplayer_authority():
 		return
-	party.order_from(restaurant.menu)
+	await party.order_from(restaurant.menu)
 	
 	var party_index = parties.find(party)
 	var writer = ByteWriter.new()
@@ -119,6 +119,7 @@ func draft_order_for(party: CustomerParty):
 func notify_peers_of_order(party_index: int, order_data: PackedByteArray):
 	var reader = ByteReader.new(order_data)
 	var party : CustomerParty = parties[party_index]
+	
 	for customer in party.customers:
 		customer.order = reader.read_int_array() as Array[SceneIds.SCENES]
 	party.state = CustomerParty.PartyState.ORDERING
@@ -150,7 +151,8 @@ func _on_advance_party_state(party: CustomerParty):
 	
 @rpc("authority", "call_local")
 func notify_advance_party_state(node_name: PackedByteArray):
-	var party : CustomerParty = get_node_or_null(node_name.get_string_from_utf8())
+	var party_name = node_name.get_string_from_utf8()
+	var party : CustomerParty = get_node_or_null(party_name)
 	if party == null:
 		return
 	
