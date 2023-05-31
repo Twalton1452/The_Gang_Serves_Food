@@ -42,10 +42,11 @@ spawn_limit = 10
 [node name="MidsessionJoinSyncer" type="Node" parent="Networking"]
 script = ExtResource("2_u3ntc")
 
-[node name="Restaurant" type="NavigationRegion3D" parent="." node_paths=PackedStringArray("entry_point", "tables_root", "menu")]
+[node name="Restaurant" type="NavigationRegion3D" parent="." node_paths=PackedStringArray("entry_point", "exit_point", "tables_root", "menu")]
 navigation_mesh = ExtResource("3_wk033")
 script = ExtResource("4_kvbc8")
 entry_point = NodePath("EntryPoint")
+exit_point = NodePath("Exitpoint")
 tables_root = NodePath("Building/Tables")
 menu = NodePath("Building/Menu")
 
@@ -267,6 +268,9 @@ transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
 
 [node name="EntryPoint" type="Marker3D" parent="Restaurant"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.97322, 0.0952672, -1.0332)
+
+[node name="Exitpoint" type="Marker3D" parent="Restaurant"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.273123, 0.0952667, 9.50323)
 
 [node name="CustomerManager" type="Node3D" parent="Restaurant"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.59294, 0.268635, 0.884276)

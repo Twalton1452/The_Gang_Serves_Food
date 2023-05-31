@@ -3,6 +3,12 @@ extends Node
 ## Autoloaded
 var SERVER_ID = 1
 
+enum Phase {
+	EDITING_RESTAURANT,
+	OPEN_FOR_BUSINESS,
+}
+
+var state : Phase = Phase.OPEN_FOR_BUSINESS
 
 var players : Array[Player] = []
 var level : Level : set = set_level

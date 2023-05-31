@@ -26,12 +26,15 @@ enum PartyState {
 	
 	WAITING_TO_PAY = 10, # PATIENCE - Waiting for player to help them pay
 	PAYING = 11, # Wait Phase before transitioning to leaving for more realism
-	LEAVING = 12, # Traveling to the kill zone
+	LEAVING_FOR_HOME = 12, # Traveling to the kill zone
+	GONE_HOME = 13, # Traveling to the kill zone
 }
 
 var think_time_sec = 2.0
 var eating_time_sec = 2.0
 var paying_time_sec = 2.0
+var wait_before_leave_time_sec = 1.0
+var wait_between_customers_leaving = 0.2
 var customer_spacing = 0.5
 var customers : Array[Customer] = [] : set = set_customers
 var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER_PARTY
@@ -41,11 +44,13 @@ var state : PartyState = PartyState.SPAWNING : set = set_state
 var num_arrived_to_destination = 0
 var table : Table = null
 var target_pos : Vector3
+var num_customers_required_to_advance = 4
 
 func set_sync_state(reader: ByteReader) -> void:
 	state = reader.read_int() as PartyState
 	customers.resize(reader.read_int()) # fill arrays with null
 	num_arrived_to_destination = reader.read_int()
+	num_customers_required_to_advance = reader.read_int()
 	target_pos = reader.read_vector3()
 	var has_table = reader.read_bool()
 	if has_table:
@@ -58,6 +63,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_int(state)
 	writer.write_int(customers.size())
 	writer.write_int(num_arrived_to_destination)
+	writer.write_int(num_customers_required_to_advance)
 	writer.write_vector3(target_pos)
 	writer.write_bool(table != null)
 	if table:
@@ -70,6 +76,7 @@ func sync_customer(customer: Customer) -> void:
 	customer.arrived.connect(_on_customer_arrived)
 	customer.player_interacted_with.connect(_on_customer_arrived)
 	customer.got_order.connect(_on_customer_arrived)
+	customer.ate_food.connect(_on_customer_arrived)
 	
 	var i = customers.rfind(null)
 	customers[i] = customer
@@ -77,12 +84,12 @@ func sync_customer(customer: Customer) -> void:
 	# When we've reached the beginning of the array we've finished the sync for customers
 	if i == 0:
 		NetworkingUtils.sort_array_by_net_id(customers)
-		
 		if table and state > PartyState.WALKING_TO_TABLE:
 			sit_at_table()
 
 func set_state(value: PartyState) -> void:
 	state = value
+	print("Party has advanced to state: %s" % str(state))
 	num_arrived_to_destination = 0
 	emit_state_changed.call_deferred()
 
@@ -100,10 +107,12 @@ func set_customers(value: Array[Customer]) -> void:
 		customer.arrived.connect(_on_customer_arrived)
 		customer.player_interacted_with.connect(_on_customer_arrived)
 		customer.got_order.connect(_on_customer_arrived)
+		customer.ate_food.connect(_on_customer_arrived)
 		
 		customer.position = Vector3(0,0,-spacing)
 		spacing += customer_spacing
 		add_child(customer, true)
+	num_customers_required_to_advance = len(customers)
 
 func send_customers_to(pos: Vector3) -> void:
 	target_pos = pos
@@ -184,23 +193,41 @@ func eat_food() -> void:
 	for customer in customers:
 		customer.eat()
 	
-	state = PartyState.WAITING_TO_PAY
-
 func pay() -> void:
+	state = PartyState.PAYING
 	await get_tree().create_timer(paying_time_sec).timeout
-	state = PartyState.LEAVING
+	
+	# TODO: GIVE THE PLAYERS MONEYYYYY
+	
+	state = PartyState.LEAVING_FOR_HOME
+	num_customers_required_to_advance = 1
+
+func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
+	table.release_customers()
+	await get_tree().create_timer(wait_before_leave_time_sec).timeout
+	
+	var customers_ordered_by_closest_to_door = customers.duplicate()
+	customers_ordered_by_closest_to_door.sort_custom(func(a: Customer, b: Customer):
+		if b.global_position.distance_to(entry_point.global_position) < a.global_position.distance_to(entry_point.global_position):
+			return true
+		return false
+	)
+	
+	for customer in customers_ordered_by_closest_to_door:
+		await get_tree().create_timer(wait_between_customers_leaving).timeout
+		customer.go_to(exit_point.global_position)
 
 func _on_customer_arrived():
 	num_arrived_to_destination += 1
 	if not is_multiplayer_authority():
 		return
 	
-	
-	if num_arrived_to_destination >= len(customers):
+	if num_arrived_to_destination >= num_customers_required_to_advance:
 		advance_party_state.rpc()
 
 @rpc("authority", "call_local")
 func advance_party_state():
+	num_customers_required_to_advance = len(customers)
 	#print("Advancing state because %s sent a message %s" % [multiplayer.get_remote_sender_id(), multiplayer.get_unique_id()])
 	match state:
 		PartyState.WALKING_TO_LINE:
@@ -217,8 +244,10 @@ func advance_party_state():
 			eat_food()
 		PartyState.EATING:
 			state = PartyState.WAITING_TO_PAY
+			num_customers_required_to_advance = 1
 		PartyState.WAITING_TO_PAY:
-			state = PartyState.PAYING
-		PartyState.PAYING:
 			pay()
-		PartyState.LEAVING: pass # handled by CustomerManager
+		PartyState.PAYING: pass # just a wait phase for now
+		PartyState.LEAVING_FOR_HOME:
+			state = PartyState.GONE_HOME
+		PartyState.GONE_HOME: pass # handled by CustomerManager

@@ -3,6 +3,7 @@ class_name Customer
 
 signal player_interacted_with
 signal got_order
+signal ate_food
 
 @onready var interactable : Interactable = $Interactable
 
@@ -38,8 +39,9 @@ func set_chair(value: Chair):
 		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
 	
 	sitting_chair = value
-	sitting_chair.holder.interacted.connect(evaluate_food)
-	sitting_chair.holder.secondary_interacted.connect(evaluate_food)
+	if sitting_chair != null:
+		sitting_chair.holder.interacted.connect(evaluate_food)
+		sitting_chair.holder.secondary_interacted.connect(evaluate_food)
 
 func evaluate_food():
 	if not sitting_chair.holder.is_holding_item():
@@ -59,6 +61,7 @@ func evaluate_food():
 		got_order.emit()
 		# Don't let the player interact with the food while the customer is about to eat
 		sitting_chair.holder.disable_collider()
+		sitting_chair.holder.get_held_item().disable_collider()
 
 func order_from(menu: Menu):
 	if not is_multiplayer_authority():
@@ -88,6 +91,7 @@ func _interact(_player: Player) -> void:
 
 func eat() -> void:
 	interactable.enable_collider()
+	ate_food.emit()
 	if not is_multiplayer_authority():
 		return
 	

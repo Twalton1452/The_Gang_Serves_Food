@@ -34,6 +34,9 @@ func sync_party(party: CustomerParty):
 	NetworkingUtils.sort_array_by_net_id(parties)
 
 func start_customer_spawning():
+	if GameState.state != GameState.Phase.OPEN_FOR_BUSINESS:
+		return
+	
 	await get_tree().create_timer(randf_range(min_wait_to_spawn_sec, max_wait_to_spawn_sec)).timeout
 	spawn_party.rpc(randi_range(min_party_size, max_party_size))
 	if len(parties) < max_parties:
@@ -69,8 +72,10 @@ func _on_party_state_changed(party: CustomerParty):
 			check_for_available_table_for(party)
 		CustomerParty.PartyState.THINKING:
 			draft_order_for(party)
-		CustomerParty.PartyState.LEAVING:
-			pass
+		CustomerParty.PartyState.LEAVING_FOR_HOME:
+			send_customers_home(party)
+		CustomerParty.PartyState.GONE_HOME:
+			clean_up_party(party)
 
 func check_for_available_table_for(party: CustomerParty):
 	var table = restaurant.get_next_available_table_for(party)
@@ -109,3 +114,14 @@ func draft_order_for(party: CustomerParty):
 		return
 	
 	party.order_from(restaurant.menu)
+
+func send_customers_home(party: CustomerParty) -> void:
+	party.go_home(restaurant.entry_point, restaurant.exit_point)
+
+func clean_up_party(party: CustomerParty) -> void:
+	var i = parties.find(party)
+	if i == -1:
+		print_debug("Couldn't find party to delete")
+		return
+	parties.remove_at(i)
+	NetworkingUtils.send_item_for_deletion(party)

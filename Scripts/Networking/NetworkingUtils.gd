@@ -28,25 +28,23 @@ func send_item_for_deletion(item: Node) -> void:
 	var networked_node_3d = item.get_node_or_null("NetworkedNode3D")
 	if networked_node_3d != null:
 		delete_item_for_everyone_by_networked_id.rpc(networked_node_3d.networked_id)
-		return
 	else:
 		delete_item_for_everyone_by_path(StringName(item.get_path()).to_utf8_buffer())
 
 @rpc("authority", "call_local")
 func delete_item_for_everyone_by_networked_id(networked_id: int):
 	var networked_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
-	var node_to_del : NetworkedNode3D = null
-	
+	var networked_node_to_delete : NetworkedNode3D = null
 	for net_node in networked_nodes:
 		if net_node.networked_id == networked_id:
-			node_to_del = net_node
+			networked_node_to_delete = net_node
 			break
 	
-	if node_to_del == null:
+	if networked_node_to_delete == null:
 		print_debug("Networked Node with ID: %s doesn't exist" % networked_id)
 		return
 	
-	node_to_del.queue_free()
+	networked_node_to_delete.p_node.queue_free()
 
 @rpc("authority", "call_local")
 func delete_item_for_everyone_by_path(path: PackedByteArray):
