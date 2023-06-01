@@ -159,6 +159,7 @@ Class used to define a rule when stacking an item
 This class is called on by Holdable's that are secondary interacted with to sort out the logic of whether it needs to spawn a food_combiner.tscn `CombinedFoodHolder` or continue stacking
 
 ## Useful Tidbits
+- If a node is not syncing on the client side, check if that Scene has a NetworkedNode3D attached and there is a NetworkedNode3D script on it
 -(Vector Math)[https://docs.godotengine.org/en/stable/tutorials/math/vector_math.html]
 - Useful Editor Binds
 	- Search documentation: F1

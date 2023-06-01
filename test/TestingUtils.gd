@@ -16,7 +16,7 @@ func create_combined_food(ids: Array[NetworkedIds.Scene]) -> CombinedFoodHolder:
 	autofree(combined_food_holder)
 	
 	for id in ids:
-		var item = NetworkedScenes.PATHS[id].instantiate()
+		var item = NetworkedScenes.get_scene_by_id(id).instantiate()
 		combined_food_holder.hold_item(autoqfree(item))
 	
 	return combined_food_holder
