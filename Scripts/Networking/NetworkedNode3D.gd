@@ -22,7 +22,7 @@ enum SyncPriorityPhase {
 	CREATION, ## Create parent Nodes that will have children [br]ex: Run-time generated Plate needs to be created before food can be attached to it
 	NESTED_CREATION, ## Create child Nodes that will have children [br]ex: FoodCombiner inside a run-time generated Plate
 	REPARENT, ## Reparent Nodes after everything has been generated [br]ex: Existing plates are moved
-	NESTED_REPARENT, ## Reparent child Nodes in complex parent/child relationships [br]ex: Existing plate reparented and existing patty became parented to that plate, need to wait for plate to reparent
+	NESTED_REPARENT, ## Reparent child Nodes in complex parent/child relationships [br]ex: Plate was reparented and Patty became parented to that plate, need to wait for plate to reparent
 	STATEFUL, ## Things that need to wait for the rest of the Nodes to finish creating/parenting [br]ex: Whether [Rotatable] is rotated or not or a [Cookable] cook progress
 	DELETION, ## Delete Nodes last to make sure all the connections are setup [br]ex: Existing nodes deleted
 }
