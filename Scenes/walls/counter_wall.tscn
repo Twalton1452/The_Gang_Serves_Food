@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnamranhmwqb3"]
+
+[ext_resource type="PackedScene" uid="uid://b1ff2kbnkb8mm" path="res://Scenes/walls/half_wall.tscn" id="1_lac26"]
+[ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="2_8ppu8"]
+[ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="4_ypd6k"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pxy03"]
+size = Vector3(0.217859, 0.0133878, 0.247013)
+
+[node name="CounterWall" instance=ExtResource("1_lac26")]
+
+[node name="Counter" parent="." index="1" instance=ExtResource("2_8ppu8")]
+transform = Transform3D(1, 0, 0, 0, -8.74228e-09, 1, 0, -0.2, -4.37114e-08, 0, 0.519281, 0.101)
+
+[node name="Holder" parent="." index="2" instance=ExtResource("4_ypd6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.161884, 0.526206, -0.0271188)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00473422, 0)
+shape = SubResource("BoxShape3D_pxy03")
+
+[node name="Holder2" parent="." index="3" instance=ExtResource("4_ypd6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.386436, 0.526206, -0.0271188)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder2" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00473422, 0)
+shape = SubResource("BoxShape3D_pxy03")
+
+[node name="Holder3" parent="." index="4" instance=ExtResource("4_ypd6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.611455, 0.526206, -0.0271188)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder3" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00473422, 0)
+shape = SubResource("BoxShape3D_pxy03")
+
+[node name="Holder4" parent="." index="5" instance=ExtResource("4_ypd6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.837514, 0.526206, -0.0271188)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder4" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00473422, 0)
+shape = SubResource("BoxShape3D_pxy03")
