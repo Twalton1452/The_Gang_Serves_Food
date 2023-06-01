@@ -8,16 +8,16 @@ func generate_order(menu_board: MenuBoard):
 	order.side_two = generate_side_dish(menu_board.side_two)
 	return order
 
-func generate_main_dish(ids: Array[SceneIds.SCENES]):
+func generate_main_dish(ids: Array[NetworkedIds.Scene]):
 	pass
 
-func generate_side_dish(ids: Array[SceneIds.SCENES]):
+func generate_side_dish(ids: Array[NetworkedIds.Scene]):
 	pass
 
-func generate_random_dish(ids: Array[SceneIds.SCENES]):
+func generate_random_dish(ids: Array[NetworkedIds.Scene]):
 	pass
 
 class Order:
-	var main : Array[SceneIds.SCENES]
-	var side_one : Array[SceneIds.SCENES]
-	var side_two : Array[SceneIds.SCENES]
+	var main : Array[NetworkedIds.Scene]
+	var side_one : Array[NetworkedIds.Scene]
+	var side_two : Array[NetworkedIds.Scene]

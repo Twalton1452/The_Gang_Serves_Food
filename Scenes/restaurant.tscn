@@ -1,10 +1,9 @@
-[gd_scene load_steps=29 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=28 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
 [ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="2_8d1g5"]
-[ext_resource type="Script" path="res://Scripts/Networking/MidsessionJoinSyncer.gd" id="2_u3ntc"]
 [ext_resource type="PackedScene" uid="uid://i7st3vdotqiu" path="res://3d_models/Kenneys_Furniture/wallWindow.glb" id="3_6vamh"]
 [ext_resource type="PackedScene" uid="uid://bvjit4lsovbr3" path="res://3d_models/Kenneys_Furniture/wallDoorwayWide.glb" id="3_21ak5"]
 [ext_resource type="NavigationMesh" uid="uid://cro8mueu3lb0n" path="res://Resources/building_navmesh.tres" id="3_wk033"]
@@ -40,9 +39,6 @@ script = ExtResource("1_sgx7f")
 _spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
 spawn_path = NodePath("../../Players")
 spawn_limit = 10
-
-[node name="MidsessionJoinSyncer" type="Node" parent="Networking"]
-script = ExtResource("2_u3ntc")
 
 [node name="Restaurant" type="NavigationRegion3D" parent="." node_paths=PackedStringArray("entry_point", "exit_point", "tables_root", "menu")]
 navigation_mesh = ExtResource("3_wk033")

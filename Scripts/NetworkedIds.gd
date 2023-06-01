@@ -1,0 +1,20 @@
+class_name NetworkedIds
+
+enum Scene {
+	NETWORKED = 0,
+	PATTY = 1,
+	BOTTOM_BUN = 2,
+	TOP_BUN = 3,
+	TOMATO = 4,
+	
+	PLATE = 50,
+	
+#	HOLDER = 100,
+#	HOLDABLE = 101,
+#	COOKABLE = 102,
+#	ROTATABLE = 103,
+	FOOD_COMBINER = 1000,
+	
+	CUSTOMER = 2000,
+	CUSTOMER_PARTY = 2001,
+}

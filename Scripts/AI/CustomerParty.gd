@@ -36,8 +36,8 @@ var paying_time_sec = 2.0
 var wait_before_leave_time_sec = 1.0
 var wait_between_customers_leaving = 0.2
 var customer_spacing = 0.5
-var customers : Array[Customer] = [] : set = set_customers
-var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER_PARTY
+var customers : Array[Customer] = [] : set = set_customers#, get = get_customers
+var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.CUSTOMER_PARTY
 var required_interaction_states = [PartyState.ORDERING, PartyState.WAITING_TO_PAY]
 
 # Saved/Loaded State
@@ -48,8 +48,13 @@ var target_pos : Vector3
 var num_customers_required_to_advance = 1
 
 func set_sync_state(reader: ByteReader) -> void:
+	# Before performing any customer operations, wait for the sync process to complete
+	# so that we have all the customers!
+	# Don't use "after_sync" because it doesn't have data
+	await MidsessionJoinSyncer.sync_complete
+	
+	NetworkingUtils.sort_array_by_net_id(customers)
 	state = reader.read_int() as PartyState
-	customers.resize(reader.read_int()) # fill arrays with null
 	num_arrived_to_destination = reader.read_int()
 	num_customers_required_to_advance = reader.read_int()
 	target_pos = reader.read_vector3()
@@ -63,12 +68,12 @@ func set_sync_state(reader: ByteReader) -> void:
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_int(state)
-	writer.write_int(customers.size())
 	writer.write_int(num_arrived_to_destination)
 	writer.write_int(num_customers_required_to_advance)
 	writer.write_vector3(target_pos)
-	writer.write_bool(table != null)
-	if table:
+	var has_table = table != null
+	writer.write_bool(has_table)
+	if has_table:
 		writer.write_path_to(table)
 		writer.write_bool(table.is_empty)
 		writer.write_bool(table.party_in_transit)
@@ -81,12 +86,7 @@ func sync_customer(customer: Customer) -> void:
 	customer.got_order.connect(_on_customer_arrived)
 	customer.ate_food.connect(_on_customer_arrived)
 	
-	var i = customers.rfind(null)
-	customers[i] = customer
-	
-	# When we've reached the beginning of the array we've finished the sync for customers
-	if i == 0:
-		NetworkingUtils.sort_array_by_net_id(customers)
+	customers.push_back(customer)
 
 func set_state(value: PartyState) -> void:
 	state = value
@@ -101,7 +101,7 @@ func set_state(value: PartyState) -> void:
 	#print("Party has advanced to state: %s" % str(state))
 
 func _ready():
-	add_to_group(str(SceneIds.SCENES.CUSTOMER_PARTY))
+	add_to_group(str(NetworkedIds.Scene.CUSTOMER_PARTY))
 
 func emit_state_changed():
 	state_changed.emit(self)
@@ -122,6 +122,7 @@ func set_customers(value: Array[Customer]) -> void:
 		customer.position = Vector3(0,0,-spacing)
 		spacing += customer_spacing
 		add_child(customer, true)
+	NetworkingUtils.sort_array_by_net_id(customers)
 	num_customers_required_to_advance = len(customers)
 
 func send_customers_to(pos: Vector3) -> void:
@@ -157,6 +158,7 @@ func go_to_table(destination_table: Table):
 		var customer : Customer = customers[i]
 		var chair_index : int = get_farthest_chair_for(customer, available_chairs)
 		var chair : Chair = available_chairs[chair_index]
+		customer.target_chair = chair
 		available_chairs.remove_at(chair_index)
 		customer.go_to(chair.transition_location.global_position)
 	
@@ -177,13 +179,10 @@ func get_farthest_chair_for(customer: Customer, chairs: Array[Chair]) -> int:
 	return greatest_dist_index
 
 func sit_at_table():
-	for i in len(customers):
-		var customer : Customer = customers[i]
-		var chair : Chair = table.chairs[i]
-		chair.sit(customer)
+	for customer in customers:
+		customer.sit()
 		
 	state = PartyState.THINKING
-
 
 func order_from(menu: Menu) -> void:
 	await get_tree().create_timer(think_time_sec).timeout

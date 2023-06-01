@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://i1fsr68tupru"]
 
 [ext_resource type="Script" path="res://Scripts/MultiHolder.gd" id="1_h3fsn"]
-[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="2_o77dx"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_inxip"]
 [ext_resource type="Script" path="res://Scripts/Holder.gd" id="3_5elsy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j66e6"]
@@ -61,8 +61,7 @@ collision_mask = 0
 script = ExtResource("1_h3fsn")
 mesh_to_highlight = NodePath("Cube")
 
-[node name="NetworkedNode3D" type="Node3D" parent="."]
-script = ExtResource("2_o77dx")
+[node name="NetworkedNode3D" parent="." instance=ExtResource("2_inxip")]
 priority_sync_order = 1
 
 [node name="Cube" type="MeshInstance3D" parent="."]

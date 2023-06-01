@@ -25,6 +25,6 @@ func _on_menu_item_changed():
 func is_menu_available() -> bool:
 	return not main_items.is_empty() and main_items.any(func(menu_item): return menu_item.is_dish_available())
 
-func generate_order_for(_customer: Customer) -> Array[SceneIds.SCENES]:
+func generate_order_for(_customer: Customer) -> Array[NetworkedIds.Scene]:
 	# eventually going to take in customer preferences
 	return main_items[0].dish

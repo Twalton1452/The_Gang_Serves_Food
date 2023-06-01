@@ -1,7 +1,11 @@
 @icon("res://Icons/wifi.svg")
 extends Node
 
-var ByteReaderClass = load("res://Scripts/Networking/ByteReader.gd")
+## Autoloaded
+
+signal sync_complete
+
+#var ByteReaderClass = load("res://Scripts/Networking/ByteReader.gd")
 var num_nodes_syncd = 0
 var total_num_nodes_to_sync = 0
 
@@ -18,14 +22,16 @@ func sync_nodes_for_new_player(peer_id: int):
 	pause_for_players.rpc()
 	print_verbose("------Begin Sync for Peer %s------" % peer_id)
 	
-	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
+	var net_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
 	
 	# Sync MultiHolders first because other objects need to get parented to them
 	# Lower number for priority is sync'd first
 	net_nodes.sort_custom(func(a: NetworkedNode3D, b: NetworkedNode3D):
 		if a.priority_sync_order < b.priority_sync_order:
-			return true
-		return false
+			if a.networked_id > b.networked_id:
+				return 2
+			return 1
+		return 0
 	)
 	
 	var changed_net_nodes = net_nodes.filter(func(net_node): return net_node.changed)
@@ -51,8 +57,8 @@ func begin_sync_with_peer(num_nodes_to_sync: int):
 
 @rpc("any_peer", "reliable")
 func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : PackedByteArray):
-	var net_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
-	var sync_state_reader : ByteReader = ByteReaderClass.new(sync_state)
+	var net_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
+	var sync_state_reader : ByteReader = ByteReader.new(sync_state)
 	#print("[Peer %s] received request to [sync Node %s]" % [multiplayer.get_unique_id(), networked_id])
 	var synced = false
 
@@ -66,13 +72,13 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 		
 	# Didn't find the Networked Node, need to spawn one
 	if not synced:
-		assert(SceneIds.PATHS[net_scene_id] != null, "%s does not have a SceneId PATH to instantiate from in SceneIds.gd")
+		assert(NetworkedScenes.PATHS[net_scene_id] != null, "%s does not have a NetworkedIds.Scene PATH to instantiate from in SceneIds.gd")
 		
 		print_verbose("[Peer %s] didn't find %s in the objects on startup. The Player must have generated this at run time. [Spawning a %s with id %s]" \
-			% [multiplayer.get_unique_id(), networked_id, SceneIds.PATHS[net_scene_id].get_state().get_node_name(0), networked_id])
+			% [multiplayer.get_unique_id(), networked_id, NetworkedScenes.PATHS[net_scene_id].get_state().get_node_name(0), networked_id])
 		
 		# Spawn Networked Node
-		var net_scene = SceneIds.PATHS[net_scene_id].instantiate()
+		var net_scene = NetworkedScenes.PATHS[net_scene_id].instantiate()
 		add_child(net_scene) # Briefly add the node into the tree so that it can call get_node from within
 		var net_node = net_scene.get_node("NetworkedNode3D")
 		net_node.networked_id = networked_id
@@ -90,6 +96,7 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 ## Sync player specific settings between all clients/server
 func finished_syncing():
 	send_server_my_settings.rpc_id(GameState.SERVER_ID, get_settings_to_send())
+	sync_complete.emit()
 
 ## This should be some kind of PlayerSettings class that handles this and the decoding part
 func get_settings_to_send() -> PackedByteArray:

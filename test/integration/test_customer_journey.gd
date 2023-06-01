@@ -18,7 +18,7 @@ func test_party_full_journey():
 	
 	# Arrange 
 	var num_customers_to_spawn = 4
-	var menu_item : Array[SceneIds.SCENES] = [SceneIds.SCENES.BOTTOM_BUN, SceneIds.SCENES.PATTY, SceneIds.SCENES.TOMATO, SceneIds.SCENES.TOP_BUN]
+	var menu_item : Array[NetworkedIds.Scene] = [NetworkedIds.Scene.BOTTOM_BUN, NetworkedIds.Scene.PATTY, NetworkedIds.Scene.TOMATO, NetworkedIds.Scene.TOP_BUN]
 	var menu_item_dish = create_combined_food(menu_item)
 	
 	(_restaurant.menu.get_child(-1) as MenuItem).dish_holder.hold_item(menu_item_dish)

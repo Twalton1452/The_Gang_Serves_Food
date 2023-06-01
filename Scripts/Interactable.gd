@@ -7,7 +7,7 @@ signal interacted
 signal secondary_interacted
 
 # This SCENE_ID will point to the instantiatable Scene in SceneIds.gd
-@export var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.NETWORKED
+@export var SCENE_ID : NetworkedIds.Scene
 
 @export var mesh_to_highlight : MeshInstance3D
 

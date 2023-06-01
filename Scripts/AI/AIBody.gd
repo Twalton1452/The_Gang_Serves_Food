@@ -9,7 +9,7 @@ signal arrived
 var speed = 3.0
 var target_position = Vector3.ZERO
 
-var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.CUSTOMER
+var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.CUSTOMER
 
 func set_sync_state(reader: ByteReader) -> void:
 	var sync_tar_pos = reader.read_vector3()

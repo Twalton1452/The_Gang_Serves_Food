@@ -5,7 +5,7 @@ signal changed
 
 @export var dish_holder : Holder
 
-var dish : Array[SceneIds.SCENES] = []
+var dish : Array[NetworkedIds.Scene] = []
 
 func _ready():
 	dish_holder.interacted.connect(_on_holder_changed)
@@ -16,8 +16,8 @@ func _on_holder_changed():
 	dish = extract_scene_ids_from(dish_holder)
 	changed.emit()
 
-func extract_scene_ids_from(holder: Holder) -> Array[SceneIds.SCENES]:
-	var ids : Array[SceneIds.SCENES] = []
+func extract_scene_ids_from(holder: Holder) -> Array[NetworkedIds.Scene]:
+	var ids : Array[NetworkedIds.Scene] = []
 	if not holder.is_holding_item():
 		return ids
 	
@@ -27,7 +27,7 @@ func extract_scene_ids_from(holder: Holder) -> Array[SceneIds.SCENES]:
 	
 	return ids
 
-func get_dish() -> Array[SceneIds.SCENES]:
+func get_dish() -> Array[NetworkedIds.Scene]:
 	return dish
 
 func is_dish_available() -> bool:

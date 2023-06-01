@@ -37,9 +37,9 @@ enum SyncPriorityPhase {
 ## The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
 ## This is pulled off the Interactable this is attached to.
 ## Needs to be set in editor for non-interactables
-var SCENE_ID : SceneIds.SCENES = SceneIds.SCENES.NETWORKED : get = get_scene_id
+var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.NETWORKED : get = get_scene_id
 ## Used for simple objects that need to be spawned but have no script attached to them
-@export var override_scene_id : SceneIds.SCENES
+@export var override_scene_id : NetworkedIds.Scene
 
 ## Identifier between server/client to figure out what needs to be created/updated/deleted
 ## Generated during [method _ready]
@@ -48,6 +48,9 @@ var networked_id = -1
 ## Used by the [MidsessionJoinSyncer] script to see if it should update the Peer on spawn to reduce bandwidth
 ## Run-time spawns will need this set to true automatically
 var changed = false
+
+func has_after_sync():
+	return "after_sync" in p_node
 
 func has_additional_sync():
 	return "set_sync_state" in p_node or "get_sync_state" in p_node
@@ -75,6 +78,10 @@ func set_sync_state(reader: ByteReader):
 	if has_additional_sync():
 		# Give the rest of the sync_state to the node to handle
 		p_node.set_sync_state(reader)
+	
+	if has_after_sync():
+		await MidsessionJoinSyncer.sync_complete
+		p_node.after_sync()
 
 func get_sync_state() -> ByteWriter:
 	var writer : ByteWriter = ByteWriterClass.new()
@@ -92,7 +99,7 @@ func get_sync_state() -> ByteWriter:
 	return writer
 
 func get_scene_id() -> int:
-	if override_scene_id != SceneIds.SCENES.NETWORKED:
+	if override_scene_id != NetworkedIds.Scene.NETWORKED:
 		return override_scene_id
 	if has_additional_sync():
 		return p_node.SCENE_ID
@@ -101,7 +108,7 @@ func get_scene_id() -> int:
 func _ready():
 	networked_id = NetworkingUtils.generate_id()
 	generate_unique_name()
-	add_to_group(str(SceneIds.SCENES.NETWORKED))
+	add_to_group(str(NetworkedIds.Scene.NETWORKED))
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID
 		p_node.interacted.connect(_on_interaction)

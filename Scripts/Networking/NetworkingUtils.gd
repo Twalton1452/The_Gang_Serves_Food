@@ -36,7 +36,7 @@ func send_item_for_deletion(item: Node) -> void:
 
 @rpc("authority", "call_local")
 func delete_item_for_everyone_by_networked_id(networked_id: int):
-	var networked_nodes = get_tree().get_nodes_in_group(str(SceneIds.SCENES.NETWORKED))
+	var networked_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
 	var networked_node_to_delete : NetworkedNode3D = null
 	for net_node in networked_nodes:
 		if net_node.networked_id == networked_id:

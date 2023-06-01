@@ -5,9 +5,8 @@ class_name StackingHolder
 @export var max_amount = 99
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
 
-func set_sync_state(reader: ByteReader) -> void:
-	super(reader)
-	stack_items()
+func after_sync() -> void:
+	stack_items.call_deferred()
 
 func _ready():
 	super()

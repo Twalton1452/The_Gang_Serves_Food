@@ -11,12 +11,12 @@ func create_multiholder(how_many_holders: int) -> MultiHolder:
 	autofree(multi_holder)
 	return multi_holder
 
-func create_combined_food(ids: Array[SceneIds.SCENES]) -> CombinedFoodHolder:
+func create_combined_food(ids: Array[NetworkedIds.Scene]) -> CombinedFoodHolder:
 	var combined_food_holder = CombinedFoodHolder.new()
 	autofree(combined_food_holder)
 	
 	for id in ids:
-		var item = SceneIds.PATHS[id].instantiate()
+		var item = NetworkedScenes.PATHS[id].instantiate()
 		combined_food_holder.hold_item(autoqfree(item))
 	
 	return combined_food_holder

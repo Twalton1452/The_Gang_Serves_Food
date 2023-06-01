@@ -16,7 +16,7 @@ func before_each():
 
 func test_extracts_scene_ids_from_combined_food():
 	# Arrange
-	var ev : Array[SceneIds.SCENES] = [SceneIds.SCENES.BOTTOM_BUN, SceneIds.SCENES.PATTY, SceneIds.SCENES.TOMATO, SceneIds.SCENES.TOP_BUN]
+	var ev : Array[NetworkedIds.Scene] = [NetworkedIds.Scene.BOTTOM_BUN, NetworkedIds.Scene.PATTY, NetworkedIds.Scene.TOMATO, NetworkedIds.Scene.TOP_BUN]
 	var combined_food_holder = create_combined_food(ev)
 	
 	_menu_item.dish_holder.hold_item(combined_food_holder)
@@ -30,7 +30,7 @@ func test_extracts_scene_ids_from_combined_food():
 
 #func test_extracts_scene_ids_from_multi_holder():
 #	# Arrange
-#	var ev : Array[SceneIds.SCENES] = [SceneIds.SCENES.BOTTOM_BUN, SceneIds.SCENES.PATTY, SceneIds.SCENES.TOMATO, SceneIds.SCENES.TOP_BUN]
+#	var ev : Array[NetworkedIds.Scene] = [NetworkedIds.Scene.BOTTOM_BUN, NetworkedIds.Scene.PATTY, NetworkedIds.Scene.TOMATO, NetworkedIds.Scene.TOP_BUN]
 #	var multi_holder = create_multiholder(1)
 #	var combined_food_holder = create_combined_food(ev)
 #	multi_holder.hold_item(combined_food_holder)

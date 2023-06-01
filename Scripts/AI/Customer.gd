@@ -7,8 +7,9 @@ signal ate_food
 
 @onready var interactable : Interactable = $Interactable
 
+var target_chair : Chair = null
 var sitting_chair : Chair = null : set = set_chair
-var order : Array[SceneIds.SCENES] : set = set_order
+var order : Array[NetworkedIds.Scene] : set = set_order
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
@@ -20,16 +21,21 @@ func set_sync_state(reader: ByteReader) -> void:
 	else:
 		interactable.disable_collider()
 	
+	var has_target_chair = reader.read_bool()
+	if has_target_chair:
+		var chair = reader.read_path_to()
+		target_chair = get_node(chair)
+	
 	var is_sitting = reader.read_bool()
 	if is_sitting:
 		var chair = reader.read_path_to()
 		sitting_chair = get_node(chair)
-		sitting_chair.sit(self)
+		sit()
 	
 	var has_order = reader.read_bool()
 	if has_order:
 		var to_be_order : Array[int] = reader.read_int_array()
-		order = to_be_order as Array[SceneIds.SCENES]
+		order = to_be_order as Array[NetworkedIds.Scene]
 		evaluate_food()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
@@ -37,7 +43,13 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	
 	writer.write_bool(interactable.is_enabled())
 	
+	var has_target_chair = target_chair != null
 	var is_sitting = sitting_chair != null
+	
+	writer.write_bool(has_target_chair)
+	if has_target_chair:
+		writer.write_path_to(target_chair)
+	
 	writer.write_bool(is_sitting)
 	if is_sitting:
 		writer.write_path_to(sitting_chair)
@@ -129,4 +141,8 @@ func eat() -> void:
 		return
 	
 	NetworkingUtils.send_item_for_deletion(food)
-	
+
+func sit():
+	if target_chair:
+		sitting_chair = target_chair
+		sitting_chair.sit(self)

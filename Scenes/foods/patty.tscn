@@ -1,9 +1,9 @@
 [gd_scene load_steps=8 format=3 uid="uid://dfg1k7gfdbgmw"]
 
 [ext_resource type="Script" path="res://Scripts/Food.gd" id="1_vmnmo"]
-[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/food_gradients/patty_cook_gradient.tres" id="2_67uhe"]
-[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="3_1ycum"]
+[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/food_gradients/patty_cook_gradient.tres" id="2_114m1"]
 [ext_resource type="Material" uid="uid://b60lm8s0trq5f" path="res://Materials/Patty_mat.tres" id="3_s7cyn"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="4_df2er"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ierox"]
 _surfaces = [{
@@ -44,7 +44,7 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_vmnmo")
 rule = 1
-gradient = ExtResource("2_67uhe")
+gradient = ExtResource("2_114m1")
 obj_to_color = NodePath("Patty")
 SCENE_ID = 1
 mesh_to_highlight = NodePath("Patty")
@@ -56,8 +56,7 @@ mesh = SubResource("ArrayMesh_bc4ni")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("3_s7cyn")
 
-[node name="NetworkedNode3D" type="Node3D" parent="."]
-script = ExtResource("3_1ycum")
+[node name="NetworkedNode3D" parent="." instance=ExtResource("4_df2er")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00600621, 0)

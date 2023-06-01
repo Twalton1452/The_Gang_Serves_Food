@@ -5,7 +5,7 @@ extends Node
 ## Class to handle all of the RPC's related to party spawning and state changes
 
 func get_parties():
-	return get_tree().get_nodes_in_group(str(SceneIds.SCENES.CUSTOMER_PARTY))
+	return get_tree().get_nodes_in_group(str(NetworkedIds.Scene.CUSTOMER_PARTY))
 
 func get_party_by_name(party_name: String) -> CustomerParty:
 	for party in get_parties():
@@ -57,7 +57,7 @@ func notify_peers_of_order(order_data: PackedByteArray):
 		return
 
 	for customer in party.customers:
-		customer.order = reader.read_int_array() as Array[SceneIds.SCENES]
+		customer.order = reader.read_int_array() as Array[NetworkedIds.Scene]
 	
 	party.state = CustomerParty.PartyState.ORDERING
 	party.num_customers_required_to_advance = 1
