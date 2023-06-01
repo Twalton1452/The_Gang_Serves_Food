@@ -46,7 +46,7 @@ func _ready():
 	assert(obj_to_color != null, "%s doesn't have a MeshInstance3D assigned to obj_to_color" % name)
 	assert(gradient != null, "%s doesn't have a gradient" % name)
 
-	material_to_color = obj_to_color.get_active_material(0)#.get_surface_override_material(0)
+	material_to_color = obj_to_color.get_active_material(0)
 	evaluate_cook_rate()
 
 func cook(power: float):

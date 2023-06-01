@@ -6,6 +6,7 @@ enum Scene {
 	BOTTOM_BUN = 2,
 	TOP_BUN = 3,
 	TOMATO = 4,
+	ONION = 5,
 	
 	PLATE = 50,
 	

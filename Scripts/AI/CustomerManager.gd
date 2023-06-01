@@ -10,8 +10,8 @@ var party_scene = preload("res://Scenes/components/party.tscn")
 var parties : Array[CustomerParty] = []
 var min_party_size = 1
 var max_party_size = 4
-var min_wait_to_spawn_sec = 1.0
-var max_wait_to_spawn_sec = 2.0
+var min_wait_to_spawn_sec = 3.0
+var max_wait_to_spawn_sec = 12.0
 var is_spawning = true
 
 func _ready():

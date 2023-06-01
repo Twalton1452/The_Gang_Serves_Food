@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3dnl8aq4hu11"]
+
+[ext_resource type="PackedScene" uid="uid://cj1uut541x2k4" path="res://Scenes/holders/single_holder_box.tscn" id="1_ct8vd"]
+[ext_resource type="PackedScene" uid="uid://il2v7thuvjnp" path="res://Scenes/foods/onion.tscn" id="2_a04q7"]
+
+[node name="OnionBox" instance=ExtResource("1_ct8vd")]
+
+[node name="Onion" parent="StackingHolder" index="1" instance=ExtResource("2_a04q7")]
+
+[node name="Onion2" parent="StackingHolder" index="2" instance=ExtResource("2_a04q7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0119568, 0)
+
+[node name="Onion3" parent="StackingHolder" index="3" instance=ExtResource("2_a04q7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0237683, 0)
+
+[node name="Onion4" parent="StackingHolder" index="4" instance=ExtResource("2_a04q7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0359035, 0)
+
+[node name="Onion5" parent="StackingHolder" index="5" instance=ExtResource("2_a04q7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0478603, 0)
+
+[node name="Onion6" parent="StackingHolder" index="6" instance=ExtResource("2_a04q7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0596719, 0)
+
+[node name="Onion7" parent="StackingHolder" index="7" instance=ExtResource("2_a04q7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0719104, 0)
+
+[node name="Onion8" parent="StackingHolder" index="8" instance=ExtResource("2_a04q7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0837219, 0)

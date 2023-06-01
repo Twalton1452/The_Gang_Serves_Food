@@ -1,20 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://crg8j7gc45t56"]
+[gd_scene load_steps=7 format=3 uid="uid://crg8j7gc45t56"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_ot15l"]
 [ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="2_jnwi4"]
 [ext_resource type="Texture2D" uid="uid://dbhoh01adyned" path="res://addons/kenney_particle_pack/circle_05.png" id="3_mhqd0"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3w32"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-
-[sub_resource type="Sky" id="Sky_irnl5"]
-sky_material = SubResource("ProceduralSkyMaterial_g3w32")
-
-[sub_resource type="Environment" id="Environment_ujyim"]
-background_mode = 2
-sky = SubResource("Sky_irnl5")
-tonemap_mode = 2
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_q8dkk"]
 
@@ -27,13 +15,6 @@ bg_color = Color(0, 0.72549, 0, 1)
 [node name="World" type="Node"]
 process_mode = 3
 script = ExtResource("1_ot15l")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
-shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_ujyim")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

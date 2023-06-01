@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=32 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -26,12 +26,33 @@
 [ext_resource type="PackedScene" uid="uid://dfg1k7gfdbgmw" path="res://Scenes/foods/patty.tscn" id="19_rvwxk"]
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
+[ext_resource type="PackedScene" uid="uid://b3dnl8aq4hu11" path="res://Scenes/holders/onion_box.tscn" id="24_v3tw0"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cju1x"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_irnl5"]
+sky_material = SubResource("ProceduralSkyMaterial_cju1x")
+
+[sub_resource type="Environment" id="Environment_vs3k4"]
+background_mode = 2
+background_energy_multiplier = 0.7
+sky = SubResource("Sky_irnl5")
+tonemap_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26lyt"]
 albedo_color = Color(0.913725, 0.701961, 0.435294, 1)
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_sgx7f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866024, -0.433016, 0.25, 0, 0.499998, 0.866027, -0.500003, 0.75, -0.43301, 0, 5.58447, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vs3k4")
 
 [node name="Networking" type="Node" parent="."]
 
@@ -147,7 +168,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.29374, 1.02451, 7.46648)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.96786, 1.03253, 2.82309)
 
 [node name="lampSquareCeiling5" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.96786, 1.03253, 6.45748)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.45179, 1.03253, 6.45748)
+
+[node name="OmniLight3D" parent="Restaurant/Building/Lights/lampSquareCeiling5" index="1"]
+light_energy = 0.3
+
+[node name="lampSquareCeiling6" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.504895, 1.03253, 5.83171)
 
 [node name="OutsideWalls" type="Node3D" parent="Restaurant/Building"]
 
@@ -261,12 +288,12 @@ script = ExtResource("15_6mlv6")
 
 [node name="MenuItemStand" parent="Restaurant/Building/Menu" instance=ExtResource("16_n3yt3")]
 
-[node name="FoodCombiner" parent="Restaurant/Building/Menu/MenuItemStand/Holder" index="2" instance=ExtResource("18_32clx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000477016, 0)
+[node name="FoodCombiner" parent="Restaurant/Building" instance=ExtResource("18_32clx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.101188, -0.000477016, 9.77257)
 
-[node name="Patty" parent="Restaurant/Building/Menu/MenuItemStand/Holder/FoodCombiner" instance=ExtResource("19_rvwxk")]
+[node name="Patty" parent="Restaurant/Building/FoodCombiner" instance=ExtResource("19_rvwxk")]
 
-[node name="Patty2" parent="Restaurant/Building/Menu/MenuItemStand/Holder/FoodCombiner" instance=ExtResource("19_rvwxk")]
+[node name="Patty2" parent="Restaurant/Building/FoodCombiner" instance=ExtResource("19_rvwxk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00817773, 0)
 rule = 5
 
@@ -317,6 +344,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0268442, 0.085086, -0.03)
 [node name="kitchenCabinet4" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.29, 0, 0)
 
+[node name="OnionBox" parent="Testing/kitchenCabinet4/Holder" index="2" instance=ExtResource("24_v3tw0")]
+
 [node name="kitchenCabinet5" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.86, 0, 0)
 
@@ -349,8 +378,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43, 0, 0)
 [editable path="Restaurant/Building/roof"]
 [editable path="Restaurant/Building/floor"]
 [editable path="Restaurant/Building/Walls/wallDoorway"]
+[editable path="Restaurant/Building/Lights/lampSquareCeiling5"]
 [editable path="Restaurant/Building/Menu/MenuItemStand"]
 [editable path="Testing/kitchenCabinet"]
 [editable path="Testing/kitchenCabinet2"]
 [editable path="Testing/kitchenCabinet3"]
+[editable path="Testing/kitchenCabinet4"]
 [editable path="Testing/kitchenCabinet5"]
