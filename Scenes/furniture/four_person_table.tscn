@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="5_882we"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fj2mp"]
-size = Vector3(0.22168, 0.0474899, 0.187379)
+size = Vector3(0.22168, 0.0159814, 0.187379)
 
 [node name="TableFourPerson" type="Node3D" node_paths=PackedStringArray("table_mesh")]
 script = ExtResource("1_g14pa")
@@ -48,25 +48,25 @@ holder = NodePath("../Holder4")
 surface_material_override/1 = ExtResource("2_lmh77")
 
 [node name="Holder" parent="." instance=ExtResource("5_882we")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.343, -0.11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.334339, -0.11)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder"]
 shape = SubResource("BoxShape3D_fj2mp")
 
 [node name="Holder2" parent="." instance=ExtResource("5_882we")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.343, -0.11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.334339, -0.11)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder2"]
 shape = SubResource("BoxShape3D_fj2mp")
 
 [node name="Holder3" parent="." instance=ExtResource("5_882we")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.343, 0.11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.334339, 0.11)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder3"]
 shape = SubResource("BoxShape3D_fj2mp")
 
 [node name="Holder4" parent="." instance=ExtResource("5_882we")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.343, 0.11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.334339, 0.11)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder4"]
 shape = SubResource("BoxShape3D_fj2mp")

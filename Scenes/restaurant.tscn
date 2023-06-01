@@ -1,6 +1,5 @@
-[gd_scene load_steps=30 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=31 format=3 uid="uid://bkur10mtv3uoy"]
 
-[ext_resource type="PackedScene" uid="uid://bxs3ygkheyntn" path="res://3d_models/Kenneys_Furniture/wallWindowSlide.glb" id="1_0fubg"]
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
 [ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="2_8d1g5"]
@@ -12,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dnamranhmwqb3" path="res://Scenes/walls/counter_wall.tscn" id="8_gplef"]
 [ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="10_b6sav"]
 [ext_resource type="PackedScene" uid="uid://cx11ipeseh6dx" path="res://Scenes/furniture/four_person_table.tscn" id="10_tuail"]
+[ext_resource type="PackedScene" uid="uid://0r3xwurj5mmd" path="res://Scenes/walls/wall_window_slide.tscn" id="11_b8503"]
 [ext_resource type="PackedScene" uid="uid://bwqlq831iqp56" path="res://Scenes/holders/fridge_components.tscn" id="12_xj5b4"]
 [ext_resource type="PackedScene" uid="uid://bqk6io71er4qi" path="res://Scenes/furniture/aesthetic/lamp_square_ceiling.tscn" id="13_mmvm6"]
 [ext_resource type="Script" path="res://Scripts/Restaurant/Menu.gd" id="15_6mlv6"]
@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
 [ext_resource type="PackedScene" uid="uid://b3dnl8aq4hu11" path="res://Scenes/holders/onion_box.tscn" id="24_v3tw0"]
+[ext_resource type="PackedScene" uid="uid://dddc8uidofqf6" path="res://3d_models/Kenneys_Furniture/hoodLarge.glb" id="26_qebtt"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cju1x"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -144,27 +145,51 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3642, 0.00454932, 1.81695)
 [node name="lampSquareCeiling3" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.32771, 1.02604, 2.83044)
 
+[node name="OmniLight3D" parent="Restaurant/Building/Lights/lampSquareCeiling3" index="1"]
+light_color = Color(0.921569, 0.921569, 0.921569, 1)
+light_energy = 0.4
+omni_range = 6.629
+omni_attenuation = 0.5
+
 [node name="lampSquareCeiling4" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.21414, 1.02604, 2.83044)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.06004, 1.02604, 2.83044)
+
+[node name="OmniLight3D" parent="Restaurant/Building/Lights/lampSquareCeiling4" index="1"]
+light_color = Color(0.921569, 0.921569, 0.921569, 1)
+light_energy = 0.4
+omni_range = 6.629
+omni_attenuation = 0.5
+
+[node name="lampSquareCeiling8" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.14237, 1.02604, 4.15892)
+
+[node name="OmniLight3D" parent="Restaurant/Building/Lights/lampSquareCeiling8" index="1"]
+light_color = Color(0.921569, 0.921569, 0.921569, 1)
+light_energy = 0.4
+omni_range = 6.629
+omni_attenuation = 0.5
+
+[node name="lampSquareCeiling9" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.14237, 1.02604, 7.16359)
+
+[node name="OmniLight3D" parent="Restaurant/Building/Lights/lampSquareCeiling9" index="1"]
+light_color = Color(0.921569, 0.921569, 0.921569, 1)
+light_energy = 0.4
+omni_range = 6.629
+omni_attenuation = 0.5
 
 [node name="lampSquareCeiling" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.29374, 1.02451, 7.46648)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.29374, 1.02451, 7.11546)
 
-[node name="lampSquareCeiling2" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.96786, 1.03253, 2.82309)
-
-[node name="lampSquareCeiling5" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.45179, 1.03253, 6.45748)
-
-[node name="OmniLight3D" parent="Restaurant/Building/Lights/lampSquareCeiling5" index="1"]
-light_energy = 0.3
-
-[node name="lampSquareCeiling6" parent="Restaurant/Building/Lights" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.504895, 1.03253, 5.83171)
+[node name="OmniLight3D" parent="Restaurant/Building/Lights/lampSquareCeiling" index="1"]
+light_color = Color(0.94902, 0.929412, 0.894118, 1)
+light_energy = 0.5
+omni_range = 4.343
+omni_attenuation = 0.5
 
 [node name="OutsideWalls" type="Node3D" parent="Restaurant/Building"]
 
-[node name="wallWindowSlide" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_0fubg")]
+[node name="wallWindowSlide2" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("11_b8503")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
 
 [node name="wall6" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
@@ -229,7 +254,7 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 6, 0, 
 [node name="wall23" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 5, 0, 9)
 
-[node name="wall24" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
+[node name="wallWindowSlide3" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("11_b8503")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 4, 0, 9)
 
 [node name="wall25" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
@@ -370,13 +395,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79571, 0, 0)
 [node name="kitchenStove" parent="Testing" instance=ExtResource("16_eiaux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.354289, 0, 0)
 
+[node name="hoodLarge" parent="Testing/kitchenStove" instance=ExtResource("26_qebtt")]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0.880137, 0)
+
 [connection signal="despawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_despawned"]
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]
 
 [editable path="Restaurant/Building/roof"]
 [editable path="Restaurant/Building/floor"]
 [editable path="Restaurant/Building/Walls/wallDoorway"]
-[editable path="Restaurant/Building/Lights/lampSquareCeiling5"]
+[editable path="Restaurant/Building/Lights/lampSquareCeiling3"]
+[editable path="Restaurant/Building/Lights/lampSquareCeiling4"]
+[editable path="Restaurant/Building/Lights/lampSquareCeiling8"]
+[editable path="Restaurant/Building/Lights/lampSquareCeiling9"]
+[editable path="Restaurant/Building/Lights/lampSquareCeiling"]
 [editable path="Restaurant/Building/Menu/MenuItemStand"]
 [editable path="Testing/kitchenCabinet"]
 [editable path="Testing/kitchenCabinet2"]

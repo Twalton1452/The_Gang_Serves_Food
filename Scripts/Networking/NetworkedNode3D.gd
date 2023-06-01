@@ -27,6 +27,7 @@ enum SyncPriorityPhase {
 	DELETION, ## Delete Nodes last to make sure all the connections are setup [br]ex: Existing nodes deleted
 }
 
+@export var sync_position = true
 ## The lower the number the more important it is to sync
 @export var priority_sync_order : SyncPriorityPhase = SyncPriorityPhase.REPARENT
 
@@ -56,7 +57,10 @@ func has_additional_sync():
 	return "set_sync_state" in p_node or "get_sync_state" in p_node
 
 func set_sync_state(reader: ByteReader):
-	var global_sync_pos = reader.read_vector3()
+	var global_sync_pos : Vector3
+	if sync_position:
+		global_sync_pos = reader.read_vector3()
+	
 	var path_to = reader.read_path_to()
 	
 	var split_path : PackedStringArray = path_to.split("/")
@@ -73,7 +77,9 @@ func set_sync_state(reader: ByteReader):
 			new_parent.hold_item(p_node)
 		else:
 			p_node.reparent(new_parent, false)
-	p_node.global_position = global_sync_pos
+		
+	if sync_position:
+		p_node.global_position = global_sync_pos
 	
 	if has_additional_sync():
 		# Give the rest of the sync_state to the node to handle
@@ -90,7 +96,8 @@ func get_sync_state() -> ByteWriter:
 	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
 	
 	# Default properties to Sync
-	writer.write_vector3(p_node.global_position)
+	if sync_position:
+		writer.write_vector3(p_node.global_position)
 	writer.write_path_to(p_node)
 	
 	if has_additional_sync():
