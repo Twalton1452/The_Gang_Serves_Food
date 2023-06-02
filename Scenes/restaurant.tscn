@@ -303,12 +303,12 @@ outline_size = 8
 
 [node name="MenuItemStand" parent="Restaurant/Building/Menu" instance=ExtResource("16_n3yt3")]
 
-[node name="TestPattyStack" parent="Restaurant/Building/Menu/MenuItemStand/Holder" index="2" instance=ExtResource("18_32clx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.25521, -0.42582, 4.37289)
+[node name="TestPattyStack" parent="Restaurant/Building/Menu" instance=ExtResource("18_32clx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.25521, -0.000477135, 4.37289)
 
-[node name="Patty" parent="Restaurant/Building/Menu/MenuItemStand/Holder/TestPattyStack" instance=ExtResource("19_rvwxk")]
+[node name="Patty" parent="Restaurant/Building/Menu/TestPattyStack" instance=ExtResource("19_rvwxk")]
 
-[node name="Patty2" parent="Restaurant/Building/Menu/MenuItemStand/Holder/TestPattyStack" instance=ExtResource("19_rvwxk")]
+[node name="Patty2" parent="Restaurant/Building/Menu/TestPattyStack" instance=ExtResource("19_rvwxk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00817773, 0)
 rule = 5
 
