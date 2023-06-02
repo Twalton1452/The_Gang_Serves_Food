@@ -10,8 +10,8 @@ var party_scene = preload("res://Scenes/components/party.tscn")
 var parties : Array[CustomerParty] = []
 var min_party_size = 1
 var max_party_size = 4
-var min_wait_to_spawn_sec = 3.0
-var max_wait_to_spawn_sec = 12.0
+var min_wait_to_spawn_sec = 1.0
+var max_wait_to_spawn_sec = 2.0
 var is_spawning = true
 
 func _ready():
@@ -53,14 +53,13 @@ func spawn_party(party_size: int) -> void:
 	if party_size > max_party_size:
 		return
 	
-	var new_party : CustomerParty = party_scene.instantiate()
+	var new_party : CustomerParty = NetworkingUtils.spawn_node(party_scene, self)
 	new_party.state_changed.connect(_on_party_state_changed)
-	add_child(new_party, true)
 	new_party.position = Vector3.ZERO
 	
 	var party_members : Array[Customer] = []
 	for i in range(party_size):
-		party_members.push_back(customer_scene.instantiate() as Customer)
+		party_members.push_back(NetworkingUtils.spawn_node(customer_scene, new_party) as Customer)
 	
 	new_party.customers = party_members
 	

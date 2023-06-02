@@ -66,13 +66,23 @@ func test_party_full_journey():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not ordering")
 	assert_eq(spawned_party.num_customers_required_to_advance, 1, "Player should only need to talk to 1 customer to initiate waiting for food")
 	for customer in spawned_party.customers:
-		assert_eq(customer.order, menu_item, "Customer doesn't want food")
+		assert_eq_deep(customer.order, menu_item)
 		assert_eq(customer.interactable.is_enabled(), true, "Customer isn't interactable when they should be")
+		assert_not_null(customer.order_visual, "There is no visual for the customer's order")
+		var visual_items = customer.order_visual.get_held_items()
+		assert_eq(visual_items.size(), customer.order.size(), "Visual doesn't match the Order")
+		for i in len(customer.order):
+			var visual = visual_items[i]
+			var order = customer.order[i]
+			assert_eq(visual.SCENE_ID, order, "The visuals for the order is in the wrong places")
+		assert_almost_eq(customer.order_visual.global_position, customer.sitting_chair.holder.global_position, Vector3(0.2, 0.2, 0.2))
+		assert_eq(customer.order_visual.visible, false, "The order visual is showing too early")
 	
 	spawned_party.customers[0]._on_player_interacted() # pretend the player interacted with a customer
 	
 	for customer in spawned_party.customers:
 		assert_eq(customer.interactable.is_enabled(), false, "Customer is interactable when they shouldn't be")
+		assert_eq(customer.order_visual.visible, true, "The order visual isn't showing")
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "The party didn't order")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_FOOD, "Party isn't waiting for their food")
@@ -81,8 +91,12 @@ func test_party_full_journey():
 		chair.holder.hold_item(menu_item_dish.duplicate())
 		chair.holder.interacted.emit() # pretend the player put the item down
 	
+	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Party never got their food")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.EATING, "Party is not eating")
+	
+	for customer in spawned_party.customers:
+		assert_null(customer.order_visual, "The order visual still exists after being given food")
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Party never ate their food")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_TO_PAY, "Party is not waiting to pay")

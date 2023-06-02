@@ -17,8 +17,11 @@ var ByteWriterClass = load("res://Scripts/Networking/ByteWriter.gd")
 ## so this is a phased ordering structure to generate some consistency
 ## Set the NetworkingNode3D priority_sync_order in the editor according to how it should behave
 enum SyncPriorityPhase {
-	SETUP, ## Before Nodes are sync'd [br]ex: Player info, level info
+	SETUP, ## Before Nodes are sync'd [br]ex: Level info
 	INIT_MOVED, ## Existing Nodes when a player joins moved [br]ex: All restaurants start with a Stove and it was moved from the Kitchen to outside
+	AI_SETUP, ## Spawned Parties
+	AI_CREATION, ## Spawned Customers
+	AI_CREATION_NESTED, ## Dynamically generated child components
 	CREATION, ## Create parent Nodes that will have children [br]ex: Run-time generated Plate needs to be created before food can be attached to it
 	NESTED_CREATION, ## Create child Nodes that will have children [br]ex: FoodCombiner inside a run-time generated Plate
 	REPARENT, ## Reparent Nodes after everything has been generated [br]ex: Existing plates are moved
@@ -119,17 +122,9 @@ func _ready():
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID
 		p_node.interacted.connect(_on_interaction)
-	if priority_sync_order == SyncPriorityPhase.CREATION or priority_sync_order == SyncPriorityPhase.NESTED_CREATION:
-		changed = true
 
 func _on_interaction():
 	changed = true
-
-## Sets parameters required for midsession syncing
-func generated_at_run_time_setup():
-	priority_sync_order = SyncPriorityPhase.CREATION
-	changed = true
-	#print("I generated %s at run time | Path: %s" % [p_node.name, p_node.get_path()])
 
 ## Keeps names unique so get_node() calls work correctly
 ## Note: When there are two child nodes with the same name it adds "@" symbol to the name of the most recent
@@ -145,4 +140,4 @@ func generate_unique_name():
 # Can work as a delta signifier to the midsession joins
 func _exit_tree():
 	changed = true
-	#print("[Changed: %s] Parent: %s" % [name, get_parent().name])
+#	print("[Changed: %s] Parent: %s" % [name, get_parent().name])

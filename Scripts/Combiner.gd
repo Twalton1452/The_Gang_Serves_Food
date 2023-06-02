@@ -34,14 +34,12 @@ static func combine(player: Player, resting: Holdable):
 				Combiner.spawn_combiner(player.c_holder, resting_p)
 
 static func spawn_combiner(holder_for_combination : Holder, holder_giving_up_item : Holder) -> StackingHolder:
-	var combiner : StackingHolder = load("res://Scenes/components/food_combiner.tscn").instantiate()
-	var networked_node : NetworkedNode3D = combiner.get_node("NetworkedNode3D")
+	var combiner : StackingHolder = NetworkingUtils.spawn_node(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.FOOD_COMBINER), MidsessionJoinSyncer)
 	
 	holder_giving_up_item.release_item_to(combiner)
 	holder_for_combination.release_item_to(combiner)
 	holder_for_combination.hold_item(combiner)
 	
-	networked_node.generated_at_run_time_setup()
 	return combiner
 				
 ## When a Food Combination gets down to 1 item, it will call this method

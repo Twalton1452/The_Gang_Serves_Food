@@ -10,6 +10,7 @@ signal ate_food
 var target_chair : Chair = null
 var sitting_chair : Chair = null : set = set_chair
 var order : Array[NetworkedIds.Scene] : set = set_order
+var order_visual : CombinedFoodHolder = null
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
@@ -30,6 +31,7 @@ func set_sync_state(reader: ByteReader) -> void:
 	if is_sitting:
 		var chair = reader.read_path_to()
 		sitting_chair = get_node(chair)
+		target_chair = sitting_chair
 		sit()
 	
 	var has_order = reader.read_bool()
@@ -61,13 +63,15 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	return writer
 
 func set_order(value) -> void:
+	order = value
+	
 	# customer has new order
-	if len(value) > 0:
+	if len(order) > 0:
 		interactable.enable_collider()
+		spawn_hidden_order_visual()
 	# resetting customer order
 	else:
 		interactable.disable_collider()
-	order = value
 
 func set_chair(value: Chair):
 	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
@@ -110,6 +114,7 @@ func evaluate_food():
 			if (foods[i] as Food).SCENE_ID != order[i]:
 				return
 		got_order.emit()
+		delete_order_visual()
 		# Don't let the player interact with the food while the customer is about to eat
 		sitting_chair.holder.disable_collider()
 		sitting_chair.holder.get_held_item().disable_collider()
@@ -119,12 +124,39 @@ func evaluate_food():
 func order_from(menu: Menu):
 	if not is_multiplayer_authority():
 		return
+	
 	order = menu.generate_order_for(self)
 	#print("Order is %s" % [order])
 
 func _on_player_interacted() -> void:
 	player_interacted_with.emit()
 	interactable.disable_collider()
+
+## We spawn the visual as the customer makes their order
+## However we don't show it until a Player interaction happens
+## Customer patiently waits for someone to ask them what they want before showing!
+func spawn_hidden_order_visual():
+	if order.size() == 0 or sitting_chair == null:
+		return
+	
+	var combiner : CombinedFoodHolder = NetworkingUtils.spawn_client_only_node(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.FOOD_COMBINER), self)
+	for id in order:
+		var food : Food = NetworkingUtils.spawn_client_only_node(NetworkedScenes.get_scene_by_id(id), combiner)
+		combiner.hold_item_unsafe(food)
+	combiner.stack_items()
+	
+	order_visual = combiner
+	order_visual.global_position = sitting_chair.holder.global_position
+	order_visual.disable_collider()
+	order_visual.disable_held_colliders()
+	order_visual.hide()
+
+func show_order_visual():
+	order_visual.show()
+
+func delete_order_visual():
+	if order_visual != null:
+		order_visual.queue_free()
 
 func eat() -> void:
 	if not is_multiplayer_authority():
@@ -143,6 +175,7 @@ func eat() -> void:
 	NetworkingUtils.send_item_for_deletion(food)
 
 func sit():
-	if target_chair:
+	if target_chair != null:
 		sitting_chair = target_chair
+	if sitting_chair != null:
 		sitting_chair.sit(self)

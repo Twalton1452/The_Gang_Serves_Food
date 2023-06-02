@@ -107,3 +107,11 @@ func _interact(player : Player):
 	# Taking Player's item if it matches with the pre-set ingredient_scene
 	elif acceptable_item(player.c_holder.get_held_item()):
 		player.c_holder.release_item_to(self)
+
+func disable_held_colliders():
+	for item in get_held_items():
+		item.disable_collider()
+
+func enable_held_colliders():
+	for item in get_held_items():
+		item.enable_collider()

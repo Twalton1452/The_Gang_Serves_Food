@@ -11,4 +11,4 @@ stacking_spacing = Vector3(0, 0.007, 0)
 SCENE_ID = 1000
 
 [node name="NetworkedNode3D" parent="." index="0" instance=ExtResource("2_his7f")]
-priority_sync_order = 2
+priority_sync_order = 5

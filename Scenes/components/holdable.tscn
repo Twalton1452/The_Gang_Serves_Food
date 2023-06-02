@@ -10,3 +10,4 @@ script = ExtResource("1_p2xth")
 
 [node name="NetworkedNode3D" type="Node3D" parent="."]
 script = ExtResource("2_6v3vm")
+priority_sync_order = 8

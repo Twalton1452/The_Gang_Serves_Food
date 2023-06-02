@@ -61,6 +61,7 @@ func notify_peers_of_order(order_data: PackedByteArray):
 	
 	party.state = CustomerParty.PartyState.ORDERING
 	party.num_customers_required_to_advance = 1
+	
 
 func pay(party: CustomerParty):
 	if not is_multiplayer_authority():

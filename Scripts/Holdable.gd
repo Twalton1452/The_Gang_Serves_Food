@@ -8,6 +8,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		(get_parent() as Holder).hold_item(self)
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	super(writer)
 	var is_being_held = get_parent() is Holder
 	writer.write_bool(is_being_held)
 	return writer

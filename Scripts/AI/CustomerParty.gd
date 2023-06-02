@@ -44,7 +44,7 @@ var required_interaction_states = [PartyState.ORDERING, PartyState.WAITING_TO_PA
 var state : PartyState = PartyState.SPAWNING : set = set_state
 var num_arrived_to_destination = 0
 var table : Table = null
-var target_pos : Vector3
+var target_pos : Vector3 = Vector3.ZERO
 var num_customers_required_to_advance = 1
 
 func set_sync_state(reader: ByteReader) -> void:
@@ -121,7 +121,6 @@ func set_customers(value: Array[Customer]) -> void:
 		
 		customer.position = Vector3(0,0,-spacing)
 		spacing += customer_spacing
-		add_child(customer, true)
 	NetworkingUtils.sort_array_by_net_id(customers)
 	num_customers_required_to_advance = len(customers)
 
@@ -193,6 +192,7 @@ func wait_for_food():
 	state = CustomerParty.PartyState.WAITING_FOR_FOOD
 	for customer in customers:
 		customer.interactable.disable_collider()
+		customer.show_order_visual()
 		customer.evaluate_food()
 
 func eat_food() -> void:

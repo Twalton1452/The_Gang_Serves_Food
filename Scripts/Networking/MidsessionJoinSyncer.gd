@@ -38,7 +38,7 @@ func sync_nodes_for_new_player(peer_id: int):
 	begin_sync_with_peer.rpc_id(peer_id, changed_net_nodes.size())
 	
 	for net_node in changed_net_nodes as Array[NetworkedNode3D]:
-		print_verbose("[Syncing Node %s] to [Peer: %s]" % [net_node.networked_id, peer_id])
+		print_verbose("[Syncing Node %s | %s] to [Peer: %s]" % [net_node.priority_sync_order, net_node.p_node.name, peer_id])
 		# Tell the Peer all the information it needs to get this NetworkedNode up to date through sync_state
 		sync_networked_node.rpc_id(peer_id, net_node.networked_id, net_node.SCENE_ID, net_node.get_sync_state().data)
 
@@ -59,17 +59,21 @@ func begin_sync_with_peer(num_nodes_to_sync: int):
 func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : PackedByteArray):
 	var net_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
 	var sync_state_reader : ByteReader = ByteReader.new(sync_state)
-	#print("[Peer %s] received request to [sync Node %s]" % [multiplayer.get_unique_id(), networked_id])
+	print_verbose("[Peer %s] received request to [sync Node %s]" % [multiplayer.get_unique_id(), networked_id])
 	var synced = false
 
 	# Find the Networked Node
 	for net_node in net_nodes:
 		# Found the Networked Node
 		if net_node.networked_id == networked_id:
+			print_verbose("Found existing node ", net_node.p_node.name, " its parent is ", net_node.p_node.get_parent().name)
 			net_node.set_sync_state(sync_state_reader)
 			synced = true
 			num_nodes_syncd += 1
 		
+	# TODO: this is finally a problem! YAYYY
+	# If we didn't find one of the pre-existing nodes we start with, delete it!
+	
 	# Didn't find the Networked Node, need to spawn one
 	if not synced:
 		assert(NetworkedScenes.get_scene_by_id(net_scene_id) != null, "%s does not have a NetworkedIds.Scene PATH to instantiate from in SceneIds.gd")
@@ -78,8 +82,8 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 			% [multiplayer.get_unique_id(), networked_id, NetworkedScenes.get_scene_by_id(net_scene_id).get_state().get_node_name(0), networked_id])
 		
 		# Spawn Networked Node
-		var net_scene = NetworkedScenes.get_scene_by_id(net_scene_id).instantiate()
-		add_child(net_scene) # Briefly add the node into the tree so that it can call get_node from within
+		# Add the node into the tree so that it can call get_node from within
+		var net_scene = NetworkingUtils.spawn_node(NetworkedScenes.get_scene_by_id(net_scene_id), self)
 		var net_node = net_scene.get_node("NetworkedNode3D")
 		net_node.networked_id = networked_id
 		net_node.set_sync_state(sync_state_reader)
