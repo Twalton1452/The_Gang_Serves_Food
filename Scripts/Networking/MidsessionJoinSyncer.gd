@@ -5,7 +5,7 @@ extends Node
 
 signal sync_complete
 
-var syncing = false
+var syncing = {}
 var num_nodes_syncd = 0
 var total_num_nodes_to_sync = 0
 var num_packets_to_incur_wait = 50
@@ -19,13 +19,13 @@ func pause_for_players():
 @rpc("call_local", "reliable")
 func unpause_for_players():
 	GameState.hud.hide_notification()
-	syncing = false
+	syncing[multiplayer.get_remote_sender_id()] = false
 	get_tree().paused = false
 
 ## Syncs nodes for Networked Nodes on spawn to ease midsession join synchronization
 func sync_nodes_for_new_player(peer_id: int):
 	pause_for_players.rpc()
-	syncing = true
+	syncing[peer_id] = true
 	print_verbose("------Begin Sync for Peer %s------" % peer_id)
 	
 	var net_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
@@ -60,11 +60,13 @@ func sync_nodes_for_new_player(peer_id: int):
 	print("[Server Result] %d/%d Nodes needed syncing for %s" % [changed_net_nodes.size(), net_nodes.size(), peer_id])
 	
 	await get_tree().create_timer(5.0, true).timeout
-	if get_tree().paused and syncing:
-		syncing = false
-		print_debug("Server waited 5 seconds for the client to sync, it never sent the message it was done so unpausing for everyone")
+	if get_tree().paused and syncing[peer_id]:
+		syncing[peer_id] = false
+		print_debug("Server waited 5 seconds for the client to sync, it never sent the message, disconnecting %s" % peer_id)
 		multiplayer.multiplayer_peer.disconnect_peer(peer_id)
-		unpause_for_players.rpc()
+		if syncing.values().all(func(is_syncing): return not is_syncing):
+			print_debug("Fallback unpausing for everyone as the server is no longer syncing")
+			unpause_for_players.rpc()
 
 @rpc("any_peer", "reliable")
 func begin_sync_with_peer(num_nodes_to_sync: int):
