@@ -17,7 +17,7 @@ script = ExtResource("1_b7oym")
 dish_holder = NodePath("Holder")
 
 [node name="kitchenBarEnd" parent="." instance=ExtResource("2_2a5i1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.101885, 0, 0.103599)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.101392, 0, 0.1043)
 
 [node name="kitchenBarEnd2" parent="." instance=ExtResource("2_2a5i1")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.100681, 0, -0.105728)

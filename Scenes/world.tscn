@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://crg8j7gc45t56"]
+[gd_scene load_steps=10 format=3 uid="uid://crg8j7gc45t56"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_ot15l"]
 [ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="2_jnwi4"]
 [ext_resource type="Texture2D" uid="uid://dbhoh01adyned" path="res://addons/kenney_particle_pack/circle_05.png" id="3_mhqd0"]
+[ext_resource type="Script" path="res://Scripts/UI/HUD.gd" id="3_o7gge"]
+[ext_resource type="Texture2D" uid="uid://b1fergpi25313" path="res://Icons/money-bag_yellow.svg" id="4_incpm"]
+[ext_resource type="Script" path="res://Scripts/UI/MoneyDisplay.gd" id="4_pt1f4"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_q8dkk"]
 
@@ -95,6 +98,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
+script = ExtResource("3_o7gge")
 
 [node name="Reticle" type="TextureRect" parent="CanvasLayer/HUD"]
 layout_mode = 1
@@ -126,6 +130,49 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_2aib2")
 max_value = 3.0
 value = 3.0
 show_percentage = false
+
+[node name="MoneyDisplay" type="Control" parent="CanvasLayer/HUD"]
+anchors_preset = 0
+offset_right = 118.0
+offset_bottom = 36.0
+script = ExtResource("4_pt1f4")
+
+[node name="Container" type="SplitContainer" parent="CanvasLayer/HUD/MoneyDisplay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HUD/MoneyDisplay/Container"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_incpm")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="CanvasLayer/HUD/MoneyDisplay/Container"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "0"
+
+[node name="NotificationLabel" type="Label" parent="CanvasLayer/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -273.5
+offset_top = 52.0
+offset_right = 273.5
+offset_bottom = 143.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 48
+text = "A Player is Joining..."
+horizontal_alignment = 1
 
 [node name="Level" type="Node" parent="."]
 process_mode = 1
