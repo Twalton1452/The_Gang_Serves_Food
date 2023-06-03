@@ -16,12 +16,6 @@ func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
 	(get_parent() as CustomerParty).sync_customer(self)
 	
-	var is_interactable = reader.read_bool()
-	if is_interactable:
-		interactable.enable_collider()
-	else:
-		interactable.disable_collider()
-	
 	var has_target_chair = reader.read_bool()
 	if has_target_chair:
 		var chair = reader.read_path_to()
@@ -42,11 +36,16 @@ func set_sync_state(reader: ByteReader) -> void:
 		if showing_order_visual:
 			show_order_visual()
 		evaluate_food()
+	
+	var is_interactable = reader.read_bool()
+	if is_interactable:
+		interactable.enable_collider()
+	else:
+		interactable.disable_collider()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
 	
-	writer.write_bool(interactable.is_enabled())
 	
 	var has_target_chair = target_chair != null
 	var is_sitting = sitting_chair != null
@@ -65,6 +64,8 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		writer.write_int_array(order as Array[int])
 		var showing_order_visual = order_visual != null and order_visual.visible
 		writer.write_bool(showing_order_visual)
+	
+	writer.write_bool(interactable.is_enabled())
 	return writer
 
 func set_order(value) -> void:
