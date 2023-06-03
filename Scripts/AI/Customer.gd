@@ -112,19 +112,19 @@ func evaluate_food():
 	if not item_on_the_table is CombinedFoodHolder:
 		return
 		
-	var foods = item_on_the_table.get_held_items()
-	if order.size() != foods.size():
+	var presented_dish = item_on_the_table.get_held_items()
+	if order.size() != presented_dish.size():
 		return
 	else:
-		for i in len(foods):
-			if (foods[i] as Food).SCENE_ID != order[i]:
+		for i in len(presented_dish):
+			if (presented_dish[i] as Food).SCENE_ID != order[i]:
 				return
 		got_order.emit()
 		delete_order_visual()
 		# Don't let the player interact with the food while the customer is about to eat
 		sitting_chair.holder.disable_collider()
 		sitting_chair.holder.get_held_item().disable_collider()
-		for food in foods:
+		for food in presented_dish:
 			(food as Food).disable_collider()
 
 func order_from(menu: Menu):
@@ -137,6 +137,28 @@ func order_from(menu: Menu):
 func _on_player_interacted() -> void:
 	player_interacted_with.emit()
 	interactable.disable_collider()
+
+func eat() -> void:
+	if not is_multiplayer_authority():
+		return
+	ate_food.emit()
+	
+	if not sitting_chair.holder.is_holding_item():
+		print_debug("The food should be there, but it isnt. I'm trying to delete it")
+		return
+		
+	var food = sitting_chair.holder.get_held_item()
+	if not food is CombinedFoodHolder:
+		print_debug("The food is not a CombinedFoodHolder, IDK what this is eating")
+		return
+	
+	NetworkingUtils.send_item_for_deletion(food)
+
+func sit():
+	if target_chair != null:
+		sitting_chair = target_chair
+	if sitting_chair != null:
+		sitting_chair.sit(self)
 
 ## We spawn the visual as the customer makes their order
 ## However we don't show it until a Player interaction happens
@@ -176,25 +198,3 @@ func show_order_visual():
 func delete_order_visual():
 	if order_visual != null:
 		order_visual.queue_free()
-
-func eat() -> void:
-	if not is_multiplayer_authority():
-		return
-	ate_food.emit()
-	
-	if not sitting_chair.holder.is_holding_item():
-		print_debug("The food should be there, but it isnt. I'm trying to delete it")
-		return
-		
-	var food = sitting_chair.holder.get_held_item()
-	if not food is CombinedFoodHolder:
-		print_debug("The food is not a CombinedFoodHolder, IDK what this is eating")
-		return
-	
-	NetworkingUtils.send_item_for_deletion(food)
-
-func sit():
-	if target_chair != null:
-		sitting_chair = target_chair
-	if sitting_chair != null:
-		sitting_chair.sit(self)

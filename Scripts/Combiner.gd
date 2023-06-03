@@ -52,8 +52,8 @@ static func combine(player: Player, resting: Holdable):
 static func spawn_combiner(holder_accepting_item : Holder, holder_giving_up_item : Holder) -> StackingHolder:
 	var combiner : StackingHolder = NetworkingUtils.spawn_node(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.FOOD_COMBINER), MidsessionJoinSyncer)
 	
-	holder_giving_up_item.release_item_to(combiner)
 	holder_accepting_item.release_item_to(combiner)
+	holder_giving_up_item.release_item_to(combiner)
 	holder_accepting_item.hold_item(combiner)
 	
 	return combiner

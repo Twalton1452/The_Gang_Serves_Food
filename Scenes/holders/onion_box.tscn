@@ -5,6 +5,9 @@
 
 [node name="OnionBox" instance=ExtResource("1_ct8vd")]
 
+[node name="StackingHolder" parent="." index="3"]
+ingredient_scene = ExtResource("2_a04q7")
+
 [node name="Onion" parent="StackingHolder" index="1" instance=ExtResource("2_a04q7")]
 
 [node name="Onion2" parent="StackingHolder" index="2" instance=ExtResource("2_a04q7")]
