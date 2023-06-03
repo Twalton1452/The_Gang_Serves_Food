@@ -149,9 +149,20 @@ func spawn_hidden_order_visual():
 	for id in order:
 		var food : Food = NetworkingUtils.spawn_client_only_node(NetworkedScenes.get_scene_by_id(id), combiner)
 		combiner.hold_item_unsafe(food)
-		food.material_to_color.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		food.material_to_color.albedo_color.a = 0.3
+		for i in range(food.obj_to_color.get_surface_override_material_count()):
+			food.obj_to_color.get_active_material(i)
+			food.material_to_color.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			food.material_to_color.albedo_color.a = 0.7
 	combiner.stack_items()
+	
+	var floater = Floater.new()
+	floater.move_enabled = true
+	floater.move_amount = Vector3(0.0, 0.05, 0.0)
+	floater.move_to_original_seconds = 1.3
+	floater.move_to_target_seconds = 1.3
+	floater.move_transition_to_target = Tween.TRANS_BACK
+	floater.move_transition_to_target = Tween.TRANS_BACK
+	combiner.add_child(floater)
 	
 	order_visual = combiner
 	order_visual.global_position = sitting_chair.holder.global_position
