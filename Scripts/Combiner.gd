@@ -1,5 +1,14 @@
 class_name Combiner
 
+
+# Theres a cleaner refactor hidden in here
+# Something that handles the types as they come instead of the situations as they happen
+# Handling situations requires context as to what happened in the previous parts 
+# to understand what is going on in the later parts
+# if player holding StackingHolder -> evaluate everything
+# if player holding CombinedFoodHolder -> evaluate everything, etc
+
+
 ## When the player is trying to Combine Food spawn a particlar Holder to handle it
 ## The Food Combiner scene will organize the foods and keep them together
 static func combine(player: Player, resting: Holdable):
@@ -11,34 +20,41 @@ static func combine(player: Player, resting: Holdable):
 	var is_exactly_holder = resting_p is Holder and not resting_p is MultiHolder and \
 							not resting_p is StackingHolder and not CombinedFoodHolder
 	
-	# Player is combining with an item on a counter (Simple Holder)
+	# Player is combining with an item on a counter (Simplest Holder)
 	if is_exactly_holder:
 		Combiner.spawn_combiner(resting_p, player.c_holder)
+		return
+	
+	var player_item = player.c_holder.get_held_item()
 	# Don't combine in-hand if Player is holding a Plate or a box of Food
-	elif not player.c_holder.get_held_item() is MultiHolder:
-		# Player is trying to pull off a Multi/Stacking Holder to continue combining in their hand
-		if player.c_holder.get_held_item() is CombinedFoodHolder:
-			# Give from Player's CombinedFood to resting CombinedFood
-			if resting_p is CombinedFoodHolder:
-				player.c_holder.get_held_item().release_item_to(resting_p)
-			# Take from resting holder into Player's CombinedFood
-			else:
-				resting_p.release_item_to(player.c_holder.get_held_item())
-		# Player is holding 1 ingredient
-		elif not player.c_holder.get_held_item() is StackingHolder:
-			# Player giving to a combination despite having 1 ingredient
-			if resting_p is CombinedFoodHolder:
-				player.c_holder.release_item_to(resting_p)
-			# Player trying to start a combination
-			else:
-				Combiner.spawn_combiner(player.c_holder, resting_p)
+	if player_item is MultiHolder:
+		return
+	
+	# Player is trying to pull off a Multi/Stacking Holder to continue combining in their hand
+	if player_item is CombinedFoodHolder:
+		# Give from Player's CombinedFood to resting CombinedFood
+		if resting_p is CombinedFoodHolder:
+			player_item.release_item_to(resting_p)
+		# Take from resting holder into Player's CombinedFood
+		else:
+			resting_p.release_item_to(player_item)
+		return
+	
+	# Player is holding 1 ingredient
+	if not player_item is StackingHolder:
+		# Player giving to a combination despite having 1 ingredient
+		if resting_p is CombinedFoodHolder:
+			player.c_holder.release_item_to(resting_p)
+		# Player trying to start a combination
+		else:
+			Combiner.spawn_combiner(player.c_holder, resting_p)
 
-static func spawn_combiner(holder_for_combination : Holder, holder_giving_up_item : Holder) -> StackingHolder:
+static func spawn_combiner(holder_accepting_item : Holder, holder_giving_up_item : Holder) -> StackingHolder:
 	var combiner : StackingHolder = NetworkingUtils.spawn_node(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.FOOD_COMBINER), MidsessionJoinSyncer)
 	
 	holder_giving_up_item.release_item_to(combiner)
-	holder_for_combination.release_item_to(combiner)
-	holder_for_combination.hold_item(combiner)
+	holder_accepting_item.release_item_to(combiner)
+	holder_accepting_item.hold_item(combiner)
 	
 	return combiner
 				

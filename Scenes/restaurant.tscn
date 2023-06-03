@@ -315,9 +315,6 @@ rule = 5
 [node name="Ground" parent="Restaurant" instance=ExtResource("2_8d1g5")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
 
-[node name="Ground2" parent="Restaurant" instance=ExtResource("2_8d1g5")]
-transform = Transform3D(30, 0, 0, 0, 1, 0, 0, 0, 30, -12.9225, -12.7027, 16.2087)
-
 [node name="EntryPoint" type="Marker3D" parent="Restaurant"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.97322, 0.0952672, -1.0332)
 

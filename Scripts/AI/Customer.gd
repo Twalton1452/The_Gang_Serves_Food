@@ -38,6 +38,9 @@ func set_sync_state(reader: ByteReader) -> void:
 	if has_order:
 		var to_be_order : Array[int] = reader.read_int_array()
 		order = to_be_order as Array[NetworkedIds.Scene]
+		var showing_order_visual = reader.read_bool()
+		if showing_order_visual:
+			show_order_visual()
 		evaluate_food()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
@@ -60,6 +63,8 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_bool(has_order)
 	if has_order:
 		writer.write_int_array(order as Array[int])
+		var showing_order_visual = order_visual != null and order_visual.visible
+		writer.write_bool(showing_order_visual)
 	return writer
 
 func set_order(value) -> void:

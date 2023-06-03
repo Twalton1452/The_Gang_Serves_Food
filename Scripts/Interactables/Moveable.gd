@@ -1,6 +1,8 @@
 extends Interactable
 class_name Moveable
 
+signal moved
+
 @export var move_amount = Vector3(0.0, -1.0, 0.0)
 
 var is_moved = false
@@ -48,4 +50,4 @@ func move_parent():
 	await tween.finished
 	in_progress = false
 	is_moved = !is_moved
-
+	moved.emit()

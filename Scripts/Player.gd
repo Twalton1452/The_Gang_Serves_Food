@@ -116,12 +116,12 @@ func _physics_process(delta):
 
 func interact() -> void:
 	var interactable = interact_ray_cast.get_collider() as Interactable
-	InteractionManager.attempt_interaction(self, interactable, 0)
+	InteractionManager.attempt_interaction(self, interactable, InteractionManager.InteractionType.PRIMARY)
 	#interactable.interact(self)
 
 func secondary_interact() -> void:
 	var interactable = interact_ray_cast.get_collider() as Interactable
-	InteractionManager.attempt_interaction(self, interactable, 1)
+	InteractionManager.attempt_interaction(self, interactable, InteractionManager.InteractionType.SECONDARY)
 	#interactable.secondary_interact(self)
 
 @rpc("call_local")

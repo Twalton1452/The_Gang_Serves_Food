@@ -8,7 +8,8 @@ enum CombineRule {
 	SUB_TOP,
 	TOP,
 	
-	ANYWHERE,
+	# TODO: Ideally an ANYWHERE food combines to the slot the player points at and doesn't follow ordering
+	ANYWHERE, 
 	
 }
 

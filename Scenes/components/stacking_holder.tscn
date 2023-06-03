@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://5oe7ra5qa4nb"]
 
-[ext_resource type="Script" path="res://Scripts/StackingHolder.gd" id="1_y80lu"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holders/StackingHolder.gd" id="1_y80lu"]
 
 [node name="StackingHolder" type="Area3D"]
 collision_layer = 4

@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://dhncnl67jot6g"]
 
-[ext_resource type="Script" path="res://Scripts/MultiHolder.gd" id="1_7v0mh"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holders/MultiHolder.gd" id="1_7v0mh"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_13cnm"]
 [ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="2_cmp2j"]
 

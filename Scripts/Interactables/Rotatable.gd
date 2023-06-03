@@ -1,6 +1,8 @@
 extends Interactable
 class_name Rotatable
 
+signal rotated
+
 ## Set in degrees, but converted to radians on _ready for the Tween
 @export var tar_rot = Vector3(0.0, -90.0, 0.0)
 @export var is_rotated = false
@@ -48,4 +50,5 @@ func rotate_parent():
 	await t.finished
 	in_progress = false
 	is_rotated = !is_rotated
+	rotated.emit()
 

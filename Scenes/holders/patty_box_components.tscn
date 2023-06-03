@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://c57h4qirynfrb"]
 
-[ext_resource type="Script" path="res://Scripts/MultiHolder.gd" id="1_b1ojg"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holders/MultiHolder.gd" id="1_b1ojg"]
 [ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="2_ac440"]
 [ext_resource type="PackedScene" uid="uid://dfg1k7gfdbgmw" path="res://Scenes/foods/patty.tscn" id="3_bcyji"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="4_4lesx"]

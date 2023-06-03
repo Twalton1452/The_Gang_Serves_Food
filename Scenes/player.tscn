@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_ybpai"]
 [ext_resource type="Material" uid="uid://bfc257eau1ouq" path="res://Materials/Player_mat.tres" id="2_qio0w"]
 [ext_resource type="PackedScene" uid="uid://j4ykwt0h6c4r" path="res://3d_models/Pistol.blend" id="2_rnvw1"]
-[ext_resource type="Script" path="res://Scripts/Holder.gd" id="2_xw32p"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holders/Holder.gd" id="2_xw32p"]
 [ext_resource type="Texture2D" uid="uid://e4pjkdypimg1" path="res://addons/kenney_particle_pack/star_06.png" id="3_wwdcx"]
 [ext_resource type="Script" path="res://Scripts/InteractRay.gd" id="5_dakr0"]
 [ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="5_nhbnr"]

@@ -53,7 +53,7 @@ func begin_sync_with_peer(num_nodes_to_sync: int):
 	print("[Peer %s] received request to begin syncing %s nodes" % [multiplayer.get_unique_id(), num_nodes_to_sync])
 	total_num_nodes_to_sync = num_nodes_to_sync
 	if total_num_nodes_to_sync == 0:
-		finished_syncing()
+		client_finished_syncing()
 
 @rpc("any_peer", "reliable")
 func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : PackedByteArray):
@@ -92,17 +92,22 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 	
 	if num_nodes_syncd == total_num_nodes_to_sync:
 		print("[Peer %s] finished sync with Server for %s/%s nodes" % [multiplayer.get_unique_id(), num_nodes_syncd, total_num_nodes_to_sync])
-		finished_syncing()
+		client_finished_syncing()
 	elif num_nodes_syncd > total_num_nodes_to_sync:
 		print("[Peer %s] is syncing beyond the number of nodes intended %s/%s" % [multiplayer.get_unique_id(), num_nodes_syncd, total_num_nodes_to_sync])
 
 ## Client's game state is sync'd at this point
 ## Sync player specific settings between all clients/server
-func finished_syncing():
+func client_finished_syncing():
 	send_server_my_settings.rpc_id(GameState.SERVER_ID, get_settings_to_send())
+	#send_server_sync_finished.rpc_id(GameState.SERVER_ID)
 	sync_complete.emit()
 
-## This should be some kind of PlayerSettings class that handles this and the decoding part
+@rpc("any_peer", "reliable")
+func send_server_sync_finished():
+	unpause_for_players.rpc()
+
+## TODO: This should be some kind of PlayerSettings class that handles this and the decoding part
 func get_settings_to_send() -> PackedByteArray:
 	var writer = ByteWriter.new()
 	var menu_mesh : MeshInstance2D = get_node("/root/World/CanvasLayer/MainMenu/MeshInstance2D")

@@ -2,8 +2,13 @@ extends Node
 
 ## Autoloaded
 
+enum InteractionType {
+	PRIMARY = 0,
+	SECONDARY = 1,
+}
+
 # Tell the Server we want to Interact, called from clients
-func attempt_interaction(player : Player, interactable : Interactable, i_type : int):
+func attempt_interaction(player : Player, interactable : Interactable, i_type : InteractionType):
 	var p_id = player.name.to_int()
 	var path_to_interactable = StringName(interactable.get_path()).to_utf32_buffer()
 	if is_multiplayer_authority():
@@ -27,10 +32,10 @@ func resolve_interaction(p_id : int, path_to_interactable : PackedByteArray, i_t
 	if node == null or not node is Interactable:
 		return
 	
-	if i_type == 0:
+	if i_type == InteractionType.PRIMARY:
 		(node as Interactable).interact(player)
 		notify_peers_of_interaction.rpc(p_id, path_to_interactable, i_type)
-	elif i_type == 1:
+	elif i_type == InteractionType.SECONDARY:
 		(node as Interactable).secondary_interact(player)
 		notify_peers_of_interaction.rpc(p_id, path_to_interactable, i_type)
 
@@ -46,8 +51,8 @@ func notify_peers_of_interaction(p_id : int, path_to_interactable : PackedByteAr
 	if node == null or not node is Interactable:
 		return
 	
-	if i_type == 0:
+	if i_type == InteractionType.PRIMARY:
 		(node as Interactable).interact(player)
-	elif i_type == 1:
+	elif i_type == InteractionType.SECONDARY:
 		(node as Interactable).secondary_interact(player)
 

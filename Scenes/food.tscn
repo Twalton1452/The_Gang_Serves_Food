@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cfw3pvlp67ws5"]
 
-[ext_resource type="Script" path="res://Scripts/Food.gd" id="1_b73j2"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Food.gd" id="1_b73j2"]
 
 [node name="Food" type="Area3D"]
 script = ExtResource("1_b73j2")

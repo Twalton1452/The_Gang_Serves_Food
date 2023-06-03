@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://gucubnkf1reo"]
 
-[ext_resource type="Script" path="res://Scripts/Food.gd" id="1_lpxhx"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Food.gd" id="1_lpxhx"]
 [ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/food_gradients/patty_cook_gradient.tres" id="2_pwqhe"]
 [ext_resource type="Texture2D" uid="uid://y2en35l2bjh3" path="res://3d_models/Tomato1_Tomato Base.png" id="2_yuckk"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="3_14n6c"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://8lkh6825ij50"]
 
-[ext_resource type="Script" path="res://Scripts/Food.gd" id="1_wjj1o"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Food.gd" id="1_wjj1o"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_2u2tk"]
 [ext_resource type="Gradient" uid="uid://bkf1ebfa3yil8" path="res://Resources/food_gradients/bun_cook_gradient.tres" id="2_sas88"]
 [ext_resource type="Material" uid="uid://csbc8xg3kccfe" path="res://Materials/Bun_mat.tres" id="3_mr88c"]
