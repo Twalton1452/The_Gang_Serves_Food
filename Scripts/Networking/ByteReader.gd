@@ -25,6 +25,11 @@ func decode_u32() -> int:
 	var decoded = data.decode_u32(offset)
 	offset += 4
 	return decoded
+	
+func decode_float() -> float:
+	var decoded = data.decode_float(offset)
+	offset += 4
+	return decoded
 
 func decode_utf8_str() -> String:
 	var str_size = decode_u8()
@@ -56,8 +61,15 @@ func read_int_array() -> Array[int]:
 func read_bool() -> bool:
 	return bool(decode_u8())
 
-func read_float() -> float:
+## Max value 256
+func read_small_float() -> float:
 	return decode_half()
+
+func read_float() -> float:
+	return decode_float()
 
 func read_int() -> int:
 	return decode_u16()
+
+func read_big_int() -> int:
+	return decode_u32()

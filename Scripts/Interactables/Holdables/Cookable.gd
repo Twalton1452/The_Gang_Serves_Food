@@ -27,12 +27,12 @@ var cook_state : CookStates = CookStates.RAW
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
-	cook_progress = reader.read_float()
+	cook_progress = reader.read_small_float()
 	evaluate_cook_rate()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
-	writer.write_float(cook_progress) # half is 2 bytes
+	writer.write_small_float(cook_progress) # half is 2 bytes
 	return writer
 
 func _ready():

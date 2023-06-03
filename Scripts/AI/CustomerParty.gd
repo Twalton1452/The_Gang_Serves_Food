@@ -213,7 +213,6 @@ func pay() -> void:
 	state = PartyState.PAYING
 	await get_tree().create_timer(paying_time_sec).timeout
 	
-	# TODO: GIVE THE PLAYERS MONEYYYYY
 	NetworkedPartyManager.pay(self)
 
 func go_home(entry_point: Node3D, exit_point: Node3D) -> void:

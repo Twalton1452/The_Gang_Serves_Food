@@ -2,7 +2,7 @@ extends Node
 
 ## Autoloaded
 
-signal money_changed(value: float)
+signal money_changed(value: int)
 
 var SERVER_ID = 1
 
@@ -17,15 +17,31 @@ var players : Array[Player] = []
 var level : Level : set = set_level
 var hud : HUD = null
 
-var money : float = 0.0 : set = add_money # Good use case for "Watched" Property in Godot 4.1
+var money : int = 0 # Good use case for "Watched" Property in Godot 4.1
+
+func set_sync_state(reader: ByteReader):
+	set_money(reader.read_big_int())
+
+func get_sync_state() -> ByteWriter:
+	var writer : ByteWriter = ByteWriter.new()
+	writer.write_big_int(money)
+	return writer
 
 func set_level(l: Level):
 	level = l
 	hud = get_node("/root/World/CanvasLayer/HUD")
 
-func add_money(value: float):
-	money += value
+func set_money(value: int):
+	money = value
 	money_changed.emit(money)
+	if is_multiplayer_authority():
+		notify_money_changed.rpc(money)
+
+func add_money(value: int):
+	set_money(money + value)
+
+func subtract_money(value: int):
+	set_money(money - value)
 
 func reset():
 	players.clear()
@@ -68,4 +84,7 @@ func cleanup_disconnecting_player(p_id: int):
 		interactable.enable_collider()
 
 	player.hide()
-	
+
+@rpc("authority", "reliable")
+func notify_money_changed(value: int):
+	set_money(value)

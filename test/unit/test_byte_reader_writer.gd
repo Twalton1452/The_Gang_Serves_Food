@@ -27,12 +27,28 @@ func test_can_read_write_int():
 	var read_value = _reader.read_int()
 	assert_eq(read_value, ev, "Didn't read the value back correctly")
 
-func test_can_read_write_float():
+func test_can_read_write_small_float():
 	var ev = 0.5
-	_writer.write_float(ev)
+	_writer.write_small_float(ev)
 	assert_eq(_writer.offset, 2, "Incorrect offset after writing float")
 	
+	var read_value = _reader.read_small_float()
+	assert_eq(read_value, ev, "Didn't read the value back correctly")
+
+func test_can_read_write_float():
+	var ev = 10000000.05
+	_writer.write_float(ev)
+	assert_eq(_writer.offset, 4, "Incorrect offset after writing float")
+	
 	var read_value = _reader.read_float()
+	assert_eq(read_value, ev, "Didn't read the value back correctly")
+
+func test_can_read_write_big_int():
+	var ev = 2147483647
+	_writer.write_big_int(ev)
+	assert_eq(_writer.offset, 4, "Incorrect offset after writing float")
+	
+	var read_value = _reader.read_big_int()
 	assert_eq(read_value, ev, "Didn't read the value back correctly")
 
 func test_can_read_write_path():

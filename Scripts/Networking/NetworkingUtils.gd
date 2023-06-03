@@ -3,7 +3,7 @@ extends Node
 var ID = 0
 
 # Used to sync from server to client on connection
-@rpc("any_peer", "reliable")
+@rpc("authority", "reliable")
 func sync_id(id: int) -> void:
 	print("[Sync %s] %s ID has been set to %d. Was: %s" % [name, multiplayer.get_unique_id(), id, ID])
 	ID = id

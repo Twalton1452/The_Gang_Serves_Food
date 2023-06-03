@@ -11,8 +11,6 @@ class_name NetworkedNode3D
 ##  - position
 ##	- parent
 
-var ByteWriterClass = load("res://Scripts/Networking/ByteWriter.gd")
-
 ## Some Nodes are dependent on other Node's to be under the correct parent or have some state
 ## so this is a phased ordering structure to generate some consistency
 ## Set the NetworkingNode3D priority_sync_order in the editor according to how it should behave
@@ -93,7 +91,7 @@ func set_sync_state(reader: ByteReader):
 		p_node.after_sync()
 
 func get_sync_state() -> ByteWriter:
-	var writer : ByteWriter = ByteWriterClass.new()
+	var writer = ByteWriter.new()
 	
 	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called
 	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)

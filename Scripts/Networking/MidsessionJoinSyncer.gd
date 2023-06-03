@@ -8,6 +8,8 @@ signal sync_complete
 var syncing = false
 var num_nodes_syncd = 0
 var total_num_nodes_to_sync = 0
+var num_packets_to_incur_wait = 50
+var seconds_to_wait_between_many_packets = 0.1
 
 @rpc("call_local", "reliable")
 func pause_for_players():
@@ -40,10 +42,19 @@ func sync_nodes_for_new_player(peer_id: int):
 	var changed_net_nodes = net_nodes.filter(func(net_node): return net_node.changed)
 	begin_sync_with_peer.rpc_id(peer_id, changed_net_nodes.size())
 	
+	var nodes_sent = 0
+	
 	for net_node in changed_net_nodes as Array[NetworkedNode3D]:
+		if nodes_sent > num_packets_to_incur_wait:
+			nodes_sent = 0
+			print_verbose("Pausing for %s seconds between sending %s packets" % [seconds_to_wait_between_many_packets, num_packets_to_incur_wait])
+			await get_tree().create_timer(seconds_to_wait_between_many_packets, true).timeout
+		
 		print_verbose("[Syncing Node %s | %s] to [Peer: %s]" % [net_node.priority_sync_order, net_node.p_node.name, peer_id])
 		sync_networked_node.rpc_id(peer_id, net_node.networked_id, net_node.SCENE_ID, net_node.get_sync_state().data)
-
+		nodes_sent += 1
+	
+	sync_game_state.rpc_id(peer_id, GameState.get_sync_state().data)
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	print_verbose("-----Finished Sync for Peer %s-----" % peer_id)
 	print("[Server Result] %d/%d Nodes needed syncing for %s" % [changed_net_nodes.size(), net_nodes.size(), peer_id])
@@ -62,7 +73,12 @@ func begin_sync_with_peer(num_nodes_to_sync: int):
 	if total_num_nodes_to_sync == 0:
 		client_finished_syncing()
 
-@rpc("any_peer", "reliable")
+@rpc("authority", "reliable")
+func sync_game_state(sync_state: PackedByteArray):
+	var sync_state_reader : ByteReader = ByteReader.new(sync_state)
+	GameState.set_sync_state(sync_state_reader)
+
+@rpc("authority", "reliable")
 func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : PackedByteArray):
 	var net_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
 	var sync_state_reader : ByteReader = ByteReader.new(sync_state)

@@ -14,7 +14,7 @@ var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.CUSTOMER
 func set_sync_state(reader: ByteReader) -> void:
 	var sync_tar_pos = reader.read_vector3()
 	var in_progress = reader.read_bool()
-	rotation.y = reader.read_float()
+	rotation.y = reader.read_small_float()
 	if in_progress:
 		go_to(sync_tar_pos)
 	else:
@@ -23,7 +23,7 @@ func set_sync_state(reader: ByteReader) -> void:
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_vector3(target_position)
 	writer.write_bool(!nav_agent.is_navigation_finished())
-	writer.write_float(rotation.y)
+	writer.write_small_float(rotation.y)
 	return writer
 
 func _ready() -> void:

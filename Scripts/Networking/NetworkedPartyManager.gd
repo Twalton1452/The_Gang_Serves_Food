@@ -67,14 +67,13 @@ func pay(party: CustomerParty):
 	if not is_multiplayer_authority():
 		return
 	
-	GameState.money += 1.0
+	GameState.add_money(1)
 	
 	party.state = CustomerParty.PartyState.LEAVING_FOR_HOME
 	party.num_customers_required_to_advance = 1
 	
 	var writer = ByteWriter.new()
 	writer.write_str(party.name)
-	writer.write_float(GameState.money)
 	
 	notify_peers_of_pay.rpc(writer.data)
 
@@ -82,8 +81,6 @@ func pay(party: CustomerParty):
 func notify_peers_of_pay(data: PackedByteArray):
 	var reader = ByteReader.new(data)
 	var party_name = reader.read_str()
-	var money = reader.read_float()
-	GameState.money = money
 	var party : CustomerParty = get_party_by_name(party_name)
 	if party == null:
 		return

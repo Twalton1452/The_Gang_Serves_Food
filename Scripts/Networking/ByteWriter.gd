@@ -23,6 +23,11 @@ func encode_u32(value: int) -> void:
 	data.resize(offset)
 	data.encode_u32(offset - 4, value)
 
+func encode_float(value: float) -> void:
+	offset += 4
+	data.resize(offset)
+	data.encode_float(offset - 4, value)
+
 func append_array(arr: PackedByteArray) -> void:
 	offset += arr.size()
 	data.append_array(arr)
@@ -56,8 +61,12 @@ func write_str(s: String):
 	append_array(s_buf)
 
 ## Max value 256
-func write_float(v: float):
+func write_small_float(v: float):
 	encode_half(v)
+
+## Max value 2,147,483,647, but misses values
+func write_float(v: float):
+	encode_float(v)
 
 func write_bool(b: bool):
 	encode_u8(b)
@@ -66,3 +75,6 @@ func write_bool(b: bool):
 func write_int(v: int):
 	encode_u16(v)
 
+## Max value 2,147,483,648
+func write_big_int(v: int):
+	encode_u32(v)
