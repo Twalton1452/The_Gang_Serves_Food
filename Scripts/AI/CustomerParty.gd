@@ -250,8 +250,10 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 	)
 	
 	for customer in customers_ordered_by_closest_to_door:
-		await get_tree().create_timer(wait_between_customers_leaving).timeout
 		customer.delete_order_visual()
+	
+	for customer in customers_ordered_by_closest_to_door:
+		await get_tree().create_timer(wait_between_customers_leaving).timeout
 		customer.go_to(exit_point.global_position)
 	
 	num_customers_required_to_advance = 1

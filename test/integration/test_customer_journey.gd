@@ -15,10 +15,11 @@ func _wait_for_party_to_reach(party: CustomerParty, state: CustomerParty.PartySt
 func _spawn_test_party(num_customers: int) -> CustomerParty:
 	_customer_manager.spawn_party(num_customers)
 	var spawned_party = _customer_manager.parties[-1]
-	spawned_party.think_time_sec = 0.1
-	spawned_party.eating_time_sec = 0.1
-	spawned_party.paying_time_sec = 0.1
-	spawned_party.wait_before_leave_time_sec = 0.1
+	spawned_party.think_time_sec = 0.05
+	spawned_party.eating_time_sec = 0.05
+	spawned_party.paying_time_sec = 0.05
+	spawned_party.wait_before_leave_time_sec = 0.05
+	spawned_party.wait_between_customers_leaving = 0.05
 	for customer in spawned_party.customers:
 		watch_signals(customer)
 		customer.speed = 5.0
@@ -170,7 +171,7 @@ func test_party_can_wait_in_line():
 	# Assert
 	assert_eq(len(_customer_manager.parties), 2, "There are not the correct number of parties")
 
-func test_party_loses_patience_and_leaves():
+func test_party_loses_patience_and_leaves_during_ordering():
 	# Arrange
 	var num_customers_to_spawn = 4
 	_customer_manager.max_parties = 1
@@ -179,7 +180,6 @@ func test_party_loses_patience_and_leaves():
 	_set_test_menu_to([NetworkedIds.Scene.PATTY, NetworkedIds.Scene.TOMATO])
 	
 	var spawned_party = _spawn_test_party(num_customers_to_spawn)
-	
 	await _wait_for_party_to_reach(spawned_party, CustomerParty.PartyState.ORDERING)
 	assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING)
 	
@@ -191,8 +191,11 @@ func test_party_loses_patience_and_leaves():
 	# Assert
 	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME_IMPATIENT)
 	assert_null(spawned_party.table)
-	for customer in spawned_party.customers:
-		assert_eq(customer.order_visual.visible, false)
+	
+	await wait_seconds(spawned_party.wait_before_leave_time_sec)
+	
+	for customer in spawned_party.customers as Array[Customer]:
+		assert_null(customer.order_visual)
 	
 	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never left")
 	

@@ -82,7 +82,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_26lyt")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 
 [node name="EntryNavLink" type="NavigationLink3D" parent="Restaurant/Building/FrontDoor"]
-transform = Transform3D(0.401, 0, 0, 0, 0.401, 0, 0, 0, 0.401, 0.48593, 0, 0)
+transform = Transform3D(0.401, 0, 0, 0, 0.401, 0, 0, 0, 0.401, 0.48593, 0, -0.0755967)
+enabled = false
+bidirectional = false
+navigation_layers = 0
 start_position = Vector3(0, 0, -0.75)
 end_position = Vector3(0, 0, 0.882)
 
