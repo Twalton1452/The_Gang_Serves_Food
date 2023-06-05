@@ -115,6 +115,10 @@ func _secondary_interact(player : Player):
 		
 		# Player trying to Right Click this Holder with just an Item
 		if not player.c_holder.get_held_item() is MultiHolder:
+			# Player probably just wants to put the item down
+			# if they are right clicking an empty holder with an item
+			if not is_holding_item():
+				_interact(player)
 			return
 		
 		# Player confirmed to have MultiHolder, likely Plate
