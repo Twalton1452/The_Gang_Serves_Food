@@ -6,12 +6,38 @@ var _restaurant : Restaurant = null
 var _customer_manager : CustomerManager = null
 var _acceptable_threshold = Vector3(.3, .3, .3)
 
+func _wait_for_party_to_reach(party: CustomerParty, state: CustomerParty.PartyState):
+	for i in range(party.state, state + 1):
+		if party.state == state or party.state > state:
+			return
+		await wait_for_signal(party.state_changed, 1.0, "The party took too long to get to the desired state")
+
+func _spawn_test_party(num_customers: int) -> CustomerParty:
+	_customer_manager.spawn_party(num_customers)
+	var spawned_party = _customer_manager.parties[-1]
+	spawned_party.think_time_sec = 0.1
+	spawned_party.eating_time_sec = 0.1
+	spawned_party.paying_time_sec = 0.1
+	spawned_party.wait_before_leave_time_sec = 0.1
+	for customer in spawned_party.customers:
+		watch_signals(customer)
+		customer.speed = 5.0
+	return spawned_party
+
+func _set_test_menu_to(dish: Array[NetworkedIds.Scene]) -> CombinedFoodHolder:
+	var menu_item_dish = create_combined_food(dish)
+	(_restaurant.menu.get_child(-1) as MenuItem).dish_holder.hold_item(menu_item_dish)
+	(_restaurant.menu.get_child(-1) as MenuItem)._on_holder_changed()
+	return menu_item_dish
+
 func before_each():
 	_restaurant = RestaurantScene.instantiate()
 	add_child_autoqfree(_restaurant)
 	_customer_manager = _restaurant.get_node("CustomerManager")
-	_customer_manager.max_parties = 1
 	_customer_manager.restaurant = _restaurant
+	_customer_manager.max_parties = 1
+	_customer_manager.min_wait_to_spawn_sec = 998
+	_customer_manager.max_wait_to_spawn_sec = 999
 	#watch_signals(_customer_manager)
 
 func test_party_full_journey():
@@ -19,27 +45,10 @@ func test_party_full_journey():
 	# Arrange 
 	var num_customers_to_spawn = 4
 	var menu_item : Array[NetworkedIds.Scene] = [NetworkedIds.Scene.BOTTOM_BUN, NetworkedIds.Scene.PATTY, NetworkedIds.Scene.TOMATO, NetworkedIds.Scene.TOP_BUN]
-	var menu_item_dish = create_combined_food(menu_item)
-	
-	(_restaurant.menu.get_child(-1) as MenuItem).dish_holder.hold_item(menu_item_dish)
-	(_restaurant.menu.get_child(-1) as MenuItem)._on_holder_changed()
-	
-	# Stops the random party generation
-	_customer_manager.min_party_size = 999
-	_customer_manager.max_party_size = 999
-	_customer_manager.min_wait_to_spawn_sec = 998
-	_customer_manager.max_wait_to_spawn_sec = 999
+	var menu_item_dish = _set_test_menu_to(menu_item)
 	
 	# Act
-	_customer_manager.spawn_party(num_customers_to_spawn)
-	var spawned_party = _customer_manager.parties[0]
-	spawned_party.think_time_sec = 0.1
-	spawned_party.eating_time_sec = 0.1
-	spawned_party.paying_time_sec = 0.1
-	spawned_party.wait_before_leave_time_sec = 0.1
-	for customer in spawned_party.customers:
-		watch_signals(customer)
-		customer.speed = 3.0 # Go faster for the test
+	var spawned_party = _spawn_test_party(num_customers_to_spawn)
 	await wait_frames(2) # Let the physics process tick to calculate nav_agent path's
 	
 	# Assert
@@ -143,11 +152,7 @@ func test_party_can_wait_in_line():
 	_restaurant.tables = []
 	
 	# Act
-	_customer_manager.spawn_party(num_customers_to_spawn)
-	
-	var table_wait_party = _customer_manager.parties[0]
-	for customer in table_wait_party.customers:
-		customer.speed = 3.0 # Go faster for the test
+	var table_wait_party = _spawn_test_party(num_customers_to_spawn)
 	await wait_for_signal(table_wait_party.state_changed, 1.3, "The first party took too long to get to the Entry")
 	assert_eq(table_wait_party.state, CustomerParty.PartyState.WALKING_TO_ENTRY, "The first Party is not walking to the entry")
 	
@@ -155,11 +160,7 @@ func test_party_can_wait_in_line():
 	assert_eq(table_wait_party.state, CustomerParty.PartyState.WAITING_FOR_TABLE, "The first Party is not waiting for a table")
 	
 	# Act
-	_customer_manager.spawn_party(num_customers_to_spawn)
-	
-	var line_wait_party = _customer_manager.parties[1]
-	for customer in line_wait_party.customers:
-		customer.speed = 3.0 # Go faster for the test
+	var line_wait_party = _spawn_test_party(num_customers_to_spawn)
 	await wait_for_signal(line_wait_party.state_changed, 1.3, "The second party took too long to walk to the line")
 	assert_eq(line_wait_party.state, CustomerParty.PartyState.WALKING_TO_LINE, "The second Party is not walking to the line")
 	
@@ -168,3 +169,18 @@ func test_party_can_wait_in_line():
 	
 	# Assert
 	assert_eq(len(_customer_manager.parties), 2, "There are not the correct number of parties")
+
+func test_party_loses_patience_and_leaves():
+	# Arrange
+	var num_customers_to_spawn = 4
+	_customer_manager.max_parties = 1
+	
+	# This test customer party HATES carbs
+	var menu_item = _set_test_menu_to([NetworkedIds.Scene.PATTY, NetworkedIds.Scene.TOMATO])
+	
+	# Act
+	var party = _spawn_test_party(num_customers_to_spawn)
+	
+	await _wait_for_party_to_reach(party, CustomerParty.PartyState.ORDERING)
+	assert_eq(party.state, CustomerParty.PartyState.ORDERING)
+	
