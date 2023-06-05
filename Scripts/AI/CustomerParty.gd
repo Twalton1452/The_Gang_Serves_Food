@@ -34,6 +34,7 @@ enum PartyState {
 var patience_decrease_rates = {
 	PartyState.WAITING_IN_LINE: 0.05,
 	PartyState.WAITING_FOR_TABLE: 0.05,
+	PartyState.THINKING: 0.20,
 	PartyState.ORDERING: 0.05,
 	PartyState.WAITING_FOR_FOOD: 0.05,
 	PartyState.WAITING_TO_PAY: 0.05
@@ -241,16 +242,19 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 	target_pos = exit_point.global_position
 	await get_tree().create_timer(wait_before_leave_time_sec).timeout
 	
-	var customers_ordered_by_closest_to_door = customers.duplicate()
+	var customers_ordered_by_closest_to_door : Array[Customer] = customers.duplicate()
 	customers_ordered_by_closest_to_door.sort_custom(func(a: Customer, b: Customer):
 		if b.global_position.distance_to(entry_point.global_position) < a.global_position.distance_to(entry_point.global_position):
 			return true
 		return false
 	)
+	
 	for customer in customers_ordered_by_closest_to_door:
 		await get_tree().create_timer(wait_between_customers_leaving).timeout
 		customer.delete_order_visual()
 		customer.go_to(exit_point.global_position)
+	
+	num_customers_required_to_advance = 1
 
 func _on_customer_arrived():
 	num_arrived_to_destination += 1
