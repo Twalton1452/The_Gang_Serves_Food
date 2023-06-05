@@ -2,9 +2,9 @@ extends GutTest
 
 var PlayerScene = load("res://Scenes/player.tscn")
 
-var HolderClass = load("res://Scripts/Holder.gd")
-var HoldableClass = load("res://Scripts/Holdable.gd")
-var MultiHolderClass = load("res://Scripts/MultiHolder.gd")
+var HolderClass = load("res://Scripts/Interactables/Holders/Holder.gd")
+var HoldableClass = load("res://Scripts/Interactables/Holdables/Holdable.gd")
+var MultiHolderClass = load("res://Scripts/Interactables/Holders/MultiHolder.gd")
 
 var _player : Player = null
 var _multi_h : MultiHolder = null

@@ -2,16 +2,18 @@ extends Node
 
 ## Autoloaded
 
+signal state_changed
 signal money_changed(value: int)
 
 var SERVER_ID = 1
 
 enum Phase {
+	LOBBY,
 	EDITING_RESTAURANT,
 	OPEN_FOR_BUSINESS,
 }
 
-var state : Phase = Phase.OPEN_FOR_BUSINESS
+var state : Phase = Phase.OPEN_FOR_BUSINESS : set = set_state
 
 var players : Array[Player] = []
 var level : Level : set = set_level
@@ -26,6 +28,10 @@ func get_sync_state() -> ByteWriter:
 	var writer : ByteWriter = ByteWriter.new()
 	writer.write_big_int(money)
 	return writer
+
+func set_state(value: Phase):
+	state = value
+	state_changed.emit()
 
 func set_level(l: Level):
 	level = l

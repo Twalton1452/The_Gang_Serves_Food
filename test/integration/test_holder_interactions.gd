@@ -3,9 +3,9 @@ extends GutTest
 ## Each test the Holder being interacted with will start with no item
 class TestHolderWithNoItem extends GutTest:
 	var PlayerScene = load("res://Scenes/player.tscn")
-	var HolderClass = load("res://Scripts/Holder.gd")
-	var HoldableClass = load("res://Scripts/Holdable.gd")
-	var MultiHolderClass = load("res://Scripts/MultiHolder.gd")
+	var HolderClass = load("res://Scripts/Interactables/Holders/Holder.gd")
+	var HoldableClass = load("res://Scripts/Interactables/Holdables/Holdable.gd")
+	var MultiHolderClass = load("res://Scripts/Interactables/Holders/MultiHolder.gd")
 
 	var _player : Player = null
 	var _holder : Holder = null
@@ -33,10 +33,10 @@ class TestHolderWithNoItem extends GutTest:
 class TestHolderWithHoldable extends GutTest:
 	var PlayerScene = load("res://Scenes/player.tscn")
 	
-	var HolderClass = load("res://Scripts/Holder.gd")
-	var HoldableClass = load("res://Scripts/Holdable.gd")
-	var MultiHolderClass = load("res://Scripts/MultiHolder.gd")
-	var StackingHolderClass = load("res://Scripts/StackingHolder.gd")
+	var HolderClass = load("res://Scripts/Interactables/Holders/Holder.gd")
+	var HoldableClass = load("res://Scripts/Interactables/Holdables/Holdable.gd")
+	var MultiHolderClass = load("res://Scripts/Interactables/Holders/MultiHolder.gd")
+	var StackingHolderClass = load("res://Scripts/Interactables/Holders/StackingHolder.gd")
 
 	var _player : Player = null
 	var _holder : Holder = null
@@ -137,10 +137,10 @@ class TestHolderWithMultiHolder extends GutTest:
 
 	var PlayerScene = load("res://Scenes/player.tscn")
 	
-	var HolderClass = load("res://Scripts/Holder.gd")
-	var HoldableClass = load("res://Scripts/Holdable.gd")
-	var MultiHolderClass = load("res://Scripts/MultiHolder.gd")
-	var StackingHolderClass = load("res://Scripts/StackingHolder.gd")
+	var HolderClass = load("res://Scripts/Interactables/Holders/Holder.gd")
+	var HoldableClass = load("res://Scripts/Interactables/Holdables/Holdable.gd")
+	var MultiHolderClass = load("res://Scripts/Interactables/Holders/MultiHolder.gd")
+	var StackingHolderClass = load("res://Scripts/Interactables/Holders/StackingHolder.gd")
 
 	var _player : Player = null
 	var _holder : Holder = null
@@ -230,10 +230,10 @@ class TestHolderWithMultiHolder extends GutTest:
 class TestHolderWithStackingHolder extends GutTest:
 	var PlayerScene = load("res://Scenes/player.tscn")
 	
-	var HolderClass = load("res://Scripts/Holder.gd")
-	var HoldableClass = load("res://Scripts/Holdable.gd")
-	var MultiHolderClass = load("res://Scripts/MultiHolder.gd")
-	var StackingHolderClass = load("res://Scripts/StackingHolder.gd")
+	var HolderClass = load("res://Scripts/Interactables/Holders/Holder.gd")
+	var HoldableClass = load("res://Scripts/Interactables/Holdables/Holdable.gd")
+	var MultiHolderClass = load("res://Scripts/Interactables/Holders/MultiHolder.gd")
+	var StackingHolderClass = load("res://Scripts/Interactables/Holders/StackingHolder.gd")
 
 	var _player : Player = null
 	var _holder : Holder = null
@@ -275,10 +275,13 @@ class TestHolderWithStackingHolder extends GutTest:
 class TestHolderWithCombinedFoodHolder extends GutTest:
 	var PlayerScene = load("res://Scenes/player.tscn")
 	
-	var HolderClass = load("res://Scripts/Holder.gd")
-	var FoodClass = load("res://Scripts/Food.gd")
-	var MultiHolderClass = load("res://Scripts/MultiHolder.gd")
-	var CombinedFoodHolderClass = load("res://Scripts/CombinedFoodHolder.gd")
+	var HolderClass = load("res://Scripts/Interactables/Holders/Holder.gd")
+	var HoldableClass = load("res://Scripts/Interactables/Holdables/Holdable.gd")
+	var MultiHolderClass = load("res://Scripts/Interactables/Holders/MultiHolder.gd")
+	var StackingHolderClass = load("res://Scripts/Interactables/Holders/StackingHolder.gd")
+	
+	var FoodClass = load("res://Scripts/Interactables/Holdables/Food.gd")
+	var CombinedFoodHolderClass = load("res://Scripts/Interactables/Holders/CombinedFoodHolder.gd")
 
 	var _player : Player = null
 	var _holder : Holder = null
@@ -291,12 +294,12 @@ class TestHolderWithCombinedFoodHolder extends GutTest:
 		add_child_autoqfree(_holder)
 		_combined_food = CombinedFoodHolderClass.new()
 		_holder.add_child(_combined_food)
-		var DoubledFoodClass = double(load("res://Scripts/Food.gd"), DOUBLE_STRATEGY.SCRIPT_ONLY)
+		var DoubledFoodClass = double(FoodClass, DOUBLE_STRATEGY.SCRIPT_ONLY)
 		_combined_food.add_child(DoubledFoodClass.new())
 		_combined_food.add_child(DoubledFoodClass.new())
 		
 	func test_combinedfood_swaps_with_player_combinedfood():
-		var DoubledFoodClass = double(load("res://Scripts/Food.gd"), DOUBLE_STRATEGY.SCRIPT_ONLY)
+		var DoubledFoodClass = double(FoodClass, DOUBLE_STRATEGY.SCRIPT_ONLY)
 		var combined_food = CombinedFoodHolderClass.new()
 		_player.c_holder.add_child(combined_food)
 		combined_food.add_child(DoubledFoodClass.new())

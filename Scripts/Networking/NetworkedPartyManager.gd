@@ -4,6 +4,40 @@ extends Node
 
 ## Class to handle all of the RPC's related to party spawning and state changes
 
+var patience_timer : Timer
+var patience_tick_rate_seconds = 1.0
+
+func _ready():
+	# For Autoload's this isn't reliable
+	if not is_multiplayer_authority():
+		return
+	
+	patience_timer = Timer.new()
+	add_child(patience_timer)
+	patience_timer.timeout.connect(_on_patience_tick)
+	
+	GameState.state_changed.connect(_on_game_state_changed)
+	_on_game_state_changed()
+
+func _on_game_state_changed():
+	if not is_multiplayer_authority():
+		return
+	
+	if GameState.state == GameState.Phase.OPEN_FOR_BUSINESS:
+		patience_timer.start(patience_tick_rate_seconds)
+	else:
+		patience_timer.stop()
+
+func _on_patience_tick():
+	if not is_multiplayer_authority():
+		return
+	
+	notify_patience_tick.rpc()
+
+@rpc("authority", "call_local")
+func notify_patience_tick():
+	get_tree().call_group(str(NetworkedIds.Scene.CUSTOMER_PARTY), "decrease_patience")
+
 func get_parties():
 	return get_tree().get_nodes_in_group(str(NetworkedIds.Scene.CUSTOMER_PARTY))
 

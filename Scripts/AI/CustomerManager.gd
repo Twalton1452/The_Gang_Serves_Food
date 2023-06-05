@@ -122,6 +122,7 @@ func clean_up_party(party: CustomerParty) -> void:
 	parties.remove_at(i)
 	NetworkingUtils.send_item_for_deletion(party)
 	if not is_spawning:
+		is_spawning = true
 		start_customer_spawning()
 
 func _on_party_state_changed(party: CustomerParty):
@@ -131,6 +132,8 @@ func _on_party_state_changed(party: CustomerParty):
 		CustomerParty.PartyState.THINKING:
 			draft_order_for(party)
 		CustomerParty.PartyState.LEAVING_FOR_HOME:
+			send_customers_home(party)
+		CustomerParty.PartyState.LEAVING_FOR_HOME_IMPATIENT:
 			send_customers_home(party)
 		CustomerParty.PartyState.GONE_HOME:
 			clean_up_party(party)

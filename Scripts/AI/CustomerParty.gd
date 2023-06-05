@@ -27,7 +27,16 @@ enum PartyState {
 	WAITING_TO_PAY = 10, # PATIENCE - Waiting for player to help them pay
 	PAYING = 11, # Wait Phase before transitioning to leaving for more realism
 	LEAVING_FOR_HOME = 12, # Traveling to the kill zone
-	GONE_HOME = 13, # Traveling to the kill zone
+	LEAVING_FOR_HOME_IMPATIENT = 13, # Party got impatient
+	GONE_HOME = 14, # Traveling to the kill zone
+}
+
+var patience_decrease_rates = {
+	PartyState.WAITING_IN_LINE: 0.05,
+	PartyState.WAITING_FOR_TABLE: 0.05,
+	PartyState.ORDERING: 0.05,
+	PartyState.WAITING_FOR_FOOD: 0.05,
+	PartyState.WAITING_TO_PAY: 0.05
 }
 
 var think_time_sec = 2.0
@@ -36,16 +45,17 @@ var paying_time_sec = 2.0
 var wait_before_leave_time_sec = 1.0
 var wait_between_customers_leaving = 0.2
 var customer_spacing = 0.5
-var customers : Array[Customer] = [] : set = set_customers#, get = get_customers
+var customers : Array[Customer] = [] : set = set_customers
 var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.CUSTOMER_PARTY
 var required_interaction_states = [PartyState.ORDERING, PartyState.WAITING_TO_PAY]
 
 # Saved/Loaded State
 var state : PartyState = PartyState.SPAWNING : set = set_state
 var num_arrived_to_destination = 0
-var table : Table = null
-var target_pos : Vector3 = Vector3.ZERO
 var num_customers_required_to_advance = 1
+var target_pos : Vector3 = Vector3.ZERO
+var table : Table = null
+var patience : float = 1.0
 
 func set_sync_state(reader: ByteReader) -> void:
 	# Before performing any customer operations, wait for the sync process to complete
@@ -64,6 +74,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		table.is_empty = reader.read_bool()
 		table.party_in_transit = reader.read_bool()
 		table.color = reader.read_color()
+	patience = reader.read_small_float()
 	(get_parent() as CustomerManager).sync_party(self)
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
@@ -78,6 +89,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		writer.write_bool(table.is_empty)
 		writer.write_bool(table.party_in_transit)
 		writer.write_color(table.color)
+	writer.write_small_float(patience)
 	return writer
 
 func sync_customer(customer: Customer) -> void:
@@ -93,16 +105,23 @@ func set_state(value: PartyState) -> void:
 	num_arrived_to_destination = 0
 	num_customers_required_to_advance = len(customers)
 	emit_state_changed.call_deferred()
-	if table:
-		if state in required_interaction_states:
+	
+	if patience_decrease_rates.has(state):
+		patience = 1.0
+	
+	if state in required_interaction_states:
+		if table:
 			table.color = Color.GOLD
-		else:
+	else:
+		if table:
 			table.color = Color.FOREST_GREEN
 	#print("Party has advanced to state: %s" % str(state))
 
 func _ready():
 	add_to_group(str(NetworkedIds.Scene.CUSTOMER_PARTY))
 
+## wrapper around the signal to emit at the end of the frame
+## allows the party to set all of its state before notifying others
 func emit_state_changed():
 	state_changed.emit(self)
 
@@ -230,6 +249,7 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 	)
 	for customer in customers_ordered_by_closest_to_door:
 		await get_tree().create_timer(wait_between_customers_leaving).timeout
+		customer.delete_order_visual()
 		customer.go_to(exit_point.global_position)
 
 func _on_customer_arrived():
@@ -246,10 +266,10 @@ func advance_party_state():
 			state = PartyState.WAITING_IN_LINE
 		PartyState.WALKING_TO_ENTRY:
 			state = PartyState.WAITING_FOR_TABLE
-		PartyState.WAITING_FOR_TABLE: pass # handled by _on_party_state_changed
+		PartyState.WAITING_FOR_TABLE: pass # handled by CustomerManager
 		PartyState.WALKING_TO_TABLE:
 			sit_at_table()
-		PartyState.THINKING: pass # handled by _on_party_state_changed
+		PartyState.THINKING: pass # handled by CustomerManager
 		PartyState.ORDERING:
 			wait_for_food()
 		PartyState.WAITING_FOR_FOOD:
@@ -259,6 +279,12 @@ func advance_party_state():
 		PartyState.WAITING_TO_PAY:
 			pay()
 		PartyState.PAYING: pass # just a wait phase for now
-		PartyState.LEAVING_FOR_HOME:
+		PartyState.LEAVING_FOR_HOME,PartyState.LEAVING_FOR_HOME_IMPATIENT:
 			state = PartyState.GONE_HOME
-		PartyState.GONE_HOME: pass # handled by _on_party_state_changed
+		PartyState.GONE_HOME: pass # handled by CustomerManager
+
+func decrease_patience():
+	if patience_decrease_rates.has(state):
+		patience -= patience_decrease_rates[state]
+		if patience <= 0:
+			state = PartyState.LEAVING_FOR_HOME_IMPATIENT
