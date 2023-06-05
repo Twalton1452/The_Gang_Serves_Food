@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://gucubnkf1reo"]
 
 [ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Food.gd" id="1_lpxhx"]
-[ext_resource type="Gradient" uid="uid://ppxosf5cvvp1" path="res://Resources/food_gradients/patty_cook_gradient.tres" id="2_pwqhe"]
+[ext_resource type="Gradient" uid="uid://cxx57qulafk0k" path="res://Resources/food_gradients/patty_cook_gradient_const.tres" id="2_f7r75"]
 [ext_resource type="Texture2D" uid="uid://y2en35l2bjh3" path="res://3d_models/Tomato1_Tomato Base.png" id="2_yuckk"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="3_14n6c"]
 
@@ -56,7 +56,7 @@ collision_mask = 0
 script = ExtResource("1_lpxhx")
 rule = 3
 stacking_spacing = Vector3(0, 0.01, 0)
-gradient = ExtResource("2_pwqhe")
+gradient = ExtResource("2_f7r75")
 obj_to_color = NodePath("Cylinder")
 SCENE_ID = 4
 mesh_to_highlight = NodePath("Cylinder")

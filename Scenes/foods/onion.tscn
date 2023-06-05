@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://il2v7thuvjnp"]
 
-[ext_resource type="Gradient" uid="uid://b6luob8iakdeb" path="res://Resources/food_gradients/onion_cook_gradient.tres" id="2_k1n5n"]
+[ext_resource type="Gradient" uid="uid://c3mi2si2wsw6o" path="res://Resources/food_gradients/onion_cook_gradient_const.tres" id="2_hxudu"]
 [ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Food.gd" id="2_m5uby"]
 [ext_resource type="Material" uid="uid://qj3vnwae2jqh" path="res://Materials/Onion_mat.tres" id="3_6k0h5"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="4_5m2ev"]
@@ -78,7 +78,7 @@ collision_mask = 0
 script = ExtResource("2_m5uby")
 rule = 3
 stacking_spacing = Vector3(0, 0.011, 0)
-gradient = ExtResource("2_k1n5n")
+gradient = ExtResource("2_hxudu")
 obj_to_color = NodePath("Cylinder")
 raw_cook_rate = 0.01
 cooked_cook_rate = 0.01
