@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Food.gd" id="1_wjj1o"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_2u2tk"]
-[ext_resource type="Gradient" uid="uid://botyxu05kfse2" path="res://Resources/food_gradients/bun_cook_gradient_const.tres" id="2_rfawd"]
+[ext_resource type="Gradient" uid="uid://botyxu05kfse2" path="res://Resources/gradients/bun_cook_gradient_const.tres" id="2_rfawd"]
 [ext_resource type="Material" uid="uid://csbc8xg3kccfe" path="res://Materials/Bun_mat.tres" id="3_mr88c"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e78pq"]

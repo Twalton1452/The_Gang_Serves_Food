@@ -192,8 +192,6 @@ func test_party_loses_patience_and_leaves_during_ordering():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME_IMPATIENT)
 	assert_null(spawned_party.table)
 	
-	await wait_seconds(spawned_party.wait_before_leave_time_sec)
-	
 	for customer in spawned_party.customers as Array[Customer]:
 		assert_null(customer.order_visual)
 	

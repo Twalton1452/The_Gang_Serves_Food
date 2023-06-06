@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dfg1k7gfdbgmw"]
 
 [ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Food.gd" id="1_5hgjy"]
-[ext_resource type="Gradient" uid="uid://cxx57qulafk0k" path="res://Resources/food_gradients/patty_cook_gradient_const.tres" id="2_dcdml"]
+[ext_resource type="Gradient" uid="uid://cxx57qulafk0k" path="res://Resources/gradients/patty_cook_gradient_const.tres" id="2_dcdml"]
 [ext_resource type="Material" uid="uid://b60lm8s0trq5f" path="res://Materials/Patty_mat.tres" id="3_s7cyn"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="4_df2er"]
 
