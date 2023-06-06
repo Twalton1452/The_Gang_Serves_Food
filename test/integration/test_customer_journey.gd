@@ -32,6 +32,8 @@ func _set_test_menu_to(dish: Array[NetworkedIds.Scene]) -> CombinedFoodHolder:
 	return menu_item_dish
 
 func before_each():
+	# Disables auto-customer spawning, could cause an issue down the line
+	GameState.state = GameState.Phase.EDITING_RESTAURANT
 	_restaurant = RestaurantScene.instantiate()
 	add_child_autoqfree(_restaurant)
 	_customer_manager = _restaurant.get_node("CustomerManager")
@@ -199,4 +201,100 @@ func test_party_loses_patience_and_leaves_during_ordering():
 	
 	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
 	assert_null(spawned_party, "Party never got deleted after leaving")
+
+func test_party_loses_patience_and_leaves_during_thinking_with_no_menu():
+	# Arrange
+	var num_customers_to_spawn = 4
+	_customer_manager.max_parties = 1
 	
+	var spawned_party = _spawn_test_party(num_customers_to_spawn)
+	await _wait_for_party_to_reach(spawned_party, CustomerParty.PartyState.THINKING)
+	assert_eq(spawned_party.state, CustomerParty.PartyState.THINKING)
+	
+	# Act
+	spawned_party.patience = .01
+	NetworkedPartyManager._on_patience_tick()
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't leave impatient")
+	
+	# Assert
+	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME_IMPATIENT)
+	assert_null(spawned_party.table)
+	
+	for customer in spawned_party.customers as Array[Customer]:
+		assert_null(customer.order_visual)
+	
+	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never left")
+	
+	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
+	assert_null(spawned_party, "Party never got deleted after leaving")
+
+func test_party_loses_patience_and_leaves_during_waiting_to_pay():
+	# Arrange
+	var num_customers_to_spawn = 4
+	_customer_manager.max_parties = 1
+	
+	# Carbs only
+	var menu_item_dish = _set_test_menu_to([NetworkedIds.Scene.BOTTOM_BUN, NetworkedIds.Scene.TOP_BUN])
+	
+	var spawned_party = _spawn_test_party(num_customers_to_spawn)
+	await _wait_for_party_to_reach(spawned_party, CustomerParty.PartyState.ORDERING)
+	assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING)
+	
+	(spawned_party.customers[0] as Customer)._on_player_interacted()
+	
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't leave impatient")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_FOOD)
+	
+	for chair in _restaurant.tables[0].chairs:
+		chair.holder.hold_item(menu_item_dish.duplicate())
+		chair.holder.interacted.emit() # pretend the player put the item down
+	
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't eat")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.EATING)
+	
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't finish eating")
+	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_TO_PAY)
+	
+	# Act
+	spawned_party.patience = .01
+	NetworkedPartyManager._on_patience_tick()
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't leave impatient")
+	
+	# Assert
+	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME_IMPATIENT)
+	assert_null(spawned_party.table)
+	
+	for customer in spawned_party.customers as Array[Customer]:
+		assert_null(customer.order_visual)
+	
+	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never left")
+	
+	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
+	assert_null(spawned_party, "Party never got deleted after leaving")
+	
+func test_party_loses_patience_and_leaves_during_waiting_for_table():
+	# Arrange
+	var num_customers_to_spawn = 4
+	_customer_manager.max_parties = 1
+	_restaurant.tables = []
+	
+	var spawned_party = _spawn_test_party(num_customers_to_spawn)
+	await _wait_for_party_to_reach(spawned_party, CustomerParty.PartyState.WAITING_FOR_TABLE)
+	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_TABLE)
+	
+	# Act
+	spawned_party.patience = .01
+	NetworkedPartyManager._on_patience_tick()
+	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't leave impatient")
+	
+	# Assert
+	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME_IMPATIENT)
+	assert_null(spawned_party.table)
+	
+	for customer in spawned_party.customers as Array[Customer]:
+		assert_null(customer.order_visual)
+	
+	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never left")
+	
+	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
+	assert_null(spawned_party, "Party never got deleted after leaving")
