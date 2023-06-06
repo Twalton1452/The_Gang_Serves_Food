@@ -8,17 +8,27 @@ class_name PatienceBar
 @onready var bar_pivot : Node3D = $BarPivot
 
 var patience_gradient : Gradient = load("res://Resources/gradients/patience_gradient.tres")
-var tween : Tween = null
+var progress_bar_tween : Tween = null
+var reset_tween : Tween = null
 
 func reset():
-	if tween != null and tween.is_valid():
-		tween.kill()
+	if progress_bar_tween != null and progress_bar_tween.is_valid():
+		progress_bar_tween.kill()
 	bar_pivot.scale.y = 1.0
 	bar.modulate = patience_gradient.sample(0.0)
+
+func pop():
+	if reset_tween != null and reset_tween.is_valid():
+		reset_tween.kill()
+		bar_pivot.scale = Vector3.ONE
+	reset_tween = create_tween()
+	reset_tween.tween_property(self, "scale", Vector3.ONE * 1.2, 0.2).set_trans(Tween.TRANS_ELASTIC)
+	reset_tween.tween_property(self, "scale", Vector3.ONE, 0.3).set_ease(Tween.EASE_OUT)
 
 func show_visual():
 	reset()
 	show()
+	pop()
 
 func hide_visual():
 	hide()
@@ -36,10 +46,9 @@ func _on_patience_changed(patience: float):
 
 func smooth_change(patience: float, color: Color):
 	if patience < bar_pivot.scale.y and patience > 0:
-		tween = create_tween()
-		tween.tween_property(bar_pivot, "scale:y", patience, NetworkedPartyManager.patience_tick_rate_seconds).set_ease(Tween.EASE_OUT)
-		#tween.parallel().tween_property(bar, "modulate", color, NetworkedPartyManager.patience_tick_rate_seconds)
-	elif tween != null and tween.is_valid():
-		tween.kill()
+		progress_bar_tween = create_tween()
+		progress_bar_tween.tween_property(bar_pivot, "scale:y", patience, NetworkedPartyManager.patience_tick_rate_seconds).set_ease(progress_bar_tween.EASE_OUT)
+	elif progress_bar_tween != null and progress_bar_tween.is_valid():
+		progress_bar_tween.kill()
 		bar_pivot.scale.y = 0.0
 	bar.modulate = color
