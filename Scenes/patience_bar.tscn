@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/UI/PatienceBar.gd" id="1_bsmu0"]
 [ext_resource type="Texture2D" uid="uid://cgbln3c8y5jj7" path="res://Sprites/VerticalBar.png" id="1_digld"]
-[ext_resource type="Texture2D" path="res://Sprites/money-time.png" id="3_h66gq"]
+[ext_resource type="Texture2D" uid="uid://x5apo61lmn3e" path="res://Sprites/CustomerPartyIcons/food-plate.png" id="3_towdt"]
 
 [node name="PatienceBar" type="Node3D"]
 script = ExtResource("1_bsmu0")
@@ -18,7 +18,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0118576, 0)
 pixel_size = 0.0008
 billboard = 2
 render_priority = 2
-texture = ExtResource("3_h66gq")
+texture = ExtResource("3_towdt")
 
 [node name="BarPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.158815, 0)

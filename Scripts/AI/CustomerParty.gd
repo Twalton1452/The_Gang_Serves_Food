@@ -32,13 +32,31 @@ enum PartyState {
 	GONE_HOME = 14, # Traveling to the kill zone
 }
 
-var patience_decrease_rates = {
-	PartyState.WAITING_IN_LINE: 0.05,
-	PartyState.WAITING_FOR_TABLE: 0.05,
-	PartyState.THINKING: 0.20,
-	PartyState.ORDERING: 0.05,
-	PartyState.WAITING_FOR_FOOD: 0.05,
-	PartyState.WAITING_TO_PAY: 0.05
+var patience_states = {
+	PartyState.WAITING_IN_LINE: {
+		"rate": 0.05,
+		"icon": preload("res://Sprites/CustomerPartyIcons/wait-in-line-line.png"),
+	},
+	PartyState.WAITING_FOR_TABLE: {
+		"rate": 0.05,
+		"icon": preload("res://Sprites/CustomerPartyIcons/wait-in-line-line.png"),
+	},
+	PartyState.THINKING: {
+		"rate": 0.20,
+		"icon": preload("res://Sprites/CustomerPartyIcons/brain.png"),
+	},
+	PartyState.ORDERING: {
+		"rate": 0.05,
+		"icon": preload("res://Sprites/CustomerPartyIcons/cooking-lid.png"),
+	},
+	PartyState.WAITING_FOR_FOOD: {
+		"rate": 0.05,
+		"icon": preload("res://Sprites/CustomerPartyIcons/food-plate.png"),
+	},
+	PartyState.WAITING_TO_PAY: {
+		"rate": 0.05,
+		"icon": preload("res://Sprites/CustomerPartyIcons/money-time.png"),
+	},
 }
 
 var patience_expressions = [
@@ -170,12 +188,13 @@ func set_customers(value: Array[Customer]) -> void:
 	num_customers_required_to_advance = len(customers)
 
 func is_in_patience_state() -> bool:
-	return patience_decrease_rates.has(state)
+	return patience_states.has(state)
 
 func reset_patience():
 	patience = 1.0
 	if patience_bar_visual:
 		if is_in_patience_state():
+			patience_bar_visual.icon.texture = patience_states[state].icon
 			patience_bar_visual.show_visual()
 		else:
 			patience_bar_visual.hide_visual()
@@ -205,8 +224,8 @@ func decrease_patience():
 	if not is_in_patience_state():
 		return
 	
-	patience -= patience_decrease_rates[state]
-	if patience < 0 - patience_decrease_rates[state]:
+	patience -= patience_states[state].rate
+	if patience < 0 - patience_states[state].rate:
 		patience_depleted()
 		return
 	
