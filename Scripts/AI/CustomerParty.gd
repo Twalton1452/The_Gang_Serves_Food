@@ -175,10 +175,13 @@ func is_in_patience_state() -> bool:
 func reset_patience():
 	patience = 1.0
 	if patience_bar_visual:
-		patience_bar_visual.reset()
+		if is_in_patience_state():
+			patience_bar_visual.show_visual()
+		else:
+			patience_bar_visual.hide_visual()
 		
 	for customer in customers:
-		customer.pixel_face.change_expression_to(PixelFace.Face.Smile)
+		customer.pixel_face.change_expression_to(patience_expressions[0])
 
 func connect_to_patience_bar_visual(patience_bar: PatienceBar) -> void:
 	if patience_bar == null:
@@ -187,7 +190,7 @@ func connect_to_patience_bar_visual(patience_bar: PatienceBar) -> void:
 		disconnect_from_patience_bar_visual()
 	patience_bar_visual = patience_bar
 	patience_changed.connect(patience_bar_visual._on_patience_changed)
-	patience_bar_visual.show_visual()
+	reset_patience()
 
 func disconnect_from_patience_bar_visual():
 	if patience_bar_visual == null or not patience_changed.is_connected(patience_bar_visual._on_patience_changed):

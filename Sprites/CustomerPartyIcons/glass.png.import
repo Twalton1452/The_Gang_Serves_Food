@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1cq2sywqlemo"
-path.s3tc="res://.godot/imported/food-dish-white-64px.png-4327752c49ae02d1fb7f7707f01cf45f.s3tc.ctex"
+uid="uid://du0emqxf1hwy2"
+path.s3tc="res://.godot/imported/glass.png-585491efb6f54e3b43804de4b76ca975.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Sprites/food-dish-white-64px.png"
-dest_files=["res://.godot/imported/food-dish-white-64px.png-4327752c49ae02d1fb7f7707f01cf45f.s3tc.ctex"]
+source_file="res://Sprites/CustomerPartyIcons/glass.png"
+dest_files=["res://.godot/imported/glass.png-585491efb6f54e3b43804de4b76ca975.s3tc.ctex"]
 
 [params]
 

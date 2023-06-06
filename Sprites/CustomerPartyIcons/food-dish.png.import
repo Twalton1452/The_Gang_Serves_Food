@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpv46ri6cyoas"
-path.s3tc="res://.godot/imported/food-dish-black-200px.png-3c5c719601be544f72ca9fddc6e49c76.s3tc.ctex"
+uid="uid://bx2xf56gxp1mc"
+path.s3tc="res://.godot/imported/food-dish.png-fa639e9eb31ad86b982195a9a5187991.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Sprites/food-dish-black-200px.png"
-dest_files=["res://.godot/imported/food-dish-black-200px.png-3c5c719601be544f72ca9fddc6e49c76.s3tc.ctex"]
+source_file="res://Sprites/CustomerPartyIcons/food-dish.png"
+dest_files=["res://.godot/imported/food-dish.png-fa639e9eb31ad86b982195a9a5187991.s3tc.ctex"]
 
 [params]
 
