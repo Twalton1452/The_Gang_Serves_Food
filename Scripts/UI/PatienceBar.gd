@@ -15,15 +15,11 @@ var patience_gradient : Gradient = load("res://Resources/gradients/patience_grad
 var progress_bar_tween : Tween = null
 var reset_tween : Tween = null
 var move_to_tween : Tween = null
-var pivot_original_position = Vector3.ZERO
-
-func _ready():
-	pivot_original_position = pivot.position
 
 func reset():
 	if move_to_tween != null and move_to_tween.is_valid():
 		move_to_tween.kill()
-	pivot.position = pivot_original_position
+	pivot.position = Vector3.ZERO
 	
 	if progress_bar_tween != null and progress_bar_tween.is_valid():
 		progress_bar_tween.kill()
@@ -67,7 +63,7 @@ func move(patience: float) -> void:
 	elif progress_to_destination < 0.06: # start rising after 25% patience
 		progress_to_destination = 0.0
 		
-	var next_position = pivot_original_position.lerp(move_to, progress_to_destination)
+	var next_position = Vector3.ZERO.lerp(move_to, progress_to_destination)
 	move_to_tween = create_tween()
 	move_to_tween.tween_property(pivot, "position", next_position, NetworkedPartyManager.patience_tick_rate_seconds).set_ease(progress_bar_tween.EASE_OUT)
 
