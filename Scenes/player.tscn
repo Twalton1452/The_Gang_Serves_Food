@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://rdrleinbk66r"]
+[gd_scene load_steps=22 format=3 uid="uid://rdrleinbk66r"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_ybpai"]
 [ext_resource type="Material" uid="uid://bfc257eau1ouq" path="res://Materials/Player_mat.tres" id="2_qio0w"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://e4pjkdypimg1" path="res://addons/kenney_particle_pack/star_06.png" id="3_wwdcx"]
 [ext_resource type="Script" path="res://Scripts/InteractRay.gd" id="5_dakr0"]
 [ext_resource type="Texture2D" uid="uid://cpwfe3eyodium" path="res://Sprites/pixel faces_sheet.png.png" id="5_nhbnr"]
+[ext_resource type="Script" path="res://Scripts/PixelFace.gd" id="8_s3gev"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_5oit5"]
 
@@ -160,7 +161,7 @@ properties/1/sync = true
 properties/2/path = NodePath("Camera3D:rotation")
 properties/2/spawn = true
 properties/2/sync = true
-properties/3/path = NodePath("FaceSprite:frame")
+properties/3/path = NodePath("PixelFace:frame")
 properties/3/spawn = true
 properties/3/sync = false
 
@@ -212,13 +213,14 @@ collide_with_areas = true
 collide_with_bodies = false
 script = ExtResource("5_dakr0")
 
-[node name="FaceSprite" type="Sprite3D" parent="."]
+[node name="PixelFace" type="Sprite3D" parent="."]
 transform = Transform3D(-0.2, 0, -1.74846e-08, 0, 0.2, 0, 1.74846e-08, 0, -0.2, 0, 0.185902, -0.205587)
 double_sided = false
 texture = ExtResource("5_nhbnr")
 hframes = 4
 vframes = 3
 frame = 5
+script = ExtResource("8_s3gev")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"

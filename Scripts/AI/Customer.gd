@@ -6,6 +6,7 @@ signal got_order
 signal ate_food
 
 @onready var interactable : Interactable = $Interactable
+@onready var pixel_face : PixelFace = $PixelFace
 
 var target_chair : Chair = null
 var sitting_chair : Chair = null : set = set_chair

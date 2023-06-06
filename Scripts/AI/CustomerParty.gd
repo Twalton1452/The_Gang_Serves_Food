@@ -40,6 +40,14 @@ var patience_decrease_rates = {
 	PartyState.WAITING_TO_PAY: 0.05
 }
 
+var patience_expressions = [
+	PixelFace.Face.Satisfied,
+	PixelFace.Face.Smile,
+	PixelFace.Face.Neutral,
+	PixelFace.Face.Frustrated,
+	PixelFace.Face.Mad,
+]
+
 var think_time_sec = 2.0
 var eating_time_sec = 2.0
 var paying_time_sec = 2.0
@@ -108,7 +116,7 @@ func set_state(value: PartyState) -> void:
 	emit_state_changed.call_deferred()
 	
 	if patience_decrease_rates.has(state):
-		patience = 1.0
+		reset_patience()
 	
 	if state in required_interaction_states:
 		if table:
@@ -250,8 +258,7 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 			return true
 		return false
 	)
-	
-	
+		
 	for customer in customers_ordered_by_closest_to_door:
 		await get_tree().create_timer(wait_between_customers_leaving).timeout
 		customer.go_to(exit_point.global_position)
@@ -289,8 +296,22 @@ func advance_party_state():
 			state = PartyState.GONE_HOME
 		PartyState.GONE_HOME: pass # handled by CustomerManager
 
+func reset_patience():
+	patience = 1.0
+	for customer in customers:
+		customer.pixel_face.change_expression_to(PixelFace.Face.Smile)
+
 func decrease_patience():
-	if patience_decrease_rates.has(state):
-		patience -= patience_decrease_rates[state]
-		if patience <= 0:
-			state = PartyState.LEAVING_FOR_HOME_IMPATIENT
+	if not patience_decrease_rates.has(state):
+		return
+	
+	patience -= patience_decrease_rates[state]
+	if patience <= 0:
+		state = PartyState.LEAVING_FOR_HOME_IMPATIENT
+		for customer in customers:
+			customer.pixel_face.change_expression_to(PixelFace.Face.Crying)
+		return
+	
+	var expression = clamp(roundf(patience_expressions.size() * (1.0 - patience)), 0, patience_expressions.size() - 1)
+	for customer in customers:
+		customer.pixel_face.change_expression_to(patience_expressions[expression])
