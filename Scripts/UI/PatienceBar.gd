@@ -38,7 +38,7 @@ func smooth_change(patience: float, color: Color):
 	if patience < bar_pivot.scale.y and patience >= 0:
 		tween = create_tween()
 		tween.tween_property(bar_pivot, "scale:y", patience, NetworkedPartyManager.patience_tick_rate_seconds).set_ease(Tween.EASE_OUT)
-		tween.tween_property(bar, "modulate", color, NetworkedPartyManager.patience_tick_rate_seconds)
+		tween.parallel().tween_property(bar, "modulate", color, NetworkedPartyManager.patience_tick_rate_seconds)
 	else:
 		bar_pivot.scale.y = patience
 		bar.modulate = color
