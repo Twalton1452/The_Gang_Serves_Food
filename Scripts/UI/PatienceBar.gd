@@ -35,10 +35,11 @@ func _on_patience_changed(patience: float):
 		bar.modulate = color
 
 func smooth_change(patience: float, color: Color):
-	if patience < bar_pivot.scale.y and patience >= 0:
+	if patience < bar_pivot.scale.y and patience > 0:
 		tween = create_tween()
 		tween.tween_property(bar_pivot, "scale:y", patience, NetworkedPartyManager.patience_tick_rate_seconds).set_ease(Tween.EASE_OUT)
-		tween.parallel().tween_property(bar, "modulate", color, NetworkedPartyManager.patience_tick_rate_seconds)
-	else:
-		bar_pivot.scale.y = patience
-		bar.modulate = color
+		#tween.parallel().tween_property(bar, "modulate", color, NetworkedPartyManager.patience_tick_rate_seconds)
+	elif tween != null and tween.is_valid():
+		tween.kill()
+		bar_pivot.scale.y = 0.0
+	bar.modulate = color
