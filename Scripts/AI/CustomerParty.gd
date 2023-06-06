@@ -34,27 +34,27 @@ enum PartyState {
 
 var patience_states = {
 	PartyState.WAITING_IN_LINE: {
-		"rate": 0.05,
+		"rate": 0.01,
 		"icon": preload("res://Sprites/CustomerPartyIcons/wait-in-line-line.png"),
 	},
 	PartyState.WAITING_FOR_TABLE: {
-		"rate": 0.05,
+		"rate": 0.01,
 		"icon": preload("res://Sprites/CustomerPartyIcons/wait-in-line-line.png"),
 	},
 	PartyState.THINKING: {
-		"rate": 0.20,
+		"rate": 0.10,
 		"icon": preload("res://Sprites/CustomerPartyIcons/brain.png"),
 	},
 	PartyState.ORDERING: {
-		"rate": 0.05,
+		"rate": 0.02,
 		"icon": preload("res://Sprites/CustomerPartyIcons/cooking-lid.png"),
 	},
 	PartyState.WAITING_FOR_FOOD: {
-		"rate": 0.05,
+		"rate": 0.02,
 		"icon": preload("res://Sprites/CustomerPartyIcons/food-plate.png"),
 	},
 	PartyState.WAITING_TO_PAY: {
-		"rate": 0.05,
+		"rate": 0.02,
 		"icon": preload("res://Sprites/CustomerPartyIcons/money-time.png"),
 	},
 }

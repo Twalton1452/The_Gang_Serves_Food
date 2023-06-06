@@ -194,7 +194,8 @@ func spawn_hidden_order_visual():
 	order_visual.hide()
 
 func show_order_visual():
-	order_visual.show()
+	if order_visual != null:
+		order_visual.show()
 
 func delete_order_visual():
 	if order_visual != null:

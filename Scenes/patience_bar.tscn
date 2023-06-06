@@ -7,23 +7,25 @@
 [node name="PatienceBar" type="Node3D"]
 script = ExtResource("1_bsmu0")
 
-[node name="Background" type="Sprite3D" parent="."]
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Background" type="Sprite3D" parent="Pivot"]
 transform = Transform3D(1.2004, 0, 0, 0, 1.10684, 0, 0, 0, 1, 0, 0, 0)
 modulate = Color(0.133333, 0.133333, 0.133333, 0.756863)
 billboard = 2
 texture = ExtResource("1_digld")
 
-[node name="Icon" type="Sprite3D" parent="."]
+[node name="Icon" type="Sprite3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0118576, 0)
 pixel_size = 0.0008
 billboard = 2
 render_priority = 2
 texture = ExtResource("3_towdt")
 
-[node name="BarPivot" type="Node3D" parent="."]
+[node name="BarPivot" type="Node3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.158815, 0)
 
-[node name="Bar" type="Sprite3D" parent="BarPivot"]
+[node name="Bar" type="Sprite3D" parent="Pivot/BarPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.495281, 0, 0.157319, 0)
 modulate = Color(0, 1, 1, 1)
 billboard = 2
