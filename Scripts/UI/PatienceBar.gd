@@ -8,8 +8,11 @@ class_name PatienceBar
 @onready var bar_pivot : Node3D = $BarPivot
 
 var patience_gradient : Gradient = load("res://Resources/gradients/patience_gradient.tres")
+var tween : Tween = null
 
 func reset():
+	if tween != null and tween.is_valid():
+		tween.kill()
 	bar_pivot.scale.y = 1.0
 	bar.modulate = patience_gradient.sample(0.0)
 
@@ -33,7 +36,7 @@ func _on_patience_changed(patience: float):
 
 func smooth_change(patience: float, color: Color):
 	if patience < bar_pivot.scale.y and patience >= 0:
-		var tween = create_tween()
+		tween = create_tween()
 		tween.tween_property(bar_pivot, "scale:y", patience, NetworkedPartyManager.patience_tick_rate_seconds).set_ease(Tween.EASE_OUT)
 		tween.tween_property(bar, "modulate", color, NetworkedPartyManager.patience_tick_rate_seconds)
 	else:
