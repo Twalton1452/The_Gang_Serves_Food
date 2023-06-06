@@ -2,7 +2,7 @@ extends GutTest
 
 var TableClass = load("res://Scripts/Restaurant/Table.gd")
 var ChairClass = load("res://Scripts/Restaurant/Chair.gd")
-var HolderClass = load("res://Scripts/Holder.gd")
+var HolderClass = load("res://Scripts/Interactables/Holders/Holder.gd")
 
 var _table : Table = null
 var _chairs : Array[Chair] = []

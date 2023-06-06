@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjd2u74mhwhhq"
-path.s3tc="res://.godot/imported/window_01.png-959d92318ac3db16ebfe2a940f303862.s3tc.ctex"
+uid="uid://1cq2sywqlemo"
+path.s3tc="res://.godot/imported/food-dish-white-64px.png-4327752c49ae02d1fb7f7707f01cf45f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/kenney_particle_pack/window_01.png"
-dest_files=["res://.godot/imported/window_01.png-959d92318ac3db16ebfe2a940f303862.s3tc.ctex"]
+source_file="res://Sprites/food-dish-white-64px.png"
+dest_files=["res://.godot/imported/food-dish-white-64px.png-4327752c49ae02d1fb7f7707f01cf45f.s3tc.ctex"]
 
 [params]
 

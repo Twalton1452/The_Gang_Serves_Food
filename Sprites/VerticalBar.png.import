@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjd2u74mhwhhq"
-path.s3tc="res://.godot/imported/window_01.png-959d92318ac3db16ebfe2a940f303862.s3tc.ctex"
+uid="uid://cgbln3c8y5jj7"
+path.s3tc="res://.godot/imported/VerticalBar.png-4cf224161007c0338b4ad8dea6f3e3a1.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/kenney_particle_pack/window_01.png"
-dest_files=["res://.godot/imported/window_01.png-959d92318ac3db16ebfe2a940f303862.s3tc.ctex"]
+source_file="res://Sprites/VerticalBar.png"
+dest_files=["res://.godot/imported/VerticalBar.png-4cf224161007c0338b4ad8dea6f3e3a1.s3tc.ctex"]
 
 [params]
 

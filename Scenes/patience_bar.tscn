@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4f0ohpd2jil2"]
+
+[ext_resource type="Script" path="res://Scripts/UI/PatienceBar.gd" id="1_bsmu0"]
+[ext_resource type="Texture2D" uid="uid://cgbln3c8y5jj7" path="res://Sprites/VerticalBar.png" id="1_digld"]
+[ext_resource type="Texture2D" uid="uid://x5apo61lmn3e" path="res://Sprites/food-dish-white-traced-200px.png" id="2_s5fsr"]
+
+[node name="PatienceBar" type="Node3D"]
+script = ExtResource("1_bsmu0")
+
+[node name="Background" type="Sprite3D" parent="."]
+transform = Transform3D(1.2004, 0, 0, 0, 1.10684, 0, 0, 0, 1, 0, 0, 0)
+modulate = Color(0.133333, 0.133333, 0.133333, 0.756863)
+billboard = 2
+texture = ExtResource("1_digld")
+
+[node name="Icon" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0265335, 0)
+pixel_size = 0.0008
+billboard = 2
+render_priority = 2
+texture = ExtResource("2_s5fsr")
+
+[node name="BarPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.158815, 0)
+
+[node name="Bar" type="Sprite3D" parent="BarPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.495281, 0, 0.157319, 0)
+modulate = Color(0, 1, 1, 1)
+billboard = 2
+render_priority = 1
+texture = ExtResource("1_digld")

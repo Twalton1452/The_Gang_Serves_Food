@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cx11ipeseh6dx"]
+[gd_scene load_steps=8 format=3 uid="uid://cx11ipeseh6dx"]
 
 [ext_resource type="Script" path="res://Scripts/Restaurant/Table.gd" id="1_g14pa"]
 [ext_resource type="PackedScene" uid="uid://dlqfb28we76j6" path="res://Scenes/furniture/table_cloth_base.tscn" id="1_qjpgh"]
 [ext_resource type="PackedScene" uid="uid://dxdnwospdbgrk" path="res://Scenes/furniture/chair_cloth.tscn" id="2_7myk5"]
 [ext_resource type="Material" uid="uid://iq0ya8ma5cns" path="res://Materials/Table_Cloth_mat.tres" id="2_lmh77"]
 [ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="5_882we"]
+[ext_resource type="PackedScene" uid="uid://c4f0ohpd2jil2" path="res://Scenes/patience_bar.tscn" id="6_d80m4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fj2mp"]
 size = Vector3(0.22168, 0.0159814, 0.187379)
@@ -70,6 +71,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.334339, 0.11)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder4"]
 shape = SubResource("BoxShape3D_fj2mp")
+
+[node name="PatienceBar" parent="." instance=ExtResource("6_d80m4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.736866, 0)
+visible = false
 
 [editable path="TableClothBase"]
 [editable path="ChairCloth"]

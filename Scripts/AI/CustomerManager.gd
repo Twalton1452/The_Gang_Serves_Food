@@ -79,6 +79,7 @@ func check_for_available_table_for(party: CustomerParty) -> bool:
 	var table = restaurant.get_next_available_table_for(party)
 	
 	if table == null:
+		party.wait_for_table()
 		return false
 	
 	party.go_to_table(table)

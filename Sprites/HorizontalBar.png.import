@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://co51rfy8owx0r"
-path="res://.godot/imported/unused_faces.png-b83e1eb461f952d3aa417019c3acffc2.ctex"
+uid="uid://bvs6ly01l1w2q"
+path="res://.godot/imported/HorizontalBar.png-42d6ee1b1bdf4f1fcb741c231b569744.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/unused_faces.png"
-dest_files=["res://.godot/imported/unused_faces.png-b83e1eb461f952d3aa417019c3acffc2.ctex"]
+source_file="res://Sprites/HorizontalBar.png"
+dest_files=["res://.godot/imported/HorizontalBar.png-42d6ee1b1bdf4f1fcb741c231b569744.ctex"]
 
 [params]
 

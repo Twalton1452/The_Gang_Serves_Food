@@ -6,6 +6,8 @@ signal available(table: Table)
 
 @export var table_mesh : MeshInstance3D
 
+@onready var patience_bar : PatienceBar = $PatienceBar
+
 var chairs : Array[Chair] = []
 var is_empty = true
 var party_in_transit = false
@@ -37,6 +39,7 @@ func lock_for_party_in_transit():
 	color = Color.DIM_GRAY
 	party_in_transit = true
 
+## Unused, but could be repurposed to be used, maybe seat_party(party)?
 func seat_customers(customers: Array[Node3D]) -> bool:
 	if not table_can_hold_party(len(customers)):
 		return false

@@ -5,6 +5,7 @@ class_name CustomerParty
 ## This class will help to organize groups of Customers to tell them where to go like a family
 
 signal state_changed(party: CustomerParty)
+signal patience_changed(new_value: float)
 
 ## The overall state of the Party, where they are at in the Lifecycle of the process
 ## does not represent individual customer emotions
@@ -57,6 +58,7 @@ var customer_spacing = 0.5
 var customers : Array[Customer] = [] : set = set_customers
 var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.CUSTOMER_PARTY
 var required_interaction_states = [PartyState.ORDERING, PartyState.WAITING_TO_PAY]
+var patience_bar_visual : PatienceBar = null
 
 # Saved/Loaded State
 var state : PartyState = PartyState.SPAWNING : set = set_state
@@ -64,12 +66,12 @@ var num_arrived_to_destination = 0
 var num_customers_required_to_advance = 1
 var target_pos : Vector3 = Vector3.ZERO
 var table : Table = null
-var patience : float = 1.0
+var patience : float = 1.0 : set = set_patience
 
 func set_sync_state(reader: ByteReader) -> void:
 	# Before performing any customer operations, wait for the sync process to complete
 	# so that we have all the customers!
-	# Don't use "after_sync" because it doesn't have data
+	# Don't use "after_sync" because it doesn't have the reader data
 	await MidsessionJoinSyncer.sync_complete
 	
 	NetworkingUtils.sort_array_by_net_id(customers)
@@ -77,12 +79,18 @@ func set_sync_state(reader: ByteReader) -> void:
 	num_arrived_to_destination = reader.read_int()
 	num_customers_required_to_advance = reader.read_int()
 	target_pos = reader.read_vector3()
+	
 	var has_table = reader.read_bool()
 	if has_table:
 		table = get_node(reader.read_path_to()) as Table
 		table.is_empty = reader.read_bool()
 		table.party_in_transit = reader.read_bool()
 		table.color = reader.read_color()
+	
+	var has_patience_bar_visual = reader.read_bool()
+	if has_patience_bar_visual:
+		connect_to_patience_bar_visual(get_node(reader.read_path_to()) as PatienceBar)
+	
 	patience = reader.read_small_float()
 	(get_parent() as CustomerManager).sync_party(self)
 
@@ -98,6 +106,12 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		writer.write_bool(table.is_empty)
 		writer.write_bool(table.party_in_transit)
 		writer.write_color(table.color)
+	
+	var has_patience_bar_visual = patience_bar_visual != null
+	writer.write_bool(has_patience_bar_visual)
+	if has_patience_bar_visual:
+		writer.write_path_to(patience_bar_visual)
+	
 	writer.write_small_float(patience)
 	return writer
 
@@ -115,8 +129,7 @@ func set_state(value: PartyState) -> void:
 	num_customers_required_to_advance = len(customers)
 	emit_state_changed.call_deferred()
 	
-	if patience_decrease_rates.has(state):
-		reset_patience()
+	reset_patience()
 	
 	if state in required_interaction_states:
 		if table:
@@ -125,6 +138,10 @@ func set_state(value: PartyState) -> void:
 		if table:
 			table.color = Color.FOREST_GREEN
 	#print("Party has advanced to state: %s" % str(state))
+
+func set_patience(value: float) -> void:
+	patience = value
+	patience_changed.emit(patience)
 
 func _ready():
 	add_to_group(str(NetworkedIds.Scene.CUSTOMER_PARTY))
@@ -152,6 +169,48 @@ func set_customers(value: Array[Customer]) -> void:
 	NetworkingUtils.sort_array_by_net_id(customers)
 	num_customers_required_to_advance = len(customers)
 
+func is_in_patience_state() -> bool:
+	return patience_decrease_rates.has(state)
+
+func reset_patience():
+	patience = 1.0
+	if patience_bar_visual:
+		patience_bar_visual.reset()
+		
+	for customer in customers:
+		customer.pixel_face.change_expression_to(PixelFace.Face.Smile)
+
+func connect_to_patience_bar_visual(patience_bar: PatienceBar) -> void:
+	if patience_bar == null:
+		return
+	if patience_bar_visual != null:
+		disconnect_from_patience_bar_visual()
+	patience_bar_visual = patience_bar
+	patience_changed.connect(patience_bar_visual._on_patience_changed)
+	patience_bar_visual.show_visual()
+
+func disconnect_from_patience_bar_visual():
+	if patience_bar_visual == null or not patience_changed.is_connected(patience_bar_visual._on_patience_changed):
+		return
+	
+	patience_bar_visual.reset()
+	patience_changed.disconnect(patience_bar_visual._on_patience_changed)
+	patience_bar_visual.hide_visual()
+	patience_bar_visual = null
+
+func decrease_patience():
+	if not is_in_patience_state():
+		return
+	
+	patience -= patience_decrease_rates[state]
+	if patience < 0 - patience_decrease_rates[state]:
+		patience_depleted()
+		return
+	
+	var progressively_upset_expression : int = clamp(roundf(patience_expressions.size() * (1.0 - patience)), 0, patience_expressions.size() - 1)
+	for customer in customers:
+		customer.pixel_face.change_expression_to(patience_expressions[progressively_upset_expression])
+
 func send_customers_to(pos: Vector3) -> void:
 	target_pos = pos
 	
@@ -173,6 +232,10 @@ func go_to_entry(entry: Node3D):
 	send_customers_to(entry.global_position)
 	
 	state = PartyState.WALKING_TO_ENTRY
+
+func wait_for_table():
+	# TODO: patience bar on entry door
+	pass
 
 func go_to_table(destination_table: Table):
 	table = destination_table
@@ -208,6 +271,8 @@ func get_farthest_chair_for(customer: Customer, chairs: Array[Chair]) -> int:
 func sit_at_table():
 	for customer in customers:
 		customer.sit()
+	
+	connect_to_patience_bar_visual(table.patience_bar)
 		
 	state = PartyState.THINKING
 
@@ -246,6 +311,7 @@ func pay() -> void:
 func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 	if table != null:
 		table.release_customers()
+		disconnect_from_patience_bar_visual()
 		table = null
 	target_pos = exit_point.global_position
 	for customer in customers:
@@ -264,6 +330,10 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 		customer.go_to(exit_point.global_position)
 	
 	num_customers_required_to_advance = 1
+
+func patience_depleted():
+	state = PartyState.LEAVING_FOR_HOME_IMPATIENT
+	disconnect_from_patience_bar_visual()
 
 func _on_customer_arrived():
 	num_arrived_to_destination += 1
@@ -295,23 +365,3 @@ func advance_party_state():
 		PartyState.LEAVING_FOR_HOME,PartyState.LEAVING_FOR_HOME_IMPATIENT:
 			state = PartyState.GONE_HOME
 		PartyState.GONE_HOME: pass # handled by CustomerManager
-
-func reset_patience():
-	patience = 1.0
-	for customer in customers:
-		customer.pixel_face.change_expression_to(PixelFace.Face.Smile)
-
-func decrease_patience():
-	if not patience_decrease_rates.has(state):
-		return
-	
-	patience -= patience_decrease_rates[state]
-	if patience <= 0:
-		state = PartyState.LEAVING_FOR_HOME_IMPATIENT
-		for customer in customers:
-			customer.pixel_face.change_expression_to(PixelFace.Face.Crying)
-		return
-	
-	var expression = clamp(roundf(patience_expressions.size() * (1.0 - patience)), 0, patience_expressions.size() - 1)
-	for customer in customers:
-		customer.pixel_face.change_expression_to(patience_expressions[expression])
