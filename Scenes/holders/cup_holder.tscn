@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://r4j1kej8o5w" path="res://Scenes/cup.tscn" id="2_wodpn"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_anatx"]
-size = Vector3(0.0606073, 0.114385, 0.0612328)
+size = Vector3(0.154522, 0.114385, 0.137933)
 
 [node name="CupHolder" type="Node3D"]
 
@@ -13,6 +13,7 @@ size = Vector3(0.0606073, 0.114385, 0.0612328)
 
 [node name="StackingHolder" parent="." instance=ExtResource("1_6b5xk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0200609, 0)
+ingredient_scene = ExtResource("2_wodpn")
 stacking_spacing = Vector3(0, 0.034, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder"]

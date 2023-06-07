@@ -28,10 +28,5 @@ func _secondary_interact(player: Player):
 			(get_parent() as Holder).release_this_item_to(self, player.holder)
 		return
 	
-	# Get the Player's item to see if we can Combine!
-	# Don't combine off a MultiHolder in the Player's Hand because that could get weird fast
-	if not player.holder.get_held_item() is MultiHolder:
-		Combiner.combine(player, self)
-	# If combination can't take place, maybe a standard secondary interaction can
-	elif get_parent() is Holder:
+	if get_parent() is Holder:
 		(get_parent() as Holder).secondary_interact(player)

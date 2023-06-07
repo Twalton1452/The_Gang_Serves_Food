@@ -2,8 +2,8 @@ extends GutTest
 
 class TestStackingHolderWithMultiHolders extends TestingUtils:
 	var PlayerScene = load("res://Scenes/player.tscn")
-	
 	var PlateScene : PackedScene = load("res://Scenes/holders/plate_components.tscn")
+	
 	var _stacking_holder : StackingHolder = null
 	var _plate : MultiHolder = null
 	var _player : Player = null
