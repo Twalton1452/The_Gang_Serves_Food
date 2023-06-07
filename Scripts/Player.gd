@@ -10,6 +10,7 @@ signal health_changed(health_value)
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
 @onready var pixel_face : PixelFace = $PixelFace
 @onready var holder : Holder = $Camera3D/Holder
+@onready var client_side_holder_node : Node3D = $Camera3D/ClientSideHolderPosition
 
 
 const SPEED = 4.0
@@ -41,6 +42,7 @@ func _ready():
 func init():
 	if not is_multiplayer_authority(): return
 	
+	holder.position = client_side_holder_node.position
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	pixel_face.random_expression()

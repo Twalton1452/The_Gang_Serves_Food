@@ -183,7 +183,7 @@ shape = SubResource("CapsuleShape3D_opbun")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.243105, 0)
 
 [node name="Holder" type="Area3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.121156, -0.109819, -0.165641)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.181566, -0.109819, -0.240725)
 script = ExtResource("2_xw32p")
 
 [node name="Pistol" parent="Camera3D" instance=ExtResource("2_rnvw1")]
@@ -212,6 +212,9 @@ collision_mask = 4
 collide_with_areas = true
 collide_with_bodies = false
 script = ExtResource("5_dakr0")
+
+[node name="ClientSideHolderPosition" type="Marker3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.140664, -0.111682, -0.208349)
 
 [node name="PixelFace" type="Sprite3D" parent="."]
 transform = Transform3D(-0.2, 0, -1.74846e-08, 0, 0.2, 0, 1.74846e-08, 0, -0.2, 0, 0.185902, -0.205587)
