@@ -78,32 +78,32 @@ func swap_items_with(holder: Holder):
 # Left Clicking Holder
 func _interact(player : Player):
 	# Player placing Item
-	if player.c_holder.is_holding_item():
+	if player.holder.is_holding_item():
 		# This Holder is currently holding something
 		if is_holding_item():
 			
 			# Player is holding a Plate
-			if player.c_holder.get_held_item() is MultiHolder:
-				var multi_h : MultiHolder = player.c_holder.get_held_item()
+			if player.holder.get_held_item() is MultiHolder:
+				var multi_h : MultiHolder = player.holder.get_held_item()
 				# Put item onto Plate if space is available
 				if multi_h.has_space_for_item(get_held_item()):
 					release_item_to(multi_h)
 				return
 			
-			if player.c_holder.get_held_item() is StackingHolder and not player.c_holder.get_held_item() is CombinedFoodHolder:
-				var stacking_h : StackingHolder = player.c_holder.get_held_item()
+			if player.holder.get_held_item() is StackingHolder and not player.holder.get_held_item() is CombinedFoodHolder:
+				var stacking_h : StackingHolder = player.holder.get_held_item()
 				if stacking_h.acceptable_item(get_held_item()):
 					release_item_to(stacking_h)
 				return
 				
-			swap_items_with(player.c_holder)
+			swap_items_with(player.holder)
 		# Holding nothing - Attempt to take from Player
 		else:			
 			# Take Player's item
-			player.c_holder.release_item_to(self)
+			player.holder.release_item_to(self)
 	# Player taking Item - Player not holding anything
 	elif is_holding_item():
-		release_item_to(player.c_holder)
+		release_item_to(player.holder)
 	# Neither player nor this Holder has an item, likely an empty MultiHolder like a Plate
 	elif get_parent() is Holder:
 		(get_parent() as Holder).interact(player)
@@ -111,10 +111,10 @@ func _interact(player : Player):
 # Right Clicking Holder
 func _secondary_interact(player : Player):
 	# Player trying to place Item
-	if player.c_holder.is_holding_item():
+	if player.holder.is_holding_item():
 		
 		# Player trying to Right Click this Holder with just an Item
-		if not player.c_holder.get_held_item() is MultiHolder:
+		if not player.holder.get_held_item() is MultiHolder:
 			# Player probably just wants to put the item down
 			# if they are right clicking an empty holder with an item
 			if not is_holding_item():
@@ -122,7 +122,7 @@ func _secondary_interact(player : Player):
 			return
 		
 		# Player confirmed to have MultiHolder, likely Plate
-		var multi_h : MultiHolder = player.c_holder.get_held_item()
+		var multi_h : MultiHolder = player.holder.get_held_item()
 		
 		# This Holder has no space for the Plated item
 		if not has_space_for_item(multi_h.get_held_item()):

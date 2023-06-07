@@ -225,7 +225,7 @@ func decrease_patience():
 		return
 	
 	patience -= patience_states[state].rate
-	if patience < 0 - patience_states[state].rate:
+	if patience < 0 - patience_states[state].rate: # Go a little negative as "forgiveness"
 		patience_depleted()
 		return
 	

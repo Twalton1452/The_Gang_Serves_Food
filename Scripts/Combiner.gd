@@ -13,7 +13,7 @@ class_name Combiner
 ## The Food Combiner scene will organize the foods and keep them together
 static func combine(player: Player, resting: Holdable):
 	# Can't combine without Player holding something for now.. with Automation you could
-	if not player.c_holder.is_holding_item():
+	if not player.holder.is_holding_item():
 		return
 	
 	var resting_p = resting.get_parent()
@@ -22,10 +22,10 @@ static func combine(player: Player, resting: Holdable):
 	
 	# Player is combining with an item on a counter (Simplest Holder)
 	if is_exactly_holder:
-		Combiner.spawn_combiner(resting_p, player.c_holder)
+		Combiner.spawn_combiner(resting_p, player.holder)
 		return
 	
-	var player_item = player.c_holder.get_held_item()
+	var player_item = player.holder.get_held_item()
 	# Don't combine in-hand if Player is holding a Plate or a box of Food
 	if player_item is MultiHolder:
 		return
@@ -44,10 +44,10 @@ static func combine(player: Player, resting: Holdable):
 	if not player_item is StackingHolder:
 		# Player giving to a combination despite having 1 ingredient
 		if resting_p is CombinedFoodHolder:
-			player.c_holder.release_item_to(resting_p)
+			player.holder.release_item_to(resting_p)
 		# Player trying to start a combination
 		else:
-			Combiner.spawn_combiner(player.c_holder, resting_p)
+			Combiner.spawn_combiner(player.holder, resting_p)
 
 static func spawn_combiner(holder_accepting_item : Holder, holder_giving_up_item : Holder) -> StackingHolder:
 	var combiner : StackingHolder = NetworkingUtils.spawn_node(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.FOOD_COMBINER), MidsessionJoinSyncer)

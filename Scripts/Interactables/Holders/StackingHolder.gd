@@ -79,34 +79,34 @@ func release_this_item_to(item: Node3D, holder: Holder):
 	
 func _interact(player : Player):
 	# Player Taking Item from this Holder
-	if not player.c_holder.is_holding_item():
+	if not player.holder.is_holding_item():
 		# We have something to give the Player
 		if is_holding_item():
-			release_item_to(player.c_holder)
+			release_item_to(player.holder)
 	# Player is holding a Plate
-	elif player.c_holder.get_held_item() is MultiHolder:
-		var multi_h : MultiHolder = player.c_holder.get_held_item()
+	elif player.holder.get_held_item() is MultiHolder:
+		var multi_h : MultiHolder = player.holder.get_held_item()
 		
 		# Player trying to put the item back onto this Stack
 		if acceptable_item(multi_h):
-			player.c_holder.release_item_to(self)
+			player.holder.release_item_to(self)
 			return
 		# Give Player the item from this Stack
 		if is_holding_item():
 			release_item_to(multi_h)
 		# Taking Player's MultiHolder item if this stack can hold it
 		if not multi_h.is_holding_item() and acceptable_item(multi_h):
-			player.c_holder.release_item_to(self)
+			player.holder.release_item_to(self)
 	# Take all of the Player's acceptable items in their Stack
-	elif player.c_holder.get_held_item() is CombinedFoodHolder:
-		var combined_food : CombinedFoodHolder = player.c_holder.get_held_item()
+	elif player.holder.get_held_item() is CombinedFoodHolder:
+		var combined_food : CombinedFoodHolder = player.holder.get_held_item()
 		var s_items = combined_food.get_held_items()
 		for s_item in s_items:
 			if acceptable_item(s_item):
 				combined_food.release_this_item_to(s_item, self)
 	# Taking Player's item if it matches with the pre-set ingredient_scene
-	elif acceptable_item(player.c_holder.get_held_item()):
-		player.c_holder.release_item_to(self)
+	elif acceptable_item(player.holder.get_held_item()):
+		player.holder.release_item_to(self)
 
 func disable_held_colliders():
 	for item in get_held_items():

@@ -13,7 +13,7 @@ func before_each():
 	_player = PlayerScene.instantiate()
 	_multi_h = MultiHolderClass.new()
 	add_child_autoqfree(_player)
-	_player.c_holder.add_child(_multi_h)
+	_player.holder.add_child(_multi_h)
 
 func test_items_can_be_placed_and_picked_up():
 	var items = [HoldableClass, HoldableClass, HoldableClass]
@@ -25,11 +25,11 @@ func test_items_can_be_placed_and_picked_up():
 		var holder = doubled_holder.new()
 		stub(holder, "is_enabled").to_return(true)
 		_multi_h.add_child(holder)
-		_multi_h.c_holders.push_back(holder)
+		_multi_h.holders.push_back(holder)
 		holder.add_child(item.new())
 	
-	assert_eq(len(_player.c_holder.get_held_item().get_held_items()), 3, "Player Holder doesn't have 3 items")
-	assert_eq(len(_multi_h.c_holders), 3, "MultiHolder has more/less Holders than intended")
+	assert_eq(len(_player.holder.get_held_item().get_held_items()), 3, "Player Holder doesn't have 3 items")
+	assert_eq(len(_multi_h.holders), 3, "MultiHolder has more/less Holders than intended")
 	
 	# Put all the items down with secondary_interact
 	var i = 0

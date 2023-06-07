@@ -82,8 +82,8 @@ func remove_player(p_id : int):
 func cleanup_disconnecting_player(p_id: int):
 	var player = get_player_by_id(p_id)
 	# Preserve the Item the Disconnecting player was holding
-	if player.c_holder.is_holding_item():
-		var interactable : Interactable = player.c_holder.get_held_item()
+	if player.holder.is_holding_item():
+		var interactable : Interactable = player.holder.get_held_item()
 		interactable.reparent(level)
 		interactable.position = level.spawn_point.position
 		interactable.rotation = level.spawn_point.rotation

@@ -45,7 +45,7 @@ func stack_items():
 func _interact(player: Player):
 	# Item free floating, just take it
 	if not get_parent() is Holder:
-		player.c_holder.hold_item(self)
+		player.holder.hold_item(self)
 	# Let the Holder take care of the interaction
 	else:
 		(get_parent() as Holder).interact(player)

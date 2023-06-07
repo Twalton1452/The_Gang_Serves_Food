@@ -186,7 +186,7 @@ func test_party_loses_patience_and_leaves_during_ordering():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING)
 	
 	# Act
-	spawned_party.patience = .01
+	spawned_party.patience = -spawned_party.patience_states[spawned_party.state].rate
 	NetworkedPartyManager._on_patience_tick()
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't leave impatient")
 	
@@ -212,7 +212,7 @@ func test_party_loses_patience_and_leaves_during_thinking_with_no_menu():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.THINKING)
 	
 	# Act
-	spawned_party.patience = .01
+	spawned_party.patience = -spawned_party.patience_states[spawned_party.state].rate
 	NetworkedPartyManager._on_patience_tick()
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't leave impatient")
 	
@@ -256,7 +256,7 @@ func test_party_loses_patience_and_leaves_during_waiting_to_pay():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_TO_PAY)
 	
 	# Act
-	spawned_party.patience = .01
+	spawned_party.patience = -spawned_party.patience_states[spawned_party.state].rate
 	NetworkedPartyManager._on_patience_tick()
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't leave impatient")
 	
@@ -283,7 +283,7 @@ func test_party_loses_patience_and_leaves_during_waiting_for_table():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_TABLE)
 	
 	# Act
-	spawned_party.patience = .01
+	spawned_party.patience = -spawned_party.patience_states[spawned_party.state].rate
 	NetworkedPartyManager._on_patience_tick()
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Customers didn't leave impatient")
 	

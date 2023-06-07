@@ -9,7 +9,7 @@ signal health_changed(health_value)
 @onready var gun_ray_cast = $Camera3D/GunRayCast3D
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
 @onready var pixel_face : PixelFace = $PixelFace
-@onready var c_holder : Holder = $Camera3D/Holder
+@onready var holder : Holder = $Camera3D/Holder
 
 
 const SPEED = 4.0
