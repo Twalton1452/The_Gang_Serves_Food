@@ -5,6 +5,8 @@ class_name StackingHolder
 @export var max_amount = 99
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
 
+var is_stacking_multi_holders = false
+
 func after_sync() -> void:
 	stack_items.call_deferred()
 
@@ -20,6 +22,7 @@ func _ready():
 		var held_item = held_items[i]
 		if held_item is MultiHolder:
 			held_item.disable_colliders()
+			is_stacking_multi_holders = true
 		i += 1
 	
 func acceptable_item(item: Node3D) -> bool:
@@ -53,6 +56,9 @@ func hold_item(item: Node3D):
 		
 		if item is MultiHolder:
 			item.disable_colliders()
+			is_stacking_multi_holders = true
+		else:
+			is_stacking_multi_holders = false
 		
 		stack_items()
 	
@@ -83,8 +89,11 @@ func _interact(player : Player):
 		# We have something to give the Player
 		if is_holding_item():
 			release_item_to(player.holder)
-	# Player is holding a Plate
-	elif player.holder.get_held_item() is MultiHolder:
+		
+		return
+	
+	# Player is holding a Plate try to put an item onto it
+	if player.holder.get_held_item() is MultiHolder:
 		var multi_h : MultiHolder = player.holder.get_held_item()
 		
 		# Player trying to put the item back onto this Stack
@@ -97,16 +106,33 @@ func _interact(player : Player):
 		# Taking Player's MultiHolder item if this stack can hold it
 		if not multi_h.is_holding_item() and acceptable_item(multi_h):
 			player.holder.release_item_to(self)
+		
+		return
+	
+	# Combine this StackingHolder's MultiHolder with Player's Holdable
+	if is_stacking_multi_holders and is_holding_item():
+		var multi_holder_to_give : MultiHolder = get_held_item()
+		multi_holder_to_give.enable_colliders()
+		player.holder.release_item_to(multi_holder_to_give)
+		release_this_item_to(multi_holder_to_give, player.holder)
+		
+		return
+	
 	# Take all of the Player's acceptable items in their Stack
-	elif player.holder.get_held_item() is CombinedFoodHolder:
+	if player.holder.get_held_item() is CombinedFoodHolder:
 		var combined_food : CombinedFoodHolder = player.holder.get_held_item()
 		var s_items = combined_food.get_held_items()
 		for s_item in s_items:
 			if acceptable_item(s_item):
 				combined_food.release_this_item_to(s_item, self)
+		
+		return
+	
 	# Taking Player's item if it matches with the pre-set ingredient_scene
-	elif acceptable_item(player.holder.get_held_item()):
+	if acceptable_item(player.holder.get_held_item()):
 		player.holder.release_item_to(self)
+		
+		return
 
 func disable_held_colliders():
 	for item in get_held_items():
