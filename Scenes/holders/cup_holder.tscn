@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://jywt0naoax0t"]
+
+[ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="1_6b5xk"]
+[ext_resource type="PackedScene" uid="uid://c71yhmchstp56" path="res://3d_models/small_platform.blend" id="1_8xtpl"]
+[ext_resource type="PackedScene" uid="uid://r4j1kej8o5w" path="res://Scenes/cup.tscn" id="2_wodpn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_anatx"]
+size = Vector3(0.0606073, 0.114385, 0.0612328)
+
+[node name="CupHolder" type="Node3D"]
+
+[node name="small_platform" parent="." instance=ExtResource("1_8xtpl")]
+
+[node name="StackingHolder" parent="." instance=ExtResource("1_6b5xk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0200609, 0)
+stacking_spacing = Vector3(0, 0.034, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0590311, 0)
+shape = SubResource("BoxShape3D_anatx")
+disabled = true
+
+[node name="Cup" parent="StackingHolder" instance=ExtResource("2_wodpn")]
+
+[node name="Cup2" parent="StackingHolder" instance=ExtResource("2_wodpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0343578, 0)
+
+[node name="Cup3" parent="StackingHolder" instance=ExtResource("2_wodpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0784564, 0)
+
+[node name="Cup4" parent="StackingHolder" instance=ExtResource("2_wodpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.116839, 0)
+
+[node name="Cup5" parent="StackingHolder" instance=ExtResource("2_wodpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.160482, 0)
+
+[node name="Cup6" parent="StackingHolder" instance=ExtResource("2_wodpn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.200117, 0)

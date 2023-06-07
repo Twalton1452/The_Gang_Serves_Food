@@ -9,6 +9,7 @@ enum Scene {
 	ONION = 5,
 	
 	PLATE = 50,
+	CUP = 51,
 	
 #	HOLDER = 100,
 #	HOLDABLE = 101,
