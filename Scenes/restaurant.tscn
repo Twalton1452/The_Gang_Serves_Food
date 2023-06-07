@@ -69,6 +69,7 @@ tables_root = NodePath("Building/Tables")
 menu = NodePath("Building/Menu")
 
 [node name="Building" type="Node3D" parent="Restaurant"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.70563, 0, -3.97893)
 
 [node name="roof" parent="Restaurant/Building" instance=ExtResource("2_8d1g5")]
 transform = Transform3D(9, 0, 0, 0, 1, 0, 0, 0, 9, -0.00280681, 1.24583, 9.00324)
@@ -320,23 +321,23 @@ rule = 5
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
 
 [node name="EntryPoint" type="Marker3D" parent="Restaurant"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.97322, 0.0952672, -1.0332)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73241, 0.0952672, -5.01213)
 
 [node name="Exitpoint" type="Marker3D" parent="Restaurant"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.273123, 0.0952667, 9.50323)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.43251, 0.0952667, 5.5243)
 
 [node name="CustomerManager" type="Node3D" parent="Restaurant"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.59294, 0.268635, 0.884276)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.53846, 0.268635, -3.91951)
 script = ExtResource("17_losm7")
 
 [node name="SpawnPoint" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.84803, 0.266214, 7.01061)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1424, 0.266214, 3.03168)
 
 [node name="Players" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.543243, 0)
 
 [node name="Testing" type="Node3D" parent="."]
-transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 8.53144, 0, 6.74944)
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4.82581, 0, 2.77051)
 
 [node name="kitchenCabinet" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.64343, 0, 0)
