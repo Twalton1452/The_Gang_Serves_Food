@@ -68,6 +68,9 @@ func order_from(party: CustomerParty, menu: Menu):
 	if not is_multiplayer_authority():
 		return
 	
+	if not menu.is_menu_available():
+		return
+	
 	for customer in party.customers:
 		customer.order_from(menu)
 	
