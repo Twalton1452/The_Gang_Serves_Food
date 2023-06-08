@@ -5,11 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://r4j1kej8o5w" path="res://Scenes/cup.tscn" id="2_wodpn"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_anatx"]
-size = Vector3(0.164395, 0.0460953, 0.165548)
+size = Vector3(0.118542, 0.0460953, 0.114405)
 
 [node name="CupHolder" type="Node3D"]
 
 [node name="small_platform" parent="." instance=ExtResource("1_8xtpl")]
+transform = Transform3D(0.659413, 0, 0, 0, 1, 0, 0, 0, 0.603568, 0, 0, 0)
 
 [node name="StackingHolder" parent="." instance=ExtResource("1_6b5xk")]
 transform = Transform3D(1, 0, 0, 0, -1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0.154313, 0)

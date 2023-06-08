@@ -3,10 +3,10 @@ class_name DrinkFountain
 
 @export var fill_rate = 0.1
 
-@onready var dispenser_holder : Holder = $DispenserPlatform/Holder
+@onready var dispensers_root = $FountainModel
 @onready var fill_rate_timer : Timer = $FillRateTimer
 
-var filling_drink : Drink = null
+var dispensers : Array[DrinkDispenser] = []
 
 func set_sync_state(reader: ByteReader) -> void:
 	var is_timer_playing = reader.read_bool()
@@ -25,23 +25,26 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	return writer
 
 func _ready():
-	dispenser_holder.holding_item.connect(_on_item_entered_dispenser_zone)
-	dispenser_holder.released_item.connect(_on_item_left_dispenser_zone)
 	fill_rate_timer.timeout.connect(_on_fill_rate_tick)
+	for child in dispensers_root.get_children():
+		if child is DrinkDispenser:
+			var dispenser : DrinkDispenser = child
+			dispensers.push_back(dispenser)
+			dispenser.holding_drink.connect(_on_drink_dispenser_activated)
+			dispenser.released_drink.connect(_on_drink_left_dispenser_zone)
 
-func _on_item_entered_dispenser_zone(item: Node3D) -> void:
-	if not item is Drink:
-		return
-	filling_drink = item
-	fill_rate_timer.start()
+func _on_drink_dispenser_activated(_dispenser: DrinkDispenser) -> void:
+	if fill_rate_timer.is_stopped():
+		fill_rate_timer.start()
 
-func _on_item_left_dispenser_zone(_item: Node3D) -> void:
-	fill_rate_timer.stop()
-	filling_drink = null
+func _on_drink_left_dispenser_zone(_dispenser: DrinkDispenser) -> void:
+	if dispensers.all(func(d): return not d.activated):
+		fill_rate_timer.stop()
 
 func _on_fill_rate_tick():
-	if filling_drink == null:
-		return
+	for dispenser in dispensers:
+		if dispenser.activated:
+			var drink : Drink = dispenser.holder.get_held_item()
+			drink.fill(fill_rate, dispenser.beverage) 
 	
-	filling_drink.fill(fill_rate)
 	fill_rate_timer.start()

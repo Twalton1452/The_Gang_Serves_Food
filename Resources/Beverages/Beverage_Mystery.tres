@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Beverage" load_steps=2 format=3 uid="uid://m8mh5w0kddym"]
+
+[ext_resource type="Script" path="res://Scripts/Resources/Beverage.gd" id="1_eorjq"]
+
+[resource]
+script = ExtResource("1_eorjq")
+display_name = "Water"

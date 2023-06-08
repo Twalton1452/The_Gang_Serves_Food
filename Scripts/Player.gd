@@ -43,6 +43,7 @@ func init():
 	if not is_multiplayer_authority(): return
 	
 	holder.position = client_side_holder_node.position
+	holder.rotation = client_side_holder_node.rotation
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	pixel_face.random_expression()

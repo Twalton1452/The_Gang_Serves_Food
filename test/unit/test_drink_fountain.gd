@@ -13,35 +13,40 @@ func test_drink_fountain_sees_item_enter_and_leave_dispenser_zone():
 	var holder : Holder = Holder.new()
 	add_child_autoqfree(drink)
 	add_child_autoqfree(holder)
-	assert_eq(_drink_fountain.dispenser_holder.is_holding_item(), false)
+	var dispenser_to_use : DrinkDispenser = _drink_fountain.dispensers[0]
+	assert_eq(dispenser_to_use.holder.is_holding_item(), false)
+	assert_eq(dispenser_to_use.activated, false)
 	
-	_drink_fountain.dispenser_holder.hold_item(drink)
+	dispenser_to_use.holder.hold_item(drink)
 	
-	assert_eq(_drink_fountain.dispenser_holder.is_holding_item(), true)
-	assert_eq(_drink_fountain.dispenser_holder.get_held_item(), drink)
-	assert_eq(_drink_fountain.filling_drink, drink)
+	assert_eq(dispenser_to_use.holder.is_holding_item(), true)
+	assert_eq(dispenser_to_use.holder.get_held_item(), drink)
 	assert_eq(_drink_fountain.fill_rate_timer.is_stopped(), false)
+	assert_eq(dispenser_to_use.activated, true)
 	
-	_drink_fountain.dispenser_holder.release_item_to(holder)
-	assert_null(_drink_fountain.filling_drink)
-	assert_eq(_drink_fountain.dispenser_holder.is_holding_item(), false)
+	dispenser_to_use.holder.release_item_to(holder)
+	assert_eq(dispenser_to_use.holder.is_holding_item(), false)
 	assert_eq(_drink_fountain.fill_rate_timer.is_stopped(), true)
 	assert_eq(holder.get_held_item(), drink)
+	assert_eq(dispenser_to_use.activated, false)
 
 func test_drink_fountain_can_fill_drink():
 	var drink : Drink = Drink.new()
 	add_child_autoqfree(drink)
-	assert_eq(_drink_fountain.dispenser_holder.is_holding_item(), false)
+	var dispenser_to_use : DrinkDispenser = _drink_fountain.dispensers[0]
+	assert_eq(dispenser_to_use.holder.is_holding_item(), false)
+	assert_eq(dispenser_to_use.activated, false)
 	
-	_drink_fountain.dispenser_holder.hold_item(drink)
+	dispenser_to_use.holder.hold_item(drink)
 	
-	assert_eq(_drink_fountain.dispenser_holder.is_holding_item(), true)
-	assert_eq(_drink_fountain.dispenser_holder.get_held_item(), drink)
-	assert_eq(_drink_fountain.filling_drink, drink)
+	assert_eq(dispenser_to_use.holder.is_holding_item(), true)
+	assert_eq(dispenser_to_use.holder.get_held_item(), drink)
 	assert_eq(_drink_fountain.fill_rate_timer.is_stopped(), false)
+	assert_eq(dispenser_to_use.activated, true)
 	
 	_drink_fountain.fill_rate = 0.1
 	for i in range(10):
 		_drink_fountain._on_fill_rate_tick()
 	
-	assert_eq(_drink_fountain.filling_drink.fill_state, Drink.FillState.FILLED)
+	assert_eq(dispenser_to_use.holder.get_held_item().fill_state, Drink.FillState.FILLED)
+	assert_eq(dispenser_to_use.activated, true)

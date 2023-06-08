@@ -1,6 +1,12 @@
 extends Holdable
 class_name Drink
 
+#enum Beverage {
+#	WATER,
+#	COLA,
+#	SLURM,
+#}
+
 enum FillState {
 	EMPTY,
 	PARTIAL_FILLED,
@@ -10,6 +16,8 @@ enum FillState {
 
 var fill_state : FillState = FillState.EMPTY
 var fill_amount = 0.0
+## Mixed drinks!
+var beverage_amounts = {}
 
 ## Less than these thresholds means it is at that state
 var empty_threshold = 0.2
@@ -26,11 +34,15 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_small_float(fill_amount)
 	return writer
 
-func fill(fill_rate: float):
+func fill(fill_rate: float, beverage: Beverage):
 	if fill_state == FillState.OVERFILLING:
 		return
 	
 	fill_amount += fill_rate
+	if beverage_amounts.has(beverage.display_name):
+		beverage_amounts[beverage.display_name] += fill_rate
+	else:
+		beverage_amounts[beverage.display_name] = fill_rate
 	evaluate_fill_state()
 
 func gulp():
