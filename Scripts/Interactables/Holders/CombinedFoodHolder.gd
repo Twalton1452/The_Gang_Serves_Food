@@ -25,6 +25,9 @@ func stack_items():
 	(held_items as Array[Food]).sort_custom(func(a,b):
 		if a.rule < b.rule:
 			return 1
+		if a.rule == b.rule:
+			if a.SCENE_ID < b.SCENE_ID:
+				return 2
 		return 0
 	)
 	

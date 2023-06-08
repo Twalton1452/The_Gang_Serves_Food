@@ -15,7 +15,7 @@ func watch_for_changes_to_menu_items():
 		if not menu_item.changed.is_connected(_on_menu_item_changed):
 			(menu_item as MenuItem).changed.connect(_on_menu_item_changed)
 			main_items.push_back(menu_item)
-	_on_menu_item_changed()	
+	_on_menu_item_changed()
 	
 func _on_menu_item_changed():
 	new_menu.emit(self)
