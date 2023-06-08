@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cmy2yoow08hoa"]
+[gd_scene load_steps=20 format=3 uid="uid://cmy2yoow08hoa"]
 
 [ext_resource type="Script" path="res://Scripts/Restaurant/DrinkFountain.gd" id="1_3suxm"]
 [ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="1_vo3ky"]
@@ -12,9 +12,25 @@
 [ext_resource type="Resource" uid="uid://m8mh5w0kddym" path="res://Resources/Beverages/Beverage_Mystery.tres" id="8_yfqur"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vfvs0"]
+resource_local_to_scene = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trgao"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sluan"]
+material = SubResource("StandardMaterial3D_trgao")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_blua1"]
 size = Vector3(0.0780226, 0.0393973, 0.0945561)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdpos"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6kd4d"]
+material = SubResource("StandardMaterial3D_mdpos")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ff5qh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_yt1ns"]
+material = SubResource("StandardMaterial3D_ff5qh")
 
 [sub_resource type="BoxMesh" id="BoxMesh_mjkh8"]
 
@@ -58,6 +74,10 @@ transform = Transform3D(-2.08438e-09, 0, -0.0651449, 0, 0.0778135, 0, 0.0476854,
 mesh = SubResource("BoxMesh_vfvs0")
 skeleton = NodePath("../../../kitchenCabinet")
 
+[node name="Display" type="MeshInstance3D" parent="FountainModel/DrinkDispenser/Dispenser"]
+transform = Transform3D(0.928402, 0, 0, 0, 0.852542, 0, 0, 0, 0.0787584, 0, -0.0307102, 0.52749)
+mesh = SubResource("BoxMesh_sluan")
+
 [node name="DispenserPlatform" parent="FountainModel/DrinkDispenser" instance=ExtResource("4_23u42")]
 transform = Transform3D(-2.10283e-08, 0, -0.588385, 0, 1, 0, 0.481073, 0, -2.5719e-08, -0.197616, -0.186477, -0.0839675)
 
@@ -80,6 +100,10 @@ transform = Transform3D(-2.08438e-09, 0, -0.0651449, 0, 0.0778135, 0, 0.0476854,
 mesh = SubResource("BoxMesh_vfvs0")
 skeleton = NodePath("../../../kitchenCabinet")
 
+[node name="Display" type="MeshInstance3D" parent="FountainModel/DrinkDispenser2/Dispenser"]
+transform = Transform3D(0.928402, 0, 0, 0, 0.852542, 0, 0, 0, 0.0787584, 0, -0.0307102, 0.52749)
+mesh = SubResource("BoxMesh_6kd4d")
+
 [node name="DispenserPlatform" parent="FountainModel/DrinkDispenser2" instance=ExtResource("4_23u42")]
 transform = Transform3D(-2.10283e-08, 0, -0.588385, 0, 1, 0, 0.481073, 0, -2.5719e-08, -0.197616, -0.186477, -0.0839675)
 
@@ -101,6 +125,10 @@ beverage = ExtResource("8_yfqur")
 transform = Transform3D(-2.08438e-09, 0, -0.0651449, 0, 0.0778135, 0, 0.0476854, 0, -2.84756e-09, -0.190907, 0.0689752, -0.0865375)
 mesh = SubResource("BoxMesh_vfvs0")
 skeleton = NodePath("../../../kitchenCabinet")
+
+[node name="Display" type="MeshInstance3D" parent="FountainModel/DrinkDispenser3/Dispenser"]
+transform = Transform3D(0.928402, 0, 0, 0, 0.852542, 0, 0, 0, 0.0787584, 0, -0.0307102, 0.52749)
+mesh = SubResource("BoxMesh_yt1ns")
 
 [node name="DispenserPlatform" parent="FountainModel/DrinkDispenser3" instance=ExtResource("4_23u42")]
 transform = Transform3D(-2.10283e-08, 0, -0.588385, 0, 1, 0, 0.481073, 0, -2.5719e-08, -0.197616, -0.186477, -0.0839675)

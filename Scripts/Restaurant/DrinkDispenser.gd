@@ -7,6 +7,7 @@ signal released_drink
 @export var beverage : Beverage
 
 @onready var holder : Holder = $Holder
+@onready var display : MeshInstance3D = $Dispenser/Display
 
 var activated = false
 
@@ -16,6 +17,7 @@ func _ready():
 	# We won't need to sync the "activated" state
 	holder.holding_item.connect(_on_item_entered_dispenser_zone)
 	holder.released_item.connect(_on_item_left_dispenser_zone)
+	display.get_active_material(0).albedo_color = beverage.color
 	
 func _on_item_entered_dispenser_zone(item: Node3D) -> void:
 	if not item is Drink:
