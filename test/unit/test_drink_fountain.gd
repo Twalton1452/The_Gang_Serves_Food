@@ -1,6 +1,7 @@
 extends GutTest
 
 var DrinkFountainScene = load("res://Scenes/drink_fountain.tscn")
+var DrinkScene = load("res://Scenes/cup.tscn")
 
 var _drink_fountain : DrinkFountain = null
 
@@ -9,7 +10,7 @@ func before_each():
 	add_child_autoqfree(_drink_fountain)
 
 func test_drink_fountain_sees_item_enter_and_leave_dispenser_zone():
-	var drink : Drink = Drink.new()
+	var drink : Drink = DrinkScene.instantiate()
 	var holder : Holder = Holder.new()
 	add_child_autoqfree(drink)
 	add_child_autoqfree(holder)
@@ -31,7 +32,7 @@ func test_drink_fountain_sees_item_enter_and_leave_dispenser_zone():
 	assert_eq(dispenser_to_use.activated, false)
 
 func test_drink_fountain_can_fill_drink():
-	var drink : Drink = Drink.new()
+	var drink : Drink = DrinkScene.instantiate()
 	add_child_autoqfree(drink)
 	var dispenser_to_use : DrinkDispenser = _drink_fountain.dispensers[0]
 	assert_eq(dispenser_to_use.holder.is_holding_item(), false)

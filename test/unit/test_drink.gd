@@ -1,11 +1,13 @@
 extends GutTest
 
+var DrinkScene = load("res://Scenes/cup.tscn")
+
 var _drink : Drink = null
 var _drink_fountain_power = 0.1
 var _beverage : Beverage = load("res://Resources/Beverages/Beverage_Water.tres")
 
 func before_each():
-	_drink = Drink.new()
+	_drink = DrinkScene.instantiate()
 	add_child_autoqfree(_drink)
 	_drink.empty_threshold = 0.2
 	_drink.partial_fill_threshold = 0.7
@@ -60,7 +62,7 @@ func test_drink_can_set_fill_state():
 	_drink.fill(_drink_fountain_power, _beverage)
 	assert_eq(_drink.fill_state, Drink.FillState.OVERFILLING)
 	assert_almost_eq(_drink.fill_amount, 1.1, 0.01)
-	assert_almost_eq(_drink.beverage_amounts[_beverage.display_name], 1.1, 0.01)
+	assert_almost_eq(_drink.beverage_amounts[_beverage], 1.1, 0.01)
 
 func test_drink_can_be_drank():
 	_drink.fill_amount = 1.0
