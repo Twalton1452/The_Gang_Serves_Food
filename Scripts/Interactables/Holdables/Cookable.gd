@@ -32,7 +32,7 @@ func set_sync_state(reader: ByteReader) -> void:
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
-	writer.write_small_float(cook_progress) # half is 2 bytes
+	writer.write_small_float(cook_progress)
 	return writer
 
 func _ready():

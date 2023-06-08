@@ -1,20 +1,24 @@
-[gd_scene load_steps=9 format=3 uid="uid://cmy2yoow08hoa"]
+[gd_scene load_steps=10 format=3 uid="uid://cmy2yoow08hoa"]
 
 [ext_resource type="Script" path="res://Scripts/Restaurant/DrinkFountain.gd" id="1_3suxm"]
 [ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="1_vo3ky"]
 [ext_resource type="PackedScene" uid="uid://jywt0naoax0t" path="res://Scenes/holders/cup_holder.tscn" id="2_lbg17"]
 [ext_resource type="PackedScene" uid="uid://c71yhmchstp56" path="res://3d_models/small_platform.blend" id="4_23u42"]
-[ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="5_seu8k"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holders/Holder.gd" id="4_btrow"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="6_usg67"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vfvs0"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_deon3"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_blua1"]
 size = Vector3(0.162313, 0.0393973, 0.176917)
 
 [sub_resource type="BoxMesh" id="BoxMesh_mjkh8"]
 
 [node name="DrinkFountain" type="Node3D"]
 script = ExtResource("1_3suxm")
+
+[node name="FillRateTimer" type="Timer" parent="."]
+wait_time = 0.5
 
 [node name="kitchenCabinet" parent="." instance=ExtResource("1_vo3ky")]
 transform = Transform3D(-4.37112e-08, 0, -1, 0, 1, 0, 1, 0, -4.37112e-08, 0, 0.005, 0)
@@ -46,15 +50,17 @@ transform = Transform3D(-2.08438e-09, 0, -0.0651449, 0, 0.0778135, 0, 0.0476854,
 mesh = SubResource("BoxMesh_vfvs0")
 skeleton = NodePath("../../kitchenCabinet")
 
-[node name="drink_platform" parent="." instance=ExtResource("4_23u42")]
+[node name="DispenserPlatform" parent="." instance=ExtResource("4_23u42")]
 transform = Transform3D(-4.37112e-08, 0, -1, 0, 1, 0, 1, 0, -4.37112e-08, 0.0918024, 0.42861, 0.229199)
 
-[node name="Holder" parent="drink_platform" instance=ExtResource("5_seu8k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0290122, 0)
+[node name="Holder" type="Area3D" parent="DispenserPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0238457, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("4_btrow")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="drink_platform/Holder"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00682259, 0)
-shape = SubResource("BoxShape3D_deon3")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DispenserPlatform/Holder"]
+shape = SubResource("BoxShape3D_blua1")
 
 [node name="CupHolderWall" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.390827, 0.527232, 0.604546)
@@ -68,6 +74,10 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.016
 
 [node name="CupHolder2" parent="CupHolderWall" instance=ExtResource("2_lbg17")]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.0160269, 0.0505809, 0.0990101)
+
+[node name="NetworkedNode3D" parent="." instance=ExtResource("6_usg67")]
+priority_sync_order = 9
+override_scene_id = 500
 
 [editable path="kitchenCabinet"]
 [editable path="kitchenCabinet2"]

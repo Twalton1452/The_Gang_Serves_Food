@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://r4j1kej8o5w"]
 
-[ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Holdable.gd" id="1_ynk22"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Drink.gd" id="1_sbwac"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_bo4jp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2415f"]
@@ -73,7 +73,7 @@ points = PackedVector3Array(0.019054, 0.0108447, 0.0190477, -0.0314212, 0.100548
 [node name="Cup" type="Area3D" node_paths=PackedStringArray("mesh_to_highlight")]
 collision_layer = 4
 collision_mask = 0
-script = ExtResource("1_ynk22")
+script = ExtResource("1_sbwac")
 SCENE_ID = 51
 mesh_to_highlight = NodePath("Cup")
 

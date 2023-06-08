@@ -1,6 +1,9 @@
 extends Interactable
 class_name Holder
 
+signal holding_item(item: Node3D)
+signal released_item(item: Node3D)
+
 var is_static_holder = false
 
 func _ready():
@@ -54,12 +57,14 @@ func hold_item_unsafe(item: Node3D) -> void:
 	elif not is_holding(item):
 		item.reparent(self, false)
 	item.position = Vector3.ZERO
+	holding_item.emit(item)
 
 func release_item_to(holder: Holder):
 	release_this_item_to(get_held_item(), holder)
 	
 func release_this_item_to(item: Node3D, holder: Holder):
 	holder.hold_item(item)
+	released_item.emit(item)
 	
 func swap_items_with(holder: Holder):
 	# Causing issues with a combination of a MultiHolder that has multiple StackingHolders

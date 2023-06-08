@@ -2,21 +2,25 @@ class_name NetworkedIds
 
 enum Scene {
 	NETWORKED = 0,
+	
+	# Foods
 	PATTY = 1,
 	BOTTOM_BUN = 2,
 	TOP_BUN = 3,
 	TOMATO = 4,
 	ONION = 5,
 	
+	# Kitchenware
 	PLATE = 50,
 	CUP = 51,
 	
-#	HOLDER = 100,
-#	HOLDABLE = 101,
-#	COOKABLE = 102,
-#	ROTATABLE = 103,
+	# Appliances
+	DRINK_FOUNTAIN = 500,
+	
+#	# Facilitating Components
 	FOOD_COMBINER = 1000,
 	
+	# AI
 	CUSTOMER = 2000,
 	CUSTOMER_PARTY = 2001,
 }

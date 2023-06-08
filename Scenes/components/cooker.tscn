@@ -13,5 +13,6 @@ wait_time = 0.5
 
 [node name="NetworkedNode3D" type="Node3D" parent="."]
 script = ExtResource("2_t7dk3")
+priority_sync_order = 9
 
 [connection signal="timeout" from="CookingTicksTimer" to="." method="_on_cooking_ticks_timer_timeout"]

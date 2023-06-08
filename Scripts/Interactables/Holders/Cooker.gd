@@ -9,6 +9,21 @@ class_name CookerComponent
 
 @onready var tick_timer : Timer = $CookingTicksTimer
 
+func set_sync_state(reader: ByteReader) -> void:
+	var is_timer_playing = reader.read_bool()
+	if is_timer_playing:
+		# Instead of setting the timer to this tick rate and then adding logic to 
+		# set it back after the tick, just simulate a tick
+		var time_left = reader.read_small_float()
+		await get_tree().create_timer(time_left).timeout
+		_on_cooking_ticks_timer_timeout()
+
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	var is_timer_playing = not tick_timer.is_stopped()
+	writer.write_bool(is_timer_playing)
+	if is_timer_playing:
+		writer.write_small_float(tick_timer.time_left)
+	return writer
 
 func hold_item(node: Node3D):
 	super(node)
