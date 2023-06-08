@@ -59,6 +59,7 @@ func fill(fill_rate: float, beverage: Beverage):
 func gulp():
 	fill_amount = 0.0
 	fill_state = FillState.EMPTY
+	beverage_amounts.clear()
 
 func evaluate_fill_state():
 	if fill_amount < empty_threshold:

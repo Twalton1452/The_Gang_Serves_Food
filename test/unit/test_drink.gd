@@ -61,4 +61,14 @@ func test_drink_can_set_fill_state():
 	assert_eq(_drink.fill_state, Drink.FillState.OVERFILLING)
 	assert_almost_eq(_drink.fill_amount, 1.1, 0.01)
 	assert_almost_eq(_drink.beverage_amounts[_beverage.display_name], 1.1, 0.01)
+
+func test_drink_can_be_drank():
+	_drink.fill_amount = 1.0
+	_drink.beverage_amounts[NetworkedResources.get_resource_by_id(NetworkedIds.Resources.WATER)] = 1.0
+	
+	_drink.gulp()
+	
+	assert_eq(_drink.fill_amount, 0.0)
+	assert_eq(_drink.fill_state, Drink.FillState.EMPTY)
+	assert_eq(_drink.beverage_amounts, {})
 	
