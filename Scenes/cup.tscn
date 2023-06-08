@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://r4j1kej8o5w"]
+[gd_scene load_steps=9 format=3 uid="uid://r4j1kej8o5w"]
 
 [ext_resource type="Script" path="res://Scripts/Interactables/Holdables/Drink.gd" id="1_sbwac"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_bo4jp"]
+[ext_resource type="Material" uid="uid://ef8e6wax3s1a" path="res://Materials/Drink_Liquid_mat.tres" id="2_sf61v"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2415f"]
 resource_name = "Cup"
@@ -11,6 +12,7 @@ albedo_color = Color(0.802378, 0.84476, 0.906332, 1)
 roughness = 0.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rv2n3"]
+resource_local_to_scene = true
 resource_name = "Liquid"
 cull_mode = 2
 vertex_color_use_as_albedo = true
@@ -70,16 +72,18 @@ shadow_mesh = SubResource("ArrayMesh_kqq1s")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_p864f"]
 points = PackedVector3Array(0.019054, 0.0108447, 0.0190477, -0.0314212, 0.100548, -0.0314212, -0.0314212, 0.100548, 0.0302813, 0.033, 0.128315, 0.031077, 0.033, 0.128315, -0.0322667, -0.0184711, 0.00661687, -0.0184711, -0.0340111, 0.131598, -0.0340111, 0.0173231, 0.00661687, -0.0184711, -0.0184711, 0.00661687, 0.0173169, -0.0322667, 0.128315, 0.033, 0.0322028, 0.106218, 0.0322028, 0.0322028, 0.106218, -0.0314695, 0.0180935, 0.00387813, 0.0180869, -0.0314695, 0.106218, 0.0322028, 0.0302813, 0.100548, -0.0314212, -0.018325, 0.0108315, 0.0190521, 0.019054, 0.0108447, -0.0183206, 0.031077, 0.128315, 0.033, 0.033, 0.126392, 0.033)
 
-[node name="Cup" type="Area3D" node_paths=PackedStringArray("mesh_to_highlight")]
+[node name="Cup" type="Area3D" node_paths=PackedStringArray("mesh_to_color", "mesh_to_highlight")]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_sbwac")
+mesh_to_color = NodePath("Cup")
 SCENE_ID = 51
 mesh_to_highlight = NodePath("Cup")
 
 [node name="Cup" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_m7o0c")
 skeleton = NodePath("")
+surface_material_override/1 = ExtResource("2_sf61v")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("ConvexPolygonShape3D_p864f")

@@ -302,7 +302,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3564, 1.19209e-07, 5.39968)
 script = ExtResource("15_6mlv6")
 
 [node name="MenuLabel3D" type="Label3D" parent="Restaurant/Building/Menu"]
-transform = Transform3D(0.685742, 0, 0.727845, 0, 1, 0, -0.727845, 0, 0.685742, 0, 0.616241, 0)
+transform = Transform3D(0.685742, 0, 0.727845, 0, 1, 0, -0.727845, 0, 0.685742, 0, 0.800214, 0)
 text = "Menu"
 outline_size = 8
 

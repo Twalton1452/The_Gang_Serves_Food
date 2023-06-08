@@ -1,18 +1,15 @@
 extends Holdable
 class_name Drink
 
-#enum Beverage {
-#	WATER,
-#	COLA,
-#	SLURM,
-#}
-
 enum FillState {
 	EMPTY,
 	PARTIAL_FILLED,
 	FILLED,
 	OVERFILLING,
 }
+
+@export var mesh_to_color : MeshInstance3D
+@export var surface_index_to_color = 1
 
 var fill_state : FillState = FillState.EMPTY
 var fill_amount = 0.0
@@ -43,6 +40,7 @@ func fill(fill_rate: float, beverage: Beverage):
 		beverage_amounts[beverage.display_name] += fill_rate
 	else:
 		beverage_amounts[beverage.display_name] = fill_rate
+	mesh_to_color.get_surface_override_material(surface_index_to_color).albedo_color = beverage.color
 	evaluate_fill_state()
 
 func gulp():
