@@ -6,3 +6,4 @@
 script = ExtResource("1_eorjq")
 display_name = "Mystery"
 color = Color(0, 0.788235, 0, 1)
+RESOURCE_ID = 3

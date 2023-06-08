@@ -31,5 +31,6 @@ func get_scene_by_id(id: NetworkedIds.Scene) -> Resource:
 	if scene == null:
 		print_debug(id, " has not been added yet to NetworkedScenes.gd")
 		return
+	
 	PATHS[id] = scene
 	return scene

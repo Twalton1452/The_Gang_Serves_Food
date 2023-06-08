@@ -62,8 +62,11 @@ func read_bool() -> bool:
 	return bool(decode_u8())
 
 ## Max value 256
-func read_small_float() -> float:
-	return decode_half()
+## round_to_decimal included as this is primarily used for percentages
+## 0.2 values over the network would get distorted to 0.19996
+## this could cause a desync
+func read_small_float(round_to_decimal: float = 0.01) -> float:
+	return snapped(decode_half(), round_to_decimal)
 
 func read_float() -> float:
 	return decode_float()

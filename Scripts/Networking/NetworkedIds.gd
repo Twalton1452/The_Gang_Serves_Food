@@ -24,3 +24,12 @@ enum Scene {
 	CUSTOMER = 2000,
 	CUSTOMER_PARTY = 2001,
 }
+
+enum Resources {
+	NETWORKED = 0,
+	
+	# Drinks
+	WATER = 1,
+	COLA = 2,
+	MYSTERY = 3,
+}

@@ -1,4 +1,4 @@
-extends Resource
+extends NetworkedResource
 class_name Beverage
 
 

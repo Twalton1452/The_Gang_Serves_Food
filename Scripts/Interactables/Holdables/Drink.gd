@@ -24,23 +24,36 @@ var filled_threshold = 1.0
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
 	fill_amount = reader.read_small_float()
+	var dict_size = reader.read_int()
+	for i in range(dict_size):
+		var resource_id = reader.read_int()
+		var beverage_filled_amount = reader.read_small_float()
+		beverage_amounts[NetworkedResources.get_resource_by_id(resource_id)] = beverage_filled_amount
+	
 	evaluate_fill_state()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
 	writer.write_small_float(fill_amount)
+	writer.write_int(beverage_amounts.size())
+	for beverage in beverage_amounts:
+		writer.write_int(beverage.RESOURCE_ID)
+		writer.write_small_float(beverage_amounts[beverage])
 	return writer
+
+func _ready():
+	mesh_to_color.get_surface_override_material(surface_index_to_color).albedo_color.a = 0.0
 
 func fill(fill_rate: float, beverage: Beverage):
 	if fill_state == FillState.OVERFILLING:
 		return
 	
 	fill_amount += fill_rate
-	if beverage_amounts.has(beverage.display_name):
-		beverage_amounts[beverage.display_name] += fill_rate
+	if beverage_amounts.has(beverage):
+		beverage_amounts[beverage] += fill_rate
 	else:
-		beverage_amounts[beverage.display_name] = fill_rate
-	mesh_to_color.get_surface_override_material(surface_index_to_color).albedo_color = beverage.color
+		beverage_amounts[beverage] = fill_rate
+	
 	evaluate_fill_state()
 
 func gulp():
@@ -56,3 +69,16 @@ func evaluate_fill_state():
 		fill_state = FillState.FILLED
 	else:
 		fill_state = FillState.OVERFILLING
+	
+	# Mix drink colors based on the filled amount
+	var iterations = 0
+	var drink_color = Color.WHITE
+	for beverage in beverage_amounts:
+		if iterations == 0:
+			drink_color = beverage.color
+		else:
+			drink_color = drink_color.lerp(beverage.color, beverage_amounts[beverage])
+		iterations += 1
+	
+	drink_color.a = fill_amount
+	mesh_to_color.get_surface_override_material(surface_index_to_color).albedo_color = drink_color

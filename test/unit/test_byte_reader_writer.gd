@@ -35,6 +35,22 @@ func test_can_read_write_small_float():
 	var read_value = _reader.read_small_float()
 	assert_eq(read_value, ev, "Didn't read the value back correctly")
 
+var rounded_float_cases = [
+	[0.2, 0.01, 0.2],
+	[0.02, 0.01, 0.02],
+	[0.01996, 0.01, 0.02],
+]
+
+func test_can_read_write_small_float_rounded(params=use_parameters(rounded_float_cases)):
+	var write_value = params[0]
+	var round_amount = params[1]
+	var ev = params[2]
+	_writer.write_small_float(write_value)
+	assert_eq(_writer.offset, 2, "Incorrect offset after writing float")
+	
+	var read_value = _reader.read_small_float(round_amount)
+	assert_eq(read_value, ev, "Didn't read the value back correctly")
+
 func test_can_read_write_float():
 	var ev = 10000000.05
 	_writer.write_float(ev)

@@ -6,3 +6,4 @@
 script = ExtResource("1_cjtlr")
 display_name = "Cola"
 color = Color(0.4, 0.207843, 0.101961, 1)
+RESOURCE_ID = 2
