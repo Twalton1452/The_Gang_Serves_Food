@@ -8,7 +8,7 @@ func before_each():
 	add_child_autoqfree(holder)
 	
 	_menu_item = MenuItem.new()
-	_menu_item.dish_holder = holder
+	_menu_item.dish_display_holder = holder
 	
 	_menu = Menu.new()
 	_menu.add_child(_menu_item)
@@ -19,11 +19,11 @@ func test_extracts_scene_ids_from_combined_food():
 	var ev : Array[NetworkedIds.Scene] = [NetworkedIds.Scene.BOTTOM_BUN, NetworkedIds.Scene.PATTY, NetworkedIds.Scene.TOMATO, NetworkedIds.Scene.TOP_BUN]
 	var combined_food_holder = create_combined_food(ev)
 	
-	_menu_item.dish_holder.hold_item(combined_food_holder)
+	_menu_item.dish_display_holder.hold_item(combined_food_holder)
 	_menu_item._on_holder_changed()
 	
 	# Act
-	var main = _menu.main_items[0].dish
+	var main = _menu.menu_items[0].dish
 	
 	# Assert
 	assert_eq(main, ev, "main dish had something different")
@@ -35,17 +35,17 @@ func test_extracts_scene_ids_from_combined_food():
 #	var combined_food_holder = create_combined_food(ev)
 #	multi_holder.hold_item(combined_food_holder)
 #
-#	_menu_item.dish_holder.hold_item(multi_holder)
+#	_menu_item.dish_display_holder.hold_item(multi_holder)
 #
 #	# Act
-#	var main = _menu.main_items[0].dish
+#	var main = _menu.menu_items[0].dish
 #
 #	# Assert
 #	assert_eq(main, ev, "main dish had something different")
 
 
-func test_extracts_scene_ids_from_side_one_dish_holder():
+func test_extracts_scene_ids_from_side_one_dish_display_holder():
 	pending()
 
-func test_extracts_scene_ids_from_side_two_dish_holder():
+func test_extracts_scene_ids_from_side_two_dish_display_holder():
 	pending()

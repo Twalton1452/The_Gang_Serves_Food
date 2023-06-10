@@ -74,18 +74,12 @@ func order_from(party: CustomerParty, menu: Menu):
 	for customer in party.customers:
 		customer.order_from(menu)
 	
-	party.state = CustomerParty.PartyState.ORDERING
-	party.num_customers_required_to_advance = 1
-	
 	var writer = ByteWriter.new()
 	writer.write_str(party.name)
-	for customer in party.customers:
-		writer.write_int_array(customer.order as Array[int])
 	
 	notify_peers_of_order.rpc(writer.data)
 
-## call_remote as the server should decide the order for customers and tell clients
-@rpc("authority", "call_remote")
+@rpc("authority", "call_local")
 func notify_peers_of_order(order_data: PackedByteArray):
 	var reader = ByteReader.new(order_data)
 	var party_name = reader.read_str()
@@ -93,12 +87,8 @@ func notify_peers_of_order(order_data: PackedByteArray):
 	if party == null:
 		return
 
-	for customer in party.customers:
-		customer.order = reader.read_int_array() as Array[NetworkedIds.Scene]
-	
 	party.state = CustomerParty.PartyState.ORDERING
 	party.num_customers_required_to_advance = 1
-	
 
 func pay(party: CustomerParty):
 	if not is_multiplayer_authority():

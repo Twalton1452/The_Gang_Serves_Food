@@ -13,7 +13,7 @@ func create_multiholder(how_many_holders: int) -> MultiHolder:
 
 func create_combined_food(ids: Array[NetworkedIds.Scene]) -> CombinedFoodHolder:
 	var combined_food_holder = CombinedFoodHolder.new()
-	autofree(combined_food_holder)
+	autoqfree(combined_food_holder)
 	
 	for id in ids:
 		var item = NetworkedScenes.get_scene_by_id(id).instantiate()

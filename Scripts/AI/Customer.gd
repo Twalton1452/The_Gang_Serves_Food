@@ -10,8 +10,7 @@ signal ate_food
 
 var target_chair : Chair = null
 var sitting_chair : Chair = null : set = set_chair
-var order : Array[NetworkedIds.Scene] : set = set_order
-var order_visual : CombinedFoodHolder = null
+var order : Order : set = set_order
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
@@ -29,15 +28,6 @@ func set_sync_state(reader: ByteReader) -> void:
 		target_chair = sitting_chair
 		sit()
 	
-	var has_order = reader.read_bool()
-	if has_order:
-		var to_be_order : Array[int] = reader.read_int_array()
-		order = to_be_order as Array[NetworkedIds.Scene]
-		var showing_order_visual = reader.read_bool()
-		if showing_order_visual:
-			show_order_visual()
-		evaluate_food()
-	
 	var is_interactable = reader.read_bool()
 	if is_interactable:
 		interactable.enable_collider()
@@ -46,7 +36,6 @@ func set_sync_state(reader: ByteReader) -> void:
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
-	
 	
 	var has_target_chair = target_chair != null
 	var is_sitting = sitting_chair != null
@@ -59,13 +48,6 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	if is_sitting:
 		writer.write_path_to(sitting_chair)
 		
-	var has_order = order.size() > 0
-	writer.write_bool(has_order)
-	if has_order:
-		writer.write_int_array(order as Array[int])
-		var showing_order_visual = order_visual != null and order_visual.visible
-		writer.write_bool(showing_order_visual)
-	
 	writer.write_bool(interactable.is_enabled())
 	return writer
 
@@ -73,9 +55,9 @@ func set_order(value) -> void:
 	order = value
 	
 	# customer has new order
-	if len(order) > 0:
+	if order != null:
 		interactable.enable_collider()
-		spawn_hidden_order_visual()
+		order.global_position = sitting_chair.holder.global_position
 	# resetting customer order
 	else:
 		interactable.disable_collider()
@@ -107,27 +89,25 @@ func _exit_tree():
 		$MeshInstance3D.set("surface_material_override/0", null)
 
 func evaluate_food():
-	if sitting_chair == null or not sitting_chair.holder.is_holding_item() or len(order) == 0 or interactable.is_enabled():
+	if sitting_chair == null or not sitting_chair.holder.is_holding_item() or order == null or interactable.is_enabled():
 		return
 		
 	var item_on_the_table = sitting_chair.holder.get_held_item()
-	if not item_on_the_table is CombinedFoodHolder:
+	if not order.is_equal_to(item_on_the_table):
 		return
 		
-	var presented_dish = item_on_the_table.get_held_items()
-	if order.size() != presented_dish.size():
-		return
+	got_order.emit()
+	hide_order_visual()
+	# Don't let the player interact with the food while the customer is about to eat
+	sitting_chair.holder.disable_collider()
+	if item_on_the_table is MultiHolder:
+		item_on_the_table.disable_colliders()
+		for held_item in item_on_the_table.get_held_items():
+			held_item.disable_collider()
+	elif item_on_the_table is CombinedFoodHolder:
+		item_on_the_table.disable_held_colliders()
 	else:
-		for i in len(presented_dish):
-			if (presented_dish[i] as Food).SCENE_ID != order[i]:
-				return
-		got_order.emit()
-		delete_order_visual()
-		# Don't let the player interact with the food while the customer is about to eat
-		sitting_chair.holder.disable_collider()
-		sitting_chair.holder.get_held_item().disable_collider()
-		for food in presented_dish:
-			(food as Food).disable_collider()
+		item_on_the_table.disable_collider()
 
 func order_from(menu: Menu):
 	if not is_multiplayer_authority():
@@ -149,12 +129,15 @@ func eat() -> void:
 		print_debug("The food should be there, but it isnt. I'm trying to delete it")
 		return
 		
-	var food = sitting_chair.holder.get_held_item()
-	if not food is CombinedFoodHolder:
-		print_debug("The food is not a CombinedFoodHolder, IDK what this is eating")
-		return
+	var dish = sitting_chair.holder.get_held_item()
 	
-	NetworkingUtils.send_item_for_deletion(food)
+	# Send the items on the MultiHolder for deletion but not the MultiHolder
+	if dish is MultiHolder:
+		for held_item in dish.get_held_items():
+			NetworkingUtils.send_item_for_deletion(held_item)
+		dish.enable_colliders()
+	else:
+		NetworkingUtils.send_item_for_deletion(dish)
 
 func sit():
 	if target_chair != null:
@@ -162,42 +145,10 @@ func sit():
 	if sitting_chair != null:
 		sitting_chair.sit(self)
 
-## We spawn the visual as the customer makes their order
-## However we don't show it until a Player interaction happens
-## Customer patiently waits for someone to ask them what they want before showing!
-func spawn_hidden_order_visual():
-	if order.size() == 0 or sitting_chair == null:
-		return
-	
-	var combiner : CombinedFoodHolder = NetworkingUtils.spawn_client_only_node(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.FOOD_COMBINER), self)
-	for id in order:
-		var food : Food = NetworkingUtils.spawn_client_only_node(NetworkedScenes.get_scene_by_id(id), combiner)
-		combiner.hold_item_unsafe(food)
-		for i in range(food.obj_to_color.get_surface_override_material_count()):
-			food.obj_to_color.get_active_material(i)
-			food.material_to_color.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			food.material_to_color.albedo_color.a = 0.7
-	combiner.stack_items()
-	
-	var floater = Floater.new()
-	floater.move_enabled = true
-	floater.move_amount = Vector3(0.0, 0.05, 0.0)
-	floater.move_to_original_seconds = 1.3
-	floater.move_to_target_seconds = 1.3
-	floater.move_transition_to_target = Tween.TRANS_BACK
-	floater.move_transition_to_target = Tween.TRANS_BACK
-	combiner.add_child(floater)
-	
-	order_visual = combiner
-	order_visual.global_position = sitting_chair.holder.global_position
-	order_visual.disable_collider()
-	order_visual.disable_held_colliders()
-	order_visual.hide()
-
 func show_order_visual():
-	if order_visual != null:
-		order_visual.show()
+	if order != null:
+		order.show()
 
-func delete_order_visual():
-	if order_visual != null:
-		order_visual.queue_free()
+func hide_order_visual():
+	if order != null:
+		order.hide()

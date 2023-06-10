@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dswdjjnf0ss5f"]
+
+[ext_resource type="Script" path="res://Scripts/Restaurant/Order.gd" id="1_y45ds"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_ibp71"]
+
+[node name="Order" type="Node3D"]
+script = ExtResource("1_y45ds")
+
+[node name="NetworkedNode3D" parent="." instance=ExtResource("2_ibp71")]
+priority_sync_order = 5
+override_scene_id = 1001

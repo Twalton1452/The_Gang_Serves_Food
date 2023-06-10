@@ -41,14 +41,33 @@ func spawn_node(node_to_spawn: PackedScene, to_be_parent: Node) -> Node:
 	# This should reduce the amount of labor in the editor setting the Sync Phase
 	if parent_net_node != null:
 		spawned_net_node.priority_sync_order = parent_net_node.priority_sync_order + 1
-#		print_debug("[NetworkingUtils spawned %s] and set its sync order to %s and its parent's sync order is %s" %\
-#			[
-#				spawned_node.name,
-#				spawned_net_node.priority_sync_order,
-#				parent_net_node.priority_sync_order
-#			]
-#		)
 	return spawned_node
+
+# TODO: Deep copy instead of duplicate
+func duplicate_node(node_to_duplicate: Node, to_be_parent: Node) -> Node:
+	var duplicated_node = node_to_duplicate.duplicate()
+	to_be_parent.add_child(duplicated_node, true)
+	
+	# Only the server cares about the NetworkedNode3D sync orders
+	# If the player needs that too, then remove this
+	if not is_multiplayer_authority():
+		return duplicated_node
+	
+	var duplicated_net_node : NetworkedNode3D = duplicated_node.get_node("NetworkedNode3D")
+	duplicated_net_node.changed = true
+	
+	var parent_net_node = to_be_parent.get_node_or_null("NetworkedNode3D")
+	# Always sync this newly spawned node after its parent
+	# This should reduce the amount of labor in the editor setting the Sync Phase
+	if parent_net_node != null:
+		duplicated_net_node.priority_sync_order = parent_net_node.priority_sync_order + 1
+	
+	# TODO: Tell every child networkednode3d to update changed = true
+	for child in duplicated_node.get_children():
+		var nn = child.get_node_or_null("NetworkedNode3D")
+		if nn != null:
+			print(nn.name, " ", nn.changed)
+	return duplicated_node
 
 ## Spawn a Node that is managed by the client, no networking attached to it
 func spawn_client_only_node(node_to_spawn: PackedScene, to_be_parent: Node) -> Node:
