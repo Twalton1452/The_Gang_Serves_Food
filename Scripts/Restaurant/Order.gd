@@ -21,10 +21,6 @@ func set_sync_state(reader: ByteReader):
 	# Kind of excessive because it should be a direct child
 	var path_to_display_order = reader.read_path_to()
 	init(get_node(path_to_display_order))
-	print(path_to_display_order, " ", get_children())
-	for child in get_children():
-		print(child.get_children())
-	print("-------------------------------------")
 	var is_showing = reader.read_bool()
 	if is_showing:
 		show()
@@ -44,12 +40,14 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 func init(display: Node3D):
 	hide()
 	display_order = display
+	display_order.rotation = display_order.rotation - get_parent().rotation
 	flattened_order_ids = get_flattened_ids_for(display)
 	
 	if display is MultiHolder:
 		multiholder = display
 	
 	if multiholder != null:
+		multiholder.disable_collider()
 		for item in multiholder.get_held_items():
 			
 			if item is CombinedFoodHolder:
@@ -82,6 +80,7 @@ func get_flattened_ids_for(dish: Node3D) -> Array[NetworkedIds.Scene]:
 	var ids : Array[NetworkedIds.Scene] = []
 	
 	if dish is MultiHolder:
+		ids.push_back(dish.SCENE_ID) # Requires the multiholder
 		for item in dish.get_held_items():
 			if item is CombinedFoodHolder:
 				for food in item.get_held_items():
@@ -103,7 +102,7 @@ func is_equal_to(presented_dish: Node3D) -> bool:
 	if presented_dish is MultiHolder and multiholder == null:
 		return false
 		
-	var presented_dish_ids = get_flattened_ids_for(presented_dish)	
+	var presented_dish_ids = get_flattened_ids_for(presented_dish)
 	if presented_dish_ids.size() != flattened_order_ids.size():
 		return false
 	
@@ -123,15 +122,13 @@ func visual_representation():
 	floater.move_to_target_seconds = 1.3
 	floater.move_transition_to_target = Tween.TRANS_BACK
 	floater.move_transition_to_target = Tween.TRANS_BACK
+	display_order.add_child(floater)
 	
-	#display_order.add_child(floater)
-	#display_order.scale.z = 0.1
 	if display_order is MultiHolder:
 		for item in display_order.get_held_items():
 			if item is CombinedFoodHolder:
 				for food in item.get_held_items():
 					set_transparency_for_food_to(food, 0.7)
-				
 			elif item is Food:
 				set_transparency_for_food_to(item, 0.7)
 			elif item is Drink:
