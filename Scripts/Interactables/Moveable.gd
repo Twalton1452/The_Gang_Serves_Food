@@ -21,6 +21,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		get_parent().position = original_position
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	super(writer)
 	writer.write_bool(is_moved)
 	writer.write_bool(in_progress)
 	writer.write_vector3(original_position)

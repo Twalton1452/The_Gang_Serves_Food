@@ -29,7 +29,7 @@ func generate_order_for(customer: Customer) -> Order:
 	if not is_menu_available():
 		return null
 	
-	var order = NetworkingUtils.spawn_node(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.ORDER), customer)
-	var duplicated_dish = NetworkingUtils.duplicate_node(menu_items[0].dish_display_holder.get_held_item(), order)
+	var order = NetworkingUtils.spawn_node_for_everyone(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.ORDER), customer)
+	var duplicated_dish = NetworkingUtils.duplicate_node_for_everyone(menu_items[0].dish_display_holder.get_held_item(), order)
 	order.init(duplicated_dish)
 	return order

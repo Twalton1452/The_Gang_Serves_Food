@@ -20,6 +20,7 @@ enum Scene {
 #	# Facilitating Components
 	FOOD_COMBINER = 1000,
 	ORDER = 1001,
+	INTERACTABLE = 1002,
 	
 	# AI
 	CUSTOMER = 2000,

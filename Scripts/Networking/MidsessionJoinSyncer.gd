@@ -123,8 +123,8 @@ func sync_networked_node(networked_id: int, net_scene_id: int, sync_state : Pack
 ## Client's game state is sync'd at this point
 ## Sync player specific settings between all clients/server
 func client_finished_syncing():
-	send_server_my_settings.rpc_id(GameState.SERVER_ID, get_settings_to_send())
 	send_server_sync_finished.rpc_id(GameState.SERVER_ID)
+	send_server_my_settings.rpc_id(GameState.SERVER_ID, get_settings_to_send())
 	sync_complete.emit()
 
 @rpc("any_peer", "reliable")
@@ -141,7 +141,6 @@ func get_settings_to_send() -> PackedByteArray:
 
 func decode_player_settings(peer_id: int, settings: PackedByteArray) -> void:
 	var player : Player = GameState.get_player_by_id(peer_id)
-	
 	var reader = ByteReader.new(settings)
 	var color_vec3 = reader.read_vector3()
 	var color = Color(color_vec3.x, color_vec3.y, color_vec3.z, 1.0)

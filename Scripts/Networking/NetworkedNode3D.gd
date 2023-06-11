@@ -30,7 +30,7 @@ enum SyncPriorityPhase {
 
 @export var sync_position = true
 ## The lower the number the more important it is to sync
-@export var priority_sync_order : SyncPriorityPhase = SyncPriorityPhase.REPARENT
+@export var priority_sync_order : SyncPriorityPhase = SyncPriorityPhase.REPARENT : set = set_priority_sync_order
 
 ## Sync with this parent node
 @onready var p_node = get_parent()
@@ -42,6 +42,10 @@ enum SyncPriorityPhase {
 var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.NETWORKED : get = get_scene_id
 ## Used for simple objects that need to be spawned but have no script attached to them
 @export var override_scene_id : NetworkedIds.Scene
+
+@export_group("Advanced")
+## For singleton type nodes, set to true if you don't want the name changed
+@export var only_one_will_exist = false
 
 ## Identifier between server/client to figure out what needs to be created/updated/deleted
 ## Generated during [method _ready]
@@ -70,7 +74,9 @@ func set_sync_state(reader: ByteReader):
 	#print("syncing %s Path to Parent %s" % [new_name, path_to_parent])
 	var new_parent = get_node(path_to_parent)
 	
-	get_parent().name = new_name
+	if not only_one_will_exist:
+		get_parent().name = new_name
+	
 	if p_node.get_parent() != new_parent:
 		if p_node.get_parent() is Holder and new_parent is Holder:
 			p_node.get_parent().release_this_item_to(p_node, new_parent)
@@ -113,6 +119,10 @@ func get_scene_id() -> int:
 		return p_node.SCENE_ID
 	return SCENE_ID
 
+func set_priority_sync_order(value: SyncPriorityPhase) -> void:
+	priority_sync_order = value
+	changed = true
+
 func _ready():
 	networked_id = NetworkingUtils.generate_id()
 	generate_unique_name()
@@ -132,6 +142,9 @@ func _on_interaction():
 ## and the "@" symbol gets deleted when manually setting the name, so it messes with Paths
 ## As long as we keep the id which will always be unique in the name Path's should resolve
 func generate_unique_name():
+	if only_one_will_exist:
+		return
+	
 	if OS.has_feature("standalone"):
 		p_node.name = str(networked_id)
 	else:
@@ -141,4 +154,9 @@ func generate_unique_name():
 # Can work as a delta signifier to the midsession joins
 func _exit_tree():
 	changed = true
+	
+	if not is_multiplayer_authority():
+		return
+		
+	NetworkingUtils.ensure_correct_sync_order_for(p_node)
 #	print("[Changed: %s] Parent: %s" % [name, get_parent().name])

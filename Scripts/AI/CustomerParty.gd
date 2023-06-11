@@ -134,6 +134,8 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	return writer
 
 func sync_customer(customer: Customer) -> void:
+	if customer in customers:
+		return
 	customer.arrived.connect(_on_customer_arrived)
 	customer.player_interacted_with.connect(_on_customer_arrived)
 	customer.got_order.connect(_on_customer_arrived)
@@ -300,6 +302,11 @@ func sit_at_table():
 
 func order_from(menu: Menu) -> void:
 	await get_tree().create_timer(think_time_sec).timeout
+	
+	# Player changed the menu from empty to a new dish while the
+	# Thinking patience was running out
+	if state != PartyState.THINKING:
+		return
 	
 	NetworkedPartyManager.order_from(self, menu)
 

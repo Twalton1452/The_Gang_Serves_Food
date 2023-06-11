@@ -15,7 +15,7 @@ enum Phase {
 
 var state : Phase = Phase.OPEN_FOR_BUSINESS : set = set_state
 
-var players : Array[Player] = []
+var players : Dictionary = {}
 var level : Level : set = set_level
 var hud : HUD = null
 
@@ -54,31 +54,21 @@ func reset():
 	level = null
 
 func get_player_by_id(p_id: int) -> Player:
-	for p in players:
-		if p.name.to_int() == p_id:
-			return p
-	return null
+	return players.get(str(p_id))
 
 func add_player(player: Player):
-	players.push_back(player)
+	players[player.name] = player
 
 func remove_player(p_id : int):
-	var i = 0
-	for p in players:
-		if p.name.to_int() == p_id:
-			break
-		i += 1
-	players[i].hide()
-	
 	if is_multiplayer_authority():
 		cleanup_disconnecting_player.rpc(p_id)
 		await get_tree().create_timer(3.0).timeout
-		if i < players.size() and players[i] != null:
-			players[i].queue_free()
+		if players.get(p_id) != null:
+			players[p_id].queue_free()
 	
-	players.remove_at(i)
+	players.erase(p_id)
 
-@rpc("call_local")
+@rpc("authority", "call_local")
 func cleanup_disconnecting_player(p_id: int):
 	var player = get_player_by_id(p_id)
 	# Preserve the Item the Disconnecting player was holding

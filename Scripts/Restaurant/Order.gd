@@ -145,12 +145,14 @@ func visual_representation():
 
 func set_transparency_for_food_to(food: Food, value: float):
 	for i in range(food.obj_to_color.get_surface_override_material_count()):
-		food.obj_to_color.get_active_material(i)
-		food.material_to_color.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		food.material_to_color.albedo_color.a = value
+		var material = food.obj_to_color.get_active_material(i)
+		if material != null:
+			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			material.albedo_color.a = value
 
 func set_transparency_for_drink_to(drink: Drink, value: float):
 	for i in range(drink.mesh_to_color.get_surface_override_material_count()):
-		drink.obj_to_color.get_active_material(i)
-		drink.material_to_color.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		drink.material_to_color.albedo_color.a = value
+		var material = drink.mesh_to_color.get_active_material(i)
+		if material != null:
+			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			material.albedo_color.a = value

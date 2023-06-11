@@ -5,8 +5,8 @@ signal player_interacted_with
 signal got_order
 signal ate_food
 
-@onready var interactable : Interactable = $Interactable
 @onready var pixel_face : PixelFace = $PixelFace
+var interactable : Interactable = null
 
 var target_chair : Chair = null
 var sitting_chair : Chair = null : set = set_chair
@@ -27,12 +27,6 @@ func set_sync_state(reader: ByteReader) -> void:
 		sitting_chair = get_node(chair)
 		target_chair = sitting_chair
 		sit()
-	
-	var is_interactable = reader.read_bool()
-	if is_interactable:
-		interactable.enable_collider()
-	else:
-		interactable.disable_collider()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
@@ -48,7 +42,6 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	if is_sitting:
 		writer.write_path_to(sitting_chair)
 		
-	writer.write_bool(interactable.is_enabled())
 	return writer
 
 func set_order(value) -> void:
@@ -77,6 +70,10 @@ func set_chair(value: Chair):
 
 func _ready():
 	super()
+	for child in get_children():
+		if child is Interactable:
+			interactable = child
+			break
 	interactable.interacted.connect(_on_player_interacted)
 	interactable.secondary_interacted.connect(_on_player_interacted)
 

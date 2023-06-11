@@ -11,10 +11,15 @@ signal secondary_interacted
 
 @export var mesh_to_highlight : MeshInstance3D
 
-func set_sync_state(_reader : ByteReader) -> void:
-	pass
+func set_sync_state(reader : ByteReader) -> void:
+	var is_interactable = reader.read_bool()
+	if is_interactable:
+		enable_collider()
+	else:
+		disable_collider()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	writer.write_bool(is_enabled())
 	return writer
 
 func _ready():

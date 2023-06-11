@@ -77,16 +77,23 @@ func order_from(party: CustomerParty, menu: Menu):
 	var writer = ByteWriter.new()
 	writer.write_str(party.name)
 	
-	notify_peers_of_order.rpc(writer.data)
+	notify_peers_party_is_ordering.rpc(writer.data)
+	
+	party.state = CustomerParty.PartyState.ORDERING
+	party.num_customers_required_to_advance = 1
 
-@rpc("authority", "call_local")
-func notify_peers_of_order(order_data: PackedByteArray):
-	var reader = ByteReader.new(order_data)
+@rpc("authority", "call_remote")
+func notify_peers_party_is_ordering(data: PackedByteArray):
+	var reader = ByteReader.new(data)
 	var party_name = reader.read_str()
 	var party : CustomerParty = get_party_by_name(party_name)
 	if party == null:
 		return
-
+	
+	for customer in party.customers:
+		customer.order = customer.get_child(-1)
+		customer.order.init(customer.get_child(-1).get_child(-1))
+	
 	party.state = CustomerParty.PartyState.ORDERING
 	party.num_customers_required_to_advance = 1
 

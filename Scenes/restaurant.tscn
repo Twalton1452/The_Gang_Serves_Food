@@ -1,7 +1,8 @@
-[gd_scene load_steps=31 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=32 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="2_7dixm"]
 [ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="2_8d1g5"]
 [ext_resource type="PackedScene" uid="uid://bvjit4lsovbr3" path="res://3d_models/Kenneys_Furniture/wallDoorwayWide.glb" id="3_21ak5"]
 [ext_resource type="NavigationMesh" uid="uid://cro8mueu3lb0n" path="res://Resources/building_navmesh.tres" id="3_wk033"]
@@ -404,6 +405,12 @@ transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0.880
 
 [node name="DrinkFountain" parent="Testing" instance=ExtResource("26_cud0u")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.71156, 0.000103712, 3.99924)
+
+[node name="NetworkedNode3D" type="Node" parent="."]
+script = ExtResource("2_7dixm")
+sync_position = false
+priority_sync_order = 0
+only_one_will_exist = true
 
 [connection signal="despawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_despawned"]
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]

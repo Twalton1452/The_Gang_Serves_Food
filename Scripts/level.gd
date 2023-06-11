@@ -46,9 +46,7 @@ func add_player(peer_id: int, needs_sync = true):
 		MidsessionJoinSyncer.sync_nodes_for_new_player.call_deferred(peer_id)
 
 func delete_player(peer_id):
-	var player = players.get_node_or_null(str(peer_id))
-	if player != null:
-		GameState.remove_player(peer_id)
+	GameState.remove_player(peer_id)
 
 func update_health_bar(health_value):
 	health_bar.value = health_value

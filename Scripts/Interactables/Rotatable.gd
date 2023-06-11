@@ -19,6 +19,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		get_parent().rotation = tar_rot
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	super(writer)
 	writer.write_bool(is_rotated)
 	writer.write_bool(in_progress)
 	return writer
