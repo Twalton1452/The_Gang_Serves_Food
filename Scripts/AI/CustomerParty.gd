@@ -13,23 +13,23 @@ enum PartyState {
 	SPAWNING = 0,
 	
 	WALKING_TO_LINE = 1,
-	WAITING_IN_LINE = 2, # PATIENCE - Walking forward only when the party ahead walks forward
+	WAITING_IN_LINE = 2, ## PATIENCE - Walking forward only when the party ahead walks forward
 	
-	WALKING_TO_ENTRY = 3, # First in line walking to the door
-	WAITING_FOR_TABLE = 4, # PATIENCE - At the front door waiting to be told a table is ready
+	WALKING_TO_ENTRY = 3, ## First in line walking to the door
+	WAITING_FOR_TABLE = 4, # #PATIENCE - At the front door waiting to be told a table is ready
 	WALKING_TO_TABLE = 5,
 	
-	THINKING = 6, # Wait Phase before transitioning to ordering for more realism
-	ORDERING = 7, # PATIENCE - Waiting for player to take their order
+	THINKING = 6, ## Wait Phase before transitioning to ordering for more realism
+	ORDERING = 7, ## PATIENCE - Waiting for player to take their order
 	
-	WAITING_FOR_FOOD = 8, # PATIENCE - Waiting for player to deliver food
-	EATING = 9, # Wait Phase before transitioning to paying for more realism
+	WAITING_FOR_FOOD = 8, ## PATIENCE - Waiting for player to deliver food
+	EATING = 9, ## Wait Phase before transitioning to paying for more realism
 	
-	WAITING_TO_PAY = 10, # PATIENCE - Waiting for player to help them pay
-	PAYING = 11, # Wait Phase before transitioning to leaving for more realism
-	LEAVING_FOR_HOME = 12, # Traveling to the kill zone
-	LEAVING_FOR_HOME_IMPATIENT = 13, # Party got impatient
-	GONE_HOME = 14, # Traveling to the kill zone
+	WAITING_TO_PAY = 10, ## PATIENCE - Waiting for player to help them pay
+	PAYING = 11, ## Wait Phase before transitioning to leaving for more realism
+	LEAVING_FOR_HOME = 12, ## Traveling to the kill zone
+	LEAVING_FOR_HOME_IMPATIENT = 13, ## Party got impatient
+	GONE_HOME = 14, ## Traveling to the kill zone
 }
 
 var patience_states = {
@@ -363,6 +363,8 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 func patience_depleted():
 	state = PartyState.LEAVING_FOR_HOME_IMPATIENT
 	disconnect_from_patience_bar_visual()
+	for customer in customers:
+		customer.pixel_face.change_expression_to(PixelFace.Face.Crying)
 
 func _on_customer_arrived():
 	num_arrived_to_destination += 1
