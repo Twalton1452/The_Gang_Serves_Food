@@ -1,5 +1,7 @@
 class_name ByteReader
 
+const FLOAT_SIGNIFICANT_DIGITS = 0.001
+
 var data = PackedByteArray()
 var offset = 0
 
@@ -9,7 +11,7 @@ func _init(to_read: PackedByteArray):
 func decode_half() -> float:
 	var decoded = data.decode_half(offset)
 	offset += 2
-	return decoded
+	return snapped(decoded, FLOAT_SIGNIFICANT_DIGITS)
 
 func decode_u8() -> int:
 	var decoded = data.decode_u8(offset)
@@ -29,7 +31,7 @@ func decode_u32() -> int:
 func decode_float() -> float:
 	var decoded = data.decode_float(offset)
 	offset += 4
-	return decoded
+	return snapped(decoded, FLOAT_SIGNIFICANT_DIGITS)
 
 func decode_utf8_str() -> String:
 	var str_size = decode_u8()

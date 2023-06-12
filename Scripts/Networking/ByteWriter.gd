@@ -1,12 +1,14 @@
 class_name ByteWriter
 
+const FLOAT_SIGNIFICANT_DIGITS = 0.001
+
 var data = PackedByteArray()
 var offset = 0
 
 func encode_half(value: float) -> void:
 	offset += 2
 	data.resize(offset)
-	data.encode_half(offset - 2, value)
+	data.encode_half(offset - 2, snapped(value, FLOAT_SIGNIFICANT_DIGITS))
 
 func encode_u8(value: int) -> void:
 	offset += 1
@@ -26,7 +28,7 @@ func encode_u32(value: int) -> void:
 func encode_float(value: float) -> void:
 	offset += 4
 	data.resize(offset)
-	data.encode_float(offset - 4, value)
+	data.encode_float(offset - 4, snapped(value, FLOAT_SIGNIFICANT_DIGITS))
 
 func append_array(arr: PackedByteArray) -> void:
 	offset += arr.size()
@@ -34,7 +36,7 @@ func append_array(arr: PackedByteArray) -> void:
 
 ## Max value 256,256,256
 func write_vector3(vec3: Vector3):
-	encode_half(vec3.x) 
+	encode_half(vec3.x)
 	encode_half(vec3.y)
 	encode_half(vec3.z)
 
