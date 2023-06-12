@@ -11,6 +11,8 @@ signal secondary_interacted
 
 @export var mesh_to_highlight : MeshInstance3D
 
+var collider : CollisionShape3D
+
 func set_sync_state(reader : ByteReader) -> void:
 	var is_interactable = reader.read_bool()
 	if is_interactable:
@@ -23,7 +25,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	return writer
 
 func _ready():
-	pass
+	collider = get_node_or_null("CollisionShape3D")
 
 func _interact(_player : Player):
 	pass
@@ -46,15 +48,15 @@ func secondary_interact(player : Player):
 	return result
 
 func disable_collider():
-	if get_node_or_null("CollisionShape3D") != null:
-		$CollisionShape3D.disabled = true
+	if collider != null:
+		collider.disabled = true
 
 func enable_collider():
-	if get_node_or_null("CollisionShape3D") != null:
-		$CollisionShape3D.disabled = false
+	if collider != null:
+		collider.disabled = false
 
 func is_enabled() -> bool:
-	return !$CollisionShape3D.disabled if get_node_or_null("CollisionShape3D") != null else false
+	return !collider.disabled if collider != null else false
 
 func show_outline():
 	pass
