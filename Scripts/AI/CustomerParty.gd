@@ -87,11 +87,6 @@ var table : Table = null
 var patience : float = 1.0 : set = set_patience
 
 func set_sync_state(reader: ByteReader) -> void:
-	# Before performing any customer operations, wait for the sync process to complete
-	# so that we have all the customers!
-	# Don't use "after_sync" because it doesn't have the reader data
-	await MidsessionJoinSyncer.sync_complete
-	
 	NetworkingUtils.sort_array_by_net_id(customers)
 	state = reader.read_int() as PartyState
 	num_arrived_to_destination = reader.read_int()

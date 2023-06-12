@@ -20,7 +20,9 @@ func match_id_to_scene(id: NetworkedIds.Scene) -> Resource:
 
 		NetworkedIds.Scene.FOOD_COMBINER: return load("res://Scenes/components/food_combiner.tscn")
 		NetworkedIds.Scene.ORDER: return load("res://Scenes/components/order.tscn")
-		NetworkedIds.Scene.INTERACTABLE: return load("res://Scenes/components/interactable.tscn")
+		NetworkedIds.Scene.INTERACTABLE:
+			print_debug("Spawned an INTERACTABLE when we probably shouldnt have")
+			return load("res://Scenes/components/interactable.tscn")
 
 		NetworkedIds.Scene.CUSTOMER: return load("res://Scenes/customer.tscn")
 		NetworkedIds.Scene.CUSTOMER_PARTY: return load("res://Scenes/components/party.tscn")

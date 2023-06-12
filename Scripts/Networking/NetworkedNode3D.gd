@@ -4,7 +4,7 @@ class_name NetworkedNode3D
 
 ## Heavy lifter of setting up synchronization at start up if a Player joins midsession
 ##
-## It will automatically sync any Interactable above it (could likely do non-interactables too with tweaking)
+## It will automatically sync any parent node this is attached to
 ## Attach this Node as a child of another Node that could possibly Move or have State change
 ## The networked_id is used as an identifier between server/client to figure out what needs to be updated or created
 ## Default Properties Sync'd:
@@ -35,12 +35,11 @@ enum SyncPriorityPhase {
 ## Sync with this parent node
 @onready var p_node = get_parent()
 
-## Every NetworkedNode3D is automatically in the NETWORKED group once [method _ready] happens
 ## The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
-## This is pulled off the Interactable this is attached to.
+## This is pulled off the Interactable this is attached to if attached to one.
 ## Needs to be set in editor for non-interactables
 var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.NETWORKED : get = get_scene_id
-## Used for simple objects that need to be spawned but have no script attached to them
+## Used for simple objects that need to be spawned without a stateful script
 @export var override_scene_id : NetworkedIds.Scene
 
 @export_group("Advanced")
@@ -88,12 +87,17 @@ func set_sync_state(reader: ByteReader):
 	if sync_position:
 		p_node.global_position = global_sync_pos
 	
+	# Wait for everything to spawn before doing anything
+	if not MidsessionJoinSyncer.synced:
+		await MidsessionJoinSyncer.sync_complete
+	
 	if has_additional_sync():
 		# Give the rest of the sync_state to the node to handle
 		p_node.set_sync_state(reader)
 	
 	if has_after_sync():
-		await MidsessionJoinSyncer.sync_complete
+		if not MidsessionJoinSyncer.synced:
+			await MidsessionJoinSyncer.sync_complete
 		p_node.after_sync()
 
 func get_sync_state() -> ByteWriter:

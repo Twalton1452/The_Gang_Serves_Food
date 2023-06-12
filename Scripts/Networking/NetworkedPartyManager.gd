@@ -90,6 +90,8 @@ func notify_peers_party_is_ordering(data: PackedByteArray):
 	if party == null:
 		return
 	
+	# Order was spawned as a child of customer
+	# Initialize it given the duplicated display child of the Order
 	for customer in party.customers:
 		customer.order = customer.get_child(-1)
 		customer.order.init(customer.get_child(-1).get_child(-1))

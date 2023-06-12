@@ -51,6 +51,7 @@ func set_order(value) -> void:
 	if order != null:
 		interactable.enable_collider()
 		order.global_position = sitting_chair.holder.global_position
+		evaluate_food()
 	# resetting customer order
 	else:
 		interactable.disable_collider()

@@ -13,6 +13,7 @@ static func cleanup_material_overrides(node: Node, mesh_to_clean: MeshInstance3D
 		mesh = node.get_node_or_null("MeshInstance3D")
 	if mesh == null:
 		return
+	
 	for override_index in mesh.get_surface_override_material_count():
 		#$MeshInstance3D.set("surface_material_override/0", null)
 		mesh.set_surface_override_material(override_index, null)
