@@ -20,8 +20,7 @@ func _ready():
 				chairs.push_back(child)
 
 func _exit_tree():
-	if table_mesh != null:
-		table_mesh.set("surface_material_override/1", null)
+	Utils.cleanup_material_overrides(self, table_mesh)
 
 func is_available_for(party_size: int) -> bool:
 	return is_empty and not party_in_transit and table_can_hold_party(party_size)

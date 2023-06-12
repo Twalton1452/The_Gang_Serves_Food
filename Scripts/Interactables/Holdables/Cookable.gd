@@ -49,6 +49,9 @@ func _ready():
 	material_to_color = obj_to_color.get_active_material(0)
 	evaluate_cook_rate()
 
+func _exit_tree():
+	Utils.cleanup_material_overrides(self, obj_to_color)
+
 func cook(power: float):
 	if cook_state == CookStates.BURNED:
 		return

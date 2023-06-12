@@ -81,9 +81,8 @@ func _exit_tree():
 	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
 		sitting_chair.holder.interacted.disconnect(evaluate_food)
 		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
-	# remove when migrating to godot 4.1
-	if get_node_or_null("MeshInstance3D") != null:
-		$MeshInstance3D.set("surface_material_override/0", null)
+	Utils.cleanup_material_overrides(self)
+
 
 func evaluate_food():
 	if sitting_chair == null or not sitting_chair.holder.is_holding_item() or order == null or interactable.is_enabled():
