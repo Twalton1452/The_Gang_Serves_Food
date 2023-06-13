@@ -66,7 +66,6 @@ func set_sync_state(reader: ByteReader):
 		global_sync_pos = reader.read_vector3()
 	
 	var path_to = reader.read_path_to()
-	
 	var split_path : PackedStringArray = path_to.split("/")
 	var new_name = split_path[-1]
 	var path_to_parent = "/".join(split_path.slice(0, -1))

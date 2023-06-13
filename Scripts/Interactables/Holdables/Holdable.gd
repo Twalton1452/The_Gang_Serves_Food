@@ -1,18 +1,6 @@
 extends Interactable
 class_name Holdable
 	
-func set_sync_state(reader: ByteReader) -> void:
-	super(reader)
-	var is_being_held = reader.read_bool()
-	if is_being_held:
-		(get_parent() as Holder).hold_item(self)
-
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
-	super(writer)
-	var is_being_held = get_parent() is Holder
-	writer.write_bool(is_being_held)
-	return writer
-
 func _interact(player: Player):
 	# Item free floating, just take it
 	if not get_parent() is Holder:
