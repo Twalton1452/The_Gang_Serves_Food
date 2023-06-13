@@ -125,6 +125,8 @@ func get_scene_id() -> int:
 func set_priority_sync_order(value: SyncPriorityPhase) -> void:
 	priority_sync_order = value
 	changed = true
+	# TODO revisit, sync order is being set when p_node is null
+	#print(p_node, " ", priority_sync_order)
 
 func _ready():
 	networked_id = NetworkingUtils.generate_id()
@@ -136,6 +138,7 @@ func _ready():
 	# sync overrides because they likely have no other trigger to sync them
 	elif override_scene_id != NetworkedIds.Scene.NETWORKED:
 		changed = true
+	NetworkingUtils.crawl_up_tree_for_next_priority_sync_order(p_node)
 
 func _on_interaction():
 	changed = true
@@ -158,8 +161,9 @@ func generate_unique_name():
 func _exit_tree():
 	changed = true
 	
-	if not is_multiplayer_authority():
+	if multiplayer and not is_multiplayer_authority():
 		return
-		
-	NetworkingUtils.ensure_correct_sync_order_for(p_node)
+	
+	if not p_node.is_queued_for_deletion():
+		NetworkingUtils.ensure_correct_sync_order_for(p_node)
 #	print("[Changed: %s] Parent: %s" % [name, get_parent().name])

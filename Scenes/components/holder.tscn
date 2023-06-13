@@ -1,12 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ycyd8lf8m7wn"]
+[gd_scene load_steps=2 format=3 uid="uid://ycyd8lf8m7wn"]
 
 [ext_resource type="Script" path="res://Scripts/Interactables/Holders/Holder.gd" id="1_r1q0u"]
-[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="2_r24rn"]
 
 [node name="Holder" type="Area3D"]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_r1q0u")
-
-[node name="NetworkedNode3D" type="Node3D" parent="."]
-script = ExtResource("2_r24rn")

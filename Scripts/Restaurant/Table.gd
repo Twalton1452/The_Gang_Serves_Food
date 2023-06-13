@@ -8,16 +8,29 @@ signal available(table: Table)
 
 @onready var patience_bar : PatienceBar = $PatienceBar
 
+
+var holders : Array[Holder] = []
 var chairs : Array[Chair] = []
 var is_empty = true
 var party_in_transit = false
 var color : Color : set = set_color, get = get_color
 
+func set_sync_state(reader: ByteReader) -> void:
+	for holder in holders:
+		holder.set_sync_state(reader)
+
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	for holder in holders:
+		holder.get_sync_state(writer)
+	
+	return writer
+
 func _ready():
-	if chairs.is_empty():
-		for child in get_children():
-			if child is Chair:
-				chairs.push_back(child)
+	for child in get_children():
+		if child is Chair:
+			chairs.push_back(child)
+		elif child is Holder:
+			holders.push_back(child)
 
 func _exit_tree():
 	Utils.cleanup_material_overrides(self, table_mesh)

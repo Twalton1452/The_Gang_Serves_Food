@@ -153,7 +153,7 @@ func send_item_for_deletion(item: Node) -> void:
 	else:
 		delete_item_for_everyone_by_path.rpc(StringName(item.get_path()).to_utf8_buffer())
 
-@rpc("authority", "call_remote", "reliable", 1)
+@rpc("authority", "call_remote", "reliable")
 func spawn_node_for_peers(data: PackedByteArray):
 	var reader = ByteReader.new(data)
 	var scene_id = reader.read_int()
@@ -162,7 +162,7 @@ func spawn_node_for_peers(data: PackedByteArray):
 #	var net_node = spawned_node.get_node(NETWORKED_NODE_3D)
 #	net_node.set_sync_state(reader)
 
-@rpc("authority", "call_remote", "reliable", 1)
+@rpc("authority", "call_remote", "reliable")
 func duplicate_node_for_peers(data: PackedByteArray):
 	var reader = ByteReader.new(data)
 	var node_to_duplicate = get_node(reader.read_path_to())

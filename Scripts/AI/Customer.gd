@@ -6,7 +6,7 @@ signal got_order
 signal ate_food
 
 @onready var pixel_face : PixelFace = $PixelFace
-var interactable : Interactable = null
+@onready var interactable : Interactable = $Interactable
 
 var target_chair : Chair = null
 var sitting_chair : Chair = null : set = set_chair
@@ -31,6 +31,9 @@ func set_sync_state(reader: ByteReader) -> void:
 	var has_order = reader.read_bool()
 	if has_order:
 		order = get_node(reader.read_path_to())
+		order.set_sync_state(reader)
+	
+	interactable.set_sync_state(reader)
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
@@ -50,6 +53,10 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_bool(has_order)
 	if has_order:
 		writer.write_path_to(order)
+		order.get_sync_state(writer)
+		
+	interactable.get_sync_state(writer)
+	
 	return writer
 
 func set_order(value) -> void:
@@ -76,10 +83,6 @@ func set_chair(value: Chair):
 
 func _ready():
 	super()
-	for child in get_children():
-		if child is Interactable:
-			interactable = child
-			break
 	interactable.interacted.connect(_on_player_interacted)
 	interactable.secondary_interacted.connect(_on_player_interacted)
 

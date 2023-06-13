@@ -6,7 +6,7 @@ signal arrived
 @export var go_to_target : Node3D
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 
-var speed = 3.0
+var speed = 5.0
 var target_position = Vector3.ZERO
 
 var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.CUSTOMER

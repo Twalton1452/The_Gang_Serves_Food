@@ -43,13 +43,13 @@ wait_time = 0.5
 [node name="kitchenCabinet" parent="." instance=ExtResource("1_vo3ky")]
 transform = Transform3D(-4.37112e-08, 0, -1, 0, 1, 0, 1, 0, -4.37112e-08, 0, 0.005, 0)
 
-[node name="CollisionShape3D" parent="kitchenCabinet/Holder" index="1"]
+[node name="CollisionShape3D" parent="kitchenCabinet/Holder" index="0"]
 disabled = true
 
 [node name="kitchenCabinet2" parent="." instance=ExtResource("1_vo3ky")]
 transform = Transform3D(-4.37112e-08, 0, -1, 0, 1, 0, 1, 0, -4.37112e-08, 0, 0.005, 0.425)
 
-[node name="CollisionShape3D" parent="kitchenCabinet2/Holder" index="1"]
+[node name="CollisionShape3D" parent="kitchenCabinet2/Holder" index="0"]
 disabled = true
 
 [node name="FountainModel" type="Node3D" parent="."]

@@ -44,8 +44,7 @@ script = ExtResource("4_588ik")
 [node name="NetworkedNode3D" parent="." instance=ExtResource("3_lb4gl")]
 priority_sync_order = 3
 
-[node name="Interactable" parent="." node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("4_yblyl")]
-mesh_to_highlight = NodePath("../MeshInstance3D")
+[node name="Interactable" parent="." instance=ExtResource("4_yblyl")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)

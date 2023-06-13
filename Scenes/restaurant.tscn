@@ -346,16 +346,16 @@ transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4.82581,
 [node name="kitchenCabinet" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.64343, 0, 0)
 
-[node name="CollisionShape3D" parent="Testing/kitchenCabinet/Holder" index="1"]
+[node name="CollisionShape3D" parent="Testing/kitchenCabinet/Holder" index="0"]
 disabled = true
 
-[node name="PlateStackHolder" parent="Testing/kitchenCabinet/Holder" index="2" instance=ExtResource("24_ovivh")]
+[node name="PlateStackHolder" parent="Testing/kitchenCabinet/Holder" index="1" instance=ExtResource("24_ovivh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0296599, 0.028514, -0.00741696)
 
 [node name="kitchenCabinet2" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0757108, 0, 0)
 
-[node name="PattyBox" parent="Testing/kitchenCabinet2/Holder" index="2" instance=ExtResource("23_ym7y0")]
+[node name="PattyBox" parent="Testing/kitchenCabinet2/Holder" index="1" instance=ExtResource("23_ym7y0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00727499, 0.000255018, 0.024927)
 
 [node name="kitchenCabinet3" parent="Testing" instance=ExtResource("10_b6sav")]
@@ -364,17 +364,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.935711, 0, 0)
 [node name="door" parent="Testing/kitchenCabinet3/kitchenCabinet(Clone)" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0268442, 0.085086, -0.03)
 
-[node name="TomatoBox" parent="Testing/kitchenCabinet3/Holder" index="2" instance=ExtResource("16_ketst")]
+[node name="TomatoBox" parent="Testing/kitchenCabinet3/Holder" index="1" instance=ExtResource("16_ketst")]
 
 [node name="kitchenCabinet4" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.36571, 0, 0)
 
-[node name="OnionBox" parent="Testing/kitchenCabinet4/Holder" index="2" instance=ExtResource("24_v3tw0")]
+[node name="OnionBox" parent="Testing/kitchenCabinet4/Holder" index="1" instance=ExtResource("24_v3tw0")]
 
 [node name="kitchenCabinet5" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.505593, 0, 0)
 
-[node name="DoubleHolderBox" parent="Testing/kitchenCabinet5/Holder" index="2" instance=ExtResource("17_l7sfd")]
+[node name="DoubleHolderBox" parent="Testing/kitchenCabinet5/Holder" index="1" instance=ExtResource("17_l7sfd")]
 
 [node name="kitchenCabinet11" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.21355, 0, 0)

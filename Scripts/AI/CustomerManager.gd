@@ -11,7 +11,7 @@ var parties : Array[CustomerParty] = []
 var min_party_size = 1
 var max_party_size = 1
 var min_wait_to_spawn_sec = 1.0
-var max_wait_to_spawn_sec = 2.0
+var max_wait_to_spawn_sec = 1.0
 var is_spawning = true
 
 func _ready():
