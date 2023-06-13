@@ -28,7 +28,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		target_chair = sitting_chair
 		sit()
 	
-	var has_order = reader.read_path_to()
+	var has_order = reader.read_bool()
 	if has_order:
 		order = get_node(reader.read_path_to())
 
@@ -47,6 +47,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		writer.write_path_to(sitting_chair)
 	
 	var has_order = order != null
+	writer.write_bool(has_order)
 	if has_order:
 		writer.write_path_to(order)
 	return writer
