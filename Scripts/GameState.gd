@@ -6,6 +6,7 @@ signal state_changed
 signal money_changed(value: int)
 
 var SERVER_ID = 1
+var THIS_ID = -1
 
 enum Phase {
 	LOBBY,
@@ -36,6 +37,7 @@ func set_state(value: Phase):
 func set_level(l: Level):
 	level = l
 	hud = get_node("/root/World/CanvasLayer/HUD")
+	THIS_ID = multiplayer.get_unique_id()
 
 func set_money(value: int):
 	money = value
