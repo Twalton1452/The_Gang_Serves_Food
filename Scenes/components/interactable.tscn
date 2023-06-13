@@ -10,5 +10,4 @@ script = ExtResource("1_dbsbw")
 SCENE_ID = 1002
 
 [node name="NetworkedNode3D" parent="." instance=ExtResource("2_m3udi")]
-sync_position = false
 priority_sync_order = 9
