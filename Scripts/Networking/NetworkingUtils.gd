@@ -155,6 +155,12 @@ func send_item_for_deletion(item: Node) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func spawn_node_for_peers(data: PackedByteArray):
+	# TODO: In the future all RPC calls could be filtered through a RPC Queue
+	# The RPCs would sit in a wait list to be executed until syncing is complete
+	# Then we wouldn't need to wait for this logic or pause the game either
+	if not MidsessionJoinSyncer.is_synced:
+		await MidsessionJoinSyncer.sync_complete
+	
 	var reader = ByteReader.new(data)
 	var scene_id = reader.read_int()
 	var to_be_parent = get_node(reader.read_path_to())
@@ -164,6 +170,12 @@ func spawn_node_for_peers(data: PackedByteArray):
 
 @rpc("authority", "call_remote", "reliable")
 func duplicate_node_for_peers(data: PackedByteArray):
+	# TODO: In the future all RPC calls could be filtered through a RPC Queue
+	# The RPCs would sit in a wait list to be executed until syncing is complete
+	# Then we wouldn't need to wait for this logic or pause the game either
+	if not MidsessionJoinSyncer.is_synced:
+		await MidsessionJoinSyncer.sync_complete
+	
 	var reader = ByteReader.new(data)
 	var node_to_duplicate = get_node(reader.read_path_to())
 	var to_be_parent = get_node(reader.read_path_to())
