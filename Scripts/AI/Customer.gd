@@ -47,14 +47,11 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 func set_order(value) -> void:
 	order = value
 	
-	# customer has new order
-	if order != null:
-		interactable.enable_collider()
-		order.global_position = sitting_chair.holder.global_position
-		evaluate_food()
-	# resetting customer order
-	else:
-		interactable.disable_collider()
+	if order == null:
+		return
+	
+	order.global_position = sitting_chair.holder.global_position
+	evaluate_food()
 
 func set_chair(value: Chair):
 	if sitting_chair != null and sitting_chair.holder.interacted.is_connected(evaluate_food):
@@ -83,7 +80,6 @@ func _exit_tree():
 		sitting_chair.holder.interacted.disconnect(evaluate_food)
 		sitting_chair.holder.secondary_interacted.disconnect(evaluate_food)
 	Utils.cleanup_material_overrides(self)
-
 
 func evaluate_food():
 	if sitting_chair == null or not sitting_chair.holder.is_holding_item() or order == null or interactable.is_enabled():

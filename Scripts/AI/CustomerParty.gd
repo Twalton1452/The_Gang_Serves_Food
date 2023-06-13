@@ -86,8 +86,10 @@ var target_pos : Vector3 = Vector3.ZERO
 var table : Table = null
 var patience : float = 1.0 : set = set_patience
 
-func set_sync_state(reader: ByteReader) -> void:
+func after_sync():
 	NetworkingUtils.sort_array_by_net_id(customers)
+
+func set_sync_state(reader: ByteReader) -> void:
 	state = reader.read_int() as PartyState
 	num_arrived_to_destination = reader.read_int()
 	num_customers_required_to_advance = reader.read_int()
@@ -292,7 +294,7 @@ func sit_at_table():
 		customer.sit()
 	
 	connect_to_patience_bar_visual(table.patience_bar)
-		
+	
 	state = PartyState.THINKING
 
 func order_from(menu: Menu) -> void:

@@ -88,7 +88,7 @@ func set_sync_state(reader: ByteReader):
 		p_node.global_position = global_sync_pos
 	
 	# Wait for everything to spawn before doing anything
-	if not MidsessionJoinSyncer.synced:
+	if not MidsessionJoinSyncer.is_synced:
 		await MidsessionJoinSyncer.sync_complete
 	
 	if has_additional_sync():
@@ -96,7 +96,7 @@ func set_sync_state(reader: ByteReader):
 		p_node.set_sync_state(reader)
 	
 	if has_after_sync():
-		if not MidsessionJoinSyncer.synced:
+		if not MidsessionJoinSyncer.is_synced:
 			await MidsessionJoinSyncer.sync_complete
 		p_node.after_sync()
 

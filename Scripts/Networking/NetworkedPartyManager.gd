@@ -73,6 +73,7 @@ func order_from(party: CustomerParty, menu: Menu):
 	
 	for customer in party.customers:
 		customer.order_from(menu)
+		customer.interactable.enable_collider()
 	
 	var writer = ByteWriter.new()
 	writer.write_str(party.name)
@@ -95,6 +96,7 @@ func notify_peers_party_is_ordering(data: PackedByteArray):
 	for customer in party.customers:
 		customer.order = customer.get_child(-1)
 		customer.order.init(customer.get_child(-1).get_child(-1))
+		customer.interactable.enable_collider()
 	
 	party.state = CustomerParty.PartyState.ORDERING
 	party.num_customers_required_to_advance = 1

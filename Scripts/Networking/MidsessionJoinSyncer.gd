@@ -11,7 +11,7 @@ var total_num_nodes_to_sync = 0
 var num_packets_to_incur_wait = 50
 var seconds_to_wait_between_many_packets = 0.1
 
-var synced = false : get = get_is_synced
+var is_synced = false : get = get_is_synced
 
 func get_is_synced() -> bool:
 	return num_nodes_syncd == total_num_nodes_to_sync

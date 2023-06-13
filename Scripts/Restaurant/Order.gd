@@ -126,7 +126,7 @@ func visual_representation():
 	else:
 		if display_order is CombinedFoodHolder:
 			for food in display_order.get_held_items():
-					set_transparency_for_food_to(food, 0.7)
+				set_transparency_for_food_to(food, 0.7)
 			
 		elif display_order is Food:
 			set_transparency_for_food_to(display_order, 0.7)
