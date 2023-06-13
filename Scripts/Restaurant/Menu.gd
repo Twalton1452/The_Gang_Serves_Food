@@ -3,6 +3,8 @@ class_name Menu
 
 signal new_menu(menu: Menu)
 
+@export var orders_parent : Node3D
+
 var menu_items : Array[MenuItem] = []
 
 func _ready():
@@ -29,7 +31,8 @@ func generate_order_for(customer: Customer) -> Order:
 	if not is_menu_available():
 		return null
 	
-	var order = NetworkingUtils.spawn_node_for_everyone(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.ORDER), customer)
+	var order : Order = NetworkingUtils.spawn_node_for_everyone(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.ORDER), orders_parent)
 	var duplicated_dish = NetworkingUtils.duplicate_node_for_everyone(menu_items[0].dish_display_holder.get_held_item(), order)
 	order.init(duplicated_dish)
+	customer.order = order
 	return order

@@ -134,8 +134,8 @@ func _ready():
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID
 		p_node.interacted.connect(_on_interaction)
-	# always sync overrides because they likely have no other trigger to sync them
-	if override_scene_id != NetworkedIds.Scene.NETWORKED:
+	# sync overrides because they likely have no other trigger to sync them
+	elif override_scene_id != NetworkedIds.Scene.NETWORKED:
 		changed = true
 
 func _on_interaction():

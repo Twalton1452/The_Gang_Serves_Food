@@ -71,12 +71,13 @@ func order_from(party: CustomerParty, menu: Menu):
 	if not menu.is_menu_available():
 		return
 	
+	var writer = ByteWriter.new()
+	writer.write_str(party.name)
+	
 	for customer in party.customers:
 		customer.order_from(menu)
 		customer.interactable.enable_collider()
-	
-	var writer = ByteWriter.new()
-	writer.write_str(party.name)
+		writer.write_path_to(customer.order)
 	
 	notify_peers_party_is_ordering.rpc(writer.data)
 	
@@ -91,12 +92,10 @@ func notify_peers_party_is_ordering(data: PackedByteArray):
 	if party == null:
 		return
 	
-	# Order was spawned as a child of customer
-	# Initialize it given the duplicated display child of the Order
 	for customer in party.customers:
-		customer.order = customer.get_child(-1)
-		customer.order.init(customer.get_child(-1).get_child(-1))
 		customer.interactable.enable_collider()
+		customer.order = get_node(reader.read_path_to())
+		customer.order.init(customer.order.get_child(-1))
 	
 	party.state = CustomerParty.PartyState.ORDERING
 	party.num_customers_required_to_advance = 1

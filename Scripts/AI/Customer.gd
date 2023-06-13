@@ -27,6 +27,10 @@ func set_sync_state(reader: ByteReader) -> void:
 		sitting_chair = get_node(chair)
 		target_chair = sitting_chair
 		sit()
+	
+	var has_order = reader.read_path_to()
+	if has_order:
+		order = get_node(reader.read_path_to())
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
@@ -41,7 +45,10 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_bool(is_sitting)
 	if is_sitting:
 		writer.write_path_to(sitting_chair)
-		
+	
+	var has_order = order != null
+	if has_order:
+		writer.write_path_to(order)
 	return writer
 
 func set_order(value) -> void:
@@ -145,3 +152,9 @@ func show_order_visual():
 func hide_order_visual():
 	if order != null:
 		order.hide()
+
+func delete_order():
+	if not is_multiplayer_authority():
+		return
+	
+	NetworkingUtils.send_item_for_deletion(order)

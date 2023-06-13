@@ -14,7 +14,7 @@ var drinks : Array[Drink] = []
 var flattened_order_ids : Array[NetworkedIds.Scene] = []
 
 func set_sync_state(reader: ByteReader):
-	(get_parent() as Customer).order = self
+	#(get_parent() as Customer).order = self
 	# Kind of excessive because it should be a direct child
 	var path_to_display_order = reader.read_path_to()
 	init(get_node(path_to_display_order))
@@ -31,7 +31,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 func init(display: Node3D):
 	hide()
 	display_order = display
-	display_order.rotation = display_order.rotation - get_parent().rotation
+	#display_order.rotation = display_order.rotation - get_parent().rotation
 	flattened_order_ids = get_flattened_ids_for(display)
 	if display is MultiHolder:
 		multiholder = display
