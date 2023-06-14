@@ -66,15 +66,6 @@ func gulp():
 	beverage_amounts.clear()
 
 func evaluate_fill_state():
-	if fill_amount < empty_threshold:
-		fill_state = FillState.EMPTY
-	elif fill_amount < partial_fill_threshold:
-		fill_state = FillState.PARTIAL_FILLED
-	elif fill_amount < filled_threshold:
-		fill_state = FillState.FILLED
-	else:
-		fill_state = FillState.OVERFILLING
-	
 	# Mix drink colors based on the filled amount
 	var iterations = 0
 	var drink_color = Color.WHITE
@@ -85,5 +76,17 @@ func evaluate_fill_state():
 			drink_color = drink_color.lerp(beverage.color, beverage_amounts[beverage])
 		iterations += 1
 	
-	drink_color.a = fill_amount
+	if fill_amount < empty_threshold:
+		fill_state = FillState.EMPTY
+		drink_color.a = empty_threshold
+	elif fill_amount < partial_fill_threshold:
+		fill_state = FillState.PARTIAL_FILLED
+		drink_color.a = partial_fill_threshold
+	elif fill_amount < filled_threshold:
+		fill_state = FillState.FILLED
+		drink_color.a = filled_threshold
+	else:
+		fill_state = FillState.OVERFILLING
+		drink_color.a = filled_threshold
+	
 	mesh_to_color.get_surface_override_material(surface_index_to_color).albedo_color = drink_color

@@ -1,7 +1,7 @@
 extends Node3D
 class_name CustomerManager
 
-@export var max_parties = 1
+@export var max_parties = 10
 
 @onready var restaurant : Restaurant = get_parent()
 
@@ -9,9 +9,9 @@ var customer_scene = preload("res://Scenes/customer.tscn")
 var party_scene = preload("res://Scenes/components/party.tscn")
 var parties : Array[CustomerParty] = []
 var min_party_size = 1
-var max_party_size = 1
+var max_party_size = 4
 var min_wait_to_spawn_sec = 1.0
-var max_wait_to_spawn_sec = 1.0
+var max_wait_to_spawn_sec = 10.0
 var is_spawning = true
 
 func _ready():
