@@ -29,42 +29,35 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	return writer
 
 func init(display: Node3D):
-	hide()
 	display_order = display
-	#display_order.rotation = display_order.rotation - get_parent().rotation
+	hide()
+	visual_representation()
+	Utils.remove_all_interactable_children_from_interactable_collision_layer(self)
+	
 	flattened_order_ids = get_flattened_ids_for(display)
+	
 	if display is MultiHolder:
 		multiholder = display
 	
 	if multiholder != null:
-		multiholder.disable_collider()
-		multiholder.disable_colliders()
 		for item in multiholder.get_held_items():
 			if item is CombinedFoodHolder:
 				combined_foods.push_back(item)
-				item.disable_held_colliders()
 			
 			elif item is Food:
 				foods.push_back(item)
-				item.disable_collider()
 			
 			elif item is Drink:
 				drinks.push_back(item)
-				item.disable_collider()
 	else:
 		if display is CombinedFoodHolder:
 			combined_foods.push_back(display)
-			display.disable_held_colliders()
 		
 		elif display is Food:
 			foods.push_back(display)
-			display.disable_collider()
 		
 		elif display is Drink:
 			drinks.push_back(display)
-			display.disable_collider()
-	
-	visual_representation()
 
 func get_flattened_ids_for(dish: Node3D) -> Array[NetworkedIds.Scene]:
 	var ids : Array[NetworkedIds.Scene] = []

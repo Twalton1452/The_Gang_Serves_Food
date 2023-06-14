@@ -17,3 +17,39 @@ static func cleanup_material_overrides(node: Node, mesh_to_clean: MeshInstance3D
 	for override_index in mesh.get_surface_override_material_count():
 		#$MeshInstance3D.set("surface_material_override/0", null)
 		mesh.set_surface_override_material(override_index, null)
+
+## Player's raycast looks on layer 3, could disable the collider or move the layer to make non-interactable
+## If a node is being duplicated for visual reasons then moving it to Layer 7 (Visual Layer) is probably better
+## for some future reasons
+static func remove_all_interactable_children_from_interactable_collision_layer(node: Node) -> void:
+	for child in node.get_children():
+		if child is Interactable:
+			child.set_collision_layer_value(3, false)
+			child.set_collision_layer_value(7, true)
+			remove_all_interactable_children_from_interactable_collision_layer(child)
+
+## Disable colliders for interactables if it is going to be a temporary measure
+## Move their collision layer if its a permanent measure
+static func disable_nested_colliders_on_interactables_for(node: Node) -> void:
+	var multiholder = node if node is MultiHolder else null
+	if multiholder != null:
+		multiholder.disable_collider()
+		multiholder.disable_colliders()
+		for item in multiholder.get_held_items():
+			if item is CombinedFoodHolder:
+				item.disable_held_colliders()
+			
+			elif item is Food:
+				item.disable_collider()
+			
+			elif item is Drink:
+				item.disable_collider()
+	else:
+		if node is CombinedFoodHolder:
+			node.disable_held_colliders()
+		
+		elif node is Food:
+			node.disable_collider()
+		
+		elif node is Drink:
+			node.disable_collider()
