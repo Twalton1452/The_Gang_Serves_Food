@@ -15,6 +15,7 @@ var fill_state : FillState = FillState.EMPTY
 var fill_amount = 0.0
 ## Mixed drinks!
 var beverage_amounts = {}
+var score : float : get = get_score
 
 ## Less than these thresholds means it is at that state
 var empty_threshold = 0.2
@@ -40,6 +41,9 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		writer.write_int(beverage.RESOURCE_ID)
 		writer.write_small_float(beverage_amounts[beverage])
 	return writer
+
+func get_score() -> float:
+	return fill_amount
 
 func _ready():
 	super()

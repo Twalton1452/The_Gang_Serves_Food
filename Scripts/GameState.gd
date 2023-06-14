@@ -22,6 +22,11 @@ var hud : HUD = null
 
 var money : int = 0 # Good use case for "Watched" Property in Godot 4.1
 
+var multiholder_multiplier : float = 1.0
+var combined_food_multiplier : float = 1.0
+var food_score = 1.0
+var drink_score = 1.0
+
 func set_sync_state(reader: ByteReader):
 	set_money(reader.read_big_int())
 

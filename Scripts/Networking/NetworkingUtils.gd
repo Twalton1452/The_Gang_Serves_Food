@@ -52,9 +52,14 @@ func spawn_node_for_everyone(node_to_spawn: PackedScene, to_be_parent: Node) -> 
 	spawn_node_for_peers.rpc(writer.data)
 	return spawned_node
 
-func duplicate_node(node_to_duplicate: Node, to_be_parent: Node) -> Node:
+func duplicate_node(node_to_duplicate: Node, to_be_parent: Node, deep_copy_state = false) -> Node:
 	var duplicated_node = node_to_duplicate.duplicate()
 	to_be_parent.add_child(duplicated_node, true)
+	
+	if deep_copy_state:
+		var data = PackedByteArray()
+		get_sync_data_for_children_of(node_to_duplicate, data)
+		set_sync_data_for_children_of(duplicated_node, ByteReader.new(data))
 	
 	# Only the server cares about the NetworkedNode3D sync orders
 	# If the player needs that too, then remove this
@@ -65,14 +70,16 @@ func duplicate_node(node_to_duplicate: Node, to_be_parent: Node) -> Node:
 	
 	return duplicated_node
 
-func duplicate_node_for_everyone(node_to_duplicate: Node, to_be_parent: Node) -> Node:
+func duplicate_node_for_everyone(node_to_duplicate: Node, to_be_parent: Node, deep_copy_state = false) -> Node:
 	if not is_multiplayer_authority():
 		return null
 	
-	var duplicated_node = duplicate_node(node_to_duplicate, to_be_parent)
+	var duplicated_node = duplicate_node(node_to_duplicate, to_be_parent, deep_copy_state)
+
 	var writer = ByteWriter.new()
 	writer.write_path_to(node_to_duplicate)
 	writer.write_path_to(to_be_parent)
+	writer.write_bool(deep_copy_state)
 	duplicate_node_for_peers.rpc(writer.data)
 	
 	return duplicated_node
@@ -111,7 +118,7 @@ func get_sync_data_for_children_of(node: Node, data : PackedByteArray) -> void:
 	for child in node.get_children():
 		var child_net_node : NetworkedNode3D = child.get_node_or_null(NETWORKED_NODE_3D)
 		if child_net_node != null:
-			data.append_array(child_net_node.get_sync_state().data)
+			data.append_array(child_net_node.get_stateful_sync_state().data)
 		get_sync_data_for_children_of(child, data)
 
 ## Recursively set the sync_state of all the children for a particular Node
@@ -121,7 +128,7 @@ func set_sync_data_for_children_of(node: Node, reader: ByteReader) -> void:
 	for child in node.get_children():
 		var child_net_node : NetworkedNode3D = child.get_node_or_null(NETWORKED_NODE_3D)
 		if child_net_node != null:
-			child_net_node.set_sync_state(reader)
+			child_net_node.set_stateful_sync_state(reader)
 		set_sync_data_for_children_of(child, reader)
 
 func notify_child_net_nodes_changed(node: Node) -> void:
@@ -179,7 +186,8 @@ func duplicate_node_for_peers(data: PackedByteArray):
 	var reader = ByteReader.new(data)
 	var node_to_duplicate = get_node(reader.read_path_to())
 	var to_be_parent = get_node(reader.read_path_to())
-	duplicate_node(node_to_duplicate, to_be_parent)
+	var deep_copy_state = reader.read_bool()
+	duplicate_node(node_to_duplicate, to_be_parent, deep_copy_state)
 	
 @rpc("authority", "call_local")
 func delete_item_for_everyone_by_networked_id(networked_id: int):
@@ -205,3 +213,23 @@ func delete_item_for_everyone_by_path(path: PackedByteArray):
 		node.queue_free()
 	else:
 		print("Could not find %s" % decoded_path)
+
+## RESOURCE SENDING
+#func _unhandled_input(event):
+#	if event is InputEventKey and event.is_action_pressed("ui_down"):
+#		send_a_resource_to_everyone()
+
+#func save_on_server():
+#  ResourceSaver.save(resource_used_as_savefile, path)
+#  var file=File.new()
+#  file.open(path, File.READ)
+#  load_on_client.rpc(file.get_buffer(file.get_len()))
+#  file.close()
+#
+#@rpc("authority", "call_remote")
+#func load_on_client(buffer):
+# var file=File.new()
+# file.open(path_to_temp, File.WRITE)
+# file.store_buffer(buffer)
+# file.close()
+# resource_used_as_savefile=load(path_to_temp)

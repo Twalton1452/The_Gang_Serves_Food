@@ -32,7 +32,8 @@ func generate_order_for(customer: Customer) -> Order:
 		return null
 	
 	var order : Order = NetworkingUtils.spawn_node_for_everyone(NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.ORDER), orders_parent)
-	var duplicated_dish = NetworkingUtils.duplicate_node_for_everyone(menu_items[0].dish_display_holder.get_held_item(), order)
+	var duplicated_dish = NetworkingUtils.duplicate_node_for_everyone(menu_items[0].dish_display_holder.get_held_item(), order, true)
+	
 	order.init(duplicated_dish)
 	customer.order = order
 	return order

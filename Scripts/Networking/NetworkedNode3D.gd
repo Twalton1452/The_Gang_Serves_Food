@@ -60,7 +60,9 @@ func has_after_sync():
 func has_additional_sync():
 	return "set_sync_state" in p_node or "get_sync_state" in p_node
 
-func set_sync_state(reader: ByteReader):
+## Set the sync state of the parent including name and path information.
+## Useful for syncing non-existent nodes across server/client
+func set_sync_state(reader: ByteReader) -> void:
 	var global_sync_pos : Vector3
 	if sync_position:
 		global_sync_pos = reader.read_vector3()
@@ -86,7 +88,7 @@ func set_sync_state(reader: ByteReader):
 	if sync_position:
 		p_node.global_position = global_sync_pos
 	
-	# Wait for everything to spawn before doing anything
+	# Wait for everything to spawn before doing anything with state
 	if not MidsessionJoinSyncer.is_synced:
 		await MidsessionJoinSyncer.sync_complete
 	
@@ -99,6 +101,8 @@ func set_sync_state(reader: ByteReader):
 			await MidsessionJoinSyncer.sync_complete
 		p_node.after_sync()
 
+## Get the sync state of the parent including name and path information.
+## Useful for syncing non-existent nodes across server/client
 func get_sync_state() -> ByteWriter:
 	var writer = ByteWriter.new()
 	
@@ -115,6 +119,26 @@ func get_sync_state() -> ByteWriter:
 		p_node.get_sync_state(writer)
 	return writer
 
+## Set the sync state of the parent without name and path information.
+## Useful for syncing existing nodes across server/client
+func set_stateful_sync_state(reader: ByteReader) -> void:
+	if has_additional_sync():
+		# Give the rest of the sync_state to the node to handle
+		p_node.set_sync_state(reader)
+
+## Get the sync state of the parent without name and path information
+## Useful for syncing existing nodes across server/client
+func get_stateful_sync_state() -> ByteWriter:
+	var writer = ByteWriter.new()
+	
+	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called
+	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
+	
+	if has_additional_sync():
+		# Node this is attached to properties to sync
+		p_node.get_sync_state(writer)
+	return writer
+
 func get_scene_id() -> int:
 	if override_scene_id != NetworkedIds.Scene.NETWORKED:
 		return override_scene_id
@@ -123,6 +147,9 @@ func get_scene_id() -> int:
 	return SCENE_ID
 
 func set_priority_sync_order(value: SyncPriorityPhase) -> void:
+	if value == priority_sync_order:
+		return
+	
 	priority_sync_order = value
 	changed = true
 	# TODO revisit, sync order is being set when p_node is null

@@ -31,7 +31,6 @@ func set_sync_state(reader: ByteReader) -> void:
 	var has_order = reader.read_bool()
 	if has_order:
 		order = get_node(reader.read_path_to())
-		order.set_sync_state(reader)
 	
 	interactable.set_sync_state(reader)
 
@@ -53,7 +52,6 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_bool(has_order)
 	if has_order:
 		writer.write_path_to(order)
-		order.get_sync_state(writer)
 		
 	interactable.get_sync_state(writer)
 	
