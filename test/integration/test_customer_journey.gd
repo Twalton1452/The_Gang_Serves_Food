@@ -6,6 +6,12 @@ var _restaurant : Restaurant = null
 var _customer_manager : CustomerManager = null
 var _acceptable_threshold = Vector3(.3, .3, .3)
 
+func _assert_all_child_interactables_not_on_interactable_layer(node: Node) -> void:
+	for child in node.get_children():
+		if child is Interactable:
+			assert_eq(child.get_collision_layer_value(3), false)
+		_assert_all_child_interactables_not_on_interactable_layer(child)
+
 func _wait_for_party_to_reach(party: CustomerParty, state: CustomerParty.PartyState):
 	for i in range(party.state, state + 1):
 		if party.state == state or party.state > state:
@@ -96,6 +102,7 @@ func test_party_full_journey():
 	for customer in spawned_party.customers:
 		assert_eq(customer.interactable.is_enabled(), false, "Customer is interactable when they shouldn't be")
 		assert_eq(customer.order.visible, true, "The order visual isn't showing")
+		_assert_all_child_interactables_not_on_interactable_layer(customer.order)
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "The party didn't order")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_FOOD, "Party isn't waiting for their food")
