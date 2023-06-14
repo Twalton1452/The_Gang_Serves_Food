@@ -342,6 +342,7 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 	target_pos = exit_point.global_position
 	for customer in customers:
 		customer.hide_order_visual()
+		customer.target_chair = null
 	await get_tree().create_timer(wait_before_leave_time_sec).timeout
 	
 	var customers_ordered_by_closest_to_door : Array[Customer] = customers.duplicate()

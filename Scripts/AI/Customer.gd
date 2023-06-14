@@ -65,6 +65,8 @@ func set_order(value) -> void:
 	if order == null:
 		return
 	
+	if sitting_chair == null:
+		return
 	order.global_position = sitting_chair.holder.global_position
 	evaluate_food()
 

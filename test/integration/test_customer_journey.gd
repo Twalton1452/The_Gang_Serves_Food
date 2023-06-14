@@ -154,6 +154,7 @@ func test_party_full_journey():
 	
 	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
 	assert_null(spawned_party, "Party never got deleted after leaving")
+	
 
 func test_party_can_wait_in_line():
 	# Arrange
