@@ -38,6 +38,7 @@ func init(display: Node3D):
 	
 	if multiholder != null:
 		multiholder.disable_collider()
+		multiholder.disable_colliders()
 		for item in multiholder.get_held_items():
 			if item is CombinedFoodHolder:
 				combined_foods.push_back(item)

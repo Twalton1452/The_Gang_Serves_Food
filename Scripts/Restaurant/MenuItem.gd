@@ -17,7 +17,6 @@ func _on_holder_changed():
 	dish = extract_scene_ids_from(dish_display_holder)
 	changed.emit()
 
-## TODO: revisit if necessary
 func extract_scene_ids_from(holder: Holder) -> Array[NetworkedIds.Scene]:
 	var ids : Array[NetworkedIds.Scene] = []
 	if not holder.is_holding_item():
@@ -31,7 +30,7 @@ func extract_scene_ids_from(holder: Holder) -> Array[NetworkedIds.Scene]:
 			if item is CombinedFoodHolder:
 				for food in item.get_held_items():
 					ids.push_back((food as Food).SCENE_ID)
-			elif item is Drink or item is Food:
+			elif item is Holdable:
 				ids.push_back(item.SCENE_ID)
 				
 		
