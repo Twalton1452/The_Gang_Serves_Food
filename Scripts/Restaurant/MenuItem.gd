@@ -6,14 +6,14 @@ signal changed
 @export var dish_display_holder : Holder
 
 @onready var score_label = $ScoreLabel
-
+var SCORE_FORMAT = "$%1.2f"
 #var dish_holder : NetworkedIds.Scene = null
 var dish : Array[NetworkedIds.Scene] = []
 var score : float = 0.0 : set = set_score
 
 func set_score(value: float) -> void:
 	score = value
-	score_label.text = "$" + str(value)
+	score_label.text = SCORE_FORMAT % value
 
 func _ready():
 	dish_display_holder.holding_item.connect(_on_holding_item)
