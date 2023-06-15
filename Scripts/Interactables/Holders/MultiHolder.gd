@@ -17,7 +17,6 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 
 func _ready():
 	super()
-	
 	for child in get_children():
 		if child is Holder:
 			holders.push_back(child)

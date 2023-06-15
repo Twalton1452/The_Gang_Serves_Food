@@ -4,7 +4,7 @@ class_name Utils
 ## Local to Scene materials are not properly being cleaned up when a node is deleted
 ## This is a workaround to avoid hundreds of error messages when nodes are deleted
 ## https://github.com/godotengine/godot/issues/67144#issuecomment-1467005282
-static func cleanup_material_overrides(node: Node, mesh_to_clean: MeshInstance3D = null) -> void:
+static func cleanup_material_overrides(node: Node, mesh_to_clean = null) -> void:
 	if not node.is_queued_for_deletion():
 		return
 	

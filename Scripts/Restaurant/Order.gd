@@ -12,35 +12,7 @@ var multiholder_dish : bool = false
 ## Used for comparisons against food placed onto table
 var flattened_order_ids : Array[NetworkedIds.Scene] = []
 
-func set_sync_state(reader: ByteReader):
-	# Kind of excessive because it should be a direct child
-	var path_to_display_order = reader.read_path_to()
-	var is_showing = reader.read_bool()
-	if is_showing:
-		show()
-	
-	# Wait for all the data below it to be populated
-	await get_tree().physics_frame
-	init(get_node(path_to_display_order))
-
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
-	writer.write_path_to(display_order)
-	var is_showing = visible
-	writer.write_bool(is_showing)
-	return writer
-
-func init(display: Node3D):
-	order_score = 0.0
-	display_order = display
-	hide()
-	visual_representation()
-	Utils.remove_all_interactable_children_from_interactable_collision_layer(self)
-	
-	multiholder_dish = display is MultiHolder
-	flattened_order_ids = get_flattened_ids_for(display)
-	order_score = get_score_for(display_order)
-
-func get_score_for(dish: Node3D) -> float:
+static func get_score_for(dish: Node3D) -> float:
 	var score = 0.0
 	if dish is MultiHolder:
 		for item in dish.get_held_items():
@@ -59,6 +31,33 @@ func get_score_for(dish: Node3D) -> float:
 		elif dish is Food or dish is Drink:
 			score += dish.score
 	return score
+
+func set_sync_state(reader: ByteReader):
+	# Kind of excessive because it should be a direct child
+	var path_to_display_order = reader.read_path_to()
+	var is_showing = reader.read_bool()
+	if is_showing:
+		show()
+	
+	# Wait for all the data below it to be populated
+	await get_tree().physics_frame
+	init(get_node(path_to_display_order))
+
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	writer.write_path_to(display_order)
+	var is_showing = visible
+	writer.write_bool(is_showing)
+	return writer
+
+func init(display: Node3D):
+	display_order = display
+	hide()
+	visual_representation()
+	Utils.remove_all_interactable_children_from_interactable_collision_layer(self)
+	
+	multiholder_dish = display is MultiHolder
+	flattened_order_ids = get_flattened_ids_for(display)
+	order_score = Order.get_score_for(display_order)
 
 func get_flattened_ids_for(dish: Node3D) -> Array[NetworkedIds.Scene]:
 	var ids : Array[NetworkedIds.Scene] = []
@@ -97,12 +96,11 @@ func is_equal_to(presented_dish: Node3D) -> bool:
 		if presented_dish_ids[i] != flattened_order_ids[i]:
 			return false
 	
-	actual_score = get_score_for(presented_dish)
+	actual_score = Order.get_score_for(presented_dish)
 	return true
 
 func visual_representation():
-	# Bounce up and down
-	# Not sync'd with server, but its an inconsequential visual
+	# Bounce up and down - not sync'd with server
 	var floater = Floater.new()
 	floater.move_enabled = true
 	floater.move_amount = Vector3(0.0, 0.05, 0.0)
