@@ -216,6 +216,8 @@ script = ExtResource("5_dakr0")
 [node name="ClientSideHolderPosition" type="Marker3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.989838, -0.142197, 0, 0.142197, 0.989838, 0.155525, -0.124404, -0.178116)
 
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Camera3D"]
+
 [node name="PixelFace" type="Sprite3D" parent="."]
 transform = Transform3D(-0.2, 0, -1.74846e-08, 0, 0.2, 0, 1.74846e-08, 0, -0.2, 0, 0.185902, -0.205587)
 double_sided = false

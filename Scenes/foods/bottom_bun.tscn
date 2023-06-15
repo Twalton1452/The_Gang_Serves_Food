@@ -52,6 +52,11 @@ collision_mask = 0
 script = ExtResource("1_gd6nn")
 rule = 0
 stacking_spacing = Vector3(0, 0.015, 0)
+cook_state_scores = {
+0: 1.0,
+1: 1.2,
+2: 0.0
+}
 gradient = ExtResource("2_1ohf4")
 obj_to_color = NodePath("Bun")
 SCENE_ID = 2

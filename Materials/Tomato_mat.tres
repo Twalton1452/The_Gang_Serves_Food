@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dui1mr3totmji"]
+
+[ext_resource type="Texture2D" uid="uid://y2en35l2bjh3" path="res://3d_models/Tomato1_Tomato Base.png" id="1_r8ivs"]
+
+[resource]
+resource_local_to_scene = true
+albedo_texture = ExtResource("1_r8ivs")

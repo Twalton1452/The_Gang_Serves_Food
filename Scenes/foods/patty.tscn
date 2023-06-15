@@ -44,6 +44,11 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_5hgjy")
 rule = 1
+cook_state_scores = {
+0: 0.0,
+1: 2.0,
+2: 0.0
+}
 gradient = ExtResource("2_dcdml")
 obj_to_color = NodePath("Patty")
 SCENE_ID = 1

@@ -32,30 +32,37 @@ enum PartyState {
 	GONE_HOME = 14, ## Traveling to the kill zone
 }
 
+## See NetworkedPartyManager for tick rate in seconds
 var patience_states = {
 	PartyState.WAITING_IN_LINE: {
 		"rate": 0.01,
 		"icon": preload("res://Sprites/CustomerPartyIcons/wait-in-line-line.png"),
+		"requires_interaction": false,
 	},
 	PartyState.WAITING_FOR_TABLE: {
 		"rate": 0.01,
 		"icon": preload("res://Sprites/CustomerPartyIcons/wait-in-line-line.png"),
+		"requires_interaction": false,
 	},
 	PartyState.THINKING: {
 		"rate": 0.10,
 		"icon": preload("res://Sprites/CustomerPartyIcons/brain.png"),
+		"requires_interaction": false,
 	},
 	PartyState.ORDERING: {
 		"rate": 0.02,
 		"icon": preload("res://Sprites/CustomerPartyIcons/cooking-lid.png"),
+		"requires_interaction": true,
 	},
 	PartyState.WAITING_FOR_FOOD: {
 		"rate": 0.02,
 		"icon": preload("res://Sprites/CustomerPartyIcons/food-plate.png"),
+		"requires_interaction": false,
 	},
 	PartyState.WAITING_TO_PAY: {
 		"rate": 0.02,
 		"icon": preload("res://Sprites/CustomerPartyIcons/money-time.png"),
+		"requires_interaction": true,
 	},
 }
 
@@ -75,7 +82,6 @@ var wait_between_customers_leaving = 0.2
 var customer_spacing = 0.5
 var customers : Array[Customer] = [] : set = set_customers
 var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.CUSTOMER_PARTY
-var required_interaction_states = [PartyState.ORDERING, PartyState.WAITING_TO_PAY]
 var patience_bar_visual : PatienceBar = null
 
 # Saved/Loaded State
@@ -148,7 +154,7 @@ func set_state(value: PartyState) -> void:
 	
 	reset_patience()
 	
-	if state in required_interaction_states:
+	if patience_states.has(state) and patience_states[state].get("requires_interaction", false):
 		if table:
 			table.color = Color.GOLD
 	else:

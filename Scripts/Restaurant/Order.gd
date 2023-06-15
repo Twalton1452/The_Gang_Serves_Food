@@ -4,15 +4,11 @@ class_name Order
 ## Class to flatten the display items hierarchy to get an easier picture of the items
 ## Will allow for easy dissection of the state of each item
 
-# Scoring to determine money this order will give
-var total_score : float = 0.0
-var score_multiplier : float = 1.0
+var order_score : float = 0.0 ## Customer's ideal score
+var actual_score : float = 0.0 ## Dish given to them score
 
 var display_order : Node3D = null
-var multiholder : MultiHolder = null
-var combined_foods : Array[CombinedFoodHolder] = []
-var foods : Array[Food] = []
-var drinks : Array[Drink] = []
+var multiholder_dish : bool = false
 ## Used for comparisons against food placed onto table
 var flattened_order_ids : Array[NetworkedIds.Scene] = []
 
@@ -34,49 +30,35 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	return writer
 
 func init(display: Node3D):
-	total_score = 0.0
+	order_score = 0.0
 	display_order = display
 	hide()
 	visual_representation()
 	Utils.remove_all_interactable_children_from_interactable_collision_layer(self)
 	
+	multiholder_dish = display is MultiHolder
 	flattened_order_ids = get_flattened_ids_for(display)
-	
-	if display is MultiHolder:
-		multiholder = display
-		score_multiplier += GameState.multiholder_multiplier
-	
-	if multiholder != null:
-		for item in multiholder.get_held_items():
+	order_score = get_score_for(display_order)
+
+func get_score_for(dish: Node3D) -> float:
+	var score = 0.0
+	if dish is MultiHolder:
+		for item in dish.get_held_items():
 			if item is CombinedFoodHolder:
-				score_multiplier += GameState.combined_food_multiplier
-				combined_foods.push_back(item)
 				for food in item.get_held_items():
-					total_score += food.score
-			
-			elif item is Food:
-				foods.push_back(item)
-				total_score += item.score
-			
-			elif item is Drink:
-				drinks.push_back(item)
-				total_score += item.score
+					score += food.score * GameState.combined_food_multiplier
+				
+			elif item is Food or item is Drink:
+				score += item.score
+		score *= GameState.multiholder_multiplier
 	else:
-		if display is CombinedFoodHolder:
-			combined_foods.push_back(display)
-			score_multiplier += GameState.combined_food_multiplier
-			for food in display.get_held_items():
-				total_score += food.score
+		if dish is CombinedFoodHolder:
+			for food in dish.get_held_items():
+				score += food.score * GameState.combined_food_multiplier
 			
-		elif display is Food:
-			foods.push_back(display)
-			total_score += display.score
-		
-		elif display is Drink:
-			drinks.push_back(display)
-			total_score += display.score
-	
-	total_score *= score_multiplier
+		elif dish is Food or dish is Drink:
+			score += dish.score
+	return score
 
 func get_flattened_ids_for(dish: Node3D) -> Array[NetworkedIds.Scene]:
 	var ids : Array[NetworkedIds.Scene] = []
@@ -101,9 +83,12 @@ func get_flattened_ids_for(dish: Node3D) -> Array[NetworkedIds.Scene]:
 	return ids
 
 func is_equal_to(presented_dish: Node3D) -> bool:
-	if presented_dish is MultiHolder and multiholder == null:
+	if presented_dish is MultiHolder and not multiholder_dish:
 		return false
-		
+	
+	if multiholder_dish and not presented_dish is MultiHolder:
+		return false
+	
 	var presented_dish_ids = get_flattened_ids_for(presented_dish)
 	if presented_dish_ids.size() != flattened_order_ids.size():
 		return false
@@ -112,6 +97,7 @@ func is_equal_to(presented_dish: Node3D) -> bool:
 		if presented_dish_ids[i] != flattened_order_ids[i]:
 			return false
 	
+	actual_score = get_score_for(presented_dish)
 	return true
 
 func visual_representation():

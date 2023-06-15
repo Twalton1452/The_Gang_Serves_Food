@@ -3,7 +3,7 @@ extends Node
 ## Autoloaded
 
 signal state_changed
-signal money_changed(value: int)
+signal money_changed(value: float)
 
 var SERVER_ID = 1
 var THIS_ID = -1
@@ -20,19 +20,17 @@ var players : Dictionary = {}
 var level : Level : set = set_level
 var hud : HUD = null
 
-var money : int = 0 # Good use case for "Watched" Property in Godot 4.1
+var money : float = 0.0 # Good use case for "Watched" Property in Godot 4.1
 
-var multiholder_multiplier : float = 1.0
-var combined_food_multiplier : float = 1.0
-var food_score = 1.0
-var drink_score = 1.0
+var multiholder_multiplier : float = 1.5
+var combined_food_multiplier : float = 1.5 ## multiply per food in the stack
 
 func set_sync_state(reader: ByteReader):
-	set_money(reader.read_big_int())
+	set_money(reader.read_float())
 
 func get_sync_state() -> ByteWriter:
 	var writer : ByteWriter = ByteWriter.new()
-	writer.write_big_int(money)
+	writer.write_float(money)
 	return writer
 
 func set_state(value: Phase):
@@ -44,16 +42,16 @@ func set_level(l: Level):
 	hud = get_node("/root/World/CanvasLayer/HUD")
 	THIS_ID = multiplayer.get_unique_id()
 
-func set_money(value: int):
-	money = value
+func set_money(value: float):
+	money = snapped(value, 0.01)
 	money_changed.emit(money)
 	if is_multiplayer_authority():
 		notify_money_changed.rpc(money)
 
-func add_money(value: int):
+func add_money(value: float):
 	set_money(money + value)
 
-func subtract_money(value: int):
+func subtract_money(value: float):
 	set_money(money - value)
 
 func reset():

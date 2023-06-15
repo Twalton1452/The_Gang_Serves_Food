@@ -105,7 +105,7 @@ func pay(party: CustomerParty):
 		return
 	
 	for customer in party.customers:
-		GameState.add_money(ceil(customer.order.total_score))
+		GameState.add_money(customer.order.actual_score)
 	
 	party.state = CustomerParty.PartyState.LEAVING_FOR_HOME
 	party.num_customers_required_to_advance = 1
