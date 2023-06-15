@@ -10,7 +10,7 @@ points = PackedVector3Array(-0.00297302, -0.00297302, -0.037573, 0.377573, 0.335
 
 [node name="Movable" parent="wallWindowSlide(Clone)/windowBottom" index="0" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("2_5jp6v")]
 move_amount = Vector3(0, 0.4, 0)
-mesh_to_highlight = NodePath("..")
+mesh_to_highlight = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="wallWindowSlide(Clone)/windowBottom/Movable" index="0"]
 shape = SubResource("ConvexPolygonShape3D_6yd2t")
