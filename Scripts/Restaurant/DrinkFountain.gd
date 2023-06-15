@@ -45,6 +45,6 @@ func _on_fill_rate_tick():
 	for dispenser in dispensers:
 		if dispenser.activated:
 			var drink : Drink = dispenser.holder.get_held_item()
-			drink.fill(fill_rate, dispenser.beverage) 
+			drink.fill(fill_rate, dispenser.beverage)
 	
 	fill_rate_timer.start()

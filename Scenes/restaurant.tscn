@@ -324,9 +324,6 @@ outline_size = 8
 [node name="MenuItemStand" parent="Restaurant/Menu" instance=ExtResource("16_n3yt3")]
 transform = Transform3D(-0.000610872, 0, 1, 0, 1, 0, -1, 0, -0.000610872, 0, 0, 0)
 
-[node name="CollisionShape3D" parent="Restaurant/Menu/MenuItemStand/Holder" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00193828, 0)
-
 [node name="TestPattyStack" parent="Restaurant/Menu" instance=ExtResource("18_32clx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.25521, -0.000477135, 4.37289)
 
