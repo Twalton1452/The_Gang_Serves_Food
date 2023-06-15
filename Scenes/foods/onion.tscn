@@ -79,8 +79,8 @@ script = ExtResource("2_m5uby")
 rule = 3
 stacking_spacing = Vector3(0, 0.011, 0)
 cook_state_scores = {
-0: 1.0,
-1: 1.2,
+0: 0.3,
+1: 1.0,
 2: 0.0
 }
 gradient = ExtResource("2_hxudu")
