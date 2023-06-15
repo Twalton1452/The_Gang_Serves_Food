@@ -97,3 +97,4 @@ debug_pathing={
 
 renderer/rendering_method.mobile="gl_compatibility"
 anti_aliasing/quality/msaa_3d=1
+anti_aliasing/quality/use_debanding=true
