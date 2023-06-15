@@ -23,5 +23,5 @@ shape = SubResource("BoxShape3D_f0jbv")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21111, 0.426545, -0.213584)
 mesh_to_highlight = NodePath("../kitchenCabinet(Clone)")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder" index="1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder" index="0"]
 shape = SubResource("BoxShape3D_7dfli")

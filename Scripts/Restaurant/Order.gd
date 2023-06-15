@@ -133,6 +133,7 @@ func set_transparency_for_food_to(food: Food, value: float):
 	for i in range(food.obj_to_color.get_surface_override_material_count()):
 		var material = food.obj_to_color.get_active_material(i)
 		if material != null:
+			
 			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 			material.albedo_color.a = value
 

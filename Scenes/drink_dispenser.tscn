@@ -1,0 +1,66 @@
+[gd_scene load_steps=12 format=3 uid="uid://d0lf332tkjxkp"]
+
+[ext_resource type="Script" path="res://Scripts/Restaurant/DrinkDispenser.gd" id="1_pxq5v"]
+[ext_resource type="Resource" uid="uid://bvu8lm7y42lqw" path="res://Resources/Beverages/Beverage_Water.tres" id="2_1fora"]
+[ext_resource type="PackedScene" uid="uid://c71yhmchstp56" path="res://3d_models/small_platform.blend" id="3_7qunf"]
+[ext_resource type="Script" path="res://Scripts/Interactables/Holders/Holder.gd" id="4_w7bhu"]
+[ext_resource type="Material" uid="uid://da71e0gui4v3r" path="res://Materials/Fluid_mat.tres" id="5_mnoir"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_vfvs0"]
+resource_local_to_scene = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trgao"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sluan"]
+material = SubResource("StandardMaterial3D_trgao")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rpfb5"]
+resource_local_to_scene = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_blua1"]
+size = Vector3(0.0975379, 0.0393973, 0.0798787)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kcbj4"]
+resource_local_to_scene = true
+
+[node name="DrinkDispenser" type="Node3D"]
+script = ExtResource("1_pxq5v")
+beverage = ExtResource("2_1fora")
+
+[node name="Dispenser" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.0476854, 0, 0, 0, 0.0778135, 0, 0, 0, 0.0651449, 0, 0.255, 0)
+mesh = SubResource("BoxMesh_vfvs0")
+skeleton = NodePath("../../../kitchenCabinet")
+
+[node name="Display" type="MeshInstance3D" parent="Dispenser"]
+transform = Transform3D(0.928402, 0, 0, 0, 0.852542, 0, 0, 0, 0.0787584, 0, -0.0307102, 0.52749)
+mesh = SubResource("BoxMesh_sluan")
+surface_material_override/0 = SubResource("StandardMaterial3D_rpfb5")
+
+[node name="DispenserPlatform" parent="." instance=ExtResource("3_7qunf")]
+transform = Transform3D(0.481073, 0, 0, 0, 1, 0, 0, 0, 0.588385, 0, 0, 0)
+
+[node name="Holder" type="Area3D" parent="." node_paths=PackedStringArray("mesh_to_highlight")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.0229762, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("4_w7bhu")
+mesh_to_highlight = NodePath("../DispenserPlatform/Cube")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder"]
+shape = SubResource("BoxShape3D_blua1")
+
+[node name="Fluid" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.9701, 0, 0, 0, 1, 0, 0.27, 0)
+
+[node name="Pivot" type="Node3D" parent="Fluid"]
+transform = Transform3D(1, 0, -2.03303e-14, 0, 0, 0, 2.03303e-14, 0, 1, 0, 0, 0)
+
+[node name="Fluid" type="MeshInstance3D" parent="Fluid/Pivot"]
+transform = Transform3D(0.0310135, 0, 4.0798e-16, 0, 0.0489256, 0, -4.13183e-16, 0, 0.030623, 0, -0.0384957, 0)
+material_override = ExtResource("5_mnoir")
+mesh = SubResource("BoxMesh_kcbj4")
+skeleton = NodePath("../../../Dispenser")
+surface_material_override/0 = ExtResource("5_mnoir")
+
+[editable path="DispenserPlatform"]
