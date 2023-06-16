@@ -8,7 +8,7 @@ signal sync_complete
 var syncing = {}
 var num_nodes_syncd = 0
 var total_num_nodes_to_sync = 0
-var num_packets_to_incur_wait = 50
+var num_packets_to_incur_wait = 200
 var seconds_to_wait_between_many_packets = 0.1
 
 var is_synced = false : get = get_is_synced
@@ -25,8 +25,6 @@ func pause_for_players():
 func unpause_for_players(unpaused_peer_id: int):
 	GameState.hud.hide_notification()
 	syncing[unpaused_peer_id] = false
-	if is_multiplayer_authority():
-		print(syncing)
 	get_tree().paused = false
 
 ## Syncs nodes for Networked Nodes on spawn to ease midsession join synchronization
@@ -55,7 +53,9 @@ func sync_nodes_for_new_player(peer_id: int):
 		if nodes_sent > num_packets_to_incur_wait:
 			nodes_sent = 0
 			print_verbose("Pausing for %s seconds between sending %s packets" % [seconds_to_wait_between_many_packets, num_packets_to_incur_wait])
+			#var pause_begin = Time.get_ticks_msec()
 			await get_tree().create_timer(seconds_to_wait_between_many_packets, true).timeout
+			#print("Paused for %s miliseconds due to packet amount" % (Time.get_ticks_msec() - pause_begin))
 		
 		print_verbose("[Syncing Node %s | %s] to [Peer: %s]" % [net_node.priority_sync_order, net_node.p_node.name, peer_id])
 		sync_networked_node.rpc_id(peer_id, net_node.networked_id, net_node.SCENE_ID, net_node.get_sync_state().data)
