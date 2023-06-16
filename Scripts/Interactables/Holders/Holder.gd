@@ -29,12 +29,13 @@ func get_held_item() -> Node3D:
 		return get_held_items()[-1]
 	return null
 
-func is_holding(item: Node3D):
+func is_holding(item: Node3D) -> bool:
 	if not is_holding_item():
 		return false
 	for child in get_children():
 		if child == item:
 			return true
+	return false
 
 func is_acceptable(item: Node3D) -> bool:
 	# Separated these if statements out for easy readability and extensibility, can condense later

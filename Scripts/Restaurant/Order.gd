@@ -43,12 +43,12 @@ func set_sync_state(reader: ByteReader):
 	# Kind of excessive because it should be a direct child
 	var path_to_display_order = reader.read_path_to()
 	var is_showing = reader.read_bool()
-	if is_showing:
-		show()
 	
 	# Wait for all the data below it to be populated
 	await get_tree().physics_frame
 	init(get_node(path_to_display_order))
+	if is_showing:
+		show()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_path_to(display_order)

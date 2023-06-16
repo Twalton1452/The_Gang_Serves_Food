@@ -28,6 +28,7 @@ enum SyncPriorityPhase {
 	DELETION, ## Delete Nodes last to make sure all the connections are setup [br]ex: Existing nodes deleted
 }
 
+## Only set this to false in the scene editor
 @export var sync_position = true
 ## The lower the number the more important it is to sync
 @export var priority_sync_order : SyncPriorityPhase = SyncPriorityPhase.REPARENT : set = set_priority_sync_order
@@ -63,9 +64,8 @@ func has_additional_sync():
 ## Set the sync state of the parent including name and path information.
 ## Useful for syncing non-existent nodes across server/client
 func set_sync_state(reader: ByteReader) -> void:
-	var global_sync_pos : Vector3
 	if sync_position:
-		global_sync_pos = reader.read_vector3()
+		p_node.global_position = reader.read_vector3()
 	
 	var path_to = reader.read_path_to()
 	var split_path : PackedStringArray = path_to.split("/")
@@ -83,10 +83,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		elif new_parent is Holder:
 			new_parent.hold_item(p_node)
 		else:
-			p_node.reparent(new_parent, false)
-		
-	if sync_position:
-		p_node.global_position = global_sync_pos
+			p_node.reparent(new_parent)
 	
 	# Wait for everything to spawn before doing anything with state
 	if not MidsessionJoinSyncer.is_synced:

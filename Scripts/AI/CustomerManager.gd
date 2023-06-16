@@ -90,7 +90,9 @@ func move_the_line():
 	var sent_a_party_to_door = false
 	for i in len(parties):
 		var party = parties[i]
-		if party.state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
+		if party != null and not party.is_queued_for_deletion() and \
+			party.state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
+			
 			if not sent_a_party_to_door:
 				sent_a_party_to_door = true
 				party.go_to_entry(restaurant.entry_point)
