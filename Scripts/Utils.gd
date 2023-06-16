@@ -17,10 +17,16 @@ static func cleanup_material_overrides(node: Node, mesh_to_clean = null) -> void
 	for override_index in mesh.get_surface_override_material_count():
 		#$MeshInstance3D.set("surface_material_override/0", null)
 		mesh.set_surface_override_material(override_index, null)
-
+	
 ## Player's raycast looks on layer 3, could disable the collider or move the layer to make non-interactable
 ## If a node is being duplicated for visual reasons then moving it to Layer 7 (Visual Layer) is probably better
 ## for some future reasons
+static func remove_all_interactables_from_interactable_collision_layer(node: Node) -> void:
+	if node is Interactable:
+		node.set_collision_layer_value(3, false)
+		node.set_collision_layer_value(7, true)
+	remove_all_interactable_children_from_interactable_collision_layer(node)
+
 static func remove_all_interactable_children_from_interactable_collision_layer(node: Node) -> void:
 	for child in node.get_children():
 		if child is Interactable:
