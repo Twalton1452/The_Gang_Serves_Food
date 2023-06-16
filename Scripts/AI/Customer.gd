@@ -93,7 +93,7 @@ func _exit_tree():
 	Utils.cleanup_material_overrides(self)
 
 func evaluate_food():
-	if sitting_chair == null or not sitting_chair.holder.is_holding_item() or order == null or interactable.is_enabled():
+	if sitting_chair == null or not sitting_chair.holder.is_holding_item() or order == null or interactable.is_collider_enabled():
 		return
 		
 	var item_on_the_table = sitting_chair.holder.get_held_item()
@@ -103,15 +103,7 @@ func evaluate_food():
 	got_order.emit()
 	hide_order_visual()
 	# Don't let the player interact with the food while the customer is about to eat
-	sitting_chair.holder.disable_collider()
-	if item_on_the_table is MultiHolder:
-		item_on_the_table.disable_colliders()
-		for held_item in item_on_the_table.get_held_items():
-			held_item.disable_collider()
-	elif item_on_the_table is CombinedFoodHolder:
-		item_on_the_table.disable_held_colliders()
-	else:
-		item_on_the_table.disable_collider()
+	Interactable.disable_colliders_for(sitting_chair.holder)
 
 func order_from(menu: Menu):
 	if not is_multiplayer_authority():
@@ -135,13 +127,23 @@ func eat() -> void:
 		
 	var dish = sitting_chair.holder.get_held_item()
 	
-	# Send the items on the MultiHolder for deletion but not the MultiHolder
+	# Send the consumables for deletion
 	if dish is MultiHolder:
-		for held_item in dish.get_held_items():
-			NetworkingUtils.send_item_for_deletion(held_item)
-		dish.enable_colliders()
+		for consumable in dish.get_held_items():
+			if consumable is Drink:
+				consumable.gulp()
+				NetworkingUtils.send_partial_state_update(consumable)
+			else:
+				NetworkingUtils.send_item_for_deletion(consumable)
+	elif dish is Drink:
+		dish.gulp()
+		NetworkingUtils.send_partial_state_update(dish)
 	else:
 		NetworkingUtils.send_item_for_deletion(dish)
+
+func finished_eating() -> void:
+	interactable.enable_collider()
+	Interactable.enable_colliders_for(sitting_chair.holder)
 
 func sit():
 	if target_chair != null:
@@ -156,9 +158,3 @@ func show_order_visual():
 func hide_order_visual():
 	if order != null:
 		order.hide()
-
-func delete_order():
-	if not is_multiplayer_authority():
-		return
-	
-	NetworkingUtils.send_item_for_deletion(order)

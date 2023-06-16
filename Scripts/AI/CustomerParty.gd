@@ -329,7 +329,7 @@ func eat_food() -> void:
 
 func wait_to_pay() -> void:
 	for customer in customers:
-		customer.interactable.enable_collider()
+		customer.finished_eating()
 	
 	state = CustomerParty.PartyState.WAITING_TO_PAY
 	num_customers_required_to_advance = 1

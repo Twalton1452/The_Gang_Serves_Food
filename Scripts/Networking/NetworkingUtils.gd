@@ -18,6 +18,13 @@ func generate_id() -> int:
 func generate_network_safe_name(og_name: String) -> String:
 	return og_name + "_" + str(generate_id())
 
+func get_networked_node_by_id(networked_id: int) -> NetworkedNode3D:
+	var networked_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
+	for net_node in networked_nodes:
+		if net_node.networked_id == networked_id:
+			return net_node
+	return null
+
 func sort_array_by_net_id(arr: Array) -> void:
 	arr.sort_custom(func(a: Node, b: Node):
 		if a.get_node(NETWORKED_NODE_3D).networked_id < b.get_node(NETWORKED_NODE_3D).networked_id:
@@ -165,6 +172,11 @@ func spawn_client_only_node(node_to_spawn: PackedScene, to_be_parent: Node) -> N
 	to_be_parent.add_child(spawned_node, true)
 	return spawned_node
 
+func send_partial_state_update(node: Node) -> void:
+	var net_node : NetworkedNode3D = node.get_node_or_null(NETWORKED_NODE_3D)
+	if net_node != null:
+		partial_state_update_for_peers.rpc(net_node.networked_id, net_node.get_stateful_sync_state().data)
+
 func send_item_for_deletion(item: Node) -> void:
 	if not is_multiplayer_authority():
 		return
@@ -203,16 +215,19 @@ func duplicate_node_for_peers(data: PackedByteArray):
 	var to_be_parent = get_node(reader.read_path_to())
 	var deep_copy_state = reader.read_bool()
 	duplicate_node(node_to_duplicate, to_be_parent, deep_copy_state)
+
+@rpc("authority", "call_remote")
+func partial_state_update_for_peers(networked_id: int, data: PackedByteArray):
+	var networked_node_to_update = get_networked_node_by_id(networked_id)
+	if networked_node_to_update == null:
+		print_debug("Networked Node with ID: %s doesn't exist" % networked_id)
+		return
 	
+	networked_node_to_update.set_stateful_sync_state(ByteReader.new(data))
+
 @rpc("authority", "call_local")
 func delete_item_for_everyone_by_networked_id(networked_id: int):
-	var networked_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
-	var networked_node_to_delete : NetworkedNode3D = null
-	for net_node in networked_nodes:
-		if net_node.networked_id == networked_id:
-			networked_node_to_delete = net_node
-			break
-	
+	var networked_node_to_delete = get_networked_node_by_id(networked_id)
 	if networked_node_to_delete == null:
 		print_debug("Networked Node with ID: %s doesn't exist" % networked_id)
 		return
