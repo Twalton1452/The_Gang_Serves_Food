@@ -22,9 +22,11 @@ func pause_for_players():
 	get_tree().paused = true
 
 @rpc("call_local", "reliable")
-func unpause_for_players():
+func unpause_for_players(unpaused_peer_id: int):
 	GameState.hud.hide_notification()
-	syncing[multiplayer.get_remote_sender_id()] = false
+	syncing[unpaused_peer_id] = false
+	if is_multiplayer_authority():
+		print(syncing)
 	get_tree().paused = false
 
 ## Syncs nodes for Networked Nodes on spawn to ease midsession join synchronization
@@ -134,7 +136,7 @@ func client_finished_syncing():
 
 @rpc("any_peer", "reliable")
 func send_server_sync_finished():
-	unpause_for_players.rpc()
+	unpause_for_players.rpc(multiplayer.get_remote_sender_id())
 
 ## TODO: This should be some kind of PlayerSettings class that handles this and the decoding part
 func get_settings_to_send() -> PackedByteArray:
