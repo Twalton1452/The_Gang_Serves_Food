@@ -13,23 +13,24 @@ signal released_drink
 @onready var fluid_pivot : Node3D = $Fluid/Pivot
 @onready var fluid_mesh : MeshInstance3D = $Fluid/Pivot/Fluid
 
-var fluid_tween : Tween
+
+var fluid_tween : Tween = null
 var activated = false : set = set_activated
 
 func set_activated(value: bool) -> void:
 	activated = value
 	
 	if activated:
-		fluid.show()
 		if fluid_tween != null and fluid_tween.is_valid():
-			fluid_tween.stop()
-		fluid_pivot.scale = Vector3(0.0, 0.0, 0.0)
+			fluid_tween.kill()
+		fluid_pivot.scale = Vector3(0.0, 0.1, 0.0)
+		fluid.show()
 		fluid_tween = create_tween()
 		fluid_tween.tween_property(fluid_pivot, "scale", Vector3(1.0, 1.75, 1.0), 0.3).set_ease(Tween.EASE_IN)
 		
 	else:
 		if fluid_tween != null and fluid_tween.is_valid():
-			fluid_tween.stop()
+			fluid_tween.kill()
 		fluid_tween = create_tween()
 		fluid_tween.tween_property(fluid_pivot, "scale", Vector3(0.0, 1.75, 0.0), 0.2).set_ease(Tween.EASE_OUT)
 		fluid_tween.tween_callback(func(): fluid.hide())

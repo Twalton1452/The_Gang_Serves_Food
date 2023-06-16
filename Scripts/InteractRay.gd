@@ -1,6 +1,6 @@
 extends RayCast3D
 
-@export var highlight_enabled = true
+@export var highlight_enabled = false
 
 #var outline_material : ShaderMaterial = preload("res://Materials/outline_material.tres")
 var outline_material : StandardMaterial3D = preload("res://Materials/Outline_mat.tres")

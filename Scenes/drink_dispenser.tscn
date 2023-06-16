@@ -21,7 +21,6 @@ resource_local_to_scene = true
 size = Vector3(0.0975379, 0.0393973, 0.0798787)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kcbj4"]
-resource_local_to_scene = true
 
 [node name="DrinkDispenser" type="Node3D"]
 script = ExtResource("1_pxq5v")
@@ -51,16 +50,16 @@ mesh_to_highlight = NodePath("../DispenserPlatform/Cube")
 shape = SubResource("BoxShape3D_blua1")
 
 [node name="Fluid" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1.9701, 0, 0, 0, 1, 0, 0.27, 0)
+transform = Transform3D(0.508, 0, 0, 0, 1, 0, 0, 0, 0.508, 0, 0.27, 0)
 
 [node name="Pivot" type="Node3D" parent="Fluid"]
-transform = Transform3D(1, 0, -2.03303e-14, 0, 0, 0, 2.03303e-14, 0, 1, 0, 0, 0)
+transform = Transform3D(0.1, 0, -2.03303e-15, 0, 0.1, 0, 2.03303e-15, 0, 0.1, 0, 0, 0)
 
 [node name="Fluid" type="MeshInstance3D" parent="Fluid/Pivot"]
-transform = Transform3D(0.0310135, 0, 4.0798e-16, 0, 0.0489256, 0, -4.13183e-16, 0, 0.030623, 0, -0.0384957, 0)
+transform = Transform3D(0.063, 0, 8.39329e-16, 0, 0.118, 0, -8.39329e-16, 0, 0.063, 0, -0.0384957, 0)
 material_override = ExtResource("5_mnoir")
+cast_shadow = 0
 mesh = SubResource("BoxMesh_kcbj4")
-skeleton = NodePath("../../../Dispenser")
-surface_material_override/0 = ExtResource("5_mnoir")
+skeleton = NodePath("")
 
 [editable path="DispenserPlatform"]

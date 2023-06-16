@@ -71,3 +71,14 @@ func test_extracts_scene_ids_from_one_drink():
 	
 	# Assert
 	assert_eq(main, [NetworkedIds.Scene.CUP], "menu dish had something different")
+
+func test_order_for_drink_is_specific_to_a_beverage():
+	# Arrange
+	var drink = NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.CUP).instantiate()
+	_menu_item.dish_display_holder.hold_item(drink)
+	
+	# Act
+	var main = _menu.menu_items[0].dish
+	
+	# Assert
+	assert_eq(main, [NetworkedIds.Scene.CUP], "menu dish had something different")
