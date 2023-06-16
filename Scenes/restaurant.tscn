@@ -298,6 +298,9 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 
 [node name="wall36" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 1)
 
+[node name="DrinkFountain" parent="Restaurant/Building" instance=ExtResource("26_cud0u")]
+transform = Transform3D(1, 0, 1.74845e-07, 0, 1, 0, -1.74845e-07, 0, 1, 4.5322, 0.000103712, 5.03788)
+
 [node name="Ground" parent="Restaurant" instance=ExtResource("2_8d1g5")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, -9.31084, -0.0586298, 10)
 
@@ -406,9 +409,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.354289, 0, 0)
 
 [node name="hoodLarge" parent="Testing/kitchenStove" instance=ExtResource("26_qebtt")]
 transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0.880137, 0)
-
-[node name="DrinkFountain" parent="Testing" instance=ExtResource("26_cud0u")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.71156, 0.000103712, 3.99924)
 
 [node name="NetworkedNode3D" type="Node" parent="."]
 script = ExtResource("2_7dixm")

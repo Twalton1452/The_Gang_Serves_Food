@@ -41,7 +41,6 @@ func _set_test_menu_to(dish: Array[NetworkedIds.Scene]) -> Node3D:
 	menu_item_dish.add_child(dummy_net_node)
 	
 	_restaurant.menu.menu_items[0].dish_display_holder.hold_item(menu_item_dish)
-	_restaurant.menu.menu_items[0]._on_holder_changed()
 	return menu_item_dish
 
 func before_each():

@@ -58,8 +58,8 @@ func duplicate_node(node_to_duplicate: Node, to_be_parent: Node, deep_copy_state
 	
 	if deep_copy_state:
 		var data = PackedByteArray()
-		get_sync_data_for_children_of(node_to_duplicate, data)
-		set_sync_data_for_children_of(duplicated_node, ByteReader.new(data))
+		get_sync_data_for(node_to_duplicate, data)
+		set_sync_data_for(duplicated_node, ByteReader.new(data))
 	
 	# Only the server cares about the NetworkedNode3D sync orders
 	# If the player needs that too, then remove this
@@ -112,8 +112,15 @@ func set_priority_sync_order_for_children_of(node: Node, sync_order: int) -> voi
 		else:
 			set_priority_sync_order_for_children_of(child, sync_order)
 
+## Get the sync_state of the node and all of its children
+## use [set_sync_data_for] to set the data
+func get_sync_data_for(node: Node, data : PackedByteArray) -> void:
+	var net_node : NetworkedNode3D = node.get_node_or_null(NETWORKED_NODE_3D)
+	if net_node != null:
+		data.append_array(net_node.get_stateful_sync_state().data)
+	get_sync_data_for_children_of(node, data)
+
 ## Recursively get the sync_state of all the children for a particular Node
-## Unused for now
 func get_sync_data_for_children_of(node: Node, data : PackedByteArray) -> void:
 	for child in node.get_children():
 		var child_net_node : NetworkedNode3D = child.get_node_or_null(NETWORKED_NODE_3D)
@@ -121,9 +128,17 @@ func get_sync_data_for_children_of(node: Node, data : PackedByteArray) -> void:
 			data.append_array(child_net_node.get_stateful_sync_state().data)
 		get_sync_data_for_children_of(child, data)
 
+## Set the sync_state of the node and all of its children
+## use [get_sync_data_for] to generate the data
+func set_sync_data_for(node: Node, reader: ByteReader) -> void:
+	var net_node : NetworkedNode3D = node.get_node_or_null(NETWORKED_NODE_3D)
+	if net_node != null:
+		net_node.set_stateful_sync_state(reader)
+	
+	set_sync_data_for_children_of(node, reader)
+
 ## Recursively set the sync_state of all the children for a particular Node
 ## use [get_sync_data_for_children_of] to generate the data
-## Unused for now
 func set_sync_data_for_children_of(node: Node, reader: ByteReader) -> void:
 	for child in node.get_children():
 		var child_net_node : NetworkedNode3D = child.get_node_or_null(NETWORKED_NODE_3D)

@@ -13,8 +13,11 @@ func before_each():
 	_menu_item.add_child(score_label)
 	_menu_item.dish_display_holder = holder
 	
+	var orders_parent = Node3D.new()
 	_menu = Menu.new()
+	_menu.orders_parent = orders_parent
 	_menu.add_child(_menu_item)
+	add_child_autoqfree(orders_parent)
 	add_child_autoqfree(_menu)
 
 func test_extracts_scene_ids_from_combined_food():
@@ -74,11 +77,26 @@ func test_extracts_scene_ids_from_one_drink():
 
 func test_order_for_drink_is_specific_to_a_beverage():
 	# Arrange
-	var drink = NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.CUP).instantiate()
-	_menu_item.dish_display_holder.hold_item(drink)
+	var drink_fountain : DrinkFountain = load("res://Scenes/drink_fountain.tscn").instantiate()
+	add_child_autoqfree(drink_fountain)
+	
+	var dispenser = drink_fountain.dispensers[0]
+	dispenser.beverage = NetworkedResources.get_resource_by_id(NetworkedIds.Resources.WATER)
+	
+	_menu._on_new_orderable(drink_fountain) # Setup the available drinks
+	
+	var drink : Drink = NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.CUP).instantiate()
+	add_child_autoqfree(drink)
+	drink.fill(1.0, dispenser.beverage)
+	assert_eq(drink.beverage_amounts[dispenser.beverage], 1.0, "Drink isn't full of beverage")
+	
+	_menu_item.dish_display_holder.hold_item(drink) # Sets menu to a single drink
+	var main = _menu.menu_items[0].dish
+	assert_eq(main, [NetworkedIds.Scene.CUP], "menu had something unexpected")
 	
 	# Act
-	var main = _menu.menu_items[0].dish
+	var order = _menu.generate_order_for(autofree(Customer.new()))
 	
 	# Assert
-	assert_eq(main, [NetworkedIds.Scene.CUP], "menu dish had something different")
+	assert_eq(order.scene_flattened_ids, [NetworkedIds.Scene.CUP], "Scenes dont match")
+	assert_eq(order.resource_flattened_ids, [NetworkedIds.Resources.WATER], "Resources dont match")

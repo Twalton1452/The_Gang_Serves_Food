@@ -10,7 +10,12 @@ var actual_score : float = 0.0 ## Dish given to them score
 var display_order : Node3D = null
 var multiholder_dish : bool = false
 ## Used for comparisons against food placed onto table
-var flattened_order_ids : Array[NetworkedIds.Scene] = []
+var scene_flattened_ids : Array[NetworkedIds.Scene] = []
+var resource_flattened_ids : Array[NetworkedIds.Resources] = []
+
+## Customer desires for variations
+## positive means they want that as extra, negative value means to take one of those away
+#var wanted_flattened_ids : Array[int] = []
 
 static func get_score_for(dish: Node3D) -> float:
 	var score = 0.0
@@ -20,7 +25,9 @@ static func get_score_for(dish: Node3D) -> float:
 				for food in item.get_held_items():
 					score += food.score * GameState.combined_food_multiplier
 				
-			elif item is Food or item is Drink:
+			elif item is Food:
+				score += item.score
+			elif item is Drink:
 				score += item.score
 		score *= GameState.multiholder_multiplier
 	else:
@@ -56,12 +63,16 @@ func init(display: Node3D):
 	Utils.remove_all_interactable_children_from_interactable_collision_layer(self)
 	
 	multiholder_dish = display is MultiHolder
-	flattened_order_ids = get_flattened_ids_for(display)
+	var ids = get_flattened_ids_for(display)
+	scene_flattened_ids = ids[0]
+	resource_flattened_ids = ids[1]
 	order_score = Order.get_score_for(display_order)
 
-func get_flattened_ids_for(dish: Node3D) -> Array[NetworkedIds.Scene]:
+## Returns 2 arrays in one Array[Array[NetworkedIds.Scene], Array[NetworkedIds.Resources]]
+## Godot doesn't support nested typed Arrays, so we just have to go generic
+func get_flattened_ids_for(dish: Node3D) -> Array:
 	var ids : Array[NetworkedIds.Scene] = []
-	
+	var resource_ids : Array[NetworkedIds.Resources] = []
 	if dish is MultiHolder:
 		ids.push_back(dish.SCENE_ID) # Requires the multiholder
 		for item in dish.get_held_items():
@@ -69,17 +80,25 @@ func get_flattened_ids_for(dish: Node3D) -> Array[NetworkedIds.Scene]:
 				for food in item.get_held_items():
 					ids.push_back(food.SCENE_ID)
 				
-			elif item is Food or item is Drink:
+			elif item is Food:
 				ids.push_back(item.SCENE_ID)
+			elif item is Drink:
+				ids.push_back(item.SCENE_ID)
+				for beverage in item.beverage_amounts:
+					resource_ids.push_back(beverage.RESOURCE_ID)
 	else:
 		if dish is CombinedFoodHolder:
 			for food in dish.get_held_items():
 				ids.push_back(food.SCENE_ID)
 			
-		elif dish is Food or dish is Drink:
+		elif dish is Food:
 			ids.push_back(dish.SCENE_ID)
+		elif dish is Drink:
+			ids.push_back(dish.SCENE_ID)
+			for beverage in dish.beverage_amounts:
+					resource_ids.push_back(beverage.RESOURCE_ID)
 	
-	return ids
+	return [ids, resource_ids]
 
 func is_equal_to(presented_dish: Node3D) -> bool:
 	if presented_dish is MultiHolder and not multiholder_dish:
@@ -88,12 +107,21 @@ func is_equal_to(presented_dish: Node3D) -> bool:
 	if multiholder_dish and not presented_dish is MultiHolder:
 		return false
 	
-	var presented_dish_ids = get_flattened_ids_for(presented_dish)
-	if presented_dish_ids.size() != flattened_order_ids.size():
+	var ids = get_flattened_ids_for(presented_dish)
+	var presented_dish_order_ids = ids[0]
+	var presented_dish_resource_ids = ids[1]
+	
+	if presented_dish_order_ids.size() != scene_flattened_ids.size():
+		return false
+	if presented_dish_resource_ids.size() != resource_flattened_ids.size():
 		return false
 	
-	for i in len(presented_dish_ids):
-		if presented_dish_ids[i] != flattened_order_ids[i]:
+	for i in len(presented_dish_order_ids):
+		if presented_dish_order_ids[i] != scene_flattened_ids[i]:
+			return false
+	
+	for i in len(presented_dish_resource_ids):
+		if presented_dish_resource_ids[i] != resource_flattened_ids[i]:
 			return false
 	
 	actual_score = Order.get_score_for(presented_dish)

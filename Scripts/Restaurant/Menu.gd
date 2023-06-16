@@ -7,6 +7,8 @@ signal new_menu(menu: Menu)
 
 var menu_items : Array[MenuItem] = []
 
+var available_drinks : Array[NetworkedIds.Resources] = []
+
 func _ready():
 	watch_for_changes_to_menu_items()
 
@@ -20,6 +22,12 @@ func watch_for_changes_to_menu_items():
 	
 func _on_menu_item_changed():
 	new_menu.emit(self)
+
+func _on_new_orderable(orderable: Node) -> void:
+	if orderable is DrinkFountain:
+		for dispenser in orderable.dispensers:
+			available_drinks.push_back(dispenser.beverage.RESOURCE_ID)
+		
 
 func is_menu_available() -> bool:
 	return not menu_items.is_empty() and menu_items.any(func(menu_item): return menu_item.is_dish_available())
