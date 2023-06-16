@@ -113,33 +113,38 @@ func visual_representation():
 	if display_order is MultiHolder:
 		for item in display_order.get_held_items():
 			if item is CombinedFoodHolder:
-				for food in item.get_held_items():
-					set_transparency_for_food_to(food, 0.7)
+				item.scale.z = 0.1
+				#for food in item.get_held_items():
+					#set_transparency_for_food_to(food, 0.7)
 			elif item is Food:
-				set_transparency_for_food_to(item, 0.7)
+				item.scale.z = 0.1
+				#set_transparency_for_food_to(item, 0.7)
 			elif item is Drink:
-				set_transparency_for_drink_to(item, 0.7)
+				item.scale.y = 0.5
+				#set_transparency_for_drink_to(item, 0.7)
 	else:
 		if display_order is CombinedFoodHolder:
-			for food in display_order.get_held_items():
-				set_transparency_for_food_to(food, 0.7)
+			display_order.scale.z = 0.1
+			#for food in display_order.get_held_items():
+				#set_transparency_for_food_to(food, 0.7)
 			
 		elif display_order is Food:
-			set_transparency_for_food_to(display_order, 0.7)
+			display_order.scale.z = 0.1
+			#set_transparency_for_food_to(display_order, 0.7)
 		elif display_order is Drink:
-			set_transparency_for_drink_to(display_order, 0.7)
+			display_order.scale.y = 0.5
+			#set_transparency_for_drink_to(display_order, 0.7)
 
 func set_transparency_for_food_to(food: Food, value: float):
 	for i in range(food.obj_to_color.get_surface_override_material_count()):
-		var material = food.obj_to_color.get_active_material(i)
+		var material = food.obj_to_color.get_surface_override_material(i)
 		if material != null:
-			
 			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 			material.albedo_color.a = value
 
 func set_transparency_for_drink_to(drink: Drink, value: float):
 	for i in range(drink.mesh_to_color.get_surface_override_material_count()):
-		var material = drink.mesh_to_color.get_active_material(i)
+		var material = drink.mesh_to_color.get_surface_override_material(i)
 		if material != null:
 			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 			material.albedo_color.a = value
