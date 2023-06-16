@@ -26,10 +26,13 @@ func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
 	fill_amount = reader.read_small_float()
 	var dict_size = reader.read_int()
-	for i in range(dict_size):
-		var resource_id = reader.read_int()
-		var beverage_filled_amount = reader.read_small_float()
-		beverage_amounts[NetworkedResources.get_resource_by_id(resource_id)] = beverage_filled_amount
+	if dict_size == 0:
+		beverage_amounts.clear()
+	else:
+		for i in range(dict_size):
+			var resource_id = reader.read_int()
+			var beverage_filled_amount = reader.read_small_float()
+			beverage_amounts[NetworkedResources.get_resource_by_id(resource_id)] = beverage_filled_amount
 	
 	evaluate_fill_state()
 
