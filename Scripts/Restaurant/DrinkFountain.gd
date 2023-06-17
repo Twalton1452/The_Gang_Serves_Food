@@ -2,6 +2,7 @@ extends Node3D
 class_name DrinkFountain
 
 @export var fill_rate = 0.1
+@export var shut_off_dispenser_on_filled = true
 
 @onready var dispensers_root = $FountainModel
 @onready var fill_rate_timer : Timer = $FillRateTimer
@@ -45,6 +46,10 @@ func _on_fill_rate_tick():
 	for dispenser in dispensers:
 		if dispenser.activated:
 			var drink : Drink = dispenser.holder.get_held_item()
+			if drink.fill_state == Drink.FillState.FILLED and shut_off_dispenser_on_filled:
+				dispenser.activated = false
+				continue
+			
 			drink.fill(fill_rate, dispenser.beverage)
 	
 	fill_rate_timer.start()

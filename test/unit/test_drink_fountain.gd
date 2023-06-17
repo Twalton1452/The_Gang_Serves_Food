@@ -50,4 +50,4 @@ func test_drink_fountain_can_fill_drink():
 		_drink_fountain._on_fill_rate_tick()
 	
 	assert_eq(dispenser_to_use.holder.get_held_item().fill_state, Drink.FillState.FILLED)
-	assert_eq(dispenser_to_use.activated, true)
+	assert_eq(dispenser_to_use.activated, false)
