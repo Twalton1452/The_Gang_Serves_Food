@@ -1,5 +1,7 @@
 extends GutTest
 
+const STUBBED_ENABLED_FUNCTION = "is_collider_enabled"
+
 ## Each test the Holder being interacted with will start with no item
 class TestHolderWithNoItem extends GutTest:
 	var PlayerScene = load("res://Scenes/player.tscn")
@@ -79,7 +81,7 @@ class TestHolderWithHoldable extends GutTest:
 		var multi_h = MultiHolderClass.new()
 		var holdable : Holdable = HoldableClass.new()
 		var holder = partial_double(HolderClass, DOUBLE_STRATEGY.SCRIPT_ONLY).new()
-		stub(holder, "is_enabled").to_return(true)
+		stub(holder, STUBBED_ENABLED_FUNCTION).to_return(true)
 		multi_h.add_child(holder)
 		
 		_player.holder.add_child(multi_h)
@@ -201,8 +203,8 @@ class TestHolderWithMultiHolder extends GutTest:
 		var holder = partial_double(HolderClass, DOUBLE_STRATEGY.SCRIPT_ONLY).new()
 		var holder_two = partial_double(HolderClass, DOUBLE_STRATEGY.SCRIPT_ONLY).new()
 		
-		stub(holder, "is_enabled").to_return(true)
-		stub(holder_two, "is_enabled").to_return(true)
+		stub(holder, STUBBED_ENABLED_FUNCTION).to_return(true)
+		stub(holder_two, STUBBED_ENABLED_FUNCTION).to_return(true)
 		
 		multi_h.add_child(holder)
 		holder_multi_h.add_child(holder_two)
@@ -251,7 +253,7 @@ class TestHolderWithStackingHolder extends GutTest:
 		var multi_h = MultiHolderClass.new()
 		var holder = partial_double(HolderClass, DOUBLE_STRATEGY.SCRIPT_ONLY).new()
 		
-		stub(holder, "is_enabled").to_return(true)
+		stub(holder, STUBBED_ENABLED_FUNCTION).to_return(true)
 		
 		multi_h.add_child(holder)
 		_player.holder.add_child(multi_h)

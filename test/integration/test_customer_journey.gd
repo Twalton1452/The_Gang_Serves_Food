@@ -94,12 +94,12 @@ func test_party_full_journey():
 		assert_not_null(customer.order.display_order, "There is no visual for the customer's order")
 		assert_almost_eq(customer.order.global_position, customer.sitting_chair.holder.global_position, Vector3(0.2, 0.2, 0.2))
 		assert_eq(customer.order.visible, false, "The order visual is showing too early")
-		assert_eq(customer.interactable.is_enabled(), true, "Customer isn't interactable when they should be")
+		assert_eq(customer.interactable.is_collider_enabled(), true, "Customer isn't interactable when they should be")
 	
 	spawned_party.customers[0]._on_player_interacted() # pretend the player interacted with a customer
 	
 	for customer in spawned_party.customers:
-		assert_eq(customer.interactable.is_enabled(), false, "Customer is interactable when they shouldn't be")
+		assert_eq(customer.interactable.is_collider_enabled(), false, "Customer is interactable when they shouldn't be")
 		assert_eq(customer.order.visible, true, "The order visual isn't showing")
 		_assert_all_child_interactables_not_on_interactable_layer(customer.order)
 	
@@ -124,7 +124,7 @@ func test_party_full_journey():
 		player_interactions += get_signal_emit_count(customer, "player_interacted_with")
 		assert_signal_emit_count(customer, "got_order", 1)
 		assert_signal_emit_count(customer, "ate_food", 1)
-		assert_eq(customer.interactable.is_enabled(), true, "Customer isn't interactable when they should be")
+		assert_eq(customer.interactable.is_collider_enabled(), true, "Customer isn't interactable when they should be")
 	assert_eq(player_interactions, 1, "Customers were not interacted with the expected number of times")
 		
 	for chair in _restaurant.tables[0].chairs:

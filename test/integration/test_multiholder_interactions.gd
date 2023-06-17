@@ -1,5 +1,7 @@
 extends GutTest
 
+const STUBBED_ENABLED_FUNCTION = "is_collider_enabled"
+
 var PlayerScene = load("res://Scenes/player.tscn")
 
 var HolderClass = load("res://Scripts/Interactables/Holders/Holder.gd")
@@ -23,7 +25,7 @@ func test_items_can_be_placed_and_picked_up():
 	# Fill the MultiHolder
 	for item in items:
 		var holder = doubled_holder.new()
-		stub(holder, "is_enabled").to_return(true)
+		stub(holder, STUBBED_ENABLED_FUNCTION).to_return(true)
 		_multi_h.add_child(holder)
 		_multi_h.holders.push_back(holder)
 		holder.add_child(item.new())
