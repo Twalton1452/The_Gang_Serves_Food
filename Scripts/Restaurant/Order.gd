@@ -60,7 +60,7 @@ func init(display: Node3D):
 	display_order = display
 	hide()
 	visual_representation()
-	Interactable.remove_from_interactable_layer(self)
+	Utils.remove_from_interactable_layer(self)
 	
 	multiholder_dish = display is MultiHolder
 	var ids = get_flattened_ids_for(display)

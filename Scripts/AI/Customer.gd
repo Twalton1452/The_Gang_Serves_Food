@@ -103,7 +103,7 @@ func evaluate_food():
 	got_order.emit()
 	hide_order_visual()
 	# Don't let the player interact with the food while the customer is about to eat
-	Interactable.disable_colliders_for(sitting_chair.holder)
+	Utils.disable_colliders_for(sitting_chair.holder)
 
 func order_from(menu: Menu):
 	if not is_multiplayer_authority():
@@ -143,7 +143,7 @@ func eat() -> void:
 
 func finished_eating() -> void:
 	interactable.enable_collider()
-	Interactable.enable_colliders_for(sitting_chair.holder)
+	Utils.enable_colliders_for(sitting_chair.holder)
 
 func sit():
 	if target_chair != null:

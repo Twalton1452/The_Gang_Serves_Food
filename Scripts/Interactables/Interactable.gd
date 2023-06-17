@@ -15,56 +15,6 @@ const NON_INTERACTABLE_LAYER = 7
 
 var collider : CollisionShape3D
 
-
-static func enable_from_noninteractable_layer(node: Node) -> void:
-	if node is Interactable:
-		node.set_collision_layer_value(INTERACTABLE_LAYER, true)
-		node.set_collision_layer_value(NON_INTERACTABLE_LAYER, false)
-	enable_children_from_noninteractable_layer(node)
-
-static func enable_children_from_noninteractable_layer(node: Node) -> void:
-	for child in node.get_children():
-		if child is Interactable:
-			child.set_collision_layer_value(INTERACTABLE_LAYER, true)
-			child.set_collision_layer_value(NON_INTERACTABLE_LAYER, false)
-		enable_children_from_noninteractable_layer(child)
-
-static func remove_from_interactable_layer(node: Node) -> void:
-	if node is Interactable:
-		node.set_collision_layer_value(INTERACTABLE_LAYER, false)
-		node.set_collision_layer_value(NON_INTERACTABLE_LAYER, true)
-	remove_children_from_interactable_layer(node)
-
-static func remove_children_from_interactable_layer(node: Node) -> void:
-	for child in node.get_children():
-		if child is Interactable:
-			child.set_collision_layer_value(INTERACTABLE_LAYER, false)
-			child.set_collision_layer_value(NON_INTERACTABLE_LAYER, true)
-			remove_children_from_interactable_layer(child)
-
-static func enable_colliders_for(node: Node) -> void:
-	if node is Interactable:
-		node.enable_collider()
-	enable_colliders_for_children(node)
-
-static func enable_colliders_for_children(node: Node) -> void:
-	for child in node.get_children():
-		if child is Interactable:
-			child.enable_collider()
-		enable_colliders_for_children(child)
-
-static func disable_colliders_for(node: Node) -> void:
-	if node is Interactable:
-		node.disable_collider()
-	disable_colliders_for_children(node)
-
-static func disable_colliders_for_children(node: Node) -> void:
-	for child in node.get_children():
-		if child is Interactable:
-			child.disable_collider()
-		disable_colliders_for_children(child)
-
-
 func set_sync_state(reader : ByteReader) -> void:
 	var collider_enabled = reader.read_bool()
 	if collider_enabled:
