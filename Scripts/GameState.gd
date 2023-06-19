@@ -45,9 +45,9 @@ func set_state(value: Phase):
 	state = value
 	state_changed.emit()
 	
-	var notification = STATE_NOTIFICATIONS.get(state)
-	if notification != null:
-		hud.display_notification(notification, 1.0)
+	var notification_text = STATE_NOTIFICATIONS.get(state)
+	if notification_text != null:
+		hud.display_notification(notification_text, 1.0)
 		
 	if not is_multiplayer_authority():
 		return

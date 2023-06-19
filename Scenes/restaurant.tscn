@@ -440,6 +440,7 @@ only_one_will_exist = true
 
 [editable path="Restaurant/Building/roof"]
 [editable path="Restaurant/Building/floor"]
+[editable path="Restaurant/Building/Walls/wall"]
 [editable path="Restaurant/Building/Walls/wallDoorway"]
 [editable path="Restaurant/Building/Lights/lampSquareCeiling3"]
 [editable path="Restaurant/Building/Lights/lampSquareCeiling4"]

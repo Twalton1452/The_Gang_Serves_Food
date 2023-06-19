@@ -82,8 +82,9 @@ func resolve_edit_mode_interaction(p_id : int, path_to_interactable : PackedByte
 	if i_type == InteractionType.PRIMARY:
 		if player.holder.is_holding_item():
 			return
-	
-		player.holder.hold_item(node)
+			
+		player.remote_transform.remote_path = node.get_path()
+		#player.holder.hold_item(node)
 		notify_peers_of_edit_mode_interaction.rpc(p_id, path_to_interactable, i_type)
 	elif i_type == InteractionType.SECONDARY:
 		notify_peers_of_edit_mode_interaction.rpc(p_id, path_to_interactable, i_type)
@@ -98,9 +99,51 @@ func notify_peers_of_edit_mode_interaction(p_id : int, path_to_interactable : Pa
 	var node = get_node_or_null(decoded_path)
 	if node == null:
 		return
+	player.remote_transform.remote_path = node.get_path()
+#	if i_type == InteractionType.PRIMARY:
+#		player.holder.hold_item(node)
+#	elif i_type == InteractionType.SECONDARY:
+#		player.holder.hold_item(node)
+
+func attempt_edit_mode_placement(player : Player) -> void:
+	var p_id = player.name.to_int()
+	if is_multiplayer_authority():
+		resolve_edit_mode_placement(p_id)
+	else:
+		resolve_edit_mode_placement.rpc_id(GameState.SERVER_ID, p_id)
+
+# Server figures out how to handle that Interaction and passes it along
+@rpc("any_peer")
+func resolve_edit_mode_placement(p_id : int):
+	if not is_multiplayer_authority():
+		return
 	
-	if i_type == InteractionType.PRIMARY:
-		player.holder.hold_item(node)
-	elif i_type == InteractionType.SECONDARY:
-		player.holder.hold_item(node)
+	var player : Player = GameState.get_player_by_id(p_id)
+	if player == null and player.remote_transform.remote_path != null:
+		return
+	
+	var path_to_node = player.remote_transform.remote_path
+	var node = get_node_or_null(path_to_node)
+	if node == null:
+		return
+	
+	player.remote_transform.remote_path = NodePath()
+	var writer = ByteWriter.new()
+	writer.write_vector3(node.global_position)
+	notify_peers_of_edit_mode_placement.rpc(p_id, writer.data)
+
+@rpc("authority", "call_remote")
+func notify_peers_of_edit_mode_placement(p_id : int, node_global_pos: PackedByteArray):
+	var player : Player = GameState.get_player_by_id(p_id)
+	if player == null:
+		return
+	
+	var path_to_node = player.remote_transform.remote_path
+	var node = get_node_or_null(path_to_node)
+	if node == null:
+		return
+	
+	player.remote_transform.remote_path = NodePath()
+	var reader = ByteReader.new(node_global_pos)
+	node.global_position = reader.read_vector3()
 	

@@ -12,8 +12,8 @@ signal health_changed(health_value)
 @onready var pixel_face : PixelFace = $PixelFace
 @onready var holder : Holder = $Camera3D/Holder
 @onready var interact_holder : Holder = $Camera3D/Holder
-@onready var edit_mode_holder : Holder = $Camera3D/EditModeHolder
 @onready var client_side_holder_node : Node3D = $Camera3D/ClientSideHolderPosition
+@onready var remote_transform : RemoteTransform3D = $Camera3D/EditModeRayCast3D/RemoteTransform3D
 
 const WORLD_MASK = 1
 const SPEED = 4.0
@@ -67,17 +67,17 @@ func switch_to_interactable_hand() -> void:
 	# TODO: can't switch back to OPEN_FOR_BUSINESS if player is holding anything
 	if holder.is_holding_item():
 		await holder.released_item
+	
 	interact_ray_cast.enabled = true
-	edit_mode_ray_cast.enabled = false
-	holder = interact_holder
+	edit_mode_ray_cast.disable()
 
 func switch_to_edit_mode_hand() -> void:
 	# TODO: can't switch back to OPEN_FOR_BUSINESS if player is holding anything
 	if holder.is_holding_item():
 		await holder.released_item
+	
 	interact_ray_cast.enabled = false
-	edit_mode_ray_cast.enabled = true
-	holder = edit_mode_holder
+	edit_mode_ray_cast.enable()
 
 func set_color(col: Color):
 	color = col
@@ -109,6 +109,8 @@ func _unhandled_input(event):
 	if event.is_action_pressed("interact"):
 		if interact_ray_cast.is_colliding():
 			interact()
+		elif remote_transform.remote_path != null:
+			edit_mode_place()
 		elif edit_mode_ray_cast.is_colliding():
 			edit_mode_interact()
 	if event.is_action_pressed("secondary_interact"):
@@ -164,6 +166,9 @@ func secondary_interact() -> void:
 func edit_mode_interact():
 	var node = edit_mode_ray_cast.get_collider().owner as Node3D
 	InteractionManager.attempt_edit_mode_interaction(self, node, InteractionManager.InteractionType.PRIMARY)
+
+func edit_mode_place():
+	InteractionManager.attempt_edit_mode_placement(self)
 
 @rpc("call_local")
 func pick_emotive_face(id: int):

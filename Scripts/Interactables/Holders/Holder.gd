@@ -10,12 +10,12 @@ func _ready():
 	super()
 	is_static_holder = not get_parent() is Holder
 
-func can_hold_this(item: Node3D) -> bool:
+func can_hold_this(item: Node) -> bool:
 	return item is Holdable or item is Holder
 
 func get_held_items() -> Array[Node]:
 	if get_child_count() > 0:
-		return get_children().filter(func(item): return item is Holdable or item is Holder)
+		return get_children().filter(can_hold_this) as Array[Node]
 	return []
 
 func has_space_for_item(_item: Node3D) -> bool:
