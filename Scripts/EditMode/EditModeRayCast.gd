@@ -23,13 +23,14 @@ func _unhandled_input(event):
 func _physics_process(_delta):
 	if not enabled:
 		return
-	if remote_transform.remote_path != null:
+	if remote_transform.remote_path != NodePath():
 		if is_colliding():
 			remote_transform.global_position.y = get_collider().global_position.y
 		elif uneditable_ray_cast.is_colliding():
 			remote_transform.global_position.y = uneditable_ray_cast.get_collider().global_position.y
 		else:
 			remote_transform.position.y = 0.0
+
 	# Changed targets
 	if looking_at != get_collider():
 		

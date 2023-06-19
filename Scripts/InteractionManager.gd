@@ -88,6 +88,7 @@ func resolve_edit_mode_interaction(p_id : int, path_to_interactable : PackedByte
 		return
 	
 	if i_type == InteractionType.PRIMARY:
+		player.remote_transform.global_position = node.global_position
 		player.remote_transform.remote_path = node.get_path()
 	if i_type == InteractionType.SECONDARY:
 		node.rotation.y += PI / 4
@@ -106,6 +107,7 @@ func notify_peers_of_edit_mode_interaction(p_id : int, path_to_interactable : Pa
 		return
 	
 	if i_type == InteractionType.PRIMARY:
+		player.remote_transform.global_position = node.global_position
 		player.remote_transform.remote_path = node.get_path()
 	if i_type == InteractionType.SECONDARY:
 		node.rotation.y += PI / 4
@@ -133,6 +135,7 @@ func resolve_edit_mode_placement(p_id : int):
 		return
 	
 	player.remote_transform.remote_path = NodePath()
+	player.remote_transform.position = Vector3.ZERO
 	var writer = ByteWriter.new()
 	writer.write_vector3(node.global_position)
 	notify_peers_of_edit_mode_placement.rpc(p_id, writer.data)
@@ -149,6 +152,7 @@ func notify_peers_of_edit_mode_placement(p_id : int, node_global_pos: PackedByte
 		return
 	
 	player.remote_transform.remote_path = NodePath()
+	player.remote_transform.position = Vector3.ZERO
 	var reader = ByteReader.new(node_global_pos)
 	node.global_position = reader.read_vector3()
 	
