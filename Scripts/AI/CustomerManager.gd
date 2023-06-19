@@ -32,7 +32,6 @@ func _on_game_state_changed() -> void:
 		is_spawning = false
 		for party in parties:
 			party.state = CustomerParty.PartyState.LEAVING_FOR_HOME
-			#send_customers_home(party)
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority():

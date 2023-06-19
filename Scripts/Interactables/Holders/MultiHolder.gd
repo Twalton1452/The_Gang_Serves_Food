@@ -26,7 +26,6 @@ func _ready():
 		disable_colliders()
 	else:
 		enable_colliders()
-	
 
 func get_held_items() -> Array[Node]:
 	var items : Array[Node] = []

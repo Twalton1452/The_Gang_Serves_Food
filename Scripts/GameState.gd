@@ -39,6 +39,10 @@ func get_sync_state() -> ByteWriter:
 func set_state(value: Phase):
 	state = value
 	state_changed.emit()
+	
+	if not is_multiplayer_authority():
+		return
+	notify_state_changed.rpc(state)
 
 func set_level(l: Level):
 	level = l
@@ -48,8 +52,10 @@ func set_level(l: Level):
 func set_money(value: float):
 	money = snapped(value, 0.01)
 	money_changed.emit(money)
-	if is_multiplayer_authority():
-		notify_money_changed.rpc(money)
+	
+	if not is_multiplayer_authority():
+		return
+	notify_money_changed.rpc(money)
 
 func add_money(value: float):
 	set_money(money + value)
@@ -76,7 +82,10 @@ func remove_player(p_id : int):
 	
 	players.erase(p_id)
 
-func _input(event):
+func _unhandled_input(event):
+	if not is_multiplayer_authority():
+		return
+	
 	if event is InputEvent and event.is_action_pressed("switch_mode"):
 		if state == Phase.OPEN_FOR_BUSINESS:
 			state = Phase.EDITING_RESTAURANT
@@ -101,3 +110,7 @@ func cleanup_disconnecting_player(p_id: int):
 @rpc("authority", "reliable")
 func notify_money_changed(value: int):
 	set_money(value)
+
+@rpc("authority", "reliable")
+func notify_state_changed(value: int):
+	state = value as Phase
