@@ -12,13 +12,27 @@ class_name CustomerManager
 var customer_scene = preload("res://Scenes/customer.tscn")
 var party_scene = preload("res://Scenes/components/party.tscn")
 var parties : Array[CustomerParty] = []
+var can_spawn = true
 var is_spawning = true
 
 func _ready():
 	restaurant.table_became_available.connect(_on_table_became_available)
 	restaurant.menu.new_menu.connect(_on_new_restaurant_menu_available)
+	GameState.state_changed.connect(_on_game_state_changed)
 	
 	start_customer_spawning()
+
+func _on_game_state_changed() -> void:
+	if GameState.state == GameState.Phase.OPEN_FOR_BUSINESS:
+		can_spawn = true
+		is_spawning = true
+		start_customer_spawning()
+	else:
+		can_spawn = false
+		is_spawning = false
+		for party in parties:
+			party.state = CustomerParty.PartyState.LEAVING_FOR_HOME
+			#send_customers_home(party)
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority():
@@ -28,6 +42,7 @@ func _unhandled_input(event):
 		#spawn_party.rpc(randi_range(min_wait_to_spawn_sec, max_party_size))
 		spawn_party.rpc(4)
 
+## Called from CustomerParty when they have Spawned
 func sync_party(party: CustomerParty):
 	party.state_changed.connect(_on_party_state_changed)
 	parties.push_back(party)
@@ -37,10 +52,14 @@ func start_customer_spawning():
 	if not is_multiplayer_authority():
 		return
 	
-	if not is_spawning or GameState.state != GameState.Phase.OPEN_FOR_BUSINESS:
+	if not can_spawn or not is_spawning:
 		return
 	
 	await get_tree().create_timer(randf_range(min_wait_to_spawn_sec, max_wait_to_spawn_sec)).timeout
+	
+	# State may have changed between waits
+	if not can_spawn or not is_spawning:
+		return
 	
 	if len(parties) < max_parties:
 		spawn_party.rpc(randi_range(min_party_size, max_party_size))

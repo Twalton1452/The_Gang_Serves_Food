@@ -207,11 +207,16 @@ target_position = Vector3(0, 0, -4)
 collision_mask = 2
 
 [node name="InteractRayCast3D" type="RayCast3D" parent="Camera3D"]
+enabled = false
 target_position = Vector3(0, 0, -1)
 collision_mask = 4
 collide_with_areas = true
 collide_with_bodies = false
 script = ExtResource("5_dakr0")
+
+[node name="ThingMoverRayCast3D" type="RayCast3D" parent="Camera3D"]
+enabled = false
+target_position = Vector3(0, 0, -1)
 
 [node name="ClientSideHolderPosition" type="Marker3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.989838, -0.142197, 0, 0.142197, 0.989838, 0.155525, -0.124404, -0.178116)

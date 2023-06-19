@@ -8,6 +8,7 @@ signal health_changed(health_value)
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
 @onready var gun_ray_cast = $Camera3D/GunRayCast3D
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
+@onready var thing_mover_ray_cast = $Camera3D/ThingMoverRayCast3D
 @onready var pixel_face : PixelFace = $PixelFace
 @onready var holder : Holder = $Camera3D/Holder
 @onready var client_side_holder_node : Node3D = $Camera3D/ClientSideHolderPosition
@@ -42,6 +43,8 @@ func _ready():
 func init():
 	if not is_multiplayer_authority(): return
 	
+	interact_ray_cast.enabled = true
+	thing_mover_ray_cast.enabled = false
 	holder.position = client_side_holder_node.position
 	holder.rotation = client_side_holder_node.rotation
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

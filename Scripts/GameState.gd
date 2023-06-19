@@ -6,6 +6,7 @@ signal state_changed
 signal money_changed(value: float)
 
 var SERVER_ID = 1
+## Used for debugging, shows ID of GameState to make looking at the Remote SceneTree easier
 var THIS_ID = -1
 
 enum Phase {
@@ -27,10 +28,12 @@ var combined_food_multiplier : float = 1.5 ## multiply per food in the stack
 
 func set_sync_state(reader: ByteReader):
 	set_money(reader.read_float())
+	state = reader.read_int() as Phase
 
 func get_sync_state() -> ByteWriter:
 	var writer : ByteWriter = ByteWriter.new()
 	writer.write_float(money)
+	writer.write_int(state)
 	return writer
 
 func set_state(value: Phase):
@@ -72,6 +75,15 @@ func remove_player(p_id : int):
 			players[p_id].queue_free()
 	
 	players.erase(p_id)
+
+func _input(event):
+	if event is InputEvent and event.is_action_pressed("switch_mode"):
+		if state == Phase.OPEN_FOR_BUSINESS:
+			state = Phase.EDITING_RESTAURANT
+			hud.display_notification("Editing Restaurant", 1.0)
+		elif state == Phase.EDITING_RESTAURANT:
+			state = Phase.OPEN_FOR_BUSINESS
+			hud.display_notification("Open for Business", 1.0)
 
 @rpc("authority", "call_local")
 func cleanup_disconnecting_player(p_id: int):
