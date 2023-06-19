@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://7gwq2duwkfed"]
+
+[resource]
+transparency = 4
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 2
+disable_ambient_light = true
+albedo_color = Color(0, 0, 0, 0.392157)
+disable_receive_shadows = true
+billboard_keep_scale = true
+grow = true
+grow_amount = 0.001
+point_size = 8.0
