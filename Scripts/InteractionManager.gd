@@ -64,6 +64,14 @@ func attempt_edit_mode_interaction(player : Player, node : Node3D, i_type : Inte
 	else:
 		resolve_edit_mode_interaction.rpc_id(GameState.SERVER_ID, p_id, path_to_interactable, i_type)
 
+func attempt_edit_mode_secondary_interaction(player : Player):
+	var p_id = player.name.to_int()
+	var path_to_interactable = StringName(player.remote_transform.remote_path).to_utf32_buffer()
+	if is_multiplayer_authority():
+		resolve_edit_mode_interaction(p_id, path_to_interactable, InteractionType.SECONDARY)
+	else:
+		resolve_edit_mode_interaction.rpc_id(GameState.SERVER_ID, p_id, path_to_interactable, InteractionType.SECONDARY)
+
 # Server figures out how to handle that Interaction and passes it along
 @rpc("any_peer")
 func resolve_edit_mode_interaction(p_id : int, path_to_interactable : PackedByteArray, i_type : int):
@@ -80,14 +88,11 @@ func resolve_edit_mode_interaction(p_id : int, path_to_interactable : PackedByte
 		return
 	
 	if i_type == InteractionType.PRIMARY:
-		if player.holder.is_holding_item():
-			return
-			
 		player.remote_transform.remote_path = node.get_path()
-		#player.holder.hold_item(node)
-		notify_peers_of_edit_mode_interaction.rpc(p_id, path_to_interactable, i_type)
-	elif i_type == InteractionType.SECONDARY:
-		notify_peers_of_edit_mode_interaction.rpc(p_id, path_to_interactable, i_type)
+	if i_type == InteractionType.SECONDARY:
+		node.rotation.y += PI / 4
+	
+	notify_peers_of_edit_mode_interaction.rpc(p_id, path_to_interactable, i_type)
 
 @rpc("authority", "call_remote")
 func notify_peers_of_edit_mode_interaction(p_id : int, path_to_interactable : PackedByteArray, i_type : int):
@@ -99,11 +104,11 @@ func notify_peers_of_edit_mode_interaction(p_id : int, path_to_interactable : Pa
 	var node = get_node_or_null(decoded_path)
 	if node == null:
 		return
-	player.remote_transform.remote_path = node.get_path()
-#	if i_type == InteractionType.PRIMARY:
-#		player.holder.hold_item(node)
-#	elif i_type == InteractionType.SECONDARY:
-#		player.holder.hold_item(node)
+	
+	if i_type == InteractionType.PRIMARY:
+		player.remote_transform.remote_path = node.get_path()
+	if i_type == InteractionType.SECONDARY:
+		node.rotation.y += PI / 4
 
 func attempt_edit_mode_placement(player : Player) -> void:
 	var p_id = player.name.to_int()

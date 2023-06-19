@@ -45,13 +45,13 @@ func _physics_process(_delta):
 			
 		looking_at = get_collider()
 
-func set_material_overlay_for_children(node: Node3D, material: StandardMaterial3D, transparency : float):
+func set_material_overlay_for_children(node: Node3D, material: StandardMaterial3D, _transparency : float):
 	for child in node.get_children():
 		if child is MeshInstance3D:
 			child.material_overlay = material
-			child.transparency = transparency
+			#child.transparency = transparency
 		if child is Node3D:
-			set_material_overlay_for_children(child, material, transparency)
+			set_material_overlay_for_children(child, material, _transparency)
 
 func show_outline(node: Node3D):
 	set_material_overlay_for_children(node.owner, outline_material, 0.2)

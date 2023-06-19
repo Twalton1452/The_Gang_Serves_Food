@@ -109,13 +109,15 @@ func _unhandled_input(event):
 	if event.is_action_pressed("interact"):
 		if interact_ray_cast.is_colliding():
 			interact()
-		elif remote_transform.remote_path != null:
+		elif remote_transform.remote_path != NodePath():
 			edit_mode_place()
 		elif edit_mode_ray_cast.is_colliding():
 			edit_mode_interact()
 	if event.is_action_pressed("secondary_interact"):
 		if interact_ray_cast.is_colliding():
 			secondary_interact()
+		elif remote_transform.remote_path != NodePath():
+			edit_mode_secondary_interact()
 			
 
 func _physics_process(delta):
@@ -166,6 +168,9 @@ func secondary_interact() -> void:
 func edit_mode_interact():
 	var node = edit_mode_ray_cast.get_collider().owner as Node3D
 	InteractionManager.attempt_edit_mode_interaction(self, node, InteractionManager.InteractionType.PRIMARY)
+
+func edit_mode_secondary_interact():
+	InteractionManager.attempt_edit_mode_secondary_interaction(self)
 
 func edit_mode_place():
 	InteractionManager.attempt_edit_mode_placement(self)
