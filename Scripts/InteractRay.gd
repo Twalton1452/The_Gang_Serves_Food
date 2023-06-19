@@ -7,7 +7,7 @@ var looking_at : Interactable = null
 #var current_material : BaseMaterial3D = null
 
 func _unhandled_input(event):
-	if event.is_action_pressed("ui_end"):
+	if event.is_action_pressed("ui_right"):
 		highlight_enabled = !highlight_enabled
 		if looking_at:
 			hide_outline(looking_at)

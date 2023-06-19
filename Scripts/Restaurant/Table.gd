@@ -5,9 +5,9 @@ signal occupied(table: Table)
 signal available(table: Table)
 
 @export var table_mesh : MeshInstance3D
+@export var color_material_index = 1
 
 @onready var patience_bar : PatienceBar = $PatienceBar
-
 
 var holders : Array[Holder] = []
 var chairs : Array[Chair] = []
@@ -76,7 +76,7 @@ func release_customers():
 
 func set_color(value: Color) -> void:
 	color = value
-	table_mesh.get_active_material(1).albedo_color = color
+	table_mesh.get_active_material(color_material_index).albedo_color = color
 
 func get_color() -> Color:
 	return color

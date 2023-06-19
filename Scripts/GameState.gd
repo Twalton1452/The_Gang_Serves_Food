@@ -15,6 +15,11 @@ enum Phase {
 	OPEN_FOR_BUSINESS,
 }
 
+const STATE_NOTIFICATIONS = {
+	Phase.EDITING_RESTAURANT: "Editing Restaurant",
+	Phase.OPEN_FOR_BUSINESS: "Open for Business",
+}
+
 var state : Phase = Phase.OPEN_FOR_BUSINESS : set = set_state
 
 var players : Dictionary = {}
@@ -40,6 +45,10 @@ func set_state(value: Phase):
 	state = value
 	state_changed.emit()
 	
+	var notification = STATE_NOTIFICATIONS.get(state)
+	if notification != null:
+		hud.display_notification(notification, 1.0)
+		
 	if not is_multiplayer_authority():
 		return
 	notify_state_changed.rpc(state)
@@ -89,10 +98,8 @@ func _unhandled_input(event):
 	if event is InputEvent and event.is_action_pressed("switch_mode"):
 		if state == Phase.OPEN_FOR_BUSINESS:
 			state = Phase.EDITING_RESTAURANT
-			hud.display_notification("Editing Restaurant", 1.0)
 		elif state == Phase.EDITING_RESTAURANT:
 			state = Phase.OPEN_FOR_BUSINESS
-			hud.display_notification("Open for Business", 1.0)
 
 @rpc("authority", "call_local")
 func cleanup_disconnecting_player(p_id: int):

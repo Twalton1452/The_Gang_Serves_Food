@@ -8,12 +8,14 @@ signal health_changed(health_value)
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
 @onready var gun_ray_cast = $Camera3D/GunRayCast3D
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
-@onready var thing_mover_ray_cast = $Camera3D/ThingMoverRayCast3D
+@onready var edit_mode_ray_cast = $Camera3D/EditModeRayCast3D
 @onready var pixel_face : PixelFace = $PixelFace
 @onready var holder : Holder = $Camera3D/Holder
+@onready var interact_holder : Holder = $Camera3D/Holder
+@onready var edit_mode_holder : Holder = $Camera3D/EditModeHolder
 @onready var client_side_holder_node : Node3D = $Camera3D/ClientSideHolderPosition
 
-
+const WORLD_MASK = 1
 const SPEED = 4.0
 const JUMP_VELOCITY = 10.0
 
@@ -36,21 +38,46 @@ func _exit_tree(): # When someone calls queue_free() here
 	Utils.cleanup_material_overrides(self)
 
 func _ready():
+	# Do this for every player so that the player's Holder gets switched easily
+	GameState.state_changed.connect(_on_game_state_changed)
+	_on_game_state_changed()
+	
 	if not is_multiplayer_authority(): return
 
 	init.call_deferred()
 
 func init():
 	if not is_multiplayer_authority(): return
-	
-	interact_ray_cast.enabled = true
-	thing_mover_ray_cast.enabled = false
 	holder.position = client_side_holder_node.position
 	holder.rotation = client_side_holder_node.rotation
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	pixel_face.random_expression()
 	pick_emotive_face.rpc(pixel_face.frame)
+
+func _on_game_state_changed() -> void:
+	if GameState.state == GameState.Phase.EDITING_RESTAURANT:
+		set_collision_mask_value(WORLD_MASK, false)
+		switch_to_edit_mode_hand()
+	elif GameState.state == GameState.Phase.OPEN_FOR_BUSINESS:
+		set_collision_mask_value(WORLD_MASK, true)
+		switch_to_interactable_hand()
+
+func switch_to_interactable_hand() -> void:
+	# TODO: can't switch back to OPEN_FOR_BUSINESS if player is holding anything
+	if holder.is_holding_item():
+		await holder.released_item
+	interact_ray_cast.enabled = true
+	edit_mode_ray_cast.enabled = false
+	holder = interact_holder
+
+func switch_to_edit_mode_hand() -> void:
+	# TODO: can't switch back to OPEN_FOR_BUSINESS if player is holding anything
+	if holder.is_holding_item():
+		await holder.released_item
+	interact_ray_cast.enabled = false
+	edit_mode_ray_cast.enabled = true
+	holder = edit_mode_holder
 
 func set_color(col: Color):
 	color = col
@@ -82,6 +109,8 @@ func _unhandled_input(event):
 	if event.is_action_pressed("interact"):
 		if interact_ray_cast.is_colliding():
 			interact()
+		elif edit_mode_ray_cast.is_colliding():
+			edit_mode_interact()
 	if event.is_action_pressed("secondary_interact"):
 		if interact_ray_cast.is_colliding():
 			secondary_interact()
@@ -131,6 +160,10 @@ func secondary_interact() -> void:
 	var interactable = interact_ray_cast.get_collider() as Interactable
 	InteractionManager.attempt_interaction(self, interactable, InteractionManager.InteractionType.SECONDARY)
 	#interactable.secondary_interact(self)
+
+func edit_mode_interact():
+	var node = edit_mode_ray_cast.get_collider().owner as Node3D
+	InteractionManager.attempt_edit_mode_interaction(self, node, InteractionManager.InteractionType.PRIMARY)
 
 @rpc("call_local")
 func pick_emotive_face(id: int):
