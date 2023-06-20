@@ -92,7 +92,7 @@ func resolve_edit_mode_interaction(p_id : int, path_to_interactable : PackedByte
 		player.remote_transform.global_position = node.owner.global_position
 		player.remote_transform.remote_path = node.owner.get_path()
 	if i_type == InteractionType.SECONDARY:
-		node.rotation.y += PI / 4
+		node.rotation.y += PI / 2
 	
 	notify_peers_of_edit_mode_interaction.rpc(p_id, path_to_interactable, i_type)
 
@@ -112,7 +112,7 @@ func notify_peers_of_edit_mode_interaction(p_id : int, path_to_interactable : Pa
 		player.remote_transform.global_position = node.owner.global_position
 		player.remote_transform.remote_path = node.owner.get_path()
 	if i_type == InteractionType.SECONDARY:
-		node.rotation.y += PI / 4
+		node.rotation.y += PI / 2
 
 func attempt_edit_mode_placement(player : Player) -> void:
 	var p_id = player.name.to_int()
