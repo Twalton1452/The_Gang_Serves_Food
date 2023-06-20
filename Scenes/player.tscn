@@ -223,7 +223,7 @@ script = ExtResource("7_1am8s")
 
 [node name="UneditableRayCast3D" type="RayCast3D" parent="Camera3D/EditModeRayCast3D"]
 enabled = false
-target_position = Vector3(0, 0, -1.5)
+target_position = Vector3(0, 0, -10)
 collision_mask = 16
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Camera3D/EditModeRayCast3D"]

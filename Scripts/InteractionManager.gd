@@ -56,7 +56,7 @@ func notify_peers_of_interaction(p_id : int, path_to_interactable : PackedByteAr
 
 
 # Tell the Server we want to Interact, called from clients
-func attempt_edit_mode_interaction(player : Player, node : Node3D, i_type : InteractionType):
+func attempt_edit_mode_interaction(player : Player, node : StaticBody3D, i_type : InteractionType):
 	var p_id = player.name.to_int()
 	var path_to_interactable = StringName(node.get_path()).to_utf32_buffer()
 	if is_multiplayer_authority():
@@ -88,8 +88,9 @@ func resolve_edit_mode_interaction(p_id : int, path_to_interactable : PackedByte
 		return
 	
 	if i_type == InteractionType.PRIMARY:
-		player.remote_transform.global_position = node.global_position
-		player.remote_transform.remote_path = node.get_path()
+		player.edit_mode_ray_cast.lock_to = true
+		player.remote_transform.global_position = node.owner.global_position
+		player.remote_transform.remote_path = node.owner.get_path()
 	if i_type == InteractionType.SECONDARY:
 		node.rotation.y += PI / 4
 	
@@ -107,8 +108,9 @@ func notify_peers_of_edit_mode_interaction(p_id : int, path_to_interactable : Pa
 		return
 	
 	if i_type == InteractionType.PRIMARY:
-		player.remote_transform.global_position = node.global_position
-		player.remote_transform.remote_path = node.get_path()
+		player.edit_mode_ray_cast.lock_to = true
+		player.remote_transform.global_position = node.owner.global_position
+		player.remote_transform.remote_path = node.owner.get_path()
 	if i_type == InteractionType.SECONDARY:
 		node.rotation.y += PI / 4
 
@@ -134,6 +136,7 @@ func resolve_edit_mode_placement(p_id : int):
 	if node == null:
 		return
 	
+	player.edit_mode_ray_cast.lock_to = false
 	player.remote_transform.remote_path = NodePath()
 	player.remote_transform.position = Vector3.ZERO
 	var writer = ByteWriter.new()
@@ -151,6 +154,7 @@ func notify_peers_of_edit_mode_placement(p_id : int, node_global_pos: PackedByte
 	if node == null:
 		return
 	
+	player.edit_mode_ray_cast.lock_to = false
 	player.remote_transform.remote_path = NodePath()
 	player.remote_transform.position = Vector3.ZERO
 	var reader = ByteReader.new(node_global_pos)

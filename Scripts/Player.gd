@@ -166,7 +166,7 @@ func secondary_interact() -> void:
 	#interactable.secondary_interact(self)
 
 func edit_mode_interact():
-	var node = edit_mode_ray_cast.get_collider().owner as Node3D
+	var node = edit_mode_ray_cast.get_collider() as StaticBody3D
 	InteractionManager.attempt_edit_mode_interaction(self, node, InteractionManager.InteractionType.PRIMARY)
 
 func edit_mode_secondary_interact():
