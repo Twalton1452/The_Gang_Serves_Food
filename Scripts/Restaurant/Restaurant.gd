@@ -12,6 +12,7 @@ signal table_became_available(table: Table)
 var tables : Array[Table]
 
 func _ready():
+	GameState.state_changed.connect(_on_game_state_changed)
 	new_orderable_available.connect(menu._on_new_orderable)
 	for table in tables_root.get_children():
 		if table is Table:
@@ -23,6 +24,10 @@ func _ready():
 	var drink_fountain = get_node_or_null("Building/DrinkFountain")
 	if drink_fountain != null:
 		new_orderable_available.emit(drink_fountain)
+
+func _on_game_state_changed() -> void:
+	if GameState.state == GameState.Phase.OPEN_FOR_BUSINESS:
+		bake_navigation_mesh(true)
 
 func _on_table_available(table: Table):
 	table_became_available.emit(table)
