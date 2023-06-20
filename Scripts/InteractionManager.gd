@@ -72,6 +72,14 @@ func attempt_edit_mode_secondary_interaction(player : Player):
 	else:
 		resolve_edit_mode_interaction.rpc_id(GameState.SERVER_ID, p_id, path_to_interactable, InteractionType.SECONDARY)
 
+func lock_on_to_node(player: Player, node: Node) -> void:
+	player.edit_mode_ray_cast.lock_to = true
+	player.remote_transform.global_position = node.owner.global_position
+	player.remote_transform.remote_path = node.owner.get_path()
+
+func rotate_node(node: Node) -> void:
+	node.rotation.y += PI / 2
+
 # Server figures out how to handle that Interaction and passes it along
 @rpc("any_peer")
 func resolve_edit_mode_interaction(p_id : int, path_to_interactable : PackedByteArray, i_type : int):
@@ -88,11 +96,9 @@ func resolve_edit_mode_interaction(p_id : int, path_to_interactable : PackedByte
 		return
 	
 	if i_type == InteractionType.PRIMARY:
-		player.edit_mode_ray_cast.lock_to = true
-		player.remote_transform.global_position = node.owner.global_position
-		player.remote_transform.remote_path = node.owner.get_path()
+		lock_on_to_node(player, node)
 	if i_type == InteractionType.SECONDARY:
-		node.rotation.y += PI / 2
+		rotate_node(node)
 	
 	notify_peers_of_edit_mode_interaction.rpc(p_id, path_to_interactable, i_type)
 
@@ -108,11 +114,10 @@ func notify_peers_of_edit_mode_interaction(p_id : int, path_to_interactable : Pa
 		return
 	
 	if i_type == InteractionType.PRIMARY:
-		player.edit_mode_ray_cast.lock_to = true
-		player.remote_transform.global_position = node.owner.global_position
-		player.remote_transform.remote_path = node.owner.get_path()
+		lock_on_to_node(player, node)
 	if i_type == InteractionType.SECONDARY:
-		node.rotation.y += PI / 2
+		rotate_node(node)
+
 
 func attempt_edit_mode_placement(player : Player) -> void:
 	var p_id = player.name.to_int()
@@ -121,6 +126,11 @@ func attempt_edit_mode_placement(player : Player) -> void:
 	else:
 		resolve_edit_mode_placement.rpc_id(GameState.SERVER_ID, p_id)
 
+func release_placing_node(player: Player) -> void:
+	player.edit_mode_ray_cast.lock_to = false
+	player.remote_transform.remote_path = NodePath()
+	player.remote_transform.position = Vector3.ZERO
+
 # Server figures out how to handle that Interaction and passes it along
 @rpc("any_peer")
 func resolve_edit_mode_placement(p_id : int):
@@ -128,7 +138,7 @@ func resolve_edit_mode_placement(p_id : int):
 		return
 	
 	var player : Player = GameState.get_player_by_id(p_id)
-	if player == null and player.remote_transform.remote_path != null:
+	if player == null and player.remote_transform.remote_path != NodePath():
 		return
 	
 	var path_to_node = player.remote_transform.remote_path
@@ -136,9 +146,7 @@ func resolve_edit_mode_placement(p_id : int):
 	if node == null:
 		return
 	
-	player.edit_mode_ray_cast.lock_to = false
-	player.remote_transform.remote_path = NodePath()
-	player.remote_transform.position = Vector3.ZERO
+	release_placing_node(player)
 	var writer = ByteWriter.new()
 	writer.write_vector3(node.global_position)
 	notify_peers_of_edit_mode_placement.rpc(p_id, writer.data)
@@ -154,9 +162,7 @@ func notify_peers_of_edit_mode_placement(p_id : int, node_global_pos: PackedByte
 	if node == null:
 		return
 	
-	player.edit_mode_ray_cast.lock_to = false
-	player.remote_transform.remote_path = NodePath()
-	player.remote_transform.position = Vector3.ZERO
+	release_placing_node(player)
 	var reader = ByteReader.new(node_global_pos)
 	node.global_position = reader.read_vector3()
 	
