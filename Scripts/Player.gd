@@ -114,16 +114,17 @@ func _unhandled_input(event):
 	if event.is_action_pressed("interact"):
 		if interact_ray_cast.is_colliding():
 			interact()
-		elif remote_transform.remote_path != NodePath():
+		elif remote_transform.remote_path != ^"":
 			edit_mode_place()
 		elif edit_mode_ray_cast.is_colliding():
 			edit_mode_interact()
 	if event.is_action_pressed("secondary_interact"):
 		if interact_ray_cast.is_colliding():
 			secondary_interact()
-		elif remote_transform.remote_path != NodePath():
+		elif remote_transform.remote_path != ^"":
 			edit_mode_secondary_interact()
-			
+	if event.is_action_pressed("buy"):
+		buy_attempt()
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
@@ -179,6 +180,16 @@ func edit_mode_secondary_interact():
 
 func edit_mode_place():
 	InteractionManager.attempt_edit_mode_placement(self)
+
+func buy_attempt():
+	if remote_transform.remote_path == ^"":
+		return
+	
+	var node = get_node(remote_transform.remote_path)
+	if node.scene_file_path.is_empty():
+		return
+	
+	InteractionManager.buy_attempt()
 
 @rpc("call_local")
 func pick_emotive_face(id: int):

@@ -15,11 +15,16 @@ signal accept_rpcs
 class SyncPipeline extends Node:
 	
 	var peer_id: int = -1
-	var current_stage = 0
+	var current_stage = 0 : set = set_current_stage
 	var finished = false
 	var pipeline : Array[SyncStage] = []
 	
 	var stage : SyncStage : get = get_stage
+	
+	func set_current_stage(value: int) -> void:
+		current_stage = value
+		if current_stage >= pipeline.size():
+			finished = true
 	
 	func get_stage() -> SyncStage:
 		return pipeline[current_stage]
@@ -56,7 +61,7 @@ var syncing = {}
 var is_synced : bool : get = get_is_synced
 
 func get_is_synced() -> bool:
-	return syncing.size() == 0
+	return syncing.size() == 0 or syncing.values().all(func(pipeline): return pipeline.finished)
 
 func cleanup_disconnected_player(peer_id: int) -> void:
 	erase_pipeline_for(peer_id)
@@ -96,7 +101,7 @@ func start_fail_safe_unpause_timer(peer_id: int) -> void:
 	if get_tree().paused and syncing.get(peer_id) != null and not syncing[peer_id].finished:
 		print_debug("Server waited %d seconds for the client to sync, it never sent the message, disconnecting %s" % [FAIL_SAFE_TIMER, peer_id])
 		multiplayer.multiplayer_peer.disconnect_peer(peer_id)
-		if syncing.size() == 0 or syncing.all(func(pipeline): return pipeline.finished):
+		if is_synced:
 			print_debug("Fallback unpausing for everyone as the server is no longer syncing")
 			unpause_for_players.rpc()
 

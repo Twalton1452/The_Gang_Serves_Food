@@ -102,3 +102,17 @@ func test_can_read_write_color():
 	assert_almost_eq(read_value.g, ev.g, 0.02)
 	assert_almost_eq(read_value.b, ev.b, 0.02)
 	assert_almost_eq(read_value.a, ev.a, 0.02)
+
+func test_can_read_write_vec3_dictionary():
+	var ev: Dictionary = {
+		"global_position": Vector3(1.05, 2.2, 3.7777),
+		"global_rotation": Vector3(1.0001, 2.022, 3.01),
+		"global_scale": Vector3(1.1111, 2.77, 3.06),
+	}
+
+	_writer.write_vec3_dict(ev)
+
+	var read_value = _reader.read_vec3_dict()
+	assert_eq(ev.size(), read_value.size())
+	for property in ev:
+		assert_almost_eq(read_value[property], ev[property], Vector3(0.1, 0.1, 0.1))

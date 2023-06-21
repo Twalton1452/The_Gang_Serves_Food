@@ -51,6 +51,16 @@ func read_vector3() -> Vector3:
 func read_color() -> Color:
 	return Color(decode_half(),decode_half(),decode_half(),decode_half())
 
+## Format { "str": Vector3() }
+func read_vec3_dict() -> Dictionary:
+	var num_keys = decode_u8()
+	var dict = {}
+	for _key in range(num_keys):
+		var property = read_str()
+		var vec3 = read_vector3()
+		dict[property] = vec3
+	return dict
+
 ## Max length of 256, Max values inside 65535
 func read_int_array() -> Array[int]:
 	var size = decode_u8()

@@ -34,6 +34,7 @@ func disable():
 	uneditable_ray_cast.enabled = false
 	if looking_at:
 		hide_outline(looking_at)
+	remote_transform.remote_path = ^""
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_left"):
@@ -46,7 +47,7 @@ func _physics_process(_delta):
 	if not enabled:
 		return
 	
-	if remote_transform.remote_path != NodePath():
+	if remote_transform.remote_path != ^"":
 		if is_colliding():
 			remote_transform.global_position = get_collision_point().snapped(snapping)
 		elif uneditable_ray_cast.is_colliding():

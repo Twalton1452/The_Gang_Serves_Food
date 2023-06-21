@@ -46,6 +46,13 @@ func write_color(color: Color):
 	encode_half(color.b)
 	encode_half(color.a)
 
+## Format { "str": Vector3() }
+func write_vec3_dict(dict: Dictionary) -> void:
+	encode_u8(dict.size())
+	for property in dict:
+		write_str(property)
+		write_vector3(dict[property])
+
 ## Max length of 256, Max values inside 65535
 func write_int_array(arr: Array[int]) -> void:
 	encode_u8(arr.size() * 2) # 2 for each byte from u16

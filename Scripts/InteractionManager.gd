@@ -128,7 +128,7 @@ func attempt_edit_mode_placement(player : Player) -> void:
 
 func release_placing_node(player: Player) -> void:
 	player.edit_mode_ray_cast.lock_to = false
-	player.remote_transform.remote_path = NodePath()
+	player.remote_transform.remote_path = ^""
 	player.remote_transform.position = Vector3.ZERO
 
 # Server figures out how to handle that Interaction and passes it along
@@ -138,7 +138,7 @@ func resolve_edit_mode_placement(p_id : int):
 		return
 	
 	var player : Player = GameState.get_player_by_id(p_id)
-	if player == null and player.remote_transform.remote_path != NodePath():
+	if player == null and player.remote_transform.remote_path != ^"":
 		return
 	
 	var path_to_node = player.remote_transform.remote_path
@@ -165,4 +165,28 @@ func notify_peers_of_edit_mode_placement(p_id : int, node_global_pos: PackedByte
 	release_placing_node(player)
 	var reader = ByteReader.new(node_global_pos)
 	node.global_position = reader.read_vector3()
+
+
+func buy_attempt() -> void:
+	if not is_multiplayer_authority():
+		attempt_to_buy_held_item.rpc_id(GameState.SERVER_ID, multiplayer.get_unique_id())
+	else:
+		attempt_to_buy_held_item(GameState.SERVER_ID)
+
+@rpc("any_peer")
+func attempt_to_buy_held_item(p_id: int) -> void:
+	var player = GameState.get_player_by_id(p_id)
+	if player.remote_transform.remote_path == ^"":
+		return
 	
+	var node = get_node(player.remote_transform.remote_path)
+	if node.scene_file_path.is_empty():
+		return
+	
+	GameState.subtract_money(1)
+	var data = {
+		"global_position": node.global_position,
+		"global_rotation": node.global_rotation,
+	}
+	var spawned_node = NetworkingUtils.spawn_node_by_scene_path_for_everyone(node.scene_file_path, node.get_parent(), data)
+	print_debug(p_id, " Bought ", spawned_node)

@@ -32,10 +32,13 @@ func sort_array_by_net_id(arr: Array) -> void:
 		return false
 	)
 
-func spawn_node(node_to_spawn: PackedScene, to_be_parent: Node) -> Node:
+func spawn_node(node_to_spawn: PackedScene, to_be_parent: Node, data: Dictionary = {}) -> Node:
 	var spawned_node = node_to_spawn.instantiate()
 	to_be_parent.add_child(spawned_node, true)
 	
+	if data.size() > 0:
+		for property in data:
+			spawned_node[property] = data[property]
 	# Only the server cares about the NetworkedNode3D sync orders
 	# If the player needs that too, then remove this
 	if not is_multiplayer_authority():
@@ -45,7 +48,28 @@ func spawn_node(node_to_spawn: PackedScene, to_be_parent: Node) -> Node:
 	
 	return spawned_node
 
-func spawn_node_for_everyone(node_to_spawn: PackedScene, to_be_parent: Node) -> Node:
+func spawn_node_by_scene_path(path_to_node_scene: String, to_be_parent: Node, data: Dictionary = {}) -> Node:
+	return spawn_node(load(path_to_node_scene), to_be_parent, data)
+
+func spawn_node_by_scene_path_for_everyone(path_to_node_scene: String, to_be_parent: Node, data: Dictionary = {}) -> Node:
+	if not is_multiplayer_authority():
+		return null
+	
+	var spawned_node = spawn_node_by_scene_path(path_to_node_scene, to_be_parent, data)
+	
+	var writer = ByteWriter.new()
+	writer.write_str(path_to_node_scene)
+	writer.write_path_to(to_be_parent)
+	
+	var has_extra_data = data.size() > 0
+	writer.write_bool(has_extra_data)
+	if has_extra_data:
+		writer.write_vec3_dict(data)
+		
+	spawn_node_by_scene_path_for_peers.rpc(writer.data)
+	return spawned_node
+
+func spawn_node_for_everyone(node_to_spawn: PackedScene, to_be_parent: Node, data: Dictionary = {}) -> Node:
 	if not is_multiplayer_authority():
 		return null
 	
@@ -55,7 +79,12 @@ func spawn_node_for_everyone(node_to_spawn: PackedScene, to_be_parent: Node) -> 
 	var writer = ByteWriter.new()
 	writer.write_int(net_node.SCENE_ID)
 	writer.write_path_to(to_be_parent)
-	#writer.data.append_array(net_node.get_sync_state().data)
+	
+	var has_extra_data = data.size() > 0
+	writer.write_bool(has_extra_data)
+	if has_extra_data:
+		writer.write_vec3_dict(data)
+	
 	spawn_node_for_peers.rpc(writer.data)
 	return spawned_node
 
@@ -93,7 +122,9 @@ func duplicate_node_for_everyone(node_to_duplicate: Node, to_be_parent: Node, de
 
 ## Makes sure children's state is sync'd after their parents
 func ensure_correct_sync_order_for(node: Node) -> void:
-	var net_node : NetworkedNode3D = node.get_node(NETWORKED_NODE_3D)
+	var net_node : NetworkedNode3D = node.get_node_or_null(NETWORKED_NODE_3D)
+	if net_node == null:
+		return
 	
 	@warning_ignore("int_as_enum_without_cast")
 	net_node.priority_sync_order = crawl_up_tree_for_next_priority_sync_order(node)
@@ -199,9 +230,23 @@ func spawn_node_for_peers(data: PackedByteArray):
 	var reader = ByteReader.new(data)
 	var scene_id = reader.read_int()
 	var to_be_parent = get_node(reader.read_path_to())
-	spawn_node(NetworkedScenes.get_scene_by_id(scene_id), to_be_parent)
+	var has_extra_data = reader.read_bool()
+	var extra_data = reader.read_vec3_dict() if has_extra_data else {}
+	spawn_node(NetworkedScenes.get_scene_by_id(scene_id), to_be_parent, extra_data)
 #	var net_node = spawned_node.get_node(NETWORKED_NODE_3D)
 #	net_node.set_sync_state(reader)
+
+@rpc("authority", "call_remote", "reliable")
+func spawn_node_by_scene_path_for_peers(data: PackedByteArray):
+	if not MidsessionJoinSyncer.is_synced:
+		await MidsessionJoinSyncer.accept_rpcs
+	
+	var reader = ByteReader.new(data)
+	var scene_path = reader.read_str()
+	var to_be_parent = get_node(reader.read_path_to())
+	var has_extra_data = reader.read_bool()
+	var extra_data = reader.read_vec3_dict() if has_extra_data else {}
+	spawn_node_by_scene_path(scene_path, to_be_parent, extra_data)
 
 @rpc("authority", "call_remote", "reliable")
 func duplicate_node_for_peers(data: PackedByteArray):
@@ -211,7 +256,6 @@ func duplicate_node_for_peers(data: PackedByteArray):
 	if not MidsessionJoinSyncer.is_synced:
 		print("Trying to duplicate but not synced yet, waiting...")
 		await MidsessionJoinSyncer.accept_rpcs
-		print("sync completed, proceeding with duplication")
 	
 	var reader = ByteReader.new(data)
 	var node_to_duplicate = get_node(reader.read_path_to())
