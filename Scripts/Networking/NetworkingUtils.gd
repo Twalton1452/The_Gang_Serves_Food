@@ -97,7 +97,7 @@ func ensure_correct_sync_order_for(node: Node) -> void:
 	
 	@warning_ignore("int_as_enum_without_cast")
 	net_node.priority_sync_order = crawl_up_tree_for_next_priority_sync_order(node)
-	net_node.changed = true
+#	net_node.changed = true
 	
 	set_priority_sync_order_for_children_of(node, net_node.priority_sync_order)
 

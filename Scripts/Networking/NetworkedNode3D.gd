@@ -105,7 +105,7 @@ func get_sync_state() -> ByteWriter:
 	
 	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called
 	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
-		
+	
 	# Default properties to Sync
 	if sync_position:
 		writer.write_vector3(p_node.global_position)

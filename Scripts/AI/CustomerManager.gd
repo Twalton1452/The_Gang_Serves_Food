@@ -43,9 +43,6 @@ func _unhandled_input(event):
 
 ## Called from CustomerParty when they have Spawned
 func sync_party(party: CustomerParty):
-	if party in parties:
-		print(party)
-		print_stack()
 	party.state_changed.connect(_on_party_state_changed)
 	parties.push_back(party)
 	NetworkingUtils.sort_array_by_net_id(parties)
