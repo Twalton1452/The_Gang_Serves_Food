@@ -56,6 +56,11 @@ func spawn_node_by_scene_path_for_everyone(path_to_node_scene: String, to_be_par
 		return null
 	
 	var spawned_node = spawn_node_by_scene_path(path_to_node_scene, to_be_parent, data)
+	# TODO: if its spawned by scene_path does that mean it is not a networked node?
+	# Can we guarantee that it should be in this group?
+	# Maybe all nodes that are spawned at run time should be here, including internal ones like "Order"
+	# Then NetworkedNode3D can shave off some of its functionality to just syncing STATE instead of name/parent
+	spawned_node.add_to_group("runtime_spawned")
 	
 	var writer = ByteWriter.new()
 	writer.write_str(path_to_node_scene)

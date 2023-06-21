@@ -6,12 +6,14 @@ static func read_player_sync_data_for(player: Player, reader: ByteReader) -> voi
 	var color_vec3 = reader.read_vector3()
 	var player_color = Color(color_vec3.x, color_vec3.y, color_vec3.z, 1.0)
 	player.set_color(player_color)
+#	player.remote_transform.remote_path = reader.read_str()
 
 static func write_player_sync_data_for(player: Player, writer: ByteWriter) -> void:
 	writer.write_str(player.name)
 	
 	var player_color = player.color
 	writer.write_vector3(Vector3(player_color.r, player_color.g, player_color.b))
+#	writer.write_str(player.remote_transform.remote_path)
 
 
 func _ready():
