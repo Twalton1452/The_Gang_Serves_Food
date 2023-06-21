@@ -47,6 +47,7 @@ func add_player(peer_id: int, needs_sync = true):
 
 func delete_player(peer_id):
 	GameState.remove_player(peer_id)
+	MidsessionJoinSyncer.cleanup_disconnected_player(peer_id)
 
 func update_health_bar(health_value):
 	health_bar.value = health_value

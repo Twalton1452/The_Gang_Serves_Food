@@ -54,14 +54,11 @@ func receive_sync_data(data: PackedByteArray) -> void:
 	var nodes_syncd = _receive_sync_data(data)
 	num_nodes_syncd += nodes_syncd
 
-func begin(p_id: int, needs_sync: bool) -> void:
+func begin(p_id: int) -> void:
 	start_time_ms = Time.get_ticks_msec()
 	began.emit()
 	peer_id = p_id
 	print_verbose("------Begin Server %s for Peer %s------" % [name, peer_id])
-	if not needs_sync:
-		finish()
-		return
 	
 	var nodes = nodes_to_sync()
 	total_num_nodes_to_sync = nodes.size()

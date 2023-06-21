@@ -129,3 +129,12 @@ func notify_money_changed(value: int):
 @rpc("authority", "reliable")
 func notify_state_changed(value: int):
 	state = value as Phase
+
+## This is here instead of PlayerSyncStage.gd because that Node has a different
+## Path per client, GameState is already Autoloaded and consistent
+## maybe TODO: Player State could be wrapped up into GameState syncing?
+@rpc("any_peer", "call_remote")
+func notify_peers_of_my_settings(settings: PackedByteArray):
+	var reader = ByteReader.new(settings)
+	var player = get_player_by_name(reader.read_str())
+	PlayerSyncStage.read_player_sync_data_for(player, reader)
