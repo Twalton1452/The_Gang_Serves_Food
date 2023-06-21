@@ -19,7 +19,7 @@ config/icon="res://kitchenStove_SE.png"
 
 NetworkedScenes="*res://Scripts/Networking/NetworkedScenes.gd"
 NetworkedResources="*res://Scripts/Networking/NetworkedResources.gd"
-MidsessionJoinSyncer="*res://Scripts/Networking/MidsessionJoinSyncer.gd"
+MidsessionJoinSyncer="*res://Scripts/Networking/MidsessionSync/MidsessionJoinSyncer.gd"
 NetworkingUtils="*res://Scripts/Networking/NetworkingUtils.gd"
 GameState="*res://Scripts/GameState.gd"
 InteractionManager="*res://Scripts/InteractionManager.gd"

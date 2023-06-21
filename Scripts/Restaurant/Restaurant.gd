@@ -27,7 +27,8 @@ func _ready():
 
 func _on_game_state_changed() -> void:
 	if GameState.state == GameState.Phase.OPEN_FOR_BUSINESS:
-		bake_navigation_mesh(true)
+		#bake_navigation_mesh(true)
+		pass
 
 func _on_table_available(table: Table):
 	table_became_available.emit(table)

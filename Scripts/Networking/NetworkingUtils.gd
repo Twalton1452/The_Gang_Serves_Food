@@ -72,7 +72,7 @@ func duplicate_node(node_to_duplicate: Node, to_be_parent: Node, deep_copy_state
 	# If the player needs that too, then remove this
 	if not is_multiplayer_authority():
 		return duplicated_node
-		
+	
 	ensure_correct_sync_order_for(duplicated_node)
 	
 	return duplicated_node
@@ -97,6 +97,7 @@ func ensure_correct_sync_order_for(node: Node) -> void:
 	
 	@warning_ignore("int_as_enum_without_cast")
 	net_node.priority_sync_order = crawl_up_tree_for_next_priority_sync_order(node)
+	net_node.changed = true
 	
 	set_priority_sync_order_for_children_of(node, net_node.priority_sync_order)
 
@@ -193,7 +194,7 @@ func spawn_node_for_peers(data: PackedByteArray):
 	# The RPCs would sit in a wait list to be executed until syncing is complete
 	# Then we wouldn't need to wait for this logic or pause the game either
 	if not MidsessionJoinSyncer.is_synced:
-		await MidsessionJoinSyncer.sync_complete
+		await MidsessionJoinSyncer.accept_rpcs
 	
 	var reader = ByteReader.new(data)
 	var scene_id = reader.read_int()
@@ -208,7 +209,9 @@ func duplicate_node_for_peers(data: PackedByteArray):
 	# The RPCs would sit in a wait list to be executed until syncing is complete
 	# Then we wouldn't need to wait for this logic or pause the game either
 	if not MidsessionJoinSyncer.is_synced:
-		await MidsessionJoinSyncer.sync_complete
+		print("Trying to duplicate but not synced yet, waiting...")
+		await MidsessionJoinSyncer.accept_rpcs
+		print("sync completed, proceeding with duplication")
 	
 	var reader = ByteReader.new(data)
 	var node_to_duplicate = get_node(reader.read_path_to())

@@ -15,7 +15,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		# Instead of setting the timer to this tick rate and then adding logic to 
 		# set it back after the tick, just simulate a tick
 		var time_left = reader.read_small_float()
-		await get_tree().create_timer(time_left).timeout
+		await get_tree().create_timer(time_left, false).timeout
 		_on_fill_rate_tick()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:

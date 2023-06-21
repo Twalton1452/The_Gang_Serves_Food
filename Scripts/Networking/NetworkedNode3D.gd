@@ -75,7 +75,7 @@ func set_sync_state(reader: ByteReader) -> void:
 	var new_parent = get_node(path_to_parent)
 	
 	if not only_one_will_exist:
-		get_parent().name = new_name
+		p_node.name = new_name
 	
 	if p_node.get_parent() != new_parent:
 		if p_node.get_parent() is Holder and new_parent is Holder:
@@ -87,7 +87,7 @@ func set_sync_state(reader: ByteReader) -> void:
 	
 	# Wait for everything to spawn before doing anything with state
 	if not MidsessionJoinSyncer.is_synced:
-		await MidsessionJoinSyncer.sync_complete
+		await MidsessionJoinSyncer.sync_stage_complete
 	
 	if has_additional_sync():
 		# Give the rest of the sync_state to the node to handle
@@ -105,7 +105,7 @@ func get_sync_state() -> ByteWriter:
 	
 	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called
 	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
-	
+		
 	# Default properties to Sync
 	if sync_position:
 		writer.write_vector3(p_node.global_position)
@@ -150,11 +150,13 @@ func set_priority_sync_order(value: SyncPriorityPhase) -> void:
 	priority_sync_order = value
 	changed = true
 	# TODO revisit, sync order is being set when p_node is null
-	#print(p_node, " ", priority_sync_order)
+	# setting p_node during [_enter_tree] doesn't fix it
+	#print(p_node.name, " ", priority_sync_order)
 
 func _ready():
-	networked_id = NetworkingUtils.generate_id()
-	generate_unique_name()
+	if networked_id == -1:
+		networked_id = NetworkingUtils.generate_id()
+		generate_unique_name()
 	add_to_group(str(NetworkedIds.Scene.NETWORKED))
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID

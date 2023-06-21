@@ -8,6 +8,7 @@ signal money_changed(value: float)
 var SERVER_ID = 1
 ## Used for debugging, shows ID of GameState to make looking at the Remote SceneTree easier
 var THIS_ID = -1
+var player_color : Color
 
 enum Phase {
 	LOBBY,
@@ -22,6 +23,7 @@ const STATE_NOTIFICATIONS = {
 
 var state : Phase = Phase.OPEN_FOR_BUSINESS : set = set_state
 
+## Player str(id) is the key and the Player Node is the value
 var players : Dictionary = {}
 var level : Level : set = set_level
 var hud : HUD = null
@@ -77,15 +79,21 @@ func reset():
 	level = null
 
 func get_player_by_id(p_id: int) -> Player:
-	return players.get(str(p_id))
+	return get_player_by_name(str(p_id))
+
+func get_player_by_name(player_name: String) -> Player:
+	return players.get(player_name)
 
 func add_player(player: Player):
 	players[player.name] = player
+	
+	if player.name == str(multiplayer.get_unique_id()):
+		player.set_color(player_color)
 
 func remove_player(p_id : int):
 	if is_multiplayer_authority():
 		cleanup_disconnecting_player.rpc(p_id)
-		await get_tree().create_timer(3.0).timeout
+		await get_tree().create_timer(3.0, false).timeout
 		if players.get(p_id) != null:
 			players[p_id].queue_free()
 	

@@ -26,7 +26,7 @@ var look_speed = .005
 var health = 3
 
 # Settings
-var color : Color = Color.WHITE
+var color : Color = Color.WHITE : get = get_color
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -79,9 +79,14 @@ func switch_to_edit_mode_hand() -> void:
 	interact_ray_cast.enabled = false
 	edit_mode_ray_cast.enable()
 
+func get_color() -> Color:
+	if is_multiplayer_authority():
+		return GameState.player_color
+	return $MeshInstance3D.get_active_material(0).albedo_color
+
 func set_color(col: Color):
 	color = col
-	$MeshInstance3D.get_active_material(0).albedo_color = color
+	$MeshInstance3D.get_active_material(0).albedo_color = col
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return

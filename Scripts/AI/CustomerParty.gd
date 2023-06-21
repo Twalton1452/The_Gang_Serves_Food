@@ -94,6 +94,7 @@ var patience : float = 1.0 : set = set_patience
 
 func after_sync():
 	NetworkingUtils.sort_array_by_net_id(customers)
+	(get_parent() as CustomerManager).sync_party(self)
 
 func set_sync_state(reader: ByteReader) -> void:
 	state = reader.read_int() as PartyState
@@ -113,7 +114,6 @@ func set_sync_state(reader: ByteReader) -> void:
 		connect_to_patience_bar_visual(get_node(reader.read_path_to()) as PatienceBar)
 	
 	patience = reader.read_small_float()
-	(get_parent() as CustomerManager).sync_party(self)
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_int(state)
@@ -304,7 +304,7 @@ func sit_at_table():
 	state = PartyState.THINKING
 
 func order_from(menu: Menu) -> void:
-	await get_tree().create_timer(think_time_sec).timeout
+	await get_tree().create_timer(think_time_sec, false).timeout
 	
 	# Player changed the menu from empty to a new dish while the
 	# Thinking patience was running out
@@ -322,7 +322,7 @@ func wait_for_food():
 
 func eat_food() -> void:
 	state = PartyState.EATING
-	await get_tree().create_timer(eating_time_sec).timeout
+	await get_tree().create_timer(eating_time_sec, false).timeout
 		
 	for customer in customers:
 		customer.eat()
@@ -336,7 +336,7 @@ func wait_to_pay() -> void:
 
 func pay() -> void:
 	state = PartyState.PAYING
-	await get_tree().create_timer(paying_time_sec).timeout
+	await get_tree().create_timer(paying_time_sec, false).timeout
 	
 	NetworkedPartyManager.pay(self)
 
@@ -349,7 +349,7 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 	for customer in customers:
 		customer.hide_order_visual()
 		customer.target_chair = null
-	await get_tree().create_timer(wait_before_leave_time_sec).timeout
+	await get_tree().create_timer(wait_before_leave_time_sec, false).timeout
 	
 	var customers_ordered_by_closest_to_door : Array[Customer] = customers.duplicate()
 	customers_ordered_by_closest_to_door.sort_custom(func(a: Customer, b: Customer):
@@ -359,7 +359,7 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 	)
 		
 	for customer in customers_ordered_by_closest_to_door:
-		await get_tree().create_timer(wait_between_customers_leaving).timeout
+		await get_tree().create_timer(wait_between_customers_leaving, false).timeout
 		customer.go_to(exit_point.global_position)
 	
 	num_customers_required_to_advance = 1

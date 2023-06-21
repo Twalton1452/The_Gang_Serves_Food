@@ -43,6 +43,9 @@ func _unhandled_input(event):
 
 ## Called from CustomerParty when they have Spawned
 func sync_party(party: CustomerParty):
+	if party in parties:
+		print(party)
+		print_stack()
 	party.state_changed.connect(_on_party_state_changed)
 	parties.push_back(party)
 	NetworkingUtils.sort_array_by_net_id(parties)
@@ -54,7 +57,7 @@ func start_customer_spawning():
 	if not can_spawn or not is_spawning:
 		return
 	
-	await get_tree().create_timer(randf_range(min_wait_to_spawn_sec, max_wait_to_spawn_sec)).timeout
+	await get_tree().create_timer(randf_range(min_wait_to_spawn_sec, max_wait_to_spawn_sec), false).timeout
 	
 	# State may have changed between waits
 	if not can_spawn or not is_spawning:
@@ -89,6 +92,9 @@ func spawn_party(party_size: int) -> void:
 
 func _on_table_became_available(_table: Table):
 	for party in parties:
+		if party == null or not party.is_queued_for_deletion():
+			continue
+		
 		if party.state == CustomerParty.PartyState.WAITING_FOR_TABLE:
 			if check_for_available_table_for(party):
 				break

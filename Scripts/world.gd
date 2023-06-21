@@ -88,6 +88,7 @@ func _input(event):
 
 func _on_color_picker_button_color_changed(color):
 	$CanvasLayer/MainMenu/MeshInstance2D.self_modulate = color
+	GameState.player_color = color
 
 func _on_quit_button_pressed():
 	get_tree().quit.call_deferred()

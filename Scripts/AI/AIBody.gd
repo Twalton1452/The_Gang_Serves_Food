@@ -7,21 +7,21 @@ signal arrived
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 
 var speed = 5.0
-var target_position = Vector3.ZERO
+var destination_position = Vector3.ZERO
 
 var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.CUSTOMER
 
 func set_sync_state(reader: ByteReader) -> void:
-	var sync_tar_pos = reader.read_vector3()
+	var sync_dest_pos = reader.read_vector3()
 	var in_progress = reader.read_bool()
 	rotation.y = reader.read_small_float()
 	if in_progress:
-		go_to(sync_tar_pos)
+		go_to(sync_dest_pos)
 	else:
 		disable_physics()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
-	writer.write_vector3(target_position)
+	writer.write_vector3(destination_position)
 	writer.write_bool(!nav_agent.is_navigation_finished())
 	writer.write_small_float(rotation.y)
 	return writer
@@ -37,7 +37,7 @@ func _ready() -> void:
 ## Use [code]Node.global_transform.origin[/code] when passing values to this function
 func go_to(movement_target: Vector3):
 	enable_physics()
-	target_position = movement_target
+	destination_position = movement_target
 	nav_agent.set_target_position(movement_target)
 	rotation.x = 0
 	rotation.z = 0
