@@ -8,7 +8,7 @@ signal health_changed(health_value)
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
 @onready var gun_ray_cast = $Camera3D/GunRayCast3D
 @onready var interact_ray_cast = $Camera3D/InteractRayCast3D
-@onready var edit_mode_ray_cast = $Camera3D/EditModeRayCast3D
+@onready var edit_mode_ray_cast : EditModeRayCast = $Camera3D/EditModeRayCast3D
 @onready var pixel_face : PixelFace = $PixelFace
 @onready var holder : Holder = $Camera3D/Holder
 @onready var interact_holder : Holder = $Camera3D/Holder
@@ -26,7 +26,23 @@ var look_speed = .005
 var health = 3
 
 # Settings
-var color : Color = Color.WHITE : get = get_color
+var color : Color = Color.WHITE : set = set_color, get = get_color
+
+func set_sync_state(reader: ByteReader) -> void:
+	color = reader.read_color()
+	edit_mode_ray_cast.set_sync_state(reader)
+
+func get_sync_state() -> ByteWriter:
+	var writer = ByteWriter.new()
+	writer.write_color(color)
+	writer.append_array(edit_mode_ray_cast.get_sync_state().data)
+	return writer
+
+## Called from PlayerSyncStage
+@rpc("any_peer", "call_remote")
+func notify_peers_of_my_settings(data: PackedByteArray) -> void:
+	var reader = ByteReader.new(data)
+	set_sync_state(reader)
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())

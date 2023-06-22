@@ -1,22 +1,49 @@
 extends RayCast3D
+class_name EditModeRayCast
 
+## The top level node of what the raycast found to move around
 @onready var remote_transform : RemoteTransform3D = $RemoteTransform3D
+## Raycast for pointing at the ground to create a snapping effect
 @onready var uneditable_ray_cast : RayCast3D = $UneditableRayCast3D
 
+# Should extract this to a parent class alongside the highlight code in InteractRay
 var outline_material : StandardMaterial3D = preload("res://Materials/Grow_Outline_mat.tres")
 var looking_at : Node3D = null
-var lock_to = false : set = set_lock
+
+## The collider the ray points to
 var target : StaticBody3D = null
 var snapping = Vector3(0.1,0.1,0.1)
 
-func set_lock(value: bool) -> void:
-	lock_to = value
-	if lock_to:
-		target = get_collider()
-		set_child_collisions_for(target.owner, false)
-	else:
-		set_child_collisions_for(target.owner, true)
-		target = null
+func set_sync_state(reader: ByteReader) -> void:
+	remote_transform.remote_path = reader.read_str()
+	
+	var has_target = reader.read_bool()
+	if has_target:
+		lock_on_to(get_node(reader.read_path_to()))
+
+func get_sync_state() -> ByteWriter:
+	var writer = ByteWriter.new()
+	writer.write_str(remote_transform.remote_path)
+	
+	var has_target = target != null
+	writer.write_bool(has_target)
+	if has_target:
+		writer.write_path_to(target)
+	
+	return writer
+
+## Called from InteractionManager
+func lock_on_to(node: Node) -> void:
+	remote_transform.global_position = node.owner.global_position
+	remote_transform.remote_path = node.owner.get_path()
+	target = node
+	set_child_collisions_for(node.owner, false)
+
+func unlock_from_target() -> void:
+	set_child_collisions_for(target.owner, true)
+	target = null
+	remote_transform.remote_path = ^""
+	remote_transform.position = Vector3.ZERO
 
 func set_child_collisions_for(node: Node3D, value: bool) -> void:
 	node.propagate_call("set_collision_layer_value", [1, value], true)

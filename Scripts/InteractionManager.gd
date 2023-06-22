@@ -73,9 +73,7 @@ func attempt_edit_mode_secondary_interaction(player : Player):
 		resolve_edit_mode_interaction.rpc_id(GameState.SERVER_ID, p_id, path_to_interactable, InteractionType.SECONDARY)
 
 func lock_on_to_node(player: Player, node: Node) -> void:
-	player.edit_mode_ray_cast.lock_to = true
-	player.remote_transform.global_position = node.owner.global_position
-	player.remote_transform.remote_path = node.owner.get_path()
+	player.edit_mode_ray_cast.lock_on_to(node)
 
 func rotate_node(node: Node) -> void:
 	node.rotation.y += PI / 2
@@ -127,9 +125,7 @@ func attempt_edit_mode_placement(player : Player) -> void:
 		resolve_edit_mode_placement.rpc_id(GameState.SERVER_ID, p_id)
 
 func release_placing_node(player: Player) -> void:
-	player.edit_mode_ray_cast.lock_to = false
-	player.remote_transform.remote_path = ^""
-	player.remote_transform.position = Vector3.ZERO
+	player.edit_mode_ray_cast.unlock_from_target()
 
 # Server figures out how to handle that Interaction and passes it along
 @rpc("any_peer")
