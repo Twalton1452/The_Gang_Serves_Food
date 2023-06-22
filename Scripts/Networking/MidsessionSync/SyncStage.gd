@@ -22,6 +22,7 @@ var batch_size : int = 0 : set = set_batch_size
 
 func set_batch_size(value: int) -> void:
 	batch_size = value
+	@warning_ignore("integer_division")
 	num_packets_to_incur_wait = ceili(batch_size / 10)
 
 func set_num_nodes_syncd(value: int) -> void:
