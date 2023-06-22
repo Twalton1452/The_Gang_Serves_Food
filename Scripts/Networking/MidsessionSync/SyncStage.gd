@@ -12,8 +12,9 @@ var num_packets_sent = 0
 var num_packets_to_incur_wait = 200
 var seconds_to_wait_between_many_packets = 0.1
 var start_time_ms = 0
-var fail_safe_timer_seconds = 3.0
+var fail_safe_timer_seconds = 10.0
 
+var total_bytes_sent = 0
 var successful = false
 var failed = false
 
@@ -48,6 +49,7 @@ func send_client_sync_data(data: PackedByteArray) -> void:
 	if num_packets_sent % num_packets_to_incur_wait == 0:
 		print_verbose("Pausing for %s seconds between sending %s packets" % [seconds_to_wait_between_many_packets, num_packets_to_incur_wait])
 		await get_tree().create_timer(seconds_to_wait_between_many_packets, true).timeout
+	total_bytes_sent += data.size()
 	notify_client_sync_data.rpc_id(peer_id, data)
 
 @rpc("authority", "reliable")
@@ -94,10 +96,11 @@ func notify_server_stage_finished() -> void:
 func finish():
 	successful = true
 	completed.emit()
-	print_verbose("------End Server %s for Peer %s in %d ms------" % [name, peer_id, Time.get_ticks_msec() - start_time_ms])
+	print("------End Server %s for Peer %s in %d ms | Sent %d bytes------" % [name, peer_id, Time.get_ticks_msec() - start_time_ms, total_bytes_sent])
 
 func start_fail_safe_timer() -> void:
 	await get_tree().create_timer(fail_safe_timer_seconds, true).timeout
 	if not successful:
+		print("%s didn't complete in: %d seconds | Sent %d bytes" % [name, fail_safe_timer_seconds, total_bytes_sent])
 		failed = true
 		completed.emit()
