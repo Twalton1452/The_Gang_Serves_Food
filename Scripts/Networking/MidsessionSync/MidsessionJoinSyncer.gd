@@ -13,10 +13,12 @@ signal accept_rpcs
 ## Class for holding the SyncStages so the server can create multiple stateful Stages
 ## Necessary to sync more than 1 client
 class SyncPipeline extends Node:
+	signal changed
 	
 	var peer_id: int = -1
 	var current_stage = 0 : set = set_current_stage
 	var finished = false
+	var aborted = false
 	var pipeline : Array[SyncStage] = []
 	
 	var stage : SyncStage : get = get_stage
@@ -46,14 +48,21 @@ class SyncPipeline extends Node:
 	
 	func advance() -> void:
 		current_stage += 1
+		changed.emit()
+	
+	func fail() -> void:
+		aborted = true
+		changed.emit()
 	
 	func start() -> void:
-		while current_stage < pipeline.size():
+		while not aborted and current_stage < pipeline.size():
 			stage.begin.call_deferred(peer_id)
 			await stage.completed
+			if stage.failed:
+				fail()
+				return
+			
 			advance()
-		
-		finished = true
 	
 const FAIL_SAFE_TIMER = 10.0
 var syncing = {}
@@ -61,7 +70,7 @@ var syncing = {}
 var is_synced : bool : get = get_is_synced
 
 func get_is_synced() -> bool:
-	return syncing.size() == 0 or syncing.values().all(func(pipeline): return pipeline.finished)
+	return syncing.size() == 0 or syncing.values().all(func(pipeline): return pipeline.finished or pipeline.aborted)
 
 func cleanup_disconnected_player(peer_id: int) -> void:
 	erase_pipeline_for(peer_id)
@@ -84,7 +93,15 @@ func iterate_sync_stages(peer_id: int) -> void:
 	pipeline.start()
 	
 	while not pipeline.finished:
-		await pipeline.stage.completed
+		await pipeline.changed
+		
+		if pipeline.aborted:
+			var elapsed_time_to_fail = Time.get_ticks_msec() - pipeline.stage.start_time_ms
+			print_debug("%s was aborted during stage %s | Time to fail: %d ms" % \
+				[pipeline.name, pipeline.stage.name, elapsed_time_to_fail])
+			handle_aborted_sync(peer_id)
+			return
+		
 		sync_stage_complete.emit() # Server-side, doesn't do much
 		notify_peer_sync_stage_complete.rpc_id(peer_id, pipeline.current_stage)
 	
@@ -95,23 +112,12 @@ func iterate_sync_stages(peer_id: int) -> void:
 	finish_sync(peer_id)
 	print("Finished Sync for Peer %s in %d ms" % [peer_id, Time.get_ticks_msec() - start_time_ms])
 
-func start_fail_safe_unpause_timer(peer_id: int) -> void:	
-	await get_tree().create_timer(FAIL_SAFE_TIMER, true).timeout
-	
-	if get_tree().paused and syncing.get(peer_id) != null and not syncing[peer_id].finished:
-		print_debug("Server waited %d seconds for the client to sync, it never sent the message, disconnecting %s" % [FAIL_SAFE_TIMER, peer_id])
-		multiplayer.multiplayer_peer.disconnect_peer(peer_id)
-		if is_synced:
-			print_debug("Fallback unpausing for everyone as the server is no longer syncing")
-			unpause_for_players.rpc()
-
 func begin_sync(peer_id: int, needs_sync: bool) -> void:
 	if not needs_sync:
 		notify_client_sync_complete.rpc_id(peer_id)
 		return
 	
 	pause_for_players.rpc()
-	start_fail_safe_unpause_timer(peer_id)
 	start_sync_pipeline_for_peer.rpc_id(peer_id)
 	iterate_sync_stages(peer_id)
 
@@ -120,6 +126,24 @@ func finish_sync(peer_id: int) -> void:
 	notify_client_sync_complete.rpc_id(peer_id)
 	unpause_for_players.rpc()
 
+func handle_aborted_sync(peer_id: int) -> void:
+	if not get_tree().paused:
+		return
+	
+	print_debug("Pipeline failed to sync for Peer %s | Disconnecting them..." % [peer_id])
+	multiplayer.multiplayer_peer.disconnect_peer(peer_id)
+	
+	# A different peer is still syncing, don't unpause for everyone else yet
+	if not is_synced:
+		return
+	
+	print_debug("Fallback unpausing for everyone as the server is no longer syncing")
+	for peer in multiplayer.get_peers():
+		if peer == peer_id:
+			continue
+		unpause_for_player.rpc_id(peer)
+	unpause_for_player()
+
 @rpc("call_local", "reliable")
 func pause_for_players():
 	GameState.hud.display_notification("A Player is joining...")
@@ -127,6 +151,11 @@ func pause_for_players():
 
 @rpc("call_local", "reliable")
 func unpause_for_players():
+	GameState.hud.hide_notification()
+	get_tree().paused = false
+
+@rpc("reliable")
+func unpause_for_player():
 	GameState.hud.hide_notification()
 	get_tree().paused = false
 

@@ -12,6 +12,10 @@ var num_packets_sent = 0
 var num_packets_to_incur_wait = 200
 var seconds_to_wait_between_many_packets = 0.1
 var start_time_ms = 0
+var fail_safe_timer_seconds = 3.0
+
+var successful = false
+var failed = false
 
 func set_num_nodes_syncd(value: int) -> void:
 	num_nodes_syncd = value
@@ -63,6 +67,8 @@ func begin(p_id: int) -> void:
 	var nodes = nodes_to_sync()
 	total_num_nodes_to_sync = nodes.size()
 	notify_client_num_nodes_to_complete_sync.rpc_id(peer_id, total_num_nodes_to_sync)
+	
+	start_fail_safe_timer()
 	sync_process(nodes)
 
 @rpc("authority", "reliable")
@@ -78,6 +84,7 @@ func client_finished():
 	_client_finished()
 	print_verbose("Client %s finished %s | Notifying server" % [multiplayer.get_unique_id(), name])
 	notify_server_stage_finished.rpc_id(GameState.SERVER_ID)
+	successful = true
 	completed.emit()
 	
 @rpc("any_peer", "reliable")
@@ -85,5 +92,12 @@ func notify_server_stage_finished() -> void:
 	finish()
 
 func finish():
+	successful = true
 	completed.emit()
 	print_verbose("------End Server %s for Peer %s in %d ms------" % [name, peer_id, Time.get_ticks_msec() - start_time_ms])
+
+func start_fail_safe_timer() -> void:
+	await get_tree().create_timer(fail_safe_timer_seconds, true).timeout
+	if not successful:
+		failed = true
+		completed.emit()
