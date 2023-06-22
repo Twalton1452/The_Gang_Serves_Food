@@ -64,31 +64,6 @@ func has_additional_sync():
 ## Set the sync state of the parent including name and path information.
 ## Useful for syncing non-existent nodes across server/client
 func set_sync_state(reader: ByteReader) -> void:
-	if sync_position:
-		p_node.global_position = reader.read_vector3()
-	
-	var path_to = reader.read_path_to()
-	var split_path : PackedStringArray = path_to.split("/")
-	var new_name = split_path[-1]
-	var path_to_parent = "/".join(split_path.slice(0, -1))
-	#print("syncing %s Path to Parent %s" % [new_name, path_to_parent])
-	var new_parent = get_node(path_to_parent)
-	
-	if not only_one_will_exist:
-		p_node.name = new_name
-	
-	if p_node.get_parent() != new_parent:
-		if p_node.get_parent() is Holder and new_parent is Holder:
-			p_node.get_parent().release_this_item_to(p_node, new_parent)
-		elif new_parent is Holder:
-			new_parent.hold_item(p_node)
-		else:
-			p_node.reparent(new_parent)
-	
-	# Wait for everything to spawn before doing anything with state
-	if not MidsessionJoinSyncer.is_synced:
-		await MidsessionJoinSyncer.sync_stage_complete
-	
 	if has_additional_sync():
 		# Give the rest of the sync_state to the node to handle
 		p_node.set_sync_state(reader)
@@ -105,11 +80,6 @@ func get_sync_state() -> ByteWriter:
 	
 	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called
 	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
-	
-	# Default properties to Sync
-	if sync_position:
-		writer.write_vector3(p_node.global_position)
-	writer.write_path_to(p_node)
 	
 	if has_additional_sync():
 		# Node this is attached to properties to sync
@@ -158,12 +128,16 @@ func _ready():
 		networked_id = NetworkingUtils.generate_id()
 		generate_unique_name()
 	add_to_group(str(NetworkedIds.Scene.NETWORKED))
+	
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID
 		p_node.interacted.connect(_on_interaction)
 	# sync overrides because they likely have no other trigger to sync them
 	elif override_scene_id != NetworkedIds.Scene.NETWORKED:
 		changed = true
+	
+	if not is_multiplayer_authority():
+		return
 	NetworkingUtils.crawl_up_tree_for_next_priority_sync_order(p_node)
 
 func _on_interaction():

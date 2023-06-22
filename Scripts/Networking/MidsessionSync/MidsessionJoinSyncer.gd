@@ -37,11 +37,13 @@ class SyncPipeline extends Node:
 		# Could be configurable in the future if necessary
 		pipeline = [
 			LayoutSyncStage.new(),
+			NetworkedNodeSpawnStage.new(),
 			NetworkedNodeSyncStage.new(),
 			PlayerSyncStage.new(),
 		]
 		
 		for sync_stage in pipeline:
+			sync_stage.peer_id = to_sync_peer_id
 			add_child(sync_stage)
 		
 		name = "SyncPipeline_" + str(peer_id)
@@ -110,7 +112,7 @@ func iterate_sync_stages(peer_id: int) -> void:
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	
 	finish_sync(peer_id)
-	print("Finished Sync for Peer %s in %d ms" % [peer_id, Time.get_ticks_msec() - start_time_ms])
+	print("======Finished Sync for Peer %s in %d ms======" % [peer_id, Time.get_ticks_msec() - start_time_ms])	
 
 func begin_sync(peer_id: int, needs_sync: bool) -> void:
 	if not needs_sync:
