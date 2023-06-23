@@ -44,13 +44,11 @@ func _set_test_menu_to(dish: Array[NetworkedIds.Scene]) -> Node3D:
 	return menu_item_dish
 
 func before_each():
-	# Disables auto-customer spawning, could cause an issue down the line
-	GameState.state = GameState.Phase.EDITING_RESTAURANT
 	_restaurant = RestaurantScene.instantiate()
 	add_child_autoqfree(_restaurant)
 	_customer_manager = _restaurant.get_node("CustomerManager")
 	_customer_manager.restaurant = _restaurant
-	_customer_manager.max_parties = 1
+	_customer_manager.max_parties = 0
 	_customer_manager.min_wait_to_spawn_sec = 998
 	_customer_manager.max_wait_to_spawn_sec = 999
 	#watch_signals(_customer_manager)
@@ -158,7 +156,6 @@ func test_party_full_journey():
 func test_party_can_wait_in_line():
 	# Arrange
 	var num_customers_to_spawn = 4
-	_customer_manager.max_parties = 2
 	_restaurant.tables = []
 	
 	# Act
@@ -183,7 +180,6 @@ func test_party_can_wait_in_line():
 func test_party_loses_patience_and_leaves_during_ordering():
 	# Arrange
 	var num_customers_to_spawn = 4
-	_customer_manager.max_parties = 1
 	
 	# This test customer party HATES carbs - No buns! :)
 	_set_test_menu_to([NetworkedIds.Scene.PATTY, NetworkedIds.Scene.TOMATO])
@@ -212,7 +208,6 @@ func test_party_loses_patience_and_leaves_during_ordering():
 func test_party_loses_patience_and_leaves_during_thinking_with_no_menu():
 	# Arrange
 	var num_customers_to_spawn = 4
-	_customer_manager.max_parties = 1
 	
 	var spawned_party = _spawn_test_party(num_customers_to_spawn)
 	await _wait_for_party_to_reach(spawned_party, CustomerParty.PartyState.THINKING)
@@ -238,7 +233,6 @@ func test_party_loses_patience_and_leaves_during_thinking_with_no_menu():
 func test_party_loses_patience_and_leaves_during_waiting_to_pay():
 	# Arrange
 	var num_customers_to_spawn = 4
-	_customer_manager.max_parties = 1
 	
 	# Carbs only
 	var menu_item_dish = _set_test_menu_to([NetworkedIds.Scene.BOTTOM_BUN, NetworkedIds.Scene.TOP_BUN])
@@ -282,7 +276,6 @@ func test_party_loses_patience_and_leaves_during_waiting_to_pay():
 func test_party_loses_patience_and_leaves_during_waiting_for_table():
 	# Arrange
 	var num_customers_to_spawn = 4
-	_customer_manager.max_parties = 1
 	_restaurant.tables = []
 	
 	var spawned_party = _spawn_test_party(num_customers_to_spawn)
