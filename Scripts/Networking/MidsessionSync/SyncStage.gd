@@ -58,6 +58,10 @@ func _receive_sync_data(data: PackedByteArray) -> int:
 	return 1
 
 ## Override this
+func _client_begin() -> void:
+	pass
+
+## Override this
 func _client_finished() -> void:
 	pass
 
@@ -111,6 +115,8 @@ func notify_client_num_nodes_to_complete_sync(num_nodes: int) -> void:
 	total_num_nodes_to_sync = num_nodes
 	if total_num_nodes_to_sync == 0:
 		client_finished()
+	else:
+		client_begin()
 
 func batched_sync_process(nodes: Array[Node]) -> void:
 	var iterations = 1 # Start at 1 so we don't immediately send a batch with 1
@@ -152,7 +158,10 @@ func batched_sync_process(nodes: Array[Node]) -> void:
 func sync_process(nodes: Array[Node]) -> void:
 	_sync_process(nodes)
 
-func client_finished():
+func client_begin() -> void:
+	_client_begin()
+
+func client_finished() -> void:
 	_client_finished()
 	print_verbose("[Client %s Peer %s] <End> | %d ms | Received %d bytes------" % [name, peer_id, Time.get_ticks_msec() - start_time_ms, total_bytes_received])
 	notify_server_stage_finished.rpc_id(GameState.SERVER_ID)

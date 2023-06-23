@@ -17,6 +17,9 @@ enum Scene {
 	# Appliances
 	DRINK_FOUNTAIN = 500,
 	
+	# Furniture
+	TABLE_FOUR = 700,
+	
 #	# Facilitating Components
 	FOOD_COMBINER = 1000,
 	ORDER = 1001,

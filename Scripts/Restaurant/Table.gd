@@ -9,6 +9,8 @@ signal available(table: Table)
 
 @onready var patience_bar : PatienceBar = $PatienceBar
 
+var SCENE_ID = NetworkedIds.Scene.TABLE_FOUR
+
 var holders : Array[Holder] = []
 var chairs : Array[Chair] = []
 var is_empty = true

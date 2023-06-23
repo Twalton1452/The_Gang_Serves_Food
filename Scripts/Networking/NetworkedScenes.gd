@@ -7,6 +7,9 @@ extends Node
 var PATHS = {}
 
 ## Lazy loads the scenes, should avoid cyclic dependencies when loading
+## Note: This may be unnecessary to maintain now as we are needing to extract an ID from the root object already
+##       We can probably just use [p_node.scene_file_path] instead
+##       Some IDs are still useful as easy unique identifiers for food though
 func match_id_to_scene(id: NetworkedIds.Scene) -> Resource:
 	match id:
 		NetworkedIds.Scene.PATTY: return load("res://Scenes/foods/patty.tscn")
@@ -18,6 +21,8 @@ func match_id_to_scene(id: NetworkedIds.Scene) -> Resource:
 		NetworkedIds.Scene.PLATE: return load("res://Scenes/holders/plate_components.tscn")
 		NetworkedIds.Scene.CUP: return load("res://Scenes/cup.tscn")
 
+		NetworkedIds.Scene.TABLE_FOUR: return load("res://Scenes/furniture/four_person_table.tscn")
+		
 		NetworkedIds.Scene.FOOD_COMBINER: return load("res://Scenes/components/food_combiner.tscn")
 		NetworkedIds.Scene.ORDER: return load("res://Scenes/components/order.tscn")
 		NetworkedIds.Scene.INTERACTABLE:

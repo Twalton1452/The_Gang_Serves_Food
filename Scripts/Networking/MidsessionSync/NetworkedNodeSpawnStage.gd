@@ -2,10 +2,23 @@ extends SyncStage
 class_name NetworkedNodeSpawnStage
 
 const NETWORKED_NODE_BATCH_SIZE = 50
+var existing_net_nodes : Array[Node] = []
+var updated_existing_net_nodes : Dictionary = {}
 
 func _ready():
 	name = "NetworkedNodeSpawnStage"
 	batch_size = NETWORKED_NODE_BATCH_SIZE
+
+func _client_begin() -> void:
+	existing_net_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
+
+func _client_finished() -> void:
+	for net_node in existing_net_nodes as Array[NetworkedNode3D]:
+		if not updated_existing_net_nodes.get(net_node.networked_id, false):
+			print_verbose("[Deleting Existing Node %s] during %s phase" % [net_node.p_node.name, name])
+			net_node.p_node.queue_free()
+	existing_net_nodes.clear()
+	updated_existing_net_nodes.clear()
 
 func _write_node(node: Node, writer: ByteWriter) -> void:
 	var net_node : NetworkedNode3D = node
@@ -21,18 +34,19 @@ func _read_node(reader: ByteReader) -> void:
 	var global_pos = reader.read_vector3()
 	var path_to_p_node = reader.read_path_to()
 	
+	var net_node : NetworkedNode3D = null
+	# Check to make sure the node doesn't already exist
+	for node in existing_net_nodes:
+		if node.networked_id == networked_id:
+			net_node = node
+			updated_existing_net_nodes[networked_id] = true
+			break
+	
 	# Scene_id: NETWORKED nodes do not have spawnable scenes
 	# They are attached to other scenes
 	# We wrote the data anyway because its easier than developing some kind of "skip()" method
 	if net_scene_id == NetworkedIds.Scene.NETWORKED:
 		return
-	
-	var net_node : NetworkedNode3D = null
-	# Check to make sure the node doesn't already exist
-	for node in get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED)):
-		if node.networked_id == networked_id:
-			net_node = node
-			break
 	
 	print_verbose("[Peer %s] received request to [spawn Node %s]" % [multiplayer.get_unique_id(), networked_id])
 	
@@ -75,4 +89,4 @@ func _nodes_to_sync() -> Array[Node]:
 		return 0
 	)
 	
-	return net_nodes.filter(func(net_node): return net_node.changed)
+	return net_nodes
