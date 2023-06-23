@@ -42,17 +42,18 @@ func _read_node(reader: ByteReader) -> void:
 			updated_existing_net_nodes[networked_id] = true
 			break
 	
-	# Scene_id: NETWORKED nodes do not have spawnable scenes
-	# They are attached to other scenes
-	# We wrote the data anyway because its easier than developing some kind of "skip()" method
-	if net_scene_id == NetworkedIds.Scene.NETWORKED:
-		return
 	
-	print_verbose("[Peer %s] received request to [spawn Node %s]" % [multiplayer.get_unique_id(), networked_id])
 	
 	# Node doesn't come in the pre-existing level - Spawn it
 	if net_node == null:
+		# Scene_id: NETWORKED nodes do not have spawnable scenes
+		# They are attached to other scenes
+		# We wrote the data anyway because its easier than developing some kind of "skip()" method
+		if net_scene_id == NetworkedIds.Scene.NETWORKED:
+			return
+		print_verbose("[Peer %s] received request to [spawn Node %s]" % [multiplayer.get_unique_id(), networked_id])
 		assert(NetworkedScenes.get_scene_by_id(net_scene_id) != null, "%s does not have a NetworkedIds.Scene PATH to instantiate from in SceneIds.gd")
+		
 		# Add the node into the tree so that it can call get_node from within
 		var net_scene = NetworkingUtils.spawn_node(NetworkedScenes.get_scene_by_id(net_scene_id), self)
 		net_node = net_scene.get_node("NetworkedNode3D")
