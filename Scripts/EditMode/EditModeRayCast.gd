@@ -40,10 +40,18 @@ func lock_on_to(node: Node) -> void:
 	set_child_collisions_for(node.owner, false)
 
 func unlock_from_target() -> void:
-	set_child_collisions_for(target.owner, true)
-	target = null
 	remote_transform.remote_path = ^""
 	remote_transform.position = Vector3.ZERO
+	
+	if looking_at:
+		hide_outline(looking_at)
+	looking_at = null
+	
+	if target == null or target.is_queued_for_deletion():
+		return
+	
+	set_child_collisions_for(target.owner, true)
+	target = null
 
 func set_child_collisions_for(node: Node3D, value: bool) -> void:
 	node.propagate_call("set_collision_layer_value", [1, value], true)

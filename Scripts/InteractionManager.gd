@@ -186,3 +186,36 @@ func attempt_to_buy_held_item(p_id: int) -> void:
 	}
 	var spawned_node = NetworkingUtils.spawn_node_by_scene_path_for_everyone(node.scene_file_path, node.get_parent(), data)
 	print_debug(p_id, " Bought ", spawned_node)
+
+func sell_attempt() -> void:
+	if not is_multiplayer_authority():
+		attempt_to_sell_held_item.rpc_id(GameState.SERVER_ID, multiplayer.get_unique_id())
+	else:
+		attempt_to_sell_held_item(GameState.SERVER_ID)
+
+@rpc("any_peer")
+func attempt_to_sell_held_item(p_id: int) -> void:
+	var player = GameState.get_player_by_id(p_id)
+	if player.remote_transform.remote_path == ^"":
+		return
+	
+	var node = get_node(player.remote_transform.remote_path)
+	if node.scene_file_path.is_empty():
+		return
+	
+	var node_name = node.name
+	GameState.add_money(1)
+	NetworkingUtils.send_item_for_deletion(node)
+	release_placing_node(player)
+	print_debug(p_id, " sold ", node_name)
+	
+	var writer = ByteWriter.new()
+	writer.write_int(p_id)
+	notify_peers_player_sold_item.rpc(writer.data)
+
+@rpc("authority", "call_remote")
+func notify_peers_player_sold_item(data: PackedByteArray) -> void:
+	var reader = ByteReader.new(data)
+	var player = GameState.get_player_by_id(reader.read_int())
+	
+	release_placing_node(player)

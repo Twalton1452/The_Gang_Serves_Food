@@ -141,6 +141,8 @@ func _unhandled_input(event):
 			edit_mode_secondary_interact()
 	if event.is_action_pressed("buy"):
 		buy_attempt()
+	elif event.is_action_pressed("sell"):
+		sell_attempt()
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
@@ -206,6 +208,16 @@ func buy_attempt():
 		return
 	
 	InteractionManager.buy_attempt()
+
+func sell_attempt():
+	if remote_transform.remote_path == ^"":
+		return
+	
+	var node = get_node(remote_transform.remote_path)
+	if node.scene_file_path.is_empty():
+		return
+	
+	InteractionManager.sell_attempt()
 
 @rpc("call_local")
 func pick_emotive_face(id: int):
