@@ -93,17 +93,6 @@ collision_layer = 16
 collision_mask = 0
 input_ray_pickable = false
 
-[node name="FrontDoor" parent="Restaurant/Building" instance=ExtResource("3_21ak5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
-
-[node name="EntryNavLink" type="NavigationLink3D" parent="Restaurant/Building/FrontDoor"]
-transform = Transform3D(0.401, 0, 0, 0, 0.401, 0, 0, 0, 0.401, 0.48593, 0, -0.0755967)
-enabled = false
-bidirectional = false
-navigation_layers = 0
-start_position = Vector3(0, 0, -0.75)
-end_position = Vector3(0, 0, 0.882)
-
 [node name="Walls" type="Node3D" parent="Restaurant/Building"]
 script = ExtResource("6_mv2b7")
 
@@ -135,6 +124,17 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5, 0, 
 
 [node name="CounterWall4" parent="Restaurant/Building/Walls" instance=ExtResource("8_gplef")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5, 0, 7)
+
+[node name="FrontDoor" parent="Restaurant/Building/Walls" instance=ExtResource("3_21ak5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+
+[node name="EntryNavLink" type="NavigationLink3D" parent="Restaurant/Building/Walls/FrontDoor"]
+transform = Transform3D(0.401, 0, 0, 0, 0.401, 0, 0, 0, 0.401, 0.48593, 0, -0.0755967)
+enabled = false
+bidirectional = false
+navigation_layers = 0
+start_position = Vector3(0, 0, -0.75)
+end_position = Vector3(0, 0, 0.882)
 
 [node name="Tables" type="Node3D" parent="Restaurant/Building"]
 
@@ -206,6 +206,7 @@ omni_range = 4.343
 omni_attenuation = 0.5
 
 [node name="OutsideWalls" type="Node3D" parent="Restaurant/Building"]
+script = ExtResource("6_mv2b7")
 
 [node name="wallWindowSlide2" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("11_b8503")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
