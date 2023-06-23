@@ -89,7 +89,7 @@ func spawn_party(party_size: int) -> void:
 
 func _on_table_became_available(_table: Table):
 	for party in parties:
-		if party == null or not party.is_queued_for_deletion():
+		if party == null or party.is_queued_for_deletion():
 			continue
 		
 		if party.state == CustomerParty.PartyState.WAITING_FOR_TABLE:

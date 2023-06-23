@@ -3,6 +3,7 @@ extends TestingUtils
 var RestaurantScene = load("res://test/Scenes/test_restaurant.tscn")
 
 var _restaurant : Restaurant = null
+var _table : Table = null
 var _customer_manager : CustomerManager = null
 var _acceptable_threshold = Vector3(.3, .3, .3)
 
@@ -46,6 +47,7 @@ func _set_test_menu_to(dish: Array[NetworkedIds.Scene]) -> Node3D:
 func before_each():
 	_restaurant = RestaurantScene.instantiate()
 	add_child_autoqfree(_restaurant)
+	_table = _restaurant.tables[0]
 	_customer_manager = _restaurant.get_node("CustomerManager")
 	_customer_manager.restaurant = _restaurant
 	_customer_manager.max_parties = 0
@@ -153,7 +155,7 @@ func test_party_full_journey():
 	assert_null(spawned_party, "Party never got deleted after leaving")
 	
 
-func test_party_can_wait_in_line():
+func test_party_can_wait_in_line_then_sit():
 	# Arrange
 	var num_customers_to_spawn = 4
 	_restaurant.tables = []
@@ -176,6 +178,20 @@ func test_party_can_wait_in_line():
 	
 	# Assert
 	assert_eq(len(_customer_manager.parties), 2, "There are not the correct number of parties")
+	
+	_restaurant.tables = [_table]
+	_restaurant.table_became_available.emit(_table)
+	
+	await wait_for_signal(table_wait_party.state_changed, 1.3, "The party took too long to walk to the table")
+	assert_eq(table_wait_party.state, CustomerParty.PartyState.WALKING_TO_TABLE, "The is not walking to the line")
+	await wait_for_signal(table_wait_party.state_changed, 1.3, "The party took too long to sit")
+	assert_eq(table_wait_party.state, CustomerParty.PartyState.THINKING, "The party is not sitting at the table")
+	assert_eq(line_wait_party.state, CustomerParty.PartyState.WAITING_FOR_TABLE, "The waiting party is not waiting for a table")
+	
+	_customer_manager.send_customers_home(table_wait_party)
+	table_wait_party.state = CustomerParty.PartyState.LEAVING_FOR_HOME
+	await wait_frames(1)
+	assert_eq(line_wait_party.state, CustomerParty.PartyState.WALKING_TO_TABLE, "The waiting party is not walking to the table")
 
 func test_party_loses_patience_and_leaves_during_ordering():
 	# Arrange
