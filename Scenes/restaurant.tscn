@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=33 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -8,6 +8,7 @@
 [ext_resource type="NavigationMesh" uid="uid://cro8mueu3lb0n" path="res://Resources/building_navmesh.tres" id="3_wk033"]
 [ext_resource type="PackedScene" uid="uid://bsn483wm5t85y" path="res://3d_models/Kenneys_Furniture/wallDoorway.glb" id="4_2i7t1"]
 [ext_resource type="Script" path="res://Scripts/Restaurant/Restaurant.gd" id="4_kvbc8"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetworkedGrouperNode3D.gd" id="6_mv2b7"]
 [ext_resource type="PackedScene" uid="uid://dnamranhmwqb3" path="res://Scenes/walls/counter_wall.tscn" id="8_gplef"]
 [ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="10_b6sav"]
 [ext_resource type="PackedScene" uid="uid://cx11ipeseh6dx" path="res://Scenes/furniture/four_person_table.tscn" id="10_tuail"]
@@ -104,6 +105,7 @@ start_position = Vector3(0, 0, -0.75)
 end_position = Vector3(0, 0, 0.882)
 
 [node name="Walls" type="Node3D" parent="Restaurant/Building"]
+script = ExtResource("6_mv2b7")
 
 [node name="wall" parent="Restaurant/Building/Walls" instance=ExtResource("1_lxx3p")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 9, 0, 5)
