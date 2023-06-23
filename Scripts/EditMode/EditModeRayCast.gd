@@ -9,10 +9,12 @@ class_name EditModeRayCast
 # Should extract this to a parent class alongside the highlight code in InteractRay
 var outline_material : StandardMaterial3D = preload("res://Materials/Grow_Outline_mat.tres")
 var looking_at : Node3D = null
+var looking_at_top_y : float = 0.0
 
 ## The collider the ray points to
 var target : StaticBody3D = null
-var snapping = Vector3(0.1,0.1,0.1)
+var default_snap = Vector3(0.05, 0.05, 0.05)
+var snapping = Vector3(0.1, 0.1, 0.1)
 
 func set_sync_state(reader: ByteReader) -> void:
 	remote_transform.remote_path = reader.read_str()
@@ -38,10 +40,13 @@ func lock_on_to(node: Node) -> void:
 	remote_transform.remote_path = node.owner.get_path()
 	target = node
 	set_child_collisions_for(node.owner, false)
+	if node.owner.get_parent() is NetworkedGrouperNode3D:
+		snapping = (node.owner.get_parent() as NetworkedGrouperNode3D).snapping_spacing
 
 func unlock_from_target() -> void:
 	remote_transform.remote_path = ^""
 	remote_transform.position = Vector3.ZERO
+	snapping = default_snap
 	
 	if looking_at:
 		hide_outline(looking_at)
@@ -63,6 +68,7 @@ func set_child_collisions_for(node: Node3D, value: bool) -> void:
 func enable():
 	enabled = true
 	uneditable_ray_cast.enabled = true
+	snapping = default_snap
 
 func disable():
 	enabled = false
@@ -82,12 +88,6 @@ func _physics_process(_delta):
 	if not enabled:
 		return
 	
-	if remote_transform.remote_path != ^"":
-		if is_colliding():
-			remote_transform.global_position = get_collision_point().snapped(snapping)
-		elif uneditable_ray_cast.is_colliding():
-			remote_transform.global_position = uneditable_ray_cast.get_collision_point().snapped(snapping)
-
 	# Changed targets
 	if looking_at != get_collider():
 		
@@ -97,17 +97,29 @@ func _physics_process(_delta):
 			# Show the outline for the new target
 			if get_collider() != null:
 				show_outline(get_collider())
+				var collided_object = get_collider().get_parent()
+				if collided_object is MeshInstance3D:
+					var aabb = collided_object.get_aabb()
+					var object_top_y = aabb.position.y + aabb.size.y * collided_object.scale.y
+					looking_at_top_y = object_top_y
 		# Previous target was nothing
 		else:
 			show_outline(get_collider())
 			
 		looking_at = get_collider()
+	
+	if remote_transform.remote_path != ^"":
+		var moving_item_pos = Vector3.ZERO
+		if is_colliding():
+			moving_item_pos = Vector3(get_collision_point().x, looking_at_top_y, get_collision_point().z)
+		elif uneditable_ray_cast.is_colliding():
+			moving_item_pos = uneditable_ray_cast.get_collision_point()
+		remote_transform.global_position = moving_item_pos.snapped(snapping)
 
 func set_material_overlay_for_children(node: Node3D, material: StandardMaterial3D, _transparency : float):
 	for child in node.get_children():
 		if child is MeshInstance3D:
 			child.material_overlay = material
-			#child.transparency = transparency
 		if child is Node3D:
 			set_material_overlay_for_children(child, material, _transparency)
 
