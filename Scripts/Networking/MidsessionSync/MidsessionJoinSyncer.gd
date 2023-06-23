@@ -20,6 +20,7 @@ class SyncPipeline extends Node:
 	var finished = false
 	var aborted = false
 	var pipeline : Array[SyncStage] = []
+	var total_bytes_sent : int = 0
 	
 	var stage : SyncStage : get = get_stage
 	
@@ -49,6 +50,7 @@ class SyncPipeline extends Node:
 		name = "SyncPipeline_" + str(peer_id)
 	
 	func advance() -> void:
+		total_bytes_sent += stage.total_bytes_sent
 		current_stage += 1
 		changed.emit()
 	
@@ -112,7 +114,7 @@ func iterate_sync_stages(peer_id: int) -> void:
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	
 	finish_sync(peer_id)
-	print("======Finished Sync for Peer %s in %d ms======" % [peer_id, Time.get_ticks_msec() - start_time_ms])	
+	print("======Finished Sync for Peer %s | %d ms | %d bytes sent======" % [peer_id, Time.get_ticks_msec() - start_time_ms, pipeline.total_bytes_sent])
 
 func begin_sync(peer_id: int, needs_sync: bool) -> void:
 	if not needs_sync:
