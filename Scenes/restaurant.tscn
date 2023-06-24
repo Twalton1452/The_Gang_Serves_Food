@@ -371,6 +371,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.64343, 0, 0)
 disabled = true
 
 [node name="PlateStackHolder" parent="Testing/kitchenCabinet/Holder" index="1" instance=ExtResource("24_ovivh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0180563, 0)
 
 [node name="kitchenCabinet2" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0757108, 0, 0)

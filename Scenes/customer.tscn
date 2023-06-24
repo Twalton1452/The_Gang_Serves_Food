@@ -18,12 +18,16 @@ height = 0.7
 collision_layer = 8
 script = ExtResource("1_y4ipv")
 
+[node name="NetworkedNode3D" parent="." instance=ExtResource("3_lb4gl")]
+priority_sync_order = 3
+override_scene_id = 2000
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.2, 0)
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.3, 0)
 mesh = SubResource("CapsuleMesh_0gfwm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 shape = SubResource("CapsuleShape3D_tj46x")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
@@ -33,7 +37,7 @@ agent_height_offset = 0.1
 path_max_distance = 0.51
 
 [node name="PixelFace" type="Sprite3D" parent="."]
-transform = Transform3D(-0.2, 0, -3.01992e-08, 0, 0.2, 0, 3.01992e-08, 0, -0.2, 0, 0.367485, -0.182574)
+transform = Transform3D(-0.2, 0, -3.01992e-08, 0, 0.2, 0, 3.01992e-08, 0, -0.2, 0, 0.467, -0.183)
 double_sided = false
 texture = ExtResource("1_ecyme")
 hframes = 4
@@ -41,12 +45,10 @@ vframes = 3
 frame = 5
 script = ExtResource("4_588ik")
 
-[node name="NetworkedNode3D" parent="." instance=ExtResource("3_lb4gl")]
-priority_sync_order = 3
-
-[node name="Interactable" parent="." instance=ExtResource("4_yblyl")]
+[node name="Interactable" parent="." node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("4_yblyl")]
+mesh_to_highlight = NodePath("../MeshInstance3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 shape = SubResource("CapsuleShape3D_tj46x")
 disabled = true
