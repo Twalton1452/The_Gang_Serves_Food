@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b1ff2kbnkb8mm"]
 
-[ext_resource type="PackedScene" uid="uid://cxg6nv1n0biq2" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_wbhk6"]
+[ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_wbhk6"]
 
 [node name="HalfWall" instance=ExtResource("1_wbhk6")]
 

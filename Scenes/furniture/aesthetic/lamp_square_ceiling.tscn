@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bqk6io71er4qi"]
 
-[ext_resource type="PackedScene" uid="uid://dh6lf6b81e23" path="res://3d_models/Kenneys_Furniture/lampSquareCeiling.glb" id="1_bw3wr"]
+[ext_resource type="PackedScene" uid="uid://d4g6573uu37pi" path="res://3d_models/Kenneys_Furniture/lampSquareCeiling.glb" id="1_bw3wr"]
 
 [node name="lampSquareCeiling" instance=ExtResource("1_bw3wr")]
 

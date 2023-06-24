@@ -29,7 +29,7 @@ beverage = ExtResource("2_1fora")
 [node name="Dispenser" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.0476854, 0, 0, 0, 0.0778135, 0, 0, 0, 0.0651449, 0, 0.255, 0)
 mesh = SubResource("BoxMesh_vfvs0")
-skeleton = NodePath("../../../kitchenCabinet")
+skeleton = NodePath("")
 
 [node name="Display" type="MeshInstance3D" parent="Dispenser"]
 transform = Transform3D(0.928402, 0, 0, 0, 0.852542, 0, 0, 0, 0.0787584, 0, -0.0307102, 0.52749)

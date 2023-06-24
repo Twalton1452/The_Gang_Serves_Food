@@ -9,7 +9,7 @@ sitting_location = NodePath("SittingChairPosition")
 transition_location = NodePath("BehindChairPosition")
 
 [node name="BehindChairPosition" type="Marker3D" parent="." index="1"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.103, -0.38)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.103, -0.49501)
 
 [node name="SittingChairPosition" type="Marker3D" parent="." index="2"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.249, -0.007)
