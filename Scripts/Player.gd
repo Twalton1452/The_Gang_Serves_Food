@@ -13,7 +13,6 @@ signal health_changed(health_value)
 @onready var holder : Holder = $Camera3D/Holder
 @onready var interact_holder : Holder = $Camera3D/Holder
 @onready var client_side_holder_node : Node3D = $Camera3D/ClientSideHolderPosition
-@onready var remote_transform : RemoteTransform3D = $Camera3D/EditModeRayCast3D/RemoteTransform3D
 
 const WORLD_MASK = 1
 const SPEED = 4.0
@@ -130,14 +129,14 @@ func _unhandled_input(event):
 	if event.is_action_pressed("interact"):
 		if interact_ray_cast.is_colliding():
 			interact()
-		elif remote_transform.remote_path != ^"":
+		elif edit_mode_ray_cast.is_holding_editable:
 			edit_mode_place()
 		elif edit_mode_ray_cast.is_colliding():
 			edit_mode_interact()
 	if event.is_action_pressed("secondary_interact"):
 		if interact_ray_cast.is_colliding():
 			secondary_interact()
-		elif remote_transform.remote_path != ^"":
+		elif edit_mode_ray_cast.is_holding_editable:
 			edit_mode_secondary_interact()
 	if event.is_action_pressed("buy"):
 		buy_attempt()
@@ -200,20 +199,20 @@ func edit_mode_place():
 	InteractionManager.attempt_edit_mode_placement(self)
 
 func buy_attempt():
-	if remote_transform.remote_path == ^"":
+	if not edit_mode_ray_cast.is_holding_editable:
 		return
 	
-	var node = get_node(remote_transform.remote_path)
+	var node = edit_mode_ray_cast.get_held_editable_node()
 	if node.scene_file_path.is_empty():
 		return
 	
 	InteractionManager.buy_attempt()
 
 func sell_attempt():
-	if remote_transform.remote_path == ^"":
+	if not edit_mode_ray_cast.is_holding_editable:
 		return
 	
-	var node = get_node(remote_transform.remote_path)
+	var node = edit_mode_ray_cast.get_held_editable_node()
 	if node.scene_file_path.is_empty():
 		return
 	

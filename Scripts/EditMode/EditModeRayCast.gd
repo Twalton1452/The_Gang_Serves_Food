@@ -15,6 +15,7 @@ var looking_at_top_y : float = 0.0
 var target : StaticBody3D = null
 var default_snap = Vector3(0.05, 0.05, 0.05)
 var snapping = Vector3(0.1, 0.1, 0.1)
+var is_holding_editable : bool : get = get_is_holding_editable
 
 func set_sync_state(reader: ByteReader) -> void:
 	remote_transform.remote_path = reader.read_str()
@@ -33,6 +34,16 @@ func get_sync_state() -> ByteWriter:
 		writer.write_path_to(target)
 	
 	return writer
+
+func get_is_holding_editable() -> bool:
+	return remote_transform.remote_path != ^""
+
+func get_held_editable_path() -> NodePath:
+	return remote_transform.remote_path
+
+func get_held_editable_node() -> Node:
+	return get_node_or_null(get_held_editable_path())
+
 
 ## Called from InteractionManager
 func lock_on_to(node: Node) -> void:
@@ -108,13 +119,16 @@ func _physics_process(_delta):
 			
 		looking_at = get_collider()
 	
-	if remote_transform.remote_path != ^"":
-		var moving_item_pos = Vector3.ZERO
-		if is_colliding():
-			moving_item_pos = Vector3(get_collision_point().x, looking_at_top_y, get_collision_point().z)
-		elif uneditable_ray_cast.is_colliding():
-			moving_item_pos = uneditable_ray_cast.get_collision_point()
-		remote_transform.global_position = moving_item_pos.snapped(snapping)
+	if not is_holding_editable:
+		return
+	
+	if is_colliding():
+		remote_transform.global_position = Vector3(get_collision_point().x, looking_at_top_y, get_collision_point().z).snapped(snapping)
+	elif uneditable_ray_cast.is_colliding():
+		remote_transform.global_position = uneditable_ray_cast.get_collision_point().snapped(snapping)
+	else:
+		remote_transform.position = Vector3(0.0, 0.0, -1.5)
+		remote_transform.global_position.y = 0.0
 
 func set_material_overlay_for_children(node: Node3D, material: StandardMaterial3D, _transparency : float):
 	for child in node.get_children():

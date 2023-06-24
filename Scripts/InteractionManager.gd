@@ -66,7 +66,7 @@ func attempt_edit_mode_interaction(player : Player, node : StaticBody3D, i_type 
 
 func attempt_edit_mode_secondary_interaction(player : Player):
 	var p_id = player.name.to_int()
-	var path_to_interactable = StringName(player.remote_transform.remote_path).to_utf32_buffer()
+	var path_to_interactable = StringName(player.edit_mode_ray_cast.get_held_editable_path()).to_utf32_buffer()
 	if is_multiplayer_authority():
 		resolve_edit_mode_interaction(p_id, path_to_interactable, InteractionType.SECONDARY)
 	else:
@@ -134,11 +134,10 @@ func resolve_edit_mode_placement(p_id : int):
 		return
 	
 	var player : Player = GameState.get_player_by_id(p_id)
-	if player == null and player.remote_transform.remote_path != ^"":
+	if player == null:
 		return
 	
-	var path_to_node = player.remote_transform.remote_path
-	var node = get_node_or_null(path_to_node)
+	var node = player.edit_mode_ray_cast.get_held_editable_node()
 	if node == null:
 		return
 	
@@ -153,8 +152,7 @@ func notify_peers_of_edit_mode_placement(p_id : int, node_global_pos: PackedByte
 	if player == null:
 		return
 	
-	var path_to_node = player.remote_transform.remote_path
-	var node = get_node_or_null(path_to_node)
+	var node = player.edit_mode_ray_cast.get_held_editable_node()
 	if node == null:
 		return
 	
@@ -172,10 +170,10 @@ func buy_attempt() -> void:
 @rpc("any_peer")
 func attempt_to_buy_held_item(p_id: int) -> void:
 	var player = GameState.get_player_by_id(p_id)
-	if player.remote_transform.remote_path == ^"":
+	if not player.edit_mode_ray_cast.is_holding_editable:
 		return
 	
-	var node = get_node(player.remote_transform.remote_path)
+	var node = player.edit_mode_ray_cast.get_held_editable_node()
 	if node.scene_file_path.is_empty():
 		return
 	
@@ -196,10 +194,10 @@ func sell_attempt() -> void:
 @rpc("any_peer")
 func attempt_to_sell_held_item(p_id: int) -> void:
 	var player = GameState.get_player_by_id(p_id)
-	if player.remote_transform.remote_path == ^"":
+	if not player.edit_mode_ray_cast.is_holding_editable:
 		return
 	
-	var node = get_node(player.remote_transform.remote_path)
+	var node = player.edit_mode_ray_cast.get_held_editable_node()
 	if node.scene_file_path.is_empty():
 		return
 	
@@ -209,13 +207,10 @@ func attempt_to_sell_held_item(p_id: int) -> void:
 	release_placing_node(player)
 	print_debug(p_id, " sold ", node_name)
 	
-	var writer = ByteWriter.new()
-	writer.write_int(p_id)
-	notify_peers_player_sold_item.rpc(writer.data)
+	notify_peers_player_sold_item.rpc(p_id)
 
 @rpc("authority", "call_remote")
-func notify_peers_player_sold_item(data: PackedByteArray) -> void:
-	var reader = ByteReader.new(data)
-	var player = GameState.get_player_by_id(reader.read_int())
+func notify_peers_player_sold_item(p_id: int) -> void:
+	var player = GameState.get_player_by_id(p_id)
 	
 	release_placing_node(player)
