@@ -289,6 +289,7 @@ func delete_item_for_everyone_by_path(path: PackedByteArray):
 	
 	if node != null:
 		node.queue_free()
+		Utils.cleanup_material_overrides(node)
 	else:
 		print("Could not find %s" % decoded_path)
 
