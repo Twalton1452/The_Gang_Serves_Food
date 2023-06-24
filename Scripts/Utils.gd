@@ -18,7 +18,6 @@ static func set_material_overrides_to_null_for(node: Node, mesh_to_clean = null)
 	if mesh == null:
 		for child in node.get_children():
 			if child is MeshInstance3D:
-				print(node.name, " has ", child.name)
 				mesh = child
 				break
 	
