@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dhvdilcb12bjf"]
 
 [ext_resource type="Script" path="res://Scripts/Restaurant/MenuItem.gd" id="1_b7oym"]
-[ext_resource type="PackedScene" uid="uid://cp8p6gfc1mjlm" path="res://3d_models/Kenneys_Furniture/kitchenBarEnd.glb" id="2_2a5i1"]
+[ext_resource type="PackedScene" uid="uid://dmta78l0ppq41" path="res://3d_models/Kenneys_Furniture/kitchenBarEnd.glb" id="2_2a5i1"]
 [ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="3_kdekq"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_nahfj"]
@@ -23,10 +23,10 @@ text = "$0.00"
 outline_size = 8
 
 [node name="kitchenBarEnd" parent="." instance=ExtResource("2_2a5i1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.101392, 0, 0.1043)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, 0, 0)
 
 [node name="kitchenBarEnd2" parent="." instance=ExtResource("2_2a5i1")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.100681, 0, -0.105728)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.05, 0, 0)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 

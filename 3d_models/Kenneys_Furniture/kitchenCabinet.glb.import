@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bawrceikdujgg"
+uid="uid://c8tprqf82c21h"
 path="res://.godot/imported/kitchenCabinet.glb-460a2e1a476a115e8ec0cb61ecc8515d.scn"
 
 [deps]
@@ -30,8 +30,9 @@ animation/remove_immutable_tracks=true
 import_script/path=""
 _subresources={
 "nodes": {
-"PATH:kitchenCabinet(Clone)": {
-"generate/physics": true
+"PATH:kitchenCabinet2": {
+"generate/physics": true,
+"physics/shape_type": 1
 }
 }
 }

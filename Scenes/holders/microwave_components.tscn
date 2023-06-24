@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cdhj2idf4x5iv"]
 
-[ext_resource type="PackedScene" uid="uid://b30hc26360tau" path="res://3d_models/Kenneys_Furniture/kitchenMicrowave.glb" id="1_1gdom"]
+[ext_resource type="PackedScene" uid="uid://do7mjshpo6k84" path="res://3d_models/Kenneys_Furniture/kitchenMicrowave.glb" id="1_1gdom"]
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_bearh"]
 [ext_resource type="PackedScene" uid="uid://d3y6xmhkuoht5" path="res://Scenes/components/cooker.tscn" id="3_bscym"]
 
@@ -20,7 +20,7 @@ mesh_to_highlight = NodePath("..")
 shape = SubResource("BoxShape3D_pmmh6")
 
 [node name="Cooker" parent="kitchenMicrowave(Clone)" index="1" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("3_bscym")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.117244, 0.0254075, -0.0893087)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0275192, 0.025, 0.0125567)
 mesh_to_highlight = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenMicrowave(Clone)/Cooker" index="2"]

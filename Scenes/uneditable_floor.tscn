@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dyp4hy5noackj"]
+
+[ext_resource type="PackedScene" uid="uid://y5bmgoais5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="1_d1dh0"]
+
+[node name="floorFull" instance=ExtResource("1_d1dh0")]
+
+[node name="StaticBody3D" parent="floorFull(Clone)" index="0"]
+collision_layer = 16
+collision_mask = 0

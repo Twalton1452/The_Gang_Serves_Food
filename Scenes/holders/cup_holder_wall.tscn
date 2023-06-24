@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8g6844y5nmcr"]
+
+[ext_resource type="PackedScene" uid="uid://jywt0naoax0t" path="res://Scenes/holders/cup_holder.tscn" id="1_qn4ad"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_mjkh8"]
+
+[node name="CupHolderWall" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.407161)
+
+[node name="Wall" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.036362, 0, 0, 0, 0.316113, 0, 0, 0, 0.430577, 0, 0.0311984, 0)
+mesh = SubResource("BoxMesh_mjkh8")
+
+[node name="CupHolder" parent="." instance=ExtResource("1_qn4ad")]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.0160269, 0.0505809, -0.0933996)
+
+[node name="CupHolder2" parent="." instance=ExtResource("1_qn4ad")]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.0160269, 0.0505809, 0.0990101)

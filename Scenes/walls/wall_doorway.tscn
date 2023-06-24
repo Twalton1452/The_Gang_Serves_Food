@@ -1,8 +1,5 @@
 [gd_scene load_steps=2 format=3 uid="uid://c08v353fgpnwy"]
 
-[ext_resource type="PackedScene" uid="uid://bsn483wm5t85y" path="res://3d_models/Kenneys_Furniture/wallDoorway.glb" id="1_dp2nj"]
+[ext_resource type="PackedScene" uid="uid://f7xxx78xeti0" path="res://3d_models/Kenneys_Furniture/wallDoorway.glb" id="1_dp2nj"]
 
 [node name="wallDoorway" instance=ExtResource("1_dp2nj")]
-
-[node name="wallDoorway(Clone)" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
