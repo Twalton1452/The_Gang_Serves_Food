@@ -280,6 +280,7 @@ func delete_item_for_everyone_by_networked_id(networked_id: int):
 		return
 	
 	networked_node_to_delete.p_node.queue_free()
+	Utils.cleanup_material_overrides(networked_node_to_delete.p_node)
 
 @rpc("authority", "call_local")
 func delete_item_for_everyone_by_path(path: PackedByteArray):

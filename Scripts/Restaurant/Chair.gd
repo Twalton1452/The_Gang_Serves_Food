@@ -6,6 +6,9 @@ class_name Chair
 @export var holder : Holder
 var sitter : Node3D = null
 
+func _exit_tree():
+	Utils.cleanup_material_overrides(self)
+
 func sit(to_be_seated: Node3D) -> void:
 	if sitter != null:
 		print("they sittin in mah fuckin chair m8")

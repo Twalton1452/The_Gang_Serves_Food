@@ -53,6 +53,7 @@ func _ready():
 	mesh_to_color.get_surface_override_material(surface_index_to_color).albedo_color.a = 0.0
 
 func _exit_tree():
+	super()
 	Utils.cleanup_material_overrides(self, mesh_to_color)
 
 func fill(fill_rate: float, beverage: Beverage):

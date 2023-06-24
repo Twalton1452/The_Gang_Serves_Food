@@ -15,6 +15,9 @@ const NON_INTERACTABLE_LAYER = 7
 
 var collider : CollisionShape3D
 
+func _exit_tree():
+	Utils.cleanup_material_overrides(self, mesh_to_highlight)
+
 func set_sync_state(reader : ByteReader) -> void:
 	var collider_enabled = reader.read_bool()
 	if collider_enabled:

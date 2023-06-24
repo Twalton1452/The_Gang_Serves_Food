@@ -60,9 +60,9 @@ func unlock_from_target() -> void:
 	remote_transform.position = Vector3.ZERO
 	snapping = default_snap
 	
-	if looking_at:
+	if looking_at != null:
 		hide_outline(looking_at)
-	looking_at = null
+		looking_at = null
 	
 	if target == null or target.is_queued_for_deletion():
 		return
@@ -100,7 +100,7 @@ func _physics_process(_delta):
 	if looking_at != get_collider():
 		
 		# Reset the previous target
-		if looking_at:
+		if looking_at != null:
 			hide_outline(looking_at)
 			# Show the outline for the new target
 			if get_collider() != null:

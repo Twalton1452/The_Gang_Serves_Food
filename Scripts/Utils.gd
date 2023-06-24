@@ -11,24 +11,32 @@ static func cleanup_material_overrides(node: Node, mesh_to_clean = null) -> void
 	if not node.is_queued_for_deletion():
 		return
 	
+	Utils.set_material_overrides_to_null_for(node, mesh_to_clean)
+
+static func set_material_overrides_to_null_for(node: Node, mesh_to_clean = null) -> void:
 	var mesh : MeshInstance3D = mesh_to_clean
 	if mesh == null:
-		mesh = node.get_node_or_null("MeshInstance3D")
-	if mesh == null:
-		return
+		for child in node.get_children():
+			if child is MeshInstance3D:
+				print(node.name, " has ", child.name)
+				mesh = child
+				break
 	
-	for override_index in mesh.get_surface_override_material_count():
-		#$MeshInstance3D.set("surface_material_override/0", null)
-		mesh.set_surface_override_material(override_index, null)
+	if mesh != null:
+		for override_index in mesh.get_surface_override_material_count():
+			mesh.set_surface_override_material(override_index, null)
+	
+	for child in node.get_children():
+		set_material_overrides_to_null_for(child)
 
-# WOULD LOVE TO HAVE THESE IN Utils.gd AS STATIC FUNCTIONS
+# WOULD LOVE TO HAVE THESE IN Interactable.gd AS STATIC FUNCTIONS
 # BUT LIFE IS TOO COMPLICATED WHEN IT COMES TO THIS GUT TEST RUNNER
 # When you're making doubles of classes with static methods it will fail
 #   and you have to individually add each static method to an ignore list
 #   into the [before_each] Every. Single. Time.
 # Easier to just put the static methods in a separate class that fiddle with that bs
-# https://github.com/bitwes/Gut/wiki/Doubles#doubling-static-methods
 
+# https://github.com/bitwes/Gut/wiki/Doubles#doubling-static-methods
 static func enable_from_noninteractable_layer(node: Node) -> void:
 	if node is Interactable:
 		node.set_collision_layer_value(INTERACTABLE_LAYER, true)
