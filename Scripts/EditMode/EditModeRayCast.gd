@@ -51,9 +51,10 @@ func lock_on_to(node: Node) -> void:
 	remote_transform.remote_path = node.owner.get_path()
 	target = node
 	set_child_collisions_for(node.owner, false)
-
-	if node.owner.get_parent() is NetworkedGrouperNode3D:
-		snapping = (node.owner.get_parent() as NetworkedGrouperNode3D).snapping_spacing
+	
+	var grouper : NetworkedGrouperNode3D = Utils.crawl_up_for_grouper_node(node)
+	if grouper != null:
+		snapping = grouper.snapping_spacing
 
 func unlock_from_target() -> void:
 	remote_transform.remote_path = ^""

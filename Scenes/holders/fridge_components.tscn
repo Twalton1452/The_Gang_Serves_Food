@@ -64,4 +64,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0612966, 0.212161, 0.02613
 [node name="SingleHolderBox4" parent="kitchenFridge/kitchenFridge(Clone)" index="7" instance=ExtResource("3_dvyk0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0970075, 0.212161, 0.0261334)
 
+[node name="StaticBody3D" parent="kitchenFridge/kitchenFridge(Clone)" index="8"]
+collision_mask = 0
+
 [editable path="kitchenFridge"]

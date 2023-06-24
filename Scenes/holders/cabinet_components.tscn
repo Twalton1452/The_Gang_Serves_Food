@@ -14,7 +14,7 @@ size = Vector3(0.413302, 0.318294, 0.0431138)
 
 [node name="Holder" parent="." index="0" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("3_5ll8x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.427, 0)
-mesh_to_highlight = NodePath("../kitchenCabinet(Clone)")
+mesh_to_highlight = NodePath("../kitchenCabinet2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder" index="0"]
 shape = SubResource("BoxShape3D_7dfli")

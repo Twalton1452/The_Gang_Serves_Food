@@ -83,3 +83,11 @@ static func disable_colliders_for_children(node: Node) -> void:
 		if child is Interactable:
 			child.disable_collider()
 		Utils.disable_colliders_for_children(child)
+
+static func crawl_up_for_grouper_node(node: Node) -> NetworkedGrouperNode3D:
+	if node.get_parent() == null:
+		return null
+	if node.get_parent() is NetworkedGrouperNode3D:
+		return node.get_parent()
+	else:
+		return crawl_up_for_grouper_node(node.get_parent())

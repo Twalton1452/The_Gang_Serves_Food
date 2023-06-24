@@ -182,8 +182,11 @@ func attempt_to_buy_held_item(p_id: int) -> void:
 		"global_position": node.global_position,
 		"global_rotation": node.global_rotation,
 	}
-	var spawned_node = NetworkingUtils.spawn_node_by_scene_path_for_everyone(node.scene_file_path, node.get_parent(), data)
-	print_debug(p_id, " Bought ", spawned_node)
+	var to_be_parent = Utils.crawl_up_for_grouper_node(node)
+	if to_be_parent == null:
+		to_be_parent = node.get_parent()
+	var spawned_node = NetworkingUtils.spawn_node_by_scene_path_for_everyone(node.scene_file_path, to_be_parent, data)
+	print(p_id, " Bought ", spawned_node)
 
 func sell_attempt() -> void:
 	if not is_multiplayer_authority():
@@ -205,7 +208,7 @@ func attempt_to_sell_held_item(p_id: int) -> void:
 	GameState.add_money(1)
 	NetworkingUtils.send_item_for_deletion(node)
 	release_placing_node(player)
-	print_debug(p_id, " sold ", node_name)
+	print(p_id, " sold ", node_name)
 	
 	notify_peers_player_sold_item.rpc(p_id)
 
