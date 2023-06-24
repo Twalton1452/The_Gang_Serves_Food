@@ -25,6 +25,7 @@ func _ready():
 
 func _on_child_entered_tree(node: Node) -> void:
 	generate_network_safe_name_for(node)
+	node.global_position = node.global_position.snapped(snapping_spacing)
 
 func generate_network_safe_name_for(node: Node) -> void:
 	node.name = CHILD_NAMING_FORMAT % [node.name, ID]

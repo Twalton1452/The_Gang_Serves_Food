@@ -51,6 +51,7 @@ func lock_on_to(node: Node) -> void:
 	remote_transform.remote_path = node.owner.get_path()
 	target = node
 	set_child_collisions_for(node.owner, false)
+
 	if node.owner.get_parent() is NetworkedGrouperNode3D:
 		snapping = (node.owner.get_parent() as NetworkedGrouperNode3D).snapping_spacing
 
@@ -71,10 +72,6 @@ func unlock_from_target() -> void:
 
 func set_child_collisions_for(node: Node3D, value: bool) -> void:
 	node.propagate_call("set_collision_layer_value", [1, value], true)
-#	for child in node.get_children():
-#		if child is StaticBody3D:
-#			child.set_collision_layer_value(1, value)
-#		set_child_collisions_for(child, value)
 
 func enable():
 	enabled = true
@@ -86,6 +83,7 @@ func disable():
 	uneditable_ray_cast.enabled = false
 	if looking_at:
 		hide_outline(looking_at)
+		looking_at = null
 	remote_transform.remote_path = ^""
 
 func _unhandled_input(event):
@@ -93,7 +91,6 @@ func _unhandled_input(event):
 		enabled = !enabled
 		if looking_at:
 			hide_outline(looking_at)
-
 
 func _physics_process(_delta):
 	if not enabled:
@@ -123,12 +120,15 @@ func _physics_process(_delta):
 		return
 	
 	if is_colliding():
-		remote_transform.global_position = Vector3(get_collision_point().x, looking_at_top_y, get_collision_point().z).snapped(snapping)
+		remote_transform.global_position = correct_position(Vector3(get_collision_point().x, looking_at_top_y, get_collision_point().z))
 	elif uneditable_ray_cast.is_colliding():
-		remote_transform.global_position = uneditable_ray_cast.get_collision_point().snapped(snapping)
+		remote_transform.global_position = correct_position(uneditable_ray_cast.get_collision_point())
 	else:
-		remote_transform.position = Vector3(0.0, 0.0, -1.5)
+		remote_transform.position = correct_position(Vector3(0.0, 0.0, -1.5))
 		remote_transform.global_position.y = 0.0
+
+func correct_position(pos: Vector3) -> Vector3:
+	return pos.snapped(snapping)
 
 func set_material_overlay_for_children(node: Node3D, material: StandardMaterial3D, _transparency : float):
 	for child in node.get_children():
