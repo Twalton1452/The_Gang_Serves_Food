@@ -21,7 +21,7 @@ const STATE_NOTIFICATIONS = {
 	Phase.OPEN_FOR_BUSINESS: "Open for Business",
 }
 
-var state : Phase = Phase.OPEN_FOR_BUSINESS : set = set_state
+var state : Phase = Phase.EDITING_RESTAURANT : set = set_state
 
 ## Player str(id) is the key and the Player Node is the value
 var players : Dictionary = {}

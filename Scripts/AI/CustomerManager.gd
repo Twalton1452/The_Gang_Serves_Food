@@ -19,6 +19,7 @@ func _ready():
 	restaurant.table_became_available.connect(_on_table_became_available)
 	restaurant.menu.new_menu.connect(_on_new_restaurant_menu_available)
 	GameState.state_changed.connect(_on_game_state_changed)
+	_on_game_state_changed()
 	
 	start_customer_spawning()
 
