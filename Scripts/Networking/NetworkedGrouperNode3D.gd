@@ -25,6 +25,9 @@ func _ready():
 
 func _on_child_entered_tree(node: Node) -> void:
 	generate_network_safe_name_for(node)
+	snap_node.call_deferred(node)
+
+func snap_node(node: Node) -> void:
 	node.global_position = node.global_position.snapped(snapping_spacing)
 
 func generate_network_safe_name_for(node: Node) -> void:
