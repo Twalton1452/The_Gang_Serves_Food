@@ -1,6 +1,13 @@
 extends RayCast3D
 class_name EditModeRayCast
 
+## Class for when the player is trying to edit the layout of their restaurant
+## Reliant on a specific architecture for the Editable Scenes
+## - Collision Layer 1
+## Tree format:
+## - MeshInstance3D
+##   - StaticBody3D
+
 ## The top level node of what the raycast found to move around
 @onready var remote_transform : RemoteTransform3D = $RemoteTransform3D
 ## Raycast for pointing at the ground to create a snapping effect
@@ -106,14 +113,11 @@ func _physics_process(_delta):
 			# Show the outline for the new target
 			if get_collider() != null:
 				show_outline(get_collider())
-				var collided_object = get_collider().get_parent()
-				if collided_object is MeshInstance3D:
-					var aabb = collided_object.get_aabb()
-					var object_top_y = aabb.position.y + aabb.size.y * collided_object.scale.y
-					looking_at_top_y = object_top_y
+				looking_at_top_y = calculate_the_top_y_value_of(get_collider().get_parent())
 		# Previous target was nothing
 		else:
 			show_outline(get_collider())
+			looking_at_top_y = calculate_the_top_y_value_of(get_collider().get_parent())
 			
 		looking_at = get_collider()
 	
@@ -131,6 +135,12 @@ func _physics_process(_delta):
 
 func correct_position(pos: Vector3) -> Vector3:
 	return pos.snapped(snapping)
+
+func calculate_the_top_y_value_of(collided_object: Node) -> float:
+	if not collided_object is MeshInstance3D:
+		return 0.0
+	var aabb = collided_object.get_aabb()
+	return aabb.position.y + aabb.size.y * collided_object.scale.y
 
 func set_material_overlay_for_children(node: Node3D, material: StandardMaterial3D, _transparency : float):
 	for child in node.get_children():
