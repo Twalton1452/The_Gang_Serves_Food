@@ -29,11 +29,13 @@ var color : Color = Color.WHITE : set = set_color, get = get_color
 
 func set_sync_state(reader: ByteReader) -> void:
 	color = reader.read_color()
+	pixel_face.frame = reader.read_int()
 	edit_mode_ray_cast.set_sync_state(reader)
 
 func get_sync_state() -> ByteWriter:
 	var writer = ByteWriter.new()
 	writer.write_color(color)
+	writer.write_int(pixel_face.frame)
 	writer.append_array(edit_mode_ray_cast.get_sync_state().data)
 	return writer
 
