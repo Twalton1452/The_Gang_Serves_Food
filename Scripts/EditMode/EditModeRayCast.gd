@@ -121,7 +121,8 @@ func _physics_process(_delta):
 		return
 	
 	if is_colliding():
-		remote_transform.global_position = correct_position(Vector3(get_collision_point().x, looking_at_top_y, get_collision_point().z))
+		remote_transform.global_position = correct_position(get_collision_point())
+		remote_transform.global_position.y = looking_at_top_y
 	elif uneditable_ray_cast.is_colliding():
 		remote_transform.global_position = correct_position(uneditable_ray_cast.get_collision_point())
 	else:
