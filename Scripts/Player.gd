@@ -3,6 +3,13 @@ class_name Player
 
 signal health_changed(health_value)
 
+enum Action {
+	INTERACT,
+	SECONDARY_INTERACT,
+	BUY,
+	SELL,
+}
+
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
@@ -129,17 +136,9 @@ func _unhandled_input(event):
 			hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 
 	if event.is_action_pressed("interact"):
-		if interact_ray_cast.is_colliding():
-			interact()
-		elif edit_mode_ray_cast.is_holding_editable:
-			edit_mode_place()
-		elif edit_mode_ray_cast.is_colliding():
-			edit_mode_interact()
+		interact()
 	if event.is_action_pressed("secondary_interact"):
-		if interact_ray_cast.is_colliding():
-			secondary_interact()
-		elif edit_mode_ray_cast.is_holding_editable:
-			edit_mode_secondary_interact()
+		secondary_interact()
 	if event.is_action_pressed("buy"):
 		buy_attempt()
 	elif event.is_action_pressed("sell"):
@@ -181,24 +180,16 @@ func _physics_process(delta):
 		position = get_node("../../SpawnPoint").position
 
 func interact() -> void:
-	var interactable = interact_ray_cast.get_collider() as Interactable
-	InteractionManager.attempt_interaction(self, interactable, InteractionManager.InteractionType.PRIMARY)
-	#interactable.interact(self)
+	if not interact_ray_cast.is_colliding() and not edit_mode_ray_cast.is_colliding() and not edit_mode_ray_cast.is_holding_editable:
+		return
+	
+	InteractionManager.resolve_player_action(self, Action.INTERACT)
 
 func secondary_interact() -> void:
-	var interactable = interact_ray_cast.get_collider() as Interactable
-	InteractionManager.attempt_interaction(self, interactable, InteractionManager.InteractionType.SECONDARY)
-	#interactable.secondary_interact(self)
-
-func edit_mode_interact():
-	var node = edit_mode_ray_cast.get_collider() as StaticBody3D
-	InteractionManager.attempt_edit_mode_interaction(self, node, InteractionManager.InteractionType.PRIMARY)
-
-func edit_mode_secondary_interact():
-	InteractionManager.attempt_edit_mode_secondary_interaction(self)
-
-func edit_mode_place():
-	InteractionManager.attempt_edit_mode_placement(self)
+	if not interact_ray_cast.is_colliding() and not edit_mode_ray_cast.is_colliding() and not edit_mode_ray_cast.is_holding_editable:
+		return
+	
+	InteractionManager.resolve_player_action(self, Action.SECONDARY_INTERACT)
 
 func buy_attempt():
 	if not edit_mode_ray_cast.is_holding_editable:
@@ -207,8 +198,7 @@ func buy_attempt():
 	var node = edit_mode_ray_cast.get_held_editable_node()
 	if node.scene_file_path.is_empty():
 		return
-	
-	InteractionManager.buy_attempt()
+	InteractionManager.resolve_player_action(self, Action.BUY)
 
 func sell_attempt():
 	if not edit_mode_ray_cast.is_holding_editable:
@@ -217,8 +207,7 @@ func sell_attempt():
 	var node = edit_mode_ray_cast.get_held_editable_node()
 	if node.scene_file_path.is_empty():
 		return
-	
-	InteractionManager.sell_attempt()
+	InteractionManager.resolve_player_action(self, Action.SELL)
 
 @rpc("call_local")
 func pick_emotive_face(id: int):

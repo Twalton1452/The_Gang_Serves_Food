@@ -27,6 +27,11 @@ func decode_u32() -> int:
 	var decoded = data.decode_u32(offset)
 	offset += 4
 	return decoded
+
+func decode_u64() -> int:
+	var decoded = data.decode_u64(offset)
+	offset += 8
+	return decoded
 	
 func decode_float() -> float:
 	var decoded = data.decode_float(offset)
@@ -87,4 +92,4 @@ func read_int() -> int:
 	return decode_u16()
 
 func read_big_int() -> int:
-	return decode_u32()
+	return decode_u64()

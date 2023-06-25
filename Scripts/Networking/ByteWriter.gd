@@ -25,6 +25,11 @@ func encode_u32(value: int) -> void:
 	data.resize(offset)
 	data.encode_u32(offset - 4, value)
 
+func encode_u64(value: int) -> void:
+	offset += 8
+	data.resize(offset)
+	data.encode_u64(offset - 8, value)
+
 func encode_float(value: float) -> void:
 	offset += 4
 	data.resize(offset)
@@ -86,4 +91,4 @@ func write_int(v: int):
 
 ## Max value 2,147,483,648
 func write_big_int(v: int):
-	encode_u32(v)
+	encode_u64(v)
