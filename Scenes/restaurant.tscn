@@ -106,14 +106,7 @@ transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 4, 0, 
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.5, 0, 1)
 
 [node name="wallDoorway" parent="Restaurant/Building/Walls" instance=ExtResource("4_2i7t1")]
-transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 1, 0, 3.5)
-
-[node name="wallDoorway(Clone)" parent="Restaurant/Building/Walls/wallDoorway" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
-
-[node name="KitchenDoorLink" type="NavigationLink3D" parent="Restaurant/Building/Walls/wallDoorway"]
-start_position = Vector3(-0.683, 0, 0)
-end_position = Vector3(0.63, 0, 0)
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0.5, 0, 4)
 
 [node name="CounterWall" parent="Restaurant/Building/Walls" instance=ExtResource("8_gplef")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 2, 0, 0.5)
@@ -451,7 +444,6 @@ only_one_will_exist = true
 
 [editable path="Restaurant/Building/roof"]
 [editable path="Restaurant/Building/floor"]
-[editable path="Restaurant/Building/Walls/wallDoorway"]
 [editable path="Restaurant/Building/Lights/lampSquareCeiling3"]
 [editable path="Restaurant/Building/Lights/lampSquareCeiling4"]
 [editable path="Restaurant/Building/Lights/lampSquareCeiling8"]

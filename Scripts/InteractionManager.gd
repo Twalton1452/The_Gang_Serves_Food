@@ -194,7 +194,8 @@ func resolve_edit_mode_secondary_interaction(p_id : int):
 	if player.edit_mode_ray_cast.is_holding_editable:
 		to_rotate_node = player.edit_mode_ray_cast.get_held_editable_node()
 	else:
-		to_rotate_node = player.edit_mode_ray_cast.get_collider()
+		if player.edit_mode_ray_cast.is_colliding():
+			to_rotate_node = player.edit_mode_ray_cast.get_collider().owner
 	
 	if to_rotate_node == null:
 		return

@@ -45,11 +45,18 @@ func test_player_can_sell_hovering_object() -> void:
 	assert_eq(_interaction_scene.get_children().size(), scene_children_count_start - 1)
 	assert_eq(_player.edit_mode_ray_cast.is_holding_editable, false)
 
-func test_player_can_rotate_object() -> void:
+func test_player_can_rotate_held_object() -> void:
 	pick_up_object()
 	
 	assert_eq(_object.global_rotation, Vector3.ZERO)
 	_player.secondary_interact()
+	assert_almost_eq(_object.global_rotation, Vector3(0.0, InteractionManager.ROTATION_AMOUNT, 0.0), Vector3(0.1, 0.1, 0.1))
+
+func test_player_can_rotate_targeted_object() -> void:
+	assert_eq(_object.global_rotation, Vector3.ZERO)
+	_player.edit_mode_ray_cast.force_raycast_update()
+	_player.secondary_interact()
+	await wait_frames(1)
 	assert_almost_eq(_object.global_rotation, Vector3(0.0, InteractionManager.ROTATION_AMOUNT, 0.0), Vector3(0.1, 0.1, 0.1))
 
 func test_player_can_pick_up_and_put_down_object() -> void:
