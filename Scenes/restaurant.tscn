@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=36 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
 [ext_resource type="PackedScene" uid="uid://b3dnl8aq4hu11" path="res://Scenes/holders/onion_box.tscn" id="24_v3tw0"]
+[ext_resource type="PackedScene" uid="uid://4x3pm23qh38d" path="res://scanner.tscn" id="25_cmddr"]
 [ext_resource type="PackedScene" uid="uid://cmy2yoow08hoa" path="res://Scenes/drink_fountain.tscn" id="26_cud0u"]
 [ext_resource type="PackedScene" uid="uid://bxmdymcsubnk" path="res://3d_models/Kenneys_Furniture/hoodLarge.glb" id="26_qebtt"]
 [ext_resource type="PackedScene" uid="uid://c8g6844y5nmcr" path="res://Scenes/holders/cup_holder_wall.tscn" id="28_1erph"]
@@ -401,6 +402,8 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.7642
 [node name="kitchenCabinet8" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.76425, 0, 1.84725)
 
+[node name="Scanner" parent="Testing/kitchenCabinet8/Holder" index="1" instance=ExtResource("25_cmddr")]
+
 [node name="kitchenCabinet9" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.76425, 0, 1.41725)
 
@@ -454,5 +457,6 @@ only_one_will_exist = true
 [editable path="Testing/kitchenCabinet3"]
 [editable path="Testing/kitchenCabinet4"]
 [editable path="Testing/kitchenCabinet5"]
+[editable path="Testing/kitchenCabinet8"]
 [editable path="Testing/kitchenCabinet13"]
 [editable path="Testing/kitchenCabinet14"]
