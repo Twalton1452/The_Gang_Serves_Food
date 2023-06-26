@@ -13,6 +13,8 @@ var multiholder_dish : bool = false
 var scene_flattened_ids : Array[NetworkedIds.Scene] = []
 var resource_flattened_ids : Array[NetworkedIds.Resources] = []
 
+var order_visual_mat = preload("res://Materials/Order_Visual_mat.tres")
+
 ## Customer desires for variations
 ## positive means they want that as extra, negative value means to take one of those away
 #var wanted_flattened_ids : Array[int] = []
@@ -141,27 +143,39 @@ func visual_representation():
 	if display_order is MultiHolder:
 		for item in display_order.get_held_items():
 			if item is CombinedFoodHolder:
-				item.scale.z = 0.1
-				#for food in item.get_held_items():
+#				item.scale.z = 0.1
+				for food in item.get_held_items():
 					#set_transparency_for_food_to(food, 0.7)
+					set_material_overlay_for_food(food)
 			elif item is Food:
-				item.scale.z = 0.1
+				set_material_overlay_for_food(item)
+#				item.scale.z = 0.1
 				#set_transparency_for_food_to(item, 0.7)
 			elif item is Drink:
-				item.scale.y = 0.5
+				set_material_overlay_for_drink(item)
+#				item.scale.y = 0.5
 				#set_transparency_for_drink_to(item, 0.7)
 	else:
 		if display_order is CombinedFoodHolder:
-			display_order.scale.z = 0.1
-			#for food in display_order.get_held_items():
+#			display_order.scale.z = 0.1
+			for food in display_order.get_held_items():
+				set_material_overlay_for_food(food)
 				#set_transparency_for_food_to(food, 0.7)
-			
+
 		elif display_order is Food:
-			display_order.scale.z = 0.1
+			set_material_overlay_for_food(display_order)
+#			display_order.scale.z = 0.1
 			#set_transparency_for_food_to(display_order, 0.7)
 		elif display_order is Drink:
-			display_order.scale.y = 0.5
+			set_material_overlay_for_drink(display_order)
+#			display_order.scale.y = 0.5
 			#set_transparency_for_drink_to(display_order, 0.7)
+
+func set_material_overlay_for_food(food: Food):
+	food.obj_to_color.material_overlay = order_visual_mat
+
+func set_material_overlay_for_drink(drink: Drink):
+	drink.mesh_to_color.material_overlay = order_visual_mat
 
 func set_transparency_for_food_to(food: Food, value: float):
 	for i in range(food.obj_to_color.get_surface_override_material_count()):
