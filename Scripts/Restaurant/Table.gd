@@ -16,6 +16,7 @@ var chairs : Array[Chair] = []
 var is_empty = true
 var party_in_transit = false
 var color : Color : set = set_color, get = get_color
+var viable = true : get = get_viable
 
 func set_sync_state(reader: ByteReader) -> void:
 	for holder in holders:
@@ -26,6 +27,12 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		holder.get_sync_state(writer)
 	
 	return writer
+
+func get_viable() -> bool:
+	return available_chairs().size() > 0
+
+func available_chairs() -> Array[Chair]:
+	return chairs.filter(func(chair): return chair.sittable)
 
 func _ready():
 	for child in get_children():
@@ -41,10 +48,11 @@ func is_available_for(party_size: int) -> bool:
 	return is_empty and not party_in_transit and table_can_hold_party(party_size)
 
 func table_can_hold_party(party_size : int) -> bool:
-	if party_size > len(chairs) or not is_empty:
+	var viable_chairs = available_chairs()
+	if party_size > len(viable_chairs) or not is_empty:
 		return false
 		
-	for chair in chairs:
+	for chair in viable_chairs:
 		if chair.sitter != null:
 			return false
 	return true
@@ -53,24 +61,9 @@ func lock_for_party_in_transit():
 	color = Color.DIM_GRAY
 	party_in_transit = true
 
-## Unused, but could be repurposed to be used, maybe seat_party(party)?
-func seat_customers(customers: Array[Node3D]) -> bool:
-	if not table_can_hold_party(len(customers)):
-		return false
-	
-	var chair_index = 0
-	for customer in customers:
-		chairs[chair_index].sit(customer)
-		chair_index += 1
-	
-	is_empty = false
-	party_in_transit = false
-	occupied.emit(self)
-	return true
-
 func release_customers():
 	color = Color.FOREST_GREEN
-	for chair in chairs:
+	for chair in available_chairs():
 		chair.force_sitter_out()
 	is_empty = true
 	party_in_transit = false

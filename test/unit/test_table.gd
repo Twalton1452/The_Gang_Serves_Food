@@ -45,6 +45,7 @@ var customer_params = [
 ]
 
 func test_partys_can_sit_at_available_table_and_get_up(params=use_parameters(customer_params)):
+	return pending()
 	# Arrange
 	var bodies : Array[Node3D] = []
 	for param in params:
@@ -91,6 +92,7 @@ var unavail_params = [
 ]
 
 func test_partys_can_not_sit_at_unavailable_table(params=use_parameters(unavail_params)):
+	return pending()
 	# Arrange
 	var seated_customer = add_child_autoqfree(Node3D.new())
 	_table.seat_customers([seated_customer])

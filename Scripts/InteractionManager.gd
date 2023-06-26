@@ -5,6 +5,9 @@ extends Node
 ## Clients will send an RPC to the Server for that Action to be resolved
 ## Server will handle the Action and then notify the peers of the result
 
+signal edit_mode_node_placed(node: Node)
+signal edit_mode_node_bought(node: Node)
+
 const ROTATION_AMOUNT = PI / 2
 
 func not_implemented_action(p_id: int) -> void:
@@ -35,7 +38,7 @@ func resolve_player_action(player: Player, player_action: Player.Action) -> void
 	elif GameState.state == GameState.Phase.EDITING_RESTAURANT:
 		action = get_editing_restaurant_action(player_action)
 	else:
-		printerr("Phase actions not implemented")
+		printerr("Phase actions not implemented for GameState: ", GameState.state)
 		return
 	
 	if is_multiplayer_authority():
@@ -47,6 +50,7 @@ func lock_on_to_node(player: Player, node: Node) -> void:
 	player.edit_mode_ray_cast.lock_on_to(node)
 
 func release_placing_node(player: Player) -> void:
+	edit_mode_node_placed.emit(player.edit_mode_ray_cast.get_held_editable_node())
 	player.edit_mode_ray_cast.unlock_from_target()
 
 @rpc("any_peer")
@@ -242,6 +246,7 @@ func resolve_buying_held_item(p_id: int) -> void:
 	if to_be_parent == null:
 		to_be_parent = node.get_parent()
 	var spawned_node = NetworkingUtils.spawn_node_by_scene_path_for_everyone(node.scene_file_path, to_be_parent, data)
+	edit_mode_node_bought.emit(spawned_node)
 	print(p_id, " Bought ", spawned_node)
 
 @rpc("any_peer")

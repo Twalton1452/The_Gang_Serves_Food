@@ -8,6 +8,9 @@ script = ExtResource("2_bpbhr")
 sitting_location = NodePath("SittingChairPosition")
 transition_location = NodePath("BehindChairPosition")
 
+[node name="StaticBody3D" parent="chairCushion(Clone)" index="0"]
+collision_mask = 0
+
 [node name="BehindChairPosition" type="Marker3D" parent="." index="1"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.103, -0.49501)
 

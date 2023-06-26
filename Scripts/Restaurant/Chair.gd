@@ -5,6 +5,11 @@ class_name Chair
 @export var transition_location : Node3D
 @export var holder : Holder
 var sitter : Node3D = null
+var sittable = true : set = set_sittable
+
+func set_sittable(value: bool) -> void:
+	visible = value
+	sittable = value
 
 func _exit_tree():
 	Utils.cleanup_material_overrides(self)
