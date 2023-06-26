@@ -120,7 +120,6 @@ func _physics_process(_delta):
 			looking_at_top_y = calculate_the_top_y_value_of(get_collider().get_parent())
 			
 		looking_at = get_collider()
-	
 	if not is_holding_editable:
 		return
 	

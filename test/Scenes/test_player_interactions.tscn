@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://q4kkwwl6nvss"]
+
+[ext_resource type="PackedScene" uid="uid://rdrleinbk66r" path="res://Scenes/player.tscn" id="1_ykeh2"]
+[ext_resource type="PackedScene" uid="uid://dyp4hy5noackj" path="res://Scenes/uneditable_floor.tscn" id="2_36myj"]
+[ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="3_ubxkk"]
+
+[node name="test_player_interactions" type="Node3D"]
+
+[node name="floorFull" parent="." instance=ExtResource("2_36myj")]
+transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 10, 0, -0.0209594, 0)
+
+[node name="Player" parent="." instance=ExtResource("1_ykeh2")]
+
+[node name="Object" parent="." instance=ExtResource("3_ubxkk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.399135, -1.3431)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.24365, 0.509889, -1.27844)

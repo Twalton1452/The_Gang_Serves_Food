@@ -62,7 +62,7 @@ func test_can_read_write_float():
 func test_can_read_write_big_int():
 	var ev = 2147483647
 	_writer.write_big_int(ev)
-	assert_eq(_writer.offset, 4, "Incorrect offset after writing float")
+	assert_eq(_writer.offset, 8, "Incorrect offset after writing float")
 	
 	var read_value = _reader.read_big_int()
 	assert_eq(read_value, ev, "Didn't read the value back correctly")

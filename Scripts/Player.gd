@@ -67,7 +67,7 @@ func _ready():
 	_on_game_state_changed()
 	
 	if not is_multiplayer_authority(): return
-
+	
 	init.call_deferred()
 
 func init():

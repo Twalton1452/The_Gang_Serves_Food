@@ -1,6 +1,11 @@
 extends Node
 
 ## Autoloaded
+## Class for accepting Player Actions and resolving them
+## Clients will send an RPC to the Server for that Action to be resolved
+## Server will handle the Action and then notify the peers of the result
+
+const ROTATION_AMOUNT = PI / 2
 
 func not_implemented_action(p_id: int) -> void:
 	printerr(p_id, " tried to call a not implemented action")
@@ -44,7 +49,6 @@ func lock_on_to_node(player: Player, node: Node) -> void:
 func release_placing_node(player: Player) -> void:
 	player.edit_mode_ray_cast.unlock_from_target()
 
-# Server figures out how to handle that Interaction and passes it along
 @rpc("any_peer")
 func resolve_interaction(p_id: int):
 	if not is_multiplayer_authority():
@@ -115,7 +119,6 @@ func notify_peers_of_secondary_interaction(data: PackedByteArray):
 	
 	interactable.secondary_interact(player)
 
-# Server figures out how to handle that Interaction and passes it along
 @rpc("any_peer")
 func resolve_edit_mode_interaction(p_id: int):
 	if not is_multiplayer_authority():
@@ -195,7 +198,7 @@ func resolve_edit_mode_secondary_interaction(p_id : int):
 	
 	if to_rotate_node == null:
 		return
-	to_rotate_node.rotation.y += PI / 2
+	to_rotate_node.rotation.y += ROTATION_AMOUNT
 	
 	var writer = ByteWriter.new()
 	writer.write_big_int(p_id)

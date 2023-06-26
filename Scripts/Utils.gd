@@ -24,6 +24,7 @@ static func set_material_overrides_to_null_for(node: Node, mesh_to_clean = null)
 	if mesh != null:
 		for override_index in mesh.get_surface_override_material_count():
 			mesh.set_surface_override_material(override_index, null)
+			mesh.material_overlay = null
 	
 	for child in node.get_children():
 		set_material_overrides_to_null_for(child)

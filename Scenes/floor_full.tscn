@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://nwu3rpny3ewr"]
-
-[ext_resource type="PackedScene" uid="uid://dkhhmq0umh5e8" path="res://3d_models/Kenneys_Furniture/floorFull.glb" id="1_1tjb6"]
-
-[node name="floorFull" instance=ExtResource("1_1tjb6")]
-
-[node name="floorFull(Clone)" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.5)
