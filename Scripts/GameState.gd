@@ -21,6 +21,23 @@ const STATE_NOTIFICATIONS = {
 	Phase.OPEN_FOR_BUSINESS: "Open for Business",
 }
 
+class Validation:
+	var phase: Phase
+	var error_message: String
+	var validator: Callable
+	
+	func _init(phase_to_check: Phase, callable: Callable, err_msg: String) -> void:
+		phase = phase_to_check
+		validator = callable
+		error_message = err_msg
+
+## Call register_validator(Phase, Dictionary) for GameState to make sure
+## that condition is met before it can switch to that Phase
+var STATE_VALIDATIONS = {
+	Phase.EDITING_RESTAURANT: [],
+	Phase.OPEN_FOR_BUSINESS: [],
+}
+
 var state : Phase = Phase.EDITING_RESTAURANT : set = set_state
 
 ## Player str(id) is the key and the Player Node is the value
@@ -43,7 +60,26 @@ func get_sync_state() -> ByteWriter:
 	writer.write_int(state)
 	return writer
 
+## target_phase_to_prevent: Phase - When switching to this phase, ensure the validator is true
+## validator: Dictionary{ "validator": Callable -> bool, "err_message": String }
+func register_validator(phase: Phase, callable: Callable, error_message: String) -> void:
+	var new_validation = Validation.new(phase, callable, error_message)
+	STATE_VALIDATIONS[new_validation.phase].push_back(new_validation)
+
+func unregister_validator(phase: Phase, callable: Callable) -> void:
+	var index = 0
+	for validator in STATE_VALIDATIONS[phase]:
+		if validator.validator == callable:
+			break
+		index += 1
+	STATE_VALIDATIONS[phase].remove_at(index)
+
 func set_state(value: Phase):
+	for validation in STATE_VALIDATIONS.get(value, []) as Array[Validation]:
+		if !validation.validator.call():
+			hud.display_notification(validation.error_message, 2.0)
+			return
+			
 	state = value
 	state_changed.emit()
 	
@@ -67,6 +103,15 @@ func set_money(value: float):
 	if not is_multiplayer_authority():
 		return
 	notify_money_changed.rpc(money)
+
+func _ready() -> void:
+	register_validator(Phase.OPEN_FOR_BUSINESS, player_validator, "A player is holding something!")
+
+func player_validator() -> bool:
+	for player_id in players:
+		if players[player_id].holder.is_holding_item() or players[player_id].edit_mode_ray_cast.is_holding_editable:
+			return false
+	return true
 
 func add_money(value: float):
 	set_money(money + value)

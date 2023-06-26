@@ -47,8 +47,7 @@ func _physics_process(_delta):
 		return
 
 	var next_path_position: Vector3 = nav_agent.get_next_path_position()
-	var current_agent_position: Vector3 = global_position
-	var direction = (next_path_position - current_agent_position).normalized()
+	var direction = (next_path_position - global_position).normalized()
 	var new_velocity: Vector3 = direction * speed
 	if not nav_agent.is_target_reached():
 		rotate_to(direction)

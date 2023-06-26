@@ -22,7 +22,11 @@ func _enter_tree() -> void:
 	tables_root.child_entered_tree.connect(_on_table_entered_tables_tree)
 	tables_root.child_exiting_tree.connect(_on_table_exiting_tables_tree)
 
+func _exit_tree() -> void:
+	GameState.unregister_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable)
+
 func _ready():
+	GameState.register_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable, "The Restaurant is not Operable!")
 	path_testing_customer = load("res://Scenes/customer.tscn").instantiate()
 	path_testing_customer.hide()
 	add_child(path_testing_customer)

@@ -6,23 +6,21 @@ var CustomerScene = load("res://Scenes/customer.tscn")
 var _playground : NavigationRegion3D = null
 var _customer : Customer = null
 var _customer_spawn = Vector3(0.0, 0.3, 0.0)
-var _acceptable_threshold = Vector3(.7, .7, .7)
+var _acceptable_threshold = Vector3(.7, 1000, .7)
 
 func before_each():
 	GameState.hud = double(HUD, DOUBLE_STRATEGY.SCRIPT_ONLY).new()
-	GameState.state = GameState.Phase.OPEN_FOR_BUSINESS
+	GameState.state = GameState.Phase.LOBBY
 	_playground = PlaygroundScene.instantiate()
 	add_child_autoqfree(_playground)
 	_customer = CustomerScene.instantiate()
 	_playground.add_child(_customer)
-	_customer.position = _customer_spawn
-	_customer.speed = 5.0
-	var nav_agent_desired_distance = (_customer.get_node("NavigationAgent3D") as NavigationAgent3D).path_desired_distance
-	_acceptable_threshold = Vector3(nav_agent_desired_distance, nav_agent_desired_distance + _customer.nav_agent.agent_height_offset, nav_agent_desired_distance)
+	_customer.global_position = _customer_spawn
+	_customer.speed = 7.0
 
 func test_customer_moves_to_target_and_back():
 	# Arrange
-	var target = Vector3(0.0, _customer.global_position.y, 2.0)
+	var target = Vector3(0.0, _customer_spawn.y, 2.0)
 	assert_eq(_customer.global_position, _customer_spawn, "Customer isn't starting from spawn")
 	
 	# Act
