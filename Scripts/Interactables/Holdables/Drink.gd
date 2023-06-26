@@ -72,6 +72,7 @@ func gulp():
 	fill_amount = 0.0
 	fill_state = FillState.EMPTY
 	beverage_amounts.clear()
+	evaluate_fill_state()
 
 func evaluate_fill_state():
 	# Mix drink colors based on the filled amount
