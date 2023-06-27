@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=42 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -28,11 +28,12 @@
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
 [ext_resource type="PackedScene" uid="uid://b3dnl8aq4hu11" path="res://Scenes/holders/onion_box.tscn" id="24_v3tw0"]
-[ext_resource type="PackedScene" uid="uid://4x3pm23qh38d" path="res://scanner.tscn" id="25_cmddr"]
 [ext_resource type="PackedScene" uid="uid://cmy2yoow08hoa" path="res://Scenes/drink_fountain.tscn" id="26_cud0u"]
 [ext_resource type="PackedScene" uid="uid://bxmdymcsubnk" path="res://3d_models/Kenneys_Furniture/hoodLarge.glb" id="26_qebtt"]
 [ext_resource type="PackedScene" uid="uid://c8g6844y5nmcr" path="res://Scenes/holders/cup_holder_wall.tscn" id="28_1erph"]
+[ext_resource type="PackedScene" uid="uid://choukybprh7d7" path="res://Scenes/holders/cabinet_single_components.tscn" id="31_ryu4v"]
 [ext_resource type="PackedScene" uid="uid://bdc7qltxquec6" path="res://3d_models/delivery.glb" id="32_0lo6r"]
+[ext_resource type="PackedScene" uid="uid://o1f1xbpgrebw" path="res://Scenes/holders/short_platform.tscn" id="32_xhahs"]
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="33_21kqw"]
 [ext_resource type="PackedScene" uid="uid://d3ikpq3sk08gg" path="res://Scenes/holders/cardboard_box_components.tscn" id="35_33772"]
 
@@ -283,15 +284,6 @@ transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 2.13163e-14, 0, 1, 2, 0, 5.
 [node name="wall44" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
 transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 2.13163e-14, 0, 1, 0, 0, 5.5)
 
-[node name="wall26" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 0.1, 0, 1, 0, -4.37114e-08, 2.5, 0, 6)
-
-[node name="wall38" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 0.1, 0, 1, 0, -4.37114e-08, 2.5, 0, 7)
-
-[node name="wall39" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 0.1, 0, 1, 0, -4.37114e-08, 2.5, 0, 8)
-
 [node name="wall45" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("1_lxx3p")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0, 8)
 
@@ -441,23 +433,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.21355, 0, 0)
 [node name="kitchenCabinet12" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.783754, 0, -4.76837e-07)
 
-[node name="kitchenCabinet6" parent="Testing" instance=ExtResource("10_b6sav")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.76425, 0, 2.70725)
-
-[node name="kitchenCabinet7" parent="Testing" instance=ExtResource("10_b6sav")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.76425, 0, 2.27725)
-
-[node name="kitchenCabinet8" parent="Testing" instance=ExtResource("10_b6sav")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.76425, 0, 1.84725)
-
-[node name="Scanner" parent="Testing/kitchenCabinet8/Holder" index="1" instance=ExtResource("25_cmddr")]
-
-[node name="kitchenCabinet9" parent="Testing" instance=ExtResource("10_b6sav")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.76425, 0, 1.41725)
-
-[node name="kitchenCabinet10" parent="Testing" instance=ExtResource("10_b6sav")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.76425, 0, 0.987248)
-
 [node name="Fridge" parent="Testing" instance=ExtResource("12_xj5b4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79571, 0, 0)
 
@@ -484,6 +459,33 @@ disabled = true
 [node name="CupHolderWall" parent="Testing/kitchenCabinet14/Holder" index="1" instance=ExtResource("28_1erph")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.0195527, 0.114305, -0.157112)
 
+[node name="kitchenCabinetSingle" parent="Testing" instance=ExtResource("31_ryu4v")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.72, 0, 1.06772)
+
+[node name="kitchenCabinetSingle2" parent="Testing" instance=ExtResource("31_ryu4v")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.72, 0, 1.49772)
+
+[node name="kitchenCabinetSingle3" parent="Testing" instance=ExtResource("31_ryu4v")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.72, 0, 1.92772)
+
+[node name="kitchenCabinetSingle4" parent="Testing" instance=ExtResource("31_ryu4v")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.72, 0, 2.35772)
+
+[node name="ShortPlatform" parent="Testing" instance=ExtResource("32_xhahs")]
+transform = Transform3D(1.053e-07, 0, -1, 0, 1, 0, 1, 0, 1.053e-07, 5.81927, 0, 4.3)
+
+[node name="ShortPlatform2" parent="Testing" instance=ExtResource("32_xhahs")]
+transform = Transform3D(1.053e-07, 0, -1, 0, 1, 0, 1, 0, 1.053e-07, 5.81927, 0, 3.87)
+
+[node name="ShortPlatform3" parent="Testing" instance=ExtResource("32_xhahs")]
+transform = Transform3D(1.053e-07, 0, -1, 0, 1, 0, 1, 0, 1.053e-07, 5.81927, 0, 3.44)
+
+[node name="ShortPlatform4" parent="Testing" instance=ExtResource("32_xhahs")]
+transform = Transform3D(1.053e-07, 0, -1, 0, 1, 0, 1, 0, 1.053e-07, 5.81927, 0, 3.01)
+
+[node name="ShortPlatform5" parent="Testing" instance=ExtResource("32_xhahs")]
+transform = Transform3D(1.053e-07, 0, -1, 0, 1, 0, 1, 0, 1.053e-07, 5.81927, 0, 2.58)
+
 [node name="NetworkedNode3D" type="Node" parent="."]
 script = ExtResource("2_7dixm")
 sync_position = false
@@ -491,7 +493,7 @@ priority_sync_order = 0
 only_one_will_exist = true
 
 [node name="delivery" parent="." instance=ExtResource("32_0lo6r")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.33585, -4.84288e-08, 7.15535)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.33585, -4.84288e-08, 6.89248)
 
 [node name="Rotatable" parent="delivery/delivery2/door" index="0" instance=ExtResource("33_21kqw")]
 tar_rot = Vector3(-90, 0, 0)
@@ -500,7 +502,7 @@ tar_rot = Vector3(-90, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_nh4e1")
 
 [node name="CardboardBox" parent="." instance=ExtResource("35_33772")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 0.5, 7.5)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 0.501783, 7.26959)
 
 [connection signal="despawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_despawned"]
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]
@@ -517,7 +519,6 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 0.5
 [editable path="Testing/kitchenCabinet3"]
 [editable path="Testing/kitchenCabinet4"]
 [editable path="Testing/kitchenCabinet5"]
-[editable path="Testing/kitchenCabinet8"]
 [editable path="Testing/kitchenCabinet13"]
 [editable path="Testing/kitchenCabinet14"]
 [editable path="delivery"]

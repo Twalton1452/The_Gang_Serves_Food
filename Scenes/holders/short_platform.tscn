@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://o1f1xbpgrebw"]
+
+[ext_resource type="PackedScene" uid="uid://8we5xcrxwdfi" path="res://3d_models/ShortPlatform.blend" id="1_ka5ap"]
+[ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="2_s2byd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mddbw"]
+size = Vector3(0.382296, 0.0171523, 0.313654)
+
+[node name="ShortPlatform" instance=ExtResource("1_ka5ap")]
+
+[node name="StaticBody3D" parent="SmallPlatform" index="0"]
+collision_mask = 0
+
+[node name="Holder" parent="." index="1" instance=ExtResource("2_s2byd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.124502, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder" index="0"]
+shape = SubResource("BoxShape3D_mddbw")

@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://d3ikpq3sk08gg"]
+[gd_scene load_steps=18 format=3 uid="uid://d3ikpq3sk08gg"]
 
 [ext_resource type="Script" path="res://Scripts/Interactables/Holders/MultiHolder.gd" id="1_xfkrn"]
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_lu8e1"]
 [ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="3_3qd7r"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="4_x0qsq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1if7s"]
 resource_name = "wood.655"
@@ -210,3 +211,5 @@ max_amount = 20
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder4"]
 shape = SubResource("BoxShape3D_ib372")
 disabled = true
+
+[node name="NetworkedNode3D" parent="." instance=ExtResource("4_x0qsq")]
