@@ -57,7 +57,8 @@ func lock_on_to(node: Node) -> void:
 	remote_transform.global_position = node.owner.global_position
 	remote_transform.remote_path = node.owner.get_path()
 	target = node
-	set_child_collisions_for(node.owner, false)
+#	set_child_collisions_for(node.owner, false)
+	add_exception(target)
 	
 	var grouper : NetworkedGrouperNode3D = Utils.crawl_up_for_grouper_node(node)
 	if grouper != null:
@@ -74,8 +75,8 @@ func unlock_from_target() -> void:
 	
 	if target == null or target.is_queued_for_deletion():
 		return
-	
-	set_child_collisions_for(target.owner, true)
+	clear_exceptions()
+#	set_child_collisions_for(target.owner, true)
 	target = null
 
 func set_child_collisions_for(node: Node3D, value: bool) -> void:

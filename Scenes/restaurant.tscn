@@ -72,7 +72,7 @@ spawn_limit = 10
 
 [node name="Restaurant" type="NavigationRegion3D" parent="." node_paths=PackedStringArray("entry_point", "exit_point", "tables_root", "menu")]
 navigation_mesh = ExtResource("3_wk033")
-navigation_layers = 17
+navigation_layers = 25
 script = ExtResource("4_kvbc8")
 entry_point = NodePath("EntryPoint")
 exit_point = NodePath("Exitpoint")
