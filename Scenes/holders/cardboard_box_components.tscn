@@ -181,6 +181,7 @@ shape = SubResource("ConcavePolygonShape3D_bvrne")
 
 [node name="StackingHolder" parent="." instance=ExtResource("3_3qd7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.055, 0.008, -0.055)
+max_amount = 20
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder"]
 shape = SubResource("BoxShape3D_ib372")
@@ -188,6 +189,7 @@ disabled = true
 
 [node name="StackingHolder2" parent="." instance=ExtResource("3_3qd7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055, 0.008, -0.055)
+max_amount = 20
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder2"]
 shape = SubResource("BoxShape3D_ib372")
@@ -195,6 +197,7 @@ disabled = true
 
 [node name="StackingHolder3" parent="." instance=ExtResource("3_3qd7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055, 0.008, 0.055)
+max_amount = 20
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder3"]
 shape = SubResource("BoxShape3D_ib372")
@@ -202,6 +205,7 @@ disabled = true
 
 [node name="StackingHolder4" parent="." instance=ExtResource("3_3qd7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.055, 0.008, 0.055)
+max_amount = 20
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder4"]
 shape = SubResource("BoxShape3D_ib372")

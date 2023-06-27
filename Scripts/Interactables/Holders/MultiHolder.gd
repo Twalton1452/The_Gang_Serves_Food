@@ -54,7 +54,7 @@ func is_holding(item: Node3D):
 
 func hold_item(item: Node3D) -> void:
 	for holder in holders:
-		if not holder.is_holding_item() and holder.is_collider_enabled():
+		if holder.has_space_for_item(item) and holder.is_collider_enabled():
 			holder.hold_item(item)
 			break
 
