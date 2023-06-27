@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=41 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -34,6 +34,7 @@
 [ext_resource type="PackedScene" uid="uid://c8g6844y5nmcr" path="res://Scenes/holders/cup_holder_wall.tscn" id="28_1erph"]
 [ext_resource type="PackedScene" uid="uid://bdc7qltxquec6" path="res://3d_models/delivery.glb" id="32_0lo6r"]
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="33_21kqw"]
+[ext_resource type="PackedScene" uid="uid://d3ikpq3sk08gg" path="res://Scenes/holders/cardboard_box_components.tscn" id="35_33772"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cju1x"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -497,6 +498,9 @@ tar_rot = Vector3(-90, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="delivery/delivery2/door/Rotatable"]
 shape = SubResource("ConvexPolygonShape3D_nh4e1")
+
+[node name="CardboardBox" parent="." instance=ExtResource("35_33772")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 0.5, 7.5)
 
 [connection signal="despawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_despawned"]
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]

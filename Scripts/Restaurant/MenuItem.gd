@@ -50,6 +50,9 @@ func extract_scene_ids_from(item: Node3D) -> Array[NetworkedIds.Scene]:
 			elif held_item is Holdable:
 				ids.push_back(held_item.SCENE_ID)
 				
+		# If its just the multiholder, there is no menu item
+		if ids.size() == 1:
+			return []
 		return ids
 	
 	if item is CombinedFoodHolder:

@@ -13,6 +13,7 @@ enum Scene {
 	# Kitchenware
 	PLATE = 50,
 	CUP = 51,
+	CARDBOARD_BOX = 52,
 	
 	# Appliances
 	DRINK_FOUNTAIN = 500,
