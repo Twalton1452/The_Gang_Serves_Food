@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=40 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://Scripts/AI/CustomerManager.gd" id="17_losm7"]
 [ext_resource type="PackedScene" uid="uid://dbux8704g4o5m" path="res://Scenes/components/food_combiner.tscn" id="18_32clx"]
 [ext_resource type="PackedScene" uid="uid://dyp4hy5noackj" path="res://Scenes/uneditable_floor.tscn" id="18_gm4k8"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="19_r5eyb"]
 [ext_resource type="PackedScene" uid="uid://dfg1k7gfdbgmw" path="res://Scenes/foods/patty.tscn" id="19_rvwxk"]
 [ext_resource type="PackedScene" uid="uid://c57h4qirynfrb" path="res://Scenes/holders/patty_box_components.tscn" id="23_ym7y0"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
@@ -379,8 +380,8 @@ rule = 5
 [node name="MenuItemStand" parent="Restaurant/Menu" instance=ExtResource("16_n3yt3")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1, 0, 1)
 
-[node name="MenuLabel3D" type="Label3D" parent="Restaurant/Menu"]
-transform = Transform3D(0.685742, 0, 0.727845, 0, 1, 0, -0.727845, 0, 0.685742, 1, 0.8, 1)
+[node name="MenuLabel3D" type="Label3D" parent="Restaurant/Menu/MenuItemStand"]
+transform = Transform3D(0.727845, 0, -0.685742, 0, 1, 0, 0.685742, 0, 0.727845, 0, 0.8, 0)
 text = "Menu"
 outline_size = 8
 
@@ -388,6 +389,10 @@ outline_size = 8
 
 [node name="Ground" parent="Restaurant" instance=ExtResource("18_gm4k8")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, -0.05, 0)
+
+[node name="NetworkedNode3D" parent="Restaurant" instance=ExtResource("19_r5eyb")]
+sync_position = false
+only_one_will_exist = true
 
 [node name="SpawnPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.45323, 0.397006, 2.64835)
@@ -486,9 +491,6 @@ only_one_will_exist = true
 
 [node name="delivery" parent="." instance=ExtResource("32_0lo6r")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.33585, -4.84288e-08, 7.15535)
-
-[node name="door" parent="delivery/delivery2" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1.475)
 
 [node name="Rotatable" parent="delivery/delivery2/door" index="0" instance=ExtResource("33_21kqw")]
 tar_rot = Vector3(-90, 0, 0)

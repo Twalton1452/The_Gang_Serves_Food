@@ -133,7 +133,7 @@ func _ready():
 		SCENE_ID = p_node.SCENE_ID
 		p_node.interacted.connect(_on_interaction)
 	# sync overrides because they likely have no other trigger to sync them
-	elif override_scene_id != NetworkedIds.Scene.NETWORKED:
+	elif override_scene_id != NetworkedIds.Scene.NETWORKED or only_one_will_exist:
 		changed = true
 	
 	if not is_multiplayer_authority():

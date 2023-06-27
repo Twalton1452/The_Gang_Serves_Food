@@ -7,6 +7,13 @@ class_name Chair
 var sitter : Node3D = null
 var sittable = true : set = set_sittable
 
+func set_sync_state(reader: ByteReader) -> void:
+	sittable = reader.read_bool()
+
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	writer.write_bool(sittable)
+	return writer
+
 func set_sittable(value: bool) -> void:
 	visible = value
 	sittable = value

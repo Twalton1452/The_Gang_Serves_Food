@@ -19,10 +19,14 @@ var color : Color : set = set_color, get = get_color
 var viable = true : get = get_viable
 
 func set_sync_state(reader: ByteReader) -> void:
+	for chair in chairs:
+		chair.set_sync_state(reader)
 	for holder in holders:
 		holder.set_sync_state(reader)
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	for chair in chairs:
+		chair.get_sync_state(writer)
 	for holder in holders:
 		holder.get_sync_state(writer)
 	

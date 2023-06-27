@@ -147,6 +147,7 @@ visible = false
 move_to = Vector3(0, 0.3, 0)
 
 [node name="NetworkedNode3D" parent="." instance=ExtResource("7_vfk4o")]
+override_scene_id = 700
 
 [editable path="ChairCloth"]
 [editable path="ChairCloth2"]
