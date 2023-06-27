@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=39 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -32,6 +32,7 @@
 [ext_resource type="PackedScene" uid="uid://bxmdymcsubnk" path="res://3d_models/Kenneys_Furniture/hoodLarge.glb" id="26_qebtt"]
 [ext_resource type="PackedScene" uid="uid://c8g6844y5nmcr" path="res://Scenes/holders/cup_holder_wall.tscn" id="28_1erph"]
 [ext_resource type="PackedScene" uid="uid://bdc7qltxquec6" path="res://3d_models/delivery.glb" id="32_0lo6r"]
+[ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="33_21kqw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cju1x"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -48,6 +49,9 @@ tonemap_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26lyt"]
 albedo_color = Color(0.913725, 0.701961, 0.435294, 1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_nh4e1"]
+points = PackedVector3Array(0.55, 0, 0.025, 0.55, -1, 0.025, 0.55, 0, -0.025, -0.55, 0, 0.025, 0.55, -1, -0.025, -0.55, -1, 0.025, -0.55, 0, -0.025, -0.55, -1, -0.025)
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_sgx7f")
@@ -482,6 +486,15 @@ only_one_will_exist = true
 
 [node name="delivery" parent="." instance=ExtResource("32_0lo6r")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.33585, -4.84288e-08, 7.15535)
+
+[node name="door" parent="delivery/delivery2" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1.475)
+
+[node name="Rotatable" parent="delivery/delivery2/door" index="0" instance=ExtResource("33_21kqw")]
+tar_rot = Vector3(-90, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="delivery/delivery2/door/Rotatable"]
+shape = SubResource("ConvexPolygonShape3D_nh4e1")
 
 [connection signal="despawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_despawned"]
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]
