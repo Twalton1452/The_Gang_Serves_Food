@@ -53,6 +53,7 @@ collision_mask = 0
 script = ExtResource("1_wjj1o")
 rule = 4
 stacking_spacing = Vector3(0, 0.013, 0)
+stacking_spacing_offset = Vector3(0, -0.003, 0)
 cook_state_scores = {
 0: 0.5,
 1: 1.0,

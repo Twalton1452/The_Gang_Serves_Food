@@ -15,6 +15,7 @@ enum CombineRule {
 
 @export var rule : CombineRule = CombineRule.ANYWHERE
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
+@export var stacking_spacing_offset = Vector3(0.0, 0.001, 0.0)
 
 @export_category("Scoring")
 
@@ -25,6 +26,11 @@ enum CombineRule {
 }
 
 var score : float : get = get_score
+
+func _ready():
+	super()
+	stacking_spacing = Vector3(0.0, (obj_to_color.get_aabb().size.y * obj_to_color.scale.y), 0.0) + stacking_spacing_offset
+#	print(name, " ", obj_to_color.get_aabb().size.y, " ", stacking_spacing)
 
 func get_score() -> float:
 	return cook_state_scores.get(cook_state, 0.0)

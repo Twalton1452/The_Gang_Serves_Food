@@ -13,7 +13,6 @@ func after_sync() -> void:
 func _ready():
 	super()
 	stack_items.call_deferred()
-	
 	# Disable the child colliders on the MultiHolder's Holder's
 	# So things like Plate's can't be given food while they are stacked
 	var i : int = 0

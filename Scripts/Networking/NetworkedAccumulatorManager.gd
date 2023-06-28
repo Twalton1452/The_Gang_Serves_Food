@@ -1,6 +1,8 @@
 extends Node
 
-## Autoloaded
+## UNUSED... FOR NOW
+## Timers are being handled in Accumulator.gd because they could have different intervals
+## There could be fast/slow Accumulators and a one size fits all Timer wouldn't work
 
 ## Class to handle all of the RPC's related to Accumulator spawning
 
