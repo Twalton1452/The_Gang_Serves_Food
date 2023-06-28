@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bdc7qltxquec6"
-path="res://.godot/imported/delivery.glb-982cf340b1b6e8bf1d5a088b8abf2c5c.scn"
+uid="uid://bi2m3rrs65uq5"
+path="res://.godot/imported/coconut.glb-b38151f2a4f66f8a66ea6c94bf2395d8.scn"
 
 [deps]
 
-source_file="res://3d_models/delivery.glb"
-dest_files=["res://.godot/imported/delivery.glb-982cf340b1b6e8bf1d5a088b8abf2c5c.scn"]
+source_file="res://3d_models/Kenneys_Food/coconut.glb"
+dest_files=["res://.godot/imported/coconut.glb-b38151f2a4f66f8a66ea6c94bf2395d8.scn"]
 
 [params]
 
@@ -28,12 +28,5 @@ animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
 import_script/path=""
-_subresources={
-"nodes": {
-"PATH:delivery2/body": {
-"generate/physics": true,
-"physics/shape_type": 2
-}
-}
-}
+_subresources={}
 gltf/embedded_image_handling=1

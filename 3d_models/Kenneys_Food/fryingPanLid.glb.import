@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bdc7qltxquec6"
-path="res://.godot/imported/delivery.glb-982cf340b1b6e8bf1d5a088b8abf2c5c.scn"
+uid="uid://cm435u4fmeq8r"
+path="res://.godot/imported/fryingPanLid.glb-9b5bf762054ae3845198f1e6e4d5bb35.scn"
 
 [deps]
 
-source_file="res://3d_models/delivery.glb"
-dest_files=["res://.godot/imported/delivery.glb-982cf340b1b6e8bf1d5a088b8abf2c5c.scn"]
+source_file="res://3d_models/Kenneys_Food/fryingPanLid.glb"
+dest_files=["res://.godot/imported/fryingPanLid.glb-9b5bf762054ae3845198f1e6e4d5bb35.scn"]
 
 [params]
 
@@ -28,12 +28,5 @@ animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
 import_script/path=""
-_subresources={
-"nodes": {
-"PATH:delivery2/body": {
-"generate/physics": true,
-"physics/shape_type": 2
-}
-}
-}
+_subresources={}
 gltf/embedded_image_handling=1
