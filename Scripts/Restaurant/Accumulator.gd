@@ -33,8 +33,10 @@ func set_to_accumulate_scene(value: PackedScene) -> void:
 	# Without this display/holder are null
 	if not is_inside_tree():
 		await ready
-	
-	display.add_child(to_accumulate_scene.instantiate())
+	if to_accumulate_scene == null:
+		display.get_child(-1).queue_free()
+	else:
+		display.add_child(to_accumulate_scene.instantiate())
 	holder.ingredient_scene = to_accumulate_scene
 
 func _ready() -> void:
