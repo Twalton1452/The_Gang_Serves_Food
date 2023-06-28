@@ -25,6 +25,7 @@ func _ready():
 
 func _on_game_state_changed() -> void:
 	if GameState.state == GameState.Phase.OPEN_FOR_BUSINESS:
+		max_party_size = restaurant.get_max_party_size_for_tables()
 		can_spawn = true
 		is_spawning = true
 		start_customer_spawning()
@@ -89,12 +90,26 @@ func spawn_party(party_size: int) -> void:
 	parties.push_back(new_party)
 
 func _on_table_became_available(_table: Table):
+	var found = false
 	for party in parties:
 		if party == null or party.is_queued_for_deletion():
 			continue
 		
 		if party.state == CustomerParty.PartyState.WAITING_FOR_TABLE:
 			if check_for_available_table_for(party):
+				found = true
+				break
+	
+	if found:
+		return
+		
+	for party in parties:
+		if party == null or party.is_queued_for_deletion():
+			continue
+	
+		if party.state == CustomerParty.PartyState.WAITING_IN_LINE:
+			if check_for_available_table_for(party):
+				found = true
 				break
 
 func check_for_available_table_for(party: CustomerParty) -> bool:

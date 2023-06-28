@@ -82,6 +82,14 @@ func _on_game_state_changed() -> void:
 func _on_table_available(table: Table):
 	table_became_available.emit(table)
 
+func get_max_party_size_for_tables() -> int:
+	var max_party_size = 0
+	for table in tables:
+		var available_chairs = table.available_chairs()
+		if available_chairs.size() > max_party_size:
+			max_party_size = available_chairs.size()
+	return max_party_size
+
 func get_next_available_table_for(party: CustomerParty) -> Table:
 	for table in tables:
 		if table.is_available_for(len(party.customers)):
