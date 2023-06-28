@@ -27,3 +27,4 @@ priority_sync_order = 5
 override_scene_id = 1003
 
 [node name="AccumulateTimer" type="Timer" parent="." index="4"]
+wait_time = 10.0

@@ -140,36 +140,36 @@ func visual_representation():
 	floater.move_transition_to_target = Tween.TRANS_BACK
 	display_order.add_child(floater)
 	
-	if display_order is MultiHolder:
-		for item in display_order.get_held_items():
-			if item is CombinedFoodHolder:
-#				item.scale.z = 0.1
-				for food in item.get_held_items():
-					#set_transparency_for_food_to(food, 0.7)
-					set_material_overlay_for_food(food)
-			elif item is Food:
-				set_material_overlay_for_food(item)
-#				item.scale.z = 0.1
-				#set_transparency_for_food_to(item, 0.7)
-			elif item is Drink:
-				set_material_overlay_for_drink(item)
-#				item.scale.y = 0.5
-				#set_transparency_for_drink_to(item, 0.7)
-	else:
-		if display_order is CombinedFoodHolder:
-#			display_order.scale.z = 0.1
-			for food in display_order.get_held_items():
-				set_material_overlay_for_food(food)
-				#set_transparency_for_food_to(food, 0.7)
-
-		elif display_order is Food:
-			set_material_overlay_for_food(display_order)
-#			display_order.scale.z = 0.1
-			#set_transparency_for_food_to(display_order, 0.7)
-		elif display_order is Drink:
-			set_material_overlay_for_drink(display_order)
-#			display_order.scale.y = 0.5
-			#set_transparency_for_drink_to(display_order, 0.7)
+#	if display_order is MultiHolder:
+#		for item in display_order.get_held_items():
+#			if item is CombinedFoodHolder:
+##				item.scale.z = 0.1
+#				for food in item.get_held_items():
+#					#set_transparency_for_food_to(food, 0.7)
+#					set_material_overlay_for_food(food)
+#			elif item is Food:
+#				set_material_overlay_for_food(item)
+##				item.scale.z = 0.1
+#				#set_transparency_for_food_to(item, 0.7)
+#			elif item is Drink:
+#				set_material_overlay_for_drink(item)
+##				item.scale.y = 0.5
+#				#set_transparency_for_drink_to(item, 0.7)
+#	else:
+#		if display_order is CombinedFoodHolder:
+##			display_order.scale.z = 0.1
+#			for food in display_order.get_held_items():
+#				set_material_overlay_for_food(food)
+#				#set_transparency_for_food_to(food, 0.7)
+#
+#		elif display_order is Food:
+#			set_material_overlay_for_food(display_order)
+##			display_order.scale.z = 0.1
+#			#set_transparency_for_food_to(display_order, 0.7)
+#		elif display_order is Drink:
+#			set_material_overlay_for_drink(display_order)
+##			display_order.scale.y = 0.5
+#			#set_transparency_for_drink_to(display_order, 0.7)
 
 func set_material_overlay_for_food(food: Food):
 	food.obj_to_color.material_overlay = order_visual_mat

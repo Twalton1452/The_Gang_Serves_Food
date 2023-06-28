@@ -6,8 +6,6 @@ class_name Accumulator
 @onready var display = $Display
 @onready var accumulate_timer = $AccumulateTimer
 
-const ACCUMULATOR_GROUP = "Accumulators"
-
 var holder : StackingHolder = null
 
 func set_sync_state(reader: ByteReader) -> void:
