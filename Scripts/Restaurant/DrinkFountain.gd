@@ -12,8 +12,8 @@ var dispensers : Array[DrinkDispenser] = []
 func set_sync_state(reader: ByteReader) -> void:
 	var is_timer_playing = reader.read_bool()
 	if is_timer_playing:
-		# Instead of setting the timer to this tick rate and then adding logic to 
-		# set it back after the tick, just simulate a tick
+		# Instead of setting the Timer Node to this tick rate and then adding logic to 
+		# set it back to its original tick rate, just simulate a tick
 		var time_left = reader.read_small_float()
 		await get_tree().create_timer(time_left, false).timeout
 		_on_fill_rate_tick()

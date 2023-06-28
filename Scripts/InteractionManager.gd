@@ -33,6 +33,7 @@ func resolve_player_action(player: Player, player_action: Player.Action) -> void
 	var p_id = player.name.to_int()
 	var action: Callable = not_implemented_action
 	
+	# TODO: Player can swap between Layout editing and Interactable Editing
 	if GameState.state == GameState.Phase.OPEN_FOR_BUSINESS:
 		action = get_open_for_business_action(player_action)
 	elif GameState.state == GameState.Phase.EDITING_RESTAURANT:

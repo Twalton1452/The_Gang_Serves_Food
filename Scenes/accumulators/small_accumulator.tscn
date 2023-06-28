@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccxgufwft0jbd"]
+
+[ext_resource type="PackedScene" uid="uid://8we5xcrxwdfi" path="res://3d_models/ShortPlatform.blend" id="1_3gnep"]
+[ext_resource type="Script" path="res://Scripts/Restaurant/Accumulator.gd" id="2_sd56l"]
+[ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="3_7qxm2"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="4_51b17"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fvh4c"]
+size = Vector3(0.373357, 0.0224799, 0.28763)
+
+[node name="SmallAccumulator" instance=ExtResource("1_3gnep")]
+script = ExtResource("2_sd56l")
+
+[node name="Display" type="Node3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.111, 0.170312)
+
+[node name="StackingHolder" parent="." index="2" instance=ExtResource("3_7qxm2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.124601, 0)
+max_amount = 10
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StackingHolder" index="0"]
+shape = SubResource("BoxShape3D_fvh4c")
+disabled = true
+
+[node name="NetworkedNode3D" parent="." index="3" instance=ExtResource("4_51b17")]
+priority_sync_order = 5
+override_scene_id = 1003
+
+[node name="AccumulateTimer" type="Timer" parent="." index="4"]

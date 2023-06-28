@@ -21,6 +21,9 @@ func get_held_items() -> Array[Node]:
 func has_space_for_item(_item: Node3D) -> bool:
 	return len(get_held_items()) == 0
 
+func has_space_for_another_item() -> bool:
+	return len(get_held_items()) == 0
+
 func is_holding_item() -> bool:
 	return len(get_held_items()) > 0
 

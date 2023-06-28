@@ -89,16 +89,16 @@ func _on_game_state_changed() -> void:
 
 func switch_to_interactable_hand() -> void:
 	# TODO: can't switch back to OPEN_FOR_BUSINESS if player is holding anything
-	if holder.is_holding_item():
-		await holder.released_item
+#	if holder.is_holding_item():
+#		await holder.released_item
 	
 	interact_ray_cast.enabled = true
 	edit_mode_ray_cast.disable()
 
 func switch_to_edit_mode_hand() -> void:
 	# TODO: can't switch back to OPEN_FOR_BUSINESS if player is holding anything
-	if holder.is_holding_item():
-		await holder.released_item
+#	if holder.is_holding_item():
+#		await holder.released_item
 	
 	interact_ray_cast.enabled = false
 	edit_mode_ray_cast.enable()

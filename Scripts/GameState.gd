@@ -158,14 +158,18 @@ func _unhandled_input(event):
 func cleanup_disconnecting_player(p_id: int):
 	var player = get_player_by_id(p_id)
 	# Preserve the Item the Disconnecting player was holding
+	move_player_held_item_to_spawn(player)
+
+	player.hide()
+
+func move_player_held_item_to_spawn(player: Player) -> void:
+	# Preserve the Item the Disconnecting player was holding
 	if player.holder.is_holding_item():
 		var interactable : Interactable = player.holder.get_held_item()
 		interactable.reparent(level)
 		interactable.position = level.spawn_point.position
 		interactable.rotation = level.spawn_point.rotation
 		interactable.enable_collider()
-
-	player.hide()
 
 @rpc("authority", "reliable")
 func notify_money_changed(value: int):

@@ -29,6 +29,7 @@ func match_id_to_scene(id: NetworkedIds.Scene) -> Resource:
 		NetworkedIds.Scene.INTERACTABLE:
 			print_debug("Spawned an INTERACTABLE when we probably shouldnt have")
 			return load("res://Scenes/components/interactable.tscn")
+		NetworkedIds.Scene.SMALL_ACCUMULATOR: return load("res://Scenes/accumulators/small_accumulator.tscn")
 
 		NetworkedIds.Scene.CUSTOMER: return load("res://Scenes/customer.tscn")
 		NetworkedIds.Scene.CUSTOMER_PARTY: return load("res://Scenes/components/party.tscn")

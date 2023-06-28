@@ -40,6 +40,9 @@ func acceptable_item(item: Node3D) -> bool:
 func has_space_for_item(item: Node3D) -> bool:
 	return acceptable_item(item) and len(get_held_items()) < max_amount
 
+func has_space_for_another_item() -> bool:
+	return len(get_held_items()) < max_amount
+
 func check_toggle_fallback_collider():
 	if is_holding_item():
 		disable_collider()

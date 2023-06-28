@@ -8,7 +8,7 @@ var patience_timer : Timer
 var patience_tick_rate_seconds = 1.0
 
 func _ready():
-	# For Autoload's this isn't reliable
+	# For Autoload's this isn't reliable because authority is set after the player connects
 	if not is_multiplayer_authority():
 		return
 	

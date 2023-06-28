@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=43 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -34,6 +34,7 @@
 [ext_resource type="PackedScene" uid="uid://choukybprh7d7" path="res://Scenes/holders/cabinet_single_components.tscn" id="31_ryu4v"]
 [ext_resource type="PackedScene" uid="uid://bdc7qltxquec6" path="res://3d_models/delivery.glb" id="32_0lo6r"]
 [ext_resource type="PackedScene" uid="uid://o1f1xbpgrebw" path="res://Scenes/holders/short_platform.tscn" id="32_xhahs"]
+[ext_resource type="PackedScene" uid="uid://ccxgufwft0jbd" path="res://Scenes/accumulators/small_accumulator.tscn" id="33_3uitd"]
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="33_21kqw"]
 [ext_resource type="PackedScene" uid="uid://d3ikpq3sk08gg" path="res://Scenes/holders/cardboard_box_components.tscn" id="35_33772"]
 
@@ -440,6 +441,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79571, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.354289, 0, 0)
 
 [node name="hoodLarge" parent="Testing/kitchenStove" instance=ExtResource("26_qebtt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.86, 0)
 
 [node name="kitchenCabinet13" parent="Testing" instance=ExtResource("10_b6sav")]
 transform = Transform3D(1, 0, -1.74845e-07, 0, 1, 0, 1.74845e-07, 0, 1, -1.66698, 0, 3.99007)
@@ -485,6 +487,10 @@ transform = Transform3D(1.053e-07, 0, -1, 0, 1, 0, 1, 0, 1.053e-07, 5.81927, 0, 
 
 [node name="ShortPlatform5" parent="Testing" instance=ExtResource("32_xhahs")]
 transform = Transform3D(1.053e-07, 0, -1, 0, 1, 0, 1, 0, 1.053e-07, 5.81927, 0, 2.58)
+
+[node name="SmallAccumulator" parent="Testing" instance=ExtResource("33_3uitd")]
+transform = Transform3D(-1, 0, 8.74226e-08, 0, 1, 0, -8.74226e-08, 0, -1, 0.54186, 0, 3.4998)
+to_accumulate_scene = ExtResource("19_rvwxk")
 
 [node name="NetworkedNode3D" type="Node" parent="."]
 script = ExtResource("2_7dixm")
