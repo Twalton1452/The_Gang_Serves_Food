@@ -32,6 +32,7 @@ func _ready():
 	GameState.register_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable, "The Restaurant is not Operable!")
 	path_testing_customer = NetworkingUtils.spawn_client_only_node(load("res://Scenes/customer.tscn"), self)
 	path_testing_customer.hide()
+	InteractionManager.edit_mode_node_rotated.connect(_on_edit_mode_node_rotated)
 	InteractionManager.edit_mode_node_bought.connect(_on_edit_mode_node_bought)
 	InteractionManager.edit_mode_node_placed.connect(_on_edit_mode_node_placed)
 	GameState.state_changed.connect(_on_game_state_changed)
@@ -59,6 +60,9 @@ func _on_table_exiting_tables_tree(table: Node) -> void:
 	if index == -1:
 		return
 	tables.remove_at(index)
+
+func _on_edit_mode_node_rotated(node: Node) -> void:
+	_on_edit_mode_node_placed(node)
 
 func _on_edit_mode_node_bought(node: Node) -> void:
 	_on_edit_mode_node_placed(node)
