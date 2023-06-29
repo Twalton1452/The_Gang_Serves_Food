@@ -50,9 +50,20 @@ func resolve_player_action(player: Player, player_action: Player.Action) -> void
 
 func lock_on_to_node(player: Player, node: Node) -> void:
 	player.edit_mode_ray_cast.lock_on_to(node)
+	
+	# Steal other guy's node
+	for p in GameState.players:
+		var other_player : Player = GameState.players[p]
+		if other_player == player:
+			continue
+		
+		if other_player.edit_mode_ray_cast.get_held_editable_path() == player.edit_mode_ray_cast.get_held_editable_path():
+			release_placing_node(other_player)
+			break
 
 func release_placing_node(player: Player) -> void:
-	edit_mode_node_placed.emit(player.edit_mode_ray_cast.get_held_editable_node())
+	var held_node = player.edit_mode_ray_cast.get_held_editable_node()
+	edit_mode_node_placed.emit(held_node)
 	player.edit_mode_ray_cast.unlock_from_target()
 
 @rpc("any_peer")
