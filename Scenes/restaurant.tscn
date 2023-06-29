@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=39 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -23,6 +23,8 @@
 [ext_resource type="PackedScene" uid="uid://dyp4hy5noackj" path="res://Scenes/uneditable_floor.tscn" id="18_gm4k8"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="19_r5eyb"]
 [ext_resource type="PackedScene" uid="uid://dfg1k7gfdbgmw" path="res://Scenes/foods/patty.tscn" id="19_rvwxk"]
+[ext_resource type="PackedScene" uid="uid://8lkh6825ij50" path="res://Scenes/foods/top_bun.tscn" id="21_bqj26"]
+[ext_resource type="PackedScene" uid="uid://blqi6mmnnc2we" path="res://Scenes/foods/bottom_bun.tscn" id="22_7ioa0"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
 [ext_resource type="PackedScene" uid="uid://cmy2yoow08hoa" path="res://Scenes/drink_fountain.tscn" id="26_cud0u"]
 [ext_resource type="PackedScene" uid="uid://bxmdymcsubnk" path="res://3d_models/Kenneys_Furniture/hoodLarge.glb" id="26_qebtt"]
@@ -174,15 +176,20 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.019
 [node name="kitchenCabinetSingle" parent="Restaurant/Cabinets" instance=ExtResource("31_ryu4v")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.817, 0, 0.215)
 
-[node name="kitchenCabinetSingle2" parent="Restaurant/Cabinets" instance=ExtResource("31_ryu4v")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 1.247, 0, 0.215)
-
 [node name="kitchenCabinetSingle3" parent="Restaurant/Cabinets" instance=ExtResource("31_ryu4v")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -0.043, 0, 0.215)
 
-[node name="SmallAccumulator" parent="Restaurant/Cabinets" instance=ExtResource("33_3uitd")]
-transform = Transform3D(-1.49012e-07, 0, -1, 0, 1, 0, 1, 0, -1.49012e-07, 1.27286, 0, -0.5422)
+[node name="SmallPattyAccumulator" parent="Restaurant/Cabinets" instance=ExtResource("33_3uitd")]
+transform = Transform3D(-1.49012e-07, 0, -1, 0, 1, 0, 1, 0, -1.49012e-07, 1.27286, 0, -0.6712)
 to_accumulate_scene = ExtResource("19_rvwxk")
+
+[node name="SmallTopBunAccumulator" parent="Restaurant/Cabinets" instance=ExtResource("33_3uitd")]
+transform = Transform3D(-1.49012e-07, 0, -1, 0, 1, 0, 1, 0, -1.49012e-07, 1.27286, 0, -1.0582)
+to_accumulate_scene = ExtResource("21_bqj26")
+
+[node name="SmallBottomBunAccumulator" parent="Restaurant/Cabinets" instance=ExtResource("33_3uitd")]
+transform = Transform3D(-1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 1.27286, 0, -0.2842)
+to_accumulate_scene = ExtResource("22_7ioa0")
 
 [node name="Walls" type="Node3D" parent="Restaurant"]
 script = ExtResource("6_mv2b7")
