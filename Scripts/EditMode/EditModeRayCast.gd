@@ -12,6 +12,7 @@ class_name EditModeRayCast
 @onready var remote_transform : RemoteTransform3D = $RemoteTransform3D
 ## Raycast for pointing at the ground to create a snapping effect
 @onready var uneditable_ray_cast : RayCast3D = $UneditableRayCast3D
+@onready var audio_player : AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 # Should extract this to a parent class alongside the highlight code in InteractRay
 var outline_material : StandardMaterial3D = preload("res://Materials/Grow_Outline_mat.tres")
@@ -66,6 +67,7 @@ func lock_on_to(node: Node) -> void:
 	var grouper : NetworkedGrouperNode3D = Utils.crawl_up_for_grouper_node(node)
 	if grouper != null:
 		snapping = grouper.snapping_spacing
+#	audio_player.play()
 
 func unlock_from_target() -> void:
 	remote_transform.remote_path = ^""
@@ -76,11 +78,12 @@ func unlock_from_target() -> void:
 		hide_outline(looking_at)
 		looking_at = null
 	
+	clear_exceptions()
 	if target == null or target.is_queued_for_deletion():
 		return
-	clear_exceptions()
 #	set_child_collisions_for(target.owner, true)
 	target = null
+#	audio_player.play()
 
 func set_child_collisions_for(node: Node3D, value: bool) -> void:
 	node.propagate_call("set_collision_layer_value", [1, value], true)
