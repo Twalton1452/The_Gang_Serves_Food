@@ -52,7 +52,10 @@ var combined_food_multiplier : float = 1.5 ## multiply per food in the stack
 
 func set_sync_state(reader: ByteReader):
 	set_money(reader.read_float())
+	var current_validations = STATE_VALIDATIONS
+	STATE_VALIDATIONS = {}
 	state = reader.read_int() as Phase
+	STATE_VALIDATIONS = current_validations
 
 func get_sync_state() -> ByteWriter:
 	var writer : ByteWriter = ByteWriter.new()
