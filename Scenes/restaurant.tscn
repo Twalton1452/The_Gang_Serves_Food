@@ -212,6 +212,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8642, 0.00454932, -2.68305)
 
 [node name="OutsideWalls" type="Node3D" parent="Restaurant/Building"]
 script = ExtResource("6_mv2b7")
+snapping_spacing = Vector3(0.25, 0.25, 0.25)
 
 [node name="wallWindowSlide2" parent="Restaurant/Building/OutsideWalls" instance=ExtResource("11_b8503")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -4.5)
