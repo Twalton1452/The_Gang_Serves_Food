@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=37 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -27,8 +27,12 @@
 [ext_resource type="PackedScene" uid="uid://cmy2yoow08hoa" path="res://Scenes/drink_fountain.tscn" id="26_cud0u"]
 [ext_resource type="PackedScene" uid="uid://bxmdymcsubnk" path="res://3d_models/Kenneys_Furniture/hoodLarge.glb" id="26_qebtt"]
 [ext_resource type="PackedScene" uid="uid://c8g6844y5nmcr" path="res://Scenes/holders/cup_holder_wall.tscn" id="28_1erph"]
+[ext_resource type="PackedScene" uid="uid://b2ys78r5xa42u" path="res://3d_models/Kenneys_Roads/road_straight.glb" id="30_66431"]
 [ext_resource type="PackedScene" uid="uid://choukybprh7d7" path="res://Scenes/holders/cabinet_single_components.tscn" id="31_ryu4v"]
+[ext_resource type="PackedScene" uid="uid://bt336ddudkjrm" path="res://3d_models/Kenneys_Roads/road_intersectionPath.glb" id="31_t46ku"]
+[ext_resource type="PackedScene" uid="uid://bouunqb0yih0k" path="res://3d_models/Kenneys_Roads/road_end.glb" id="32_l47v6"]
 [ext_resource type="PackedScene" uid="uid://ccxgufwft0jbd" path="res://Scenes/accumulators/small_accumulator.tscn" id="33_3uitd"]
+[ext_resource type="PackedScene" uid="uid://b0pf1ssonatu" path="res://3d_models/Kenneys_Roads/road_bend.glb" id="33_tubjy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cju1x"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -74,13 +78,13 @@ sync_position = false
 only_one_will_exist = true
 
 [node name="EntryPoint" type="Marker3D" parent="Restaurant"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.23241, 0.0952672, -5.51213)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.23241, 0.0952672, -8.01213)
 
 [node name="Exitpoint" type="Marker3D" parent="Restaurant"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.30751, 0.0952667, -6.6177)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.30751, 0.0952667, -8.8677)
 
 [node name="CustomerManager" type="Node3D" parent="Restaurant"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.6535, 0.268635, -6.67151)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.6535, 0.268635, -8.92151)
 script = ExtResource("17_losm7")
 max_parties = 10
 max_party_size = 4
@@ -115,7 +119,7 @@ outline_size = 8
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, -0.1, 0)
 
 [node name="Archway" parent="Restaurant/Ground" instance=ExtResource("11_4mj00")]
-transform = Transform3D(-2.18557e-09, 0, -0.05, 0, 1, 0, 0.05, 0, -2.18557e-09, 0.5375, 0.0182444, -0.3375)
+transform = Transform3D(-2.18557e-09, 0, -0.05, 0, 1, 0, 0.05, 0, -2.18557e-09, 0.5375, 0.0182444, -0.45)
 
 [node name="NavigationLink3D" type="NavigationLink3D" parent="Restaurant/Ground/Archway"]
 bidirectional = false
@@ -123,7 +127,7 @@ navigation_layers = 17
 start_position = Vector3(0, 0, 2)
 
 [node name="Archway2" parent="Restaurant/Ground" instance=ExtResource("11_4mj00")]
-transform = Transform3D(-2.18557e-09, 0, -0.05, 0, 1, 0, 0.05, 0, -2.18557e-09, -0.5375, 0.0182444, -0.3375)
+transform = Transform3D(-2.18557e-09, 0, -0.05, 0, 1, 0, 0.05, 0, -2.18557e-09, -0.5375, 0.0182444, -0.45)
 
 [node name="NavigationLink3D" type="NavigationLink3D" parent="Restaurant/Ground/Archway2"]
 bidirectional = false
@@ -531,6 +535,24 @@ script = ExtResource("2_7dixm")
 sync_position = false
 priority_sync_order = 0
 only_one_will_exist = true
+
+[node name="Road" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -2.25)
+
+[node name="road_straight" parent="Road" instance=ExtResource("30_66431")]
+transform = Transform3D(12, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 0, -7.5)
+
+[node name="road_straight2" parent="Road" instance=ExtResource("30_66431")]
+transform = Transform3D(8, 0, 0, 0, 1, 0, 0, 0, 1, -6.75, 0, -7.5)
+
+[node name="road_intersectionPath" parent="Road" instance=ExtResource("31_t46ku")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.25, 0, -6)
+
+[node name="road_end" parent="Road" instance=ExtResource("32_l47v6")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -3.25, 0, -5)
+
+[node name="road_bend" parent="Road" instance=ExtResource("33_tubjy")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3, 0, -5.75)
 
 [connection signal="despawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_despawned"]
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]
