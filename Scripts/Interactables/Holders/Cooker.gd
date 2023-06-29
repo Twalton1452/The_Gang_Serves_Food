@@ -6,8 +6,10 @@ class_name CookerComponent
 # When cooking multiple items on the same Cooker, incur loss of power
 # to encourage individual cooking of items
 @export var power_loss_item_count_begin = 2
+@export var door_rotatable : Rotatable
 
 @onready var tick_timer : Timer = $CookingTicksTimer
+
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
@@ -27,9 +29,26 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 		writer.write_small_float(tick_timer.time_left)
 	return writer
 
+func _ready() -> void:
+	super()
+	if door_rotatable != null:
+		door_rotatable.rotated.connect(_on_door_rotated)
+
+func _on_door_rotated() -> void:
+	if door_rotatable.is_rotated:
+		stop_cooking()
+	else:
+		begin_cooking()
+
+func can_cook() -> bool:
+	var has_door = door_rotatable != null
+	if has_door:
+		return not door_rotatable.is_rotated
+	return true
+
 func hold_item(node: Node3D):
 	super(node)
-	if node is Cookable or node is MultiHolder or node is CombinedFoodHolder:
+	if (node is Cookable or node is MultiHolder or node is CombinedFoodHolder) and can_cook():
 		begin_cooking()
 	else:
 		#print("%s isn't cookable, but i'll hold on to it" % node.name)

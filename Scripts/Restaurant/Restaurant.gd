@@ -30,12 +30,12 @@ func _exit_tree() -> void:
 
 func _ready():
 	GameState.register_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable, "The Restaurant is not Operable!")
+	GameState.state_changed.connect(_on_game_state_changed)
 	path_testing_customer = NetworkingUtils.spawn_client_only_node(load("res://Scenes/customer.tscn"), self)
 	path_testing_customer.hide()
 	InteractionManager.edit_mode_node_rotated.connect(_on_edit_mode_node_rotated)
 	InteractionManager.edit_mode_node_bought.connect(_on_edit_mode_node_bought)
 	InteractionManager.edit_mode_node_placed.connect(_on_edit_mode_node_placed)
-	GameState.state_changed.connect(_on_game_state_changed)
 	new_orderable_available.connect(menu._on_new_orderable)
 	
 	# probablty not going to start with a drink fountain
@@ -80,8 +80,7 @@ func _on_edit_mode_node_placed(_node: Node) -> void:
 		i += 1
 
 func _on_game_state_changed() -> void:
-	if GameState.state == GameState.Phase.EDITING_RESTAURANT:
-		pass
+	pass
 
 func _on_table_available(table: Table):
 	table_became_available.emit(table)
