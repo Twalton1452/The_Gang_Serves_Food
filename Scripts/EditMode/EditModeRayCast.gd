@@ -51,6 +51,9 @@ func get_held_editable_path() -> NodePath:
 func get_held_editable_node() -> Node:
 	return get_node_or_null(get_held_editable_path())
 
+## Maybe restrictions in the future
+func can_place_node() -> bool:
+	return true
 
 ## Called from InteractionManager
 func lock_on_to(node: Node) -> void:

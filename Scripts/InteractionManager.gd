@@ -150,7 +150,10 @@ func resolve_edit_mode_interaction(p_id: int):
 	# Placement
 	if player.edit_mode_ray_cast.is_holding_editable:
 		var held_node = player.edit_mode_ray_cast.get_held_editable_node()
-		release_placing_node(player)
+		if player.edit_mode_ray_cast.can_place_node():
+			release_placing_node(player)
+		else:
+			return
 		
 		writer.write_path_to(held_node)
 		writer.write_vector3(held_node.global_position)
@@ -252,7 +255,11 @@ func resolve_buying_held_item(p_id: int) -> void:
 	if node.scene_file_path.is_empty():
 		return
 	
-	GameState.subtract_money(1)
+	var cost = 1
+#	if GameState.money - cost < 0:
+#		return
+	
+	GameState.subtract_money(cost)
 	var data = {
 		"global_position": node.global_position,
 		"global_rotation": node.global_rotation,
