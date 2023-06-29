@@ -119,7 +119,6 @@ func _physics_process(_delta):
 		else:
 			show_outline(get_collider())
 			looking_at_top_y = calculate_the_top_y_value_of(get_collider().get_parent())
-			
 		looking_at = get_collider()
 	
 	if not is_holding_editable:
@@ -127,7 +126,7 @@ func _physics_process(_delta):
 	
 	if is_colliding():
 		remote_transform.global_position = correct_position(get_collision_point())
-		remote_transform.global_position.y = snapped(remote_transform.global_position.y, looking_at_top_y)
+		remote_transform.global_position.y = snapped(get_collision_point().y, looking_at_top_y)
 	elif uneditable_ray_cast.is_colliding():
 		remote_transform.global_position = correct_position(uneditable_ray_cast.get_collision_point())
 	else:
