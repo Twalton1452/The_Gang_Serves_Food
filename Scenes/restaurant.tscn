@@ -128,7 +128,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0180563, 0)
 transform = Transform3D(-1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 0.387, 0, 0.215)
 
 [node name="hoodLarge" parent="Restaurant/Cabinets/kitchenStove" instance=ExtResource("26_qebtt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.86, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.939811, 0)
 
 [node name="kitchenCabinetDrinkFountain" parent="Restaurant/Cabinets" instance=ExtResource("10_b6sav")]
 transform = Transform3D(-1, 0, 2.62268e-07, 0, 1, 0, -2.62268e-07, 0, -1, -2.22418, 0, 0.255023)
@@ -466,7 +466,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 
 [node name="lampSquareCeiling" parent="Restaurant/Roof" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.206264, -0.27549, -2.88455)
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.206264, -0.00402009, -2.88455)
 
 [node name="OmniLight3D" parent="Restaurant/Roof/lampSquareCeiling" index="1"]
 light_color = Color(0.94902, 0.929412, 0.894118, 1)
@@ -475,7 +475,7 @@ omni_range = 4.343
 omni_attenuation = 0.5
 
 [node name="lampSquareCeiling2" parent="Restaurant/Roof" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(0.999998, 0, 0, 0, 1, 0, 0, 0, 0.999998, -3.20627, -0.27549, -2.88455)
+transform = Transform3D(0.999998, 0, 0, 0, 1, 0, 0, 0, 0.999998, -3.20627, -0.00402009, -2.88455)
 
 [node name="OmniLight3D" parent="Restaurant/Roof/lampSquareCeiling2" index="1"]
 light_color = Color(0.94902, 0.929412, 0.894118, 1)
@@ -484,7 +484,7 @@ omni_range = 4.343
 omni_attenuation = 0.5
 
 [node name="lampSquareCeiling3" parent="Restaurant/Roof" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(0.999998, 0, 0, 0, 1, 0, 0, 0, 0.999998, -3.20627, -0.27549, -0.384543)
+transform = Transform3D(0.999998, 0, 0, 0, 1, 0, 0, 0, 0.999998, -3.20627, -0.00402009, -0.384543)
 
 [node name="OmniLight3D" parent="Restaurant/Roof/lampSquareCeiling3" index="1"]
 light_color = Color(0.94902, 0.929412, 0.894118, 1)
@@ -493,7 +493,7 @@ omni_range = 4.343
 omni_attenuation = 0.5
 
 [node name="lampSquareCeiling4" parent="Restaurant/Roof" instance=ExtResource("13_mmvm6")]
-transform = Transform3D(0.999998, 0, 0, 0, 1, 0, 0, 0, 0.999998, -0.206262, -0.27549, -0.384543)
+transform = Transform3D(0.999998, 0, 0, 0, 1, 0, 0, 0, 0.999998, -0.206262, -0.00402009, -0.384543)
 
 [node name="OmniLight3D" parent="Restaurant/Roof/lampSquareCeiling4" index="1"]
 light_color = Color(0.94902, 0.929412, 0.894118, 1)
