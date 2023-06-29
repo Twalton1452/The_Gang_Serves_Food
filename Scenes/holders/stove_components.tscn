@@ -1,8 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://c0g1h8k6b2m0u"]
+[gd_scene load_steps=14 format=3 uid="uid://c0g1h8k6b2m0u"]
 
 [ext_resource type="PackedScene" uid="uid://boibiwgqps8i2" path="res://3d_models/Kenneys_Furniture/kitchenStove.glb" id="1_kvmn6"]
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_qwcee"]
+[ext_resource type="AudioStream" uid="uid://bi0tg4fukcd21" path="res://SFX/door-open-2.wav" id="3_618gc"]
 [ext_resource type="PackedScene" uid="uid://d3y6xmhkuoht5" path="res://Scenes/components/cooker.tscn" id="3_jfae0"]
+[ext_resource type="AudioStream" uid="uid://bfyyougstvvio" path="res://SFX/frying-calm.mp3" id="4_o2en1"]
+[ext_resource type="AudioStream" uid="uid://dygbnrnxt7fb4" path="res://SFX/appliance-humming.mp3" id="5_2uoba"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xyk0s"]
 size = Vector3(0.357523, 0.273441, 0.0219917)
@@ -30,15 +33,21 @@ size = Vector3(0.302255, 0.00644293, 0.204176)
 [node name="Rotatable" parent="kitchenStove(Clone)/door" index="0" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("2_qwcee")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00597534, 0.143, 0)
 tar_rot = Vector3(90, 0, 0)
+rotate_sfx = ExtResource("3_618gc")
 mesh_to_highlight = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/door/Rotatable" index="1"]
 shape = SubResource("BoxShape3D_xyk0s")
 
+[node name="AudioStreamPlayer3D" parent="kitchenStove(Clone)/door/Rotatable" index="2"]
+volume_db = -16.0
+pitch_scale = 0.8
+
 [node name="Burner1" type="Node3D" parent="kitchenStove(Clone)" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0789449, 0.443, 0.04514)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner1" index="0" instance=ExtResource("3_jfae0")]
+cooking_sfx = ExtResource("4_o2en1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner1/Cooker" index="2"]
 shape = SubResource("BoxShape3D_4ekfo")
@@ -47,6 +56,7 @@ shape = SubResource("BoxShape3D_4ekfo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0860458, 0.443, 0.0448162)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner2" index="0" instance=ExtResource("3_jfae0")]
+cooking_sfx = ExtResource("4_o2en1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner2/Cooker" index="2"]
 shape = SubResource("BoxShape3D_nibh8")
@@ -55,6 +65,7 @@ shape = SubResource("BoxShape3D_nibh8")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0791571, 0.443, -0.0822491)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner3" index="0" instance=ExtResource("3_jfae0")]
+cooking_sfx = ExtResource("4_o2en1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner3/Cooker" index="2"]
 shape = SubResource("BoxShape3D_ghs3m")
@@ -63,6 +74,7 @@ shape = SubResource("BoxShape3D_ghs3m")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0865781, 0.443, -0.0822491)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner4" index="0" instance=ExtResource("3_jfae0")]
+cooking_sfx = ExtResource("4_o2en1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/Burner4/Cooker" index="2"]
 shape = SubResource("BoxShape3D_8pwa0")
@@ -75,9 +87,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00934398, -0.00270018, -0.0
 power = 0.25
 power_loss_item_count_begin = 8
 door_rotatable = NodePath("../../door/Rotatable")
+cooking_sfx = ExtResource("5_2uoba")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/OvenTop/Cooker" index="2"]
 shape = SubResource("BoxShape3D_bcnx5")
+
+[node name="AudioStreamPlayer3D" parent="kitchenStove(Clone)/OvenTop/Cooker" index="3"]
+volume_db = -1.0
+pitch_scale = 0.8
 
 [node name="OvenBottom" type="Node3D" parent="kitchenStove(Clone)" index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0216987, 0.095, 0.0665204)
@@ -86,6 +103,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0216987, 0.095, 0.0665204)
 power = 0.25
 power_loss_item_count_begin = 8
 door_rotatable = NodePath("../../door/Rotatable")
+cooking_sfx = ExtResource("5_2uoba")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenStove(Clone)/OvenBottom/Cooker" index="2"]
 shape = SubResource("BoxShape3D_836pg")
+
+[node name="AudioStreamPlayer3D" parent="kitchenStove(Clone)/OvenBottom/Cooker" index="3"]
+volume_db = -1.0
+pitch_scale = 0.8
+
+[editable path="kitchenStove(Clone)/door/Rotatable"]
+[editable path="kitchenStove(Clone)/OvenTop/Cooker"]
+[editable path="kitchenStove(Clone)/OvenBottom/Cooker"]

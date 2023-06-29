@@ -6,6 +6,9 @@ signal rotated
 ## Set in degrees, but converted to radians on _ready for the Tween
 @export var tar_rot = Vector3(0.0, -90.0, 0.0)
 @export var is_rotated = false
+@export var rotate_sfx : AudioStream
+
+@onready var audio_player : AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 var og_rot : Vector3
 var in_progress = false
@@ -26,6 +29,7 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 
 func _ready():
 	super()
+	audio_player.stream = rotate_sfx
 	og_rot = get_parent().rotation
 	tar_rot.x = deg_to_rad(tar_rot.x)
 	tar_rot.y = deg_to_rad(tar_rot.y)
@@ -41,6 +45,7 @@ func rotate_parent():
 	if in_progress:
 		return
 	in_progress = true
+	audio_player.play()
 
 	var t = create_tween()
 	if is_rotated:

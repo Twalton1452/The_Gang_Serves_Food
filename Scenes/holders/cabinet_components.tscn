@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://svv4s2y3bd8r"]
+[gd_scene load_steps=7 format=3 uid="uid://svv4s2y3bd8r"]
 
 [ext_resource type="PackedScene" uid="uid://c8tprqf82c21h" path="res://3d_models/Kenneys_Furniture/kitchenCabinet.glb" id="1_wh3he"]
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_qrwjx"]
 [ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="3_5ll8x"]
+[ext_resource type="AudioStream" uid="uid://0cdn0p8hnh15" path="res://SFX/switch-flick.wav" id="4_2vxiw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7dfli"]
 size = Vector3(0.411643, 0.0126033, 0.414984)
@@ -21,6 +22,7 @@ shape = SubResource("BoxShape3D_7dfli")
 
 [node name="Rotatable" parent="kitchenCabinet2/door" index="0" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("2_qrwjx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.191014, 0.132037, -0.00792599)
+rotate_sfx = ExtResource("4_2vxiw")
 mesh_to_highlight = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenCabinet2/door/Rotatable" index="1"]

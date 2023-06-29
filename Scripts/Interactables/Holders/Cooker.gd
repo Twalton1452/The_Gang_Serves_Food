@@ -7,8 +7,10 @@ class_name CookerComponent
 # to encourage individual cooking of items
 @export var power_loss_item_count_begin = 2
 @export var door_rotatable : Rotatable
+@export var cooking_sfx : AudioStream
 
 @onready var tick_timer : Timer = $CookingTicksTimer
+@onready var audio_player : AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 
 func set_sync_state(reader: ByteReader) -> void:
@@ -33,12 +35,14 @@ func _ready() -> void:
 	super()
 	if door_rotatable != null:
 		door_rotatable.rotated.connect(_on_door_rotated)
+	audio_player.stream = cooking_sfx
 
 func _on_door_rotated() -> void:
 	if door_rotatable.is_rotated:
 		stop_cooking()
 	else:
-		begin_cooking()
+		if is_holding_item() and node_is_cookable(get_held_item()):
+			begin_cooking()
 
 func can_cook() -> bool:
 	var has_door = door_rotatable != null
@@ -46,9 +50,12 @@ func can_cook() -> bool:
 		return not door_rotatable.is_rotated
 	return true
 
+func node_is_cookable(node: Node3D) -> bool:
+	return (node is Cookable or node is MultiHolder or node is CombinedFoodHolder) and can_cook()
+
 func hold_item(node: Node3D):
 	super(node)
-	if (node is Cookable or node is MultiHolder or node is CombinedFoodHolder) and can_cook():
+	if node_is_cookable(node):
 		begin_cooking()
 	else:
 		#print("%s isn't cookable, but i'll hold on to it" % node.name)
@@ -60,9 +67,12 @@ func release_item_to(holder: Holder):
 
 func begin_cooking():
 	tick_timer.start()
+	audio_player.play()
 
 func stop_cooking():
 	tick_timer.stop()
+	if audio_player.playing:
+		audio_player.stop()
 
 func _on_cooking_ticks_timer_timeout():
 	var cooked = false

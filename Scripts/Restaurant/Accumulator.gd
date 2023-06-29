@@ -50,6 +50,7 @@ func _ready() -> void:
 func _on_game_state_changed():
 	if GameState.state == GameState.Phase.OPEN_FOR_BUSINESS:
 		accumulate_timer.start()
+		accumulate()
 	else:
 		accumulate_timer.stop()
 

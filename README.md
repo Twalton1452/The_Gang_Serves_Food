@@ -164,6 +164,11 @@ This class is called on by Holdable's that are secondary interacted with to sort
 - Useful Editor Binds
 	- Search documentation: F1
 	- Multi-row editing: `Ctrl + Shift + Up/Down Arrow`
+- Audio
+	- WAV for short and repetitive sound effects
+	- Ogg Vorbis for music, speech, and long sound effects.
+	- MP3 is useful for mobile and web projects where CPU resources are limited
+	- More reading: https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/importing_audio_samples.html#doc-importing-audio-samples
 
 ## Issues
 There are several known issues that we're keeping an eye on related to the Godot Engine specifically:

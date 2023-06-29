@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://cc4oepn3ynk8o"
-path="res://.godot/imported/frying-2.wav-b24380357e40b3d691afb0214a7b216e.sample"
+uid="uid://0cdn0p8hnh15"
+path="res://.godot/imported/switch-flick.wav-5545779e3f44f6e997c42cbf64ff4cb0.sample"
 
 [deps]
 
-source_file="res://SFX/frying-2.wav"
-dest_files=["res://.godot/imported/frying-2.wav-b24380357e40b3d691afb0214a7b216e.sample"]
+source_file="res://SFX/switch-flick.wav"
+dest_files=["res://.godot/imported/switch-flick.wav-5545779e3f44f6e997c42cbf64ff4cb0.sample"]
 
 [params]
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://choukybprh7d7"]
+[gd_scene load_steps=14 format=3 uid="uid://choukybprh7d7"]
 
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_cx6aq"]
+[ext_resource type="AudioStream" uid="uid://0cdn0p8hnh15" path="res://SFX/switch-flick.wav" id="2_rkys4"]
 [ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="2_srdse"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ybsj"]
@@ -159,6 +160,7 @@ mesh = SubResource("ArrayMesh_0x2g0")
 skeleton = NodePath("")
 
 [node name="Rotatable" parent="kitchenCabinet/door" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("2_cx6aq")]
+rotate_sfx = ExtResource("2_rkys4")
 mesh_to_highlight = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenCabinet/door/Rotatable"]
