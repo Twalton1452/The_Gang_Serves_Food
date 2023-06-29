@@ -121,17 +121,18 @@ func _physics_process(_delta):
 			looking_at_top_y = calculate_the_top_y_value_of(get_collider().get_parent())
 			
 		looking_at = get_collider()
+	
 	if not is_holding_editable:
 		return
 	
 	if is_colliding():
 		remote_transform.global_position = correct_position(get_collision_point())
-		remote_transform.global_position.y = looking_at_top_y
+		remote_transform.global_position.y = snapped(remote_transform.global_position.y, looking_at_top_y)
 	elif uneditable_ray_cast.is_colliding():
 		remote_transform.global_position = correct_position(uneditable_ray_cast.get_collision_point())
 	else:
-		remote_transform.position = correct_position(Vector3(0.0, 0.0, -1.5))
-		remote_transform.global_position.y = 0.0
+		remote_transform.position = Vector3(snapping.x, 0.0, snapping.z - 1.5)
+		remote_transform.global_position.y = snapping.y
 
 func correct_position(pos: Vector3) -> Vector3:
 	return pos.snapped(snapping)
@@ -141,6 +142,12 @@ func calculate_the_top_y_value_of(collided_object: Node) -> float:
 		return 0.0
 	var aabb = collided_object.get_aabb()
 	return aabb.position.y + aabb.size.y * collided_object.scale.y
+
+func calculate_the_top_end_values_of(collided_object: Node) -> Vector3:
+	if not collided_object is MeshInstance3D:
+		return Vector3.ZERO
+	var aabb = collided_object.get_aabb()
+	return aabb.position + aabb.size * collided_object.scale
 
 func set_material_overlay_for_children(node: Node3D, material: StandardMaterial3D, _transparency : float):
 	for child in node.get_children():

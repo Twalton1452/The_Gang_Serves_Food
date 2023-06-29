@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqk6io71er4qi"]
+[gd_scene load_steps=3 format=3 uid="uid://bqk6io71er4qi"]
 
 [ext_resource type="PackedScene" uid="uid://d4g6573uu37pi" path="res://3d_models/Kenneys_Furniture/lampSquareCeiling.glb" id="1_bw3wr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xsram"]
+size = Vector3(0.116086, 0.217551, 0.112604)
 
 [node name="lampSquareCeiling" instance=ExtResource("1_bw3wr")]
 
@@ -8,3 +11,10 @@
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055624, -0.01402, -0.0608945)
 light_energy = 0.2
 light_size = 60.0
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="2"]
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.105034, 0)
+shape = SubResource("BoxShape3D_xsram")

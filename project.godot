@@ -113,6 +113,7 @@ sell={
 3d_navigation/layer_4="AI"
 3d_physics/layer_5="UneditableTerrain"
 3d_navigation/layer_5="UneditableTerrain"
+3d_physics/layer_6="EditModeAligner"
 3d_physics/layer_7="Visual"
 3d_navigation/layer_7="Visual"
 

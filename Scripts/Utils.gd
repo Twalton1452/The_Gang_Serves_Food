@@ -85,10 +85,24 @@ static func disable_colliders_for_children(node: Node) -> void:
 			child.disable_collider()
 		Utils.disable_colliders_for_children(child)
 
-static func crawl_up_for_grouper_node(node: Node) -> NetworkedGrouperNode3D:
-	if node.get_parent() == null:
+static func crawl_up_for_grouper_node(node: Node, depth = 0) -> NetworkedGrouperNode3D:
+	if node.owner == null or depth > 2 or node.owner.get_parent() == null:
 		return null
-	if node.get_parent() is NetworkedGrouperNode3D:
-		return node.get_parent()
+	if node.owner.get_parent() is NetworkedGrouperNode3D:
+		return node.owner.get_parent()
 	else:
-		return crawl_up_for_grouper_node(node.get_parent())
+		return crawl_up_for_grouper_node(node.owner.get_parent(), depth + 1)
+
+static func draw_line(start: Vector3, end: Vector3, color: Color, duration_seconds = -1.0):
+	var im = ImmediateMesh.new()
+	im.surface_begin(Mesh.PRIMITIVE_LINES)
+	im.surface_set_color(color)
+	im.surface_add_vertex(start)
+	im.surface_add_vertex(end)
+	im.surface_end()
+	var mesh = MeshInstance3D.new()
+	mesh.mesh = im
+	GameState.add_child(mesh)
+	if duration_seconds > 0:
+		await GameState.get_tree().create_timer(duration_seconds).timeout
+		mesh.queue_free()
