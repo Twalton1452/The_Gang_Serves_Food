@@ -109,7 +109,7 @@ outline_size = 8
 [node name="Orders" type="Node3D" parent="Restaurant"]
 
 [node name="Ground" parent="Restaurant" instance=ExtResource("18_gm4k8")]
-transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, -0.06, 0)
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, -0.1, 0)
 
 [node name="Cabinets" type="Node3D" parent="Restaurant"]
 script = ExtResource("6_mv2b7")
@@ -369,6 +369,9 @@ snapping_spacing = Vector3(1, 1.3, 1)
 [node name="RoofAligner" parent="Restaurant/Roof" instance=ExtResource("18_gm4k8")]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 visible = false
+
+[node name="floorFull(Clone)" parent="Restaurant/Roof/RoofAligner" index="0"]
+layers = 0
 
 [node name="StaticBody3D" parent="Restaurant/Roof/RoofAligner/floorFull(Clone)" index="0"]
 collision_layer = 32
