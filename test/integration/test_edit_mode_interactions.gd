@@ -21,6 +21,7 @@ func before_each():
 	GameState.add_player(_player)
 	GameState.hud = double(HUD, DOUBLE_STRATEGY.SCRIPT_ONLY).new()
 	GameState.state = GameState.Phase.EDITING_RESTAURANT
+	assert_eq(GameState.state, GameState.Phase.EDITING_RESTAURANT, "GameState never switched to EDITING_RESTAURANT")
 
 func test_player_can_pick_up_object() -> void:
 	pick_up_object()

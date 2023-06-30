@@ -9,6 +9,7 @@ enum Scene {
 	TOP_BUN = 3,
 	TOMATO = 4,
 	ONION = 5,
+	FOOD_DIRT = 6,
 	
 	# Kitchenware
 	PLATE = 50,

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="GameModifiers" load_steps=2 format=3 uid="uid://dsihf1ledgsfg"]
+
+[ext_resource type="Script" path="res://Scripts/Resources/GameModifiers.gd" id="1_kw5d2"]
+
+[resource]
+script = ExtResource("1_kw5d2")

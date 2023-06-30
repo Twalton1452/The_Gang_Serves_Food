@@ -43,6 +43,7 @@ func _ready():
 	var drink_fountain = get_node_or_null("Building/DrinkFountain")
 	if drink_fountain != null:
 		new_orderable_available.emit(drink_fountain)
+	bake_navigation_mesh(false)
 
 func _on_table_entered_tables_tree(table: Node) -> void:
 	if not table is Table:

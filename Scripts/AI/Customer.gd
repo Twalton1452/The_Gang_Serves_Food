@@ -129,17 +129,27 @@ func eat() -> void:
 	
 	# Send the consumables for deletion
 	if dish is MultiHolder:
+		var holder_index = 0
 		for consumable in dish.get_held_items():
 			if consumable is Drink:
 				consumable.gulp()
 				NetworkingUtils.send_partial_state_update(consumable)
 			else:
 				NetworkingUtils.send_item_for_deletion(consumable)
+				spawn_dirt(dish.holders[holder_index])
+			holder_index += 1
 	elif dish is Drink:
 		dish.gulp()
 		NetworkingUtils.send_partial_state_update(dish)
 	else:
 		NetworkingUtils.send_item_for_deletion(dish)
+		spawn_dirt(sitting_chair.holder)
+
+func spawn_dirt(dirt_parent: Node3D) -> void:
+	if not GameState.modifiers.dirt_spawn_after_eating:
+		return
+	
+	NetworkingUtils.spawn_node_for_everyone_by_scene_id(NetworkedIds.Scene.FOOD_DIRT, dirt_parent)
 
 func finished_eating() -> void:
 	interactable.enable_collider()

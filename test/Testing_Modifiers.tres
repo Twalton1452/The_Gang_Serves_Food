@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="GameModifiers" load_steps=2 format=3 uid="uid://bocc71snseq23"]
+
+[ext_resource type="Script" path="res://Scripts/Resources/GameModifiers.gd" id="1_uqcjk"]
+
+[resource]
+script = ExtResource("1_uqcjk")
+dirt_spawn_after_eating = true

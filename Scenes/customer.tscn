@@ -31,8 +31,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 shape = SubResource("CapsuleShape3D_tj46x")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_desired_distance = 0.1
-target_desired_distance = 0.2
+path_desired_distance = 0.2
+target_desired_distance = 0.3
 agent_height_offset = 0.1
 path_max_distance = 0.51
 navigation_layers = 17

@@ -17,6 +17,7 @@ func match_id_to_scene(id: NetworkedIds.Scene) -> Resource:
 		NetworkedIds.Scene.TOP_BUN: return load("res://Scenes/foods/top_bun.tscn")
 		NetworkedIds.Scene.TOMATO: return load("res://Scenes/foods/tomato.tscn")
 		NetworkedIds.Scene.ONION: return load("res://Scenes/foods/onion.tscn")
+		NetworkedIds.Scene.FOOD_DIRT: return load("res://Scenes/foot_dirt.tscn")
 
 		NetworkedIds.Scene.PLATE: return load("res://Scenes/holders/plate_components.tscn")
 		NetworkedIds.Scene.CUP: return load("res://Scenes/cup.tscn")

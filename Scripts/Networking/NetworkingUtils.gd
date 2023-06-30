@@ -88,6 +88,9 @@ func spawn_node_for_everyone(node_to_spawn: PackedScene, to_be_parent: Node, dat
 	spawn_node_for_peers.rpc(writer.data)
 	return spawned_node
 
+func spawn_node_for_everyone_by_scene_id(scene_id: NetworkedIds.Scene, to_be_parent: Node, data: Dictionary = {}) -> Node:
+	return spawn_node_for_everyone(NetworkedScenes.get_scene_by_id(scene_id), to_be_parent, data)
+
 func duplicate_node(node_to_duplicate: Node, to_be_parent: Node, deep_copy_state = false) -> Node:
 	var duplicated_node = node_to_duplicate.duplicate()
 	to_be_parent.add_child(duplicated_node, true)

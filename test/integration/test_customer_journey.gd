@@ -30,7 +30,7 @@ func _spawn_test_party(num_customers: int) -> CustomerParty:
 	spawned_party.wait_between_customers_leaving = 0.05
 	for customer in spawned_party.customers:
 		watch_signals(customer)
-		customer.speed = 5.0
+		customer.speed = 10.0
 	return spawned_party
 
 func _set_test_menu_to(dish: Array[NetworkedIds.Scene]) -> Node3D:
@@ -56,7 +56,7 @@ func before_each():
 	#watch_signals(_customer_manager)
 
 func test_party_full_journey():
-	
+	GameState.modifiers = load("res://test/Testing_Modifiers.tres")
 	# Arrange 
 	var num_customers_to_spawn = 4
 	var menu_item : Array[NetworkedIds.Scene] = [NetworkedIds.Scene.BOTTOM_BUN, NetworkedIds.Scene.PATTY, NetworkedIds.Scene.TOMATO, NetworkedIds.Scene.TOP_BUN]
@@ -126,9 +126,10 @@ func test_party_full_journey():
 		assert_signal_emit_count(customer, "ate_food", 1)
 		assert_eq(customer.interactable.is_collider_enabled(), true, "Customer isn't interactable when they should be")
 	assert_eq(player_interactions, 1, "Customers were not interacted with the expected number of times")
-		
+	
 	for chair in _restaurant.tables[0].chairs:
-		assert_eq(chair.holder.is_holding_item(), false, "There is still food on the table")
+		assert_eq(chair.holder.is_holding_item(), true, "There isn't something left on the table")
+		assert_eq(chair.holder.get_held_item().SCENE_ID, NetworkedIds.Scene.FOOD_DIRT, "There isn't dirt on the table")
 	
 	spawned_party.customers[0]._on_player_interacted() # pretend the player interacted with a customer
 	

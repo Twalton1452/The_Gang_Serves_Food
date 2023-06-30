@@ -39,6 +39,7 @@ var STATE_VALIDATIONS = {
 }
 
 var state : Phase = Phase.EDITING_RESTAURANT : set = set_state
+var modifiers : GameModifiers = preload("res://Resources/GameModifiers/StarterModifiers.tres")
 
 ## Player str(id) is the key and the Player Node is the value
 var players : Dictionary = {}
