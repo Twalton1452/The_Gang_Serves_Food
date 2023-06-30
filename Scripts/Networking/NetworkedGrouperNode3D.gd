@@ -10,6 +10,8 @@ const CHILD_NAMING_FORMAT = "%s_%d"
 ## Snap the Node to this value when player's are moving it around
 ## Adjustable to account for non-uniformly scaled Nodes
 @export var snapping_spacing = Vector3(0.05, 0.05, 0.05)
+## Regardless of what you're looking at, snap to these values
+@export var y_independant_snapping = false
 
 var ID = 0
 var nodes : Array[Node] : get = get_nodes

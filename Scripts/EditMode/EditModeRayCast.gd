@@ -18,6 +18,7 @@ class_name EditModeRayCast
 var outline_material : StandardMaterial3D = preload("res://Materials/Grow_Outline_mat.tres")
 var looking_at : Node3D = null
 var looking_at_top_y : float = 0.0
+var should_snap_to_looking_at_y = false
 
 ## The collider the ray points to
 var target : StaticBody3D = null
@@ -67,6 +68,7 @@ func lock_on_to(node: Node) -> void:
 	var grouper : NetworkedGrouperNode3D = Utils.crawl_up_for_grouper_node(node)
 	if grouper != null:
 		snapping = grouper.snapping_spacing
+		should_snap_to_looking_at_y = grouper.y_independant_snapping
 #	audio_player.play()
 
 func unlock_from_target() -> void:
@@ -132,7 +134,8 @@ func _physics_process(_delta):
 	
 	if is_colliding():
 		remote_transform.global_position = correct_position(get_collision_point())
-		remote_transform.global_position.y = snapped(get_collision_point().y, looking_at_top_y)
+		if not should_snap_to_looking_at_y:
+			remote_transform.global_position.y = snapped(get_collision_point().y, looking_at_top_y)
 	elif uneditable_ray_cast.is_colliding():
 		remote_transform.global_position = correct_position(uneditable_ray_cast.get_collision_point())
 	else:
