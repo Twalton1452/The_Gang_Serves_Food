@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=40 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://dfg1k7gfdbgmw" path="res://Scenes/foods/patty.tscn" id="19_rvwxk"]
 [ext_resource type="PackedScene" uid="uid://8lkh6825ij50" path="res://Scenes/foods/top_bun.tscn" id="21_bqj26"]
 [ext_resource type="PackedScene" uid="uid://blqi6mmnnc2we" path="res://Scenes/foods/bottom_bun.tscn" id="22_7ioa0"]
+[ext_resource type="PackedScene" uid="uid://cb0m2vupoq03p" path="res://Scenes/holders/simple_trash_can.tscn" id="23_dli88"]
 [ext_resource type="PackedScene" uid="uid://c0wct3k6mqsl4" path="res://Scenes/holders/plate_stack_holder_components.tscn" id="24_ovivh"]
 [ext_resource type="PackedScene" uid="uid://cmy2yoow08hoa" path="res://Scenes/drink_fountain.tscn" id="26_cud0u"]
 [ext_resource type="PackedScene" uid="uid://bxmdymcsubnk" path="res://3d_models/Kenneys_Furniture/hoodLarge.glb" id="26_qebtt"]
@@ -190,6 +191,9 @@ to_accumulate_scene = ExtResource("21_bqj26")
 [node name="SmallBottomBunAccumulator" parent="Restaurant/Cabinets" instance=ExtResource("33_3uitd")]
 transform = Transform3D(-1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 1.27286, 0, -0.2842)
 to_accumulate_scene = ExtResource("22_7ioa0")
+
+[node name="SimpleTrashCan" parent="Restaurant/Cabinets" instance=ExtResource("23_dli88")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.86, 0, 0.258)
 
 [node name="Tables" type="Node3D" parent="Restaurant"]
 script = ExtResource("6_mv2b7")

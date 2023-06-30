@@ -68,7 +68,7 @@ func test_drink_can_be_drank():
 	_drink.fill_amount = 1.0
 	_drink.beverage_amounts[NetworkedResources.get_resource_by_id(NetworkedIds.Resources.WATER)] = 1.0
 	
-	_drink.gulp()
+	_drink.empty_out()
 	
 	assert_eq(_drink.fill_amount, 0.0)
 	assert_eq(_drink.fill_state, Drink.FillState.EMPTY)

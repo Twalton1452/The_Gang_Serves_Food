@@ -132,14 +132,14 @@ func eat() -> void:
 		var holder_index = 0
 		for consumable in dish.get_held_items():
 			if consumable is Drink:
-				consumable.gulp()
+				consumable.empty_out()
 				NetworkingUtils.send_partial_state_update(consumable)
 			else:
 				NetworkingUtils.send_item_for_deletion(consumable)
 				spawn_dirt(dish.holders[holder_index])
 			holder_index += 1
 	elif dish is Drink:
-		dish.gulp()
+		dish.empty_out()
 		NetworkingUtils.send_partial_state_update(dish)
 	else:
 		NetworkingUtils.send_item_for_deletion(dish)

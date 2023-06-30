@@ -68,7 +68,7 @@ func fill(fill_rate: float, beverage: Beverage):
 	
 	evaluate_fill_state()
 
-func gulp():
+func empty_out():
 	fill_amount = 0.0
 	fill_state = FillState.EMPTY
 	beverage_amounts.clear()
