@@ -154,10 +154,11 @@ func resolve_painting_target(p_id: int):
 		return
 	
 	var color = Color.RED
-	Painter.paint(player.edit_mode_ray_cast.get_collider().get_parent(), 0, color)
+	var mesh_to_paint : MeshInstance3D = player.edit_mode_ray_cast.get_collider().get_parent()
+	Painter.paint(mesh_to_paint, 0, color)
 	
 	writer.write_color(color)
-	writer.write_path_to(player.edit_mode_ray_cast.get_parent())
+	writer.write_path_to(mesh_to_paint)
 	notify_peers_of_painted_target.rpc(writer.data)
 
 @rpc("authority", "call_remote")
