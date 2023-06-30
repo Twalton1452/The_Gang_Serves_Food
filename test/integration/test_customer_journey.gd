@@ -20,7 +20,7 @@ func _wait_for_party_to_reach(party: CustomerParty, state: CustomerParty.PartySt
 		await wait_for_signal(party.state_changed, 1.0, "The party took too long to get to the desired state")
 
 func _spawn_test_party(num_customers: int) -> CustomerParty:
-	_customer_manager.max_party_size = num_customers
+	GameState.modifiers.max_party_size = num_customers
 	_customer_manager.spawn_party(num_customers)
 	var spawned_party = _customer_manager.parties[-1]
 	spawned_party.think_time_sec = 0.05

@@ -19,7 +19,12 @@ func after_sync() -> void:
 
 ## The Restaurant is Operable if there is a single table customers can path to
 func get_operable() -> bool:
-	return tables.any(func(table: Table): return table.viable) and not baking
+	var can_seat_max_party_size = false
+	for table in tables:
+		if table.available_chairs().size() >= GameState.modifiers.max_party_size:
+			can_seat_max_party_size = true
+			break
+	return can_seat_max_party_size and not baking
 
 func _enter_tree() -> void:
 	tables_root.child_entered_tree.connect(_on_table_entered_tables_tree)
@@ -29,7 +34,7 @@ func _exit_tree() -> void:
 	GameState.unregister_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable)
 
 func _ready():
-	GameState.register_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable, "The Restaurant is not Operable!")
+	GameState.register_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable, "There is no table that can seat the Customers!")
 	GameState.state_changed.connect(_on_game_state_changed)
 	path_testing_customer = NetworkingUtils.spawn_client_only_node(load("res://Scenes/customer.tscn"), self)
 	path_testing_customer.hide()

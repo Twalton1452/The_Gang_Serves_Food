@@ -2,8 +2,6 @@ extends Node3D
 class_name CustomerManager
 
 @export var max_parties = 1
-@export var min_party_size = 1
-@export var max_party_size = 1
 @export var min_wait_to_spawn_sec = 1.0
 @export var max_wait_to_spawn_sec = 1.0
 
@@ -25,7 +23,6 @@ func _ready():
 
 func _on_game_state_changed() -> void:
 	if GameState.state == GameState.Phase.OPEN_FOR_BUSINESS:
-		max_party_size = restaurant.get_max_party_size_for_tables()
 		can_spawn = true
 		is_spawning = true
 		start_customer_spawning()
@@ -63,14 +60,14 @@ func start_customer_spawning():
 		return
 	
 	if len(parties) < max_parties:
-		spawn_party.rpc(randi_range(min_party_size, max_party_size))
+		spawn_party.rpc(randi_range(GameState.modifiers.min_party_size, GameState.modifiers.max_party_size))
 		start_customer_spawning()
 	else:
 		is_spawning = false
 
 @rpc("authority", "call_local")
 func spawn_party(party_size: int) -> void:
-	if party_size > max_party_size:
+	if party_size > GameState.modifiers.max_party_size:
 		return
 	
 	var new_party : CustomerParty = NetworkingUtils.spawn_node(party_scene, self)

@@ -4,3 +4,6 @@
 
 [resource]
 script = ExtResource("1_kw5d2")
+dirt_spawn_after_eating = false
+min_party_size = 1
+max_party_size = 2

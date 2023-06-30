@@ -9,6 +9,11 @@ var SERVER_ID = 1
 ## Used for debugging, shows ID of GameState to make looking at the Remote SceneTree easier
 var THIS_ID = -1
 var player_color : Color
+var state : Phase = Phase.EDITING_RESTAURANT : set = set_state
+var modifiers : GameModifiers = preload("res://Resources/GameModifiers/StarterModifiers.tres")
+var money : float = 0.0 # Good use case for "Watched" Property in Godot 4.1
+var multiholder_multiplier : float = 1.5
+var combined_food_multiplier : float = 1.5 ## multiply per food in the stack
 
 enum Phase {
 	LOBBY,
@@ -38,18 +43,11 @@ var STATE_VALIDATIONS = {
 	Phase.OPEN_FOR_BUSINESS: [],
 }
 
-var state : Phase = Phase.EDITING_RESTAURANT : set = set_state
-var modifiers : GameModifiers = preload("res://Resources/GameModifiers/StarterModifiers.tres")
 
 ## Player str(id) is the key and the Player Node is the value
 var players : Dictionary = {}
 var level : Level : set = set_level
 var hud : HUD = null
-
-var money : float = 0.0 # Good use case for "Watched" Property in Godot 4.1
-
-var multiholder_multiplier : float = 1.5
-var combined_food_multiplier : float = 1.5 ## multiply per food in the stack
 
 func set_sync_state(reader: ByteReader):
 	set_money(reader.read_float())
@@ -159,6 +157,8 @@ func _unhandled_input(event):
 			state = Phase.EDITING_RESTAURANT
 		elif state == Phase.EDITING_RESTAURANT:
 			state = Phase.OPEN_FOR_BUSINESS
+	if (event.as_text() as String).to_lower() == "m":
+		modifiers.max_party_size += 1
 
 @rpc("authority", "call_local")
 func cleanup_disconnecting_player(p_id: int):
