@@ -57,11 +57,13 @@ func set_sync_state(reader: ByteReader):
 	STATE_VALIDATIONS = {}
 	state = reader.read_int() as Phase
 	STATE_VALIDATIONS = current_validations
+	modifiers.set_sync_state(reader)
 
 func get_sync_state() -> ByteWriter:
 	var writer : ByteWriter = ByteWriter.new()
 	writer.write_float(money)
 	writer.write_int(state)
+	writer.append_array(modifiers.get_sync_state().data)
 	return writer
 
 ## target_phase_to_prevent: Phase - When switching to this phase, ensure the validator is true
