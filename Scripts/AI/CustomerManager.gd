@@ -72,7 +72,7 @@ func spawn_party(party_size: int) -> void:
 	
 	var new_party : CustomerParty = NetworkingUtils.spawn_node(party_scene, self)
 	new_party.state_changed.connect(_on_party_state_changed)
-	new_party.position = Vector3.ZERO
+	new_party.global_position = restaurant.customer_spawn_point.global_position
 	
 	var party_members : Array[Customer] = []
 	for i in range(party_size):

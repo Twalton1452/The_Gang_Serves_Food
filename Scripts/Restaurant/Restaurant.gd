@@ -4,6 +4,7 @@ class_name Restaurant
 signal new_orderable_available(orderable: Node)
 signal table_became_available(table: Table)
 
+@export var customer_spawn_point : Node3D
 @export var entry_point : Node3D
 @export var exit_point : Node3D
 @export var tables_root : Node3D
@@ -35,6 +36,7 @@ func _exit_tree() -> void:
 
 func _ready():
 	GameState.register_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable, "There is no table that can seat the Customers!")
+	GameState.register_validator(GameState.Phase.OPEN_FOR_BUSINESS, restaurant_is_pathable, "Customers cannot get in/out to the Restaurant")
 	GameState.state_changed.connect(_on_game_state_changed)
 	path_testing_customer = NetworkingUtils.spawn_client_only_node(load("res://Scenes/customer.tscn"), self)
 	path_testing_customer.hide()
@@ -49,6 +51,10 @@ func _ready():
 	if drink_fountain != null:
 		new_orderable_available.emit(drink_fountain)
 	bake_navigation_mesh(false)
+
+func restaurant_is_pathable() -> bool:
+	return customer_can_path_to(customer_spawn_point.global_position, entry_point.global_position) and \
+		customer_can_path_to(entry_point.global_position, exit_point.global_position)
 
 func _on_table_entered_tables_tree(table: Node) -> void:
 	if not table is Table:
@@ -112,7 +118,7 @@ func assess_table_viability(table: Table) -> bool:
 	for chair in table.chairs:
 		if chair == null or chair.is_queued_for_deletion():
 			continue
-		chair.sittable = customer_can_path_to(chair.transition_location.global_position)
+		chair.sittable = customer_can_path_to(entry_point.global_position, chair.transition_location.global_position)
 		await get_tree().physics_frame
 	
 	# Need to check again because the waits inbetween physics frames
@@ -121,9 +127,9 @@ func assess_table_viability(table: Table) -> bool:
 	
 	return table.viable
 
-func customer_can_path_to(global_pos: Vector3) -> bool:
+func customer_can_path_to(start_pos: Vector3, global_pos: Vector3) -> bool:
 #	var layers = 1 | 1 << 4
 #	var path = NavigationServer3D.map_get_path(NavigationServer3D.region_get_map(get_region_rid()), entry_point.global_position, global_pos, false, layers)
-	path_testing_customer.global_position = entry_point.global_position
+	path_testing_customer.global_position = start_pos
 	path_testing_customer.nav_agent.target_position = global_pos
 	return path_testing_customer.nav_agent.is_target_reachable()

@@ -7,8 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://dhvdilcb12bjf" path="res://Scenes/furniture/menu_item_stand.tscn" id="5_s33fr"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_uffqi"]
-vertices = PackedVector3Array(-3.4, -0.127, 0.0999999, -3.3, -0.127, 0.4, -2.8, -0.127, 0.5, -2.6, -0.127, -0.2, -2.6, -0.127, -0.2, -2.2, -0.127, -0.3, -2.1, -0.127, -4.8, -4.8, -0.127, 0.5, -4, -0.127, 0.5, -3.8, -0.127, 0.0999999, -4.8, -0.127, -4.8, -3.8, -0.127, 0.0999999, -3.4, -0.127, 0.0999999, -2.6, -0.127, -0.2, -2.1, -0.127, -4.8, -4.8, -0.127, -4.8, -2.1, -0.127, -4.8, -2.2, -0.127, -0.3, -1.6, -0.127, -0.3, -2.1, -0.127, -4.8, -1.6, -0.127, -0.3, -1.4, -0.127, 0.5, 4.8, -0.127, 0.5, 4.8, -0.127, -4.8, -2.8, -0.127, 0.5, -3.3, -0.127, 0.4, -3.4, -0.127, 0.8, -2.6, -0.127, 1.3, -2, -0.127, 4.8, -2, -0.127, 1.4, -2.6, -0.127, 1.3, -3.9, -0.127, 0.8, -4, -0.127, 0.5, -4.8, -0.127, 0.5, -2.6, -0.127, 1.3, -3.4, -0.127, 0.8, -3.9, -0.127, 0.8, -2.6, -0.127, 1.3, -3.9, -0.127, 0.8, -4.8, -0.127, 0.5, -4.8, -0.127, 4.8, -2, -0.127, 4.8, -1.5, -0.127, 1.3, -2, -0.127, 1.4, -2, -0.127, 4.8, 4.8, -0.127, 4.8, 4.8, -0.127, 0.5, 4.8, -0.127, 0.5, -1.4, -0.127, 0.5, -1.5, -0.127, 1.3)
-polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(6, 5, 4), PackedInt32Array(8, 7, 9), PackedInt32Array(9, 7, 10), PackedInt32Array(12, 11, 13), PackedInt32Array(13, 11, 14), PackedInt32Array(14, 11, 15), PackedInt32Array(17, 16, 18), PackedInt32Array(20, 19, 21), PackedInt32Array(21, 19, 22), PackedInt32Array(22, 19, 23), PackedInt32Array(25, 24, 26), PackedInt32Array(26, 24, 27), PackedInt32Array(30, 29, 28), PackedInt32Array(33, 32, 31), PackedInt32Array(36, 35, 34), PackedInt32Array(38, 37, 39), PackedInt32Array(39, 37, 40), PackedInt32Array(40, 37, 41), PackedInt32Array(43, 42, 44), PackedInt32Array(44, 42, 45), PackedInt32Array(45, 42, 46), PackedInt32Array(49, 48, 47)]
+vertices = PackedVector3Array(-3.3, -0.127, 0.2, -3.4, -0.127, 0.8, -2.8, -0.127, 0.8, -2.8, -0.127, 0.2, -4.8, -0.127, -4.8, -2.5, -0.127, -0.3, -1.6, -0.127, -0.3, -4.8, -0.127, 0.8, -3.9, -0.127, 0.8, -4, -0.127, 0.3, -3.3, -0.127, 0.2, -2.8, -0.127, 0.2, -2.5, -0.127, -0.3, -4.8, -0.127, -4.8, -3.8, -0.127, 0.0999999, -4.8, -0.127, 0.8, -4, -0.127, 0.3, -3.8, -0.127, 0.0999999, -4.8, -0.127, -4.8, -1.6, -0.127, -0.3, 4.8, -0.127, -0.3, 4.8, -0.127, -4.8, -4.8, -0.127, -4.8, 4.8, -0.127, -0.3, -1.6, -0.127, -0.3, -1.4, -0.127, 0.2, 4.8, -0.127, 1.4, 4.8, -0.127, -0.3, -1.4, -0.127, 0.2, -1.6, -0.127, 1.4, -2.5, -0.127, 1.4, -2.8, -0.127, 0.8, -3.4, -0.127, 0.8, -2.5, -0.127, 1.4, -3.4, -0.127, 0.8, -3.9, -0.127, 0.8, -2.5, -0.127, 1.4, -3.9, -0.127, 0.8, -4.8, -0.127, 0.8, -4.8, -0.127, 4.8, -1.6, -0.127, 1.4, -4.8, -0.127, 4.8, 4.8, -0.127, 4.8, 4.8, -0.127, 1.4, -1.6, -0.127, 1.4, -2.5, -0.127, 1.4, -4.8, -0.127, 4.8)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(4, 6, 5), PackedInt32Array(9, 8, 7), PackedInt32Array(10, 14, 11), PackedInt32Array(11, 14, 12), PackedInt32Array(12, 14, 13), PackedInt32Array(16, 15, 17), PackedInt32Array(17, 15, 18), PackedInt32Array(20, 19, 21), PackedInt32Array(21, 19, 22), PackedInt32Array(25, 24, 23), PackedInt32Array(29, 28, 26), PackedInt32Array(26, 28, 27), PackedInt32Array(32, 31, 30), PackedInt32Array(35, 34, 33), PackedInt32Array(37, 36, 38), PackedInt32Array(38, 36, 39), PackedInt32Array(43, 42, 40), PackedInt32Array(40, 42, 41), PackedInt32Array(46, 45, 44)]
+sample_partition_type = 1
 cell_size = 0.1
 cell_height = 0.1
 agent_height = 0.2
@@ -19,9 +20,10 @@ agent_max_climb = 0.1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j34sd"]
 
-[node name="TestRestaurant" type="NavigationRegion3D" node_paths=PackedStringArray("entry_point", "exit_point", "tables_root", "menu")]
+[node name="TestRestaurant" type="NavigationRegion3D" node_paths=PackedStringArray("customer_spawn_point", "entry_point", "exit_point", "tables_root", "menu")]
 navigation_mesh = SubResource("NavigationMesh_uffqi")
 script = ExtResource("1_lad8h")
+customer_spawn_point = NodePath("CustomerSpawnPoint")
 entry_point = NodePath("EntryPoint")
 exit_point = NodePath("ExitPoint")
 tables_root = NodePath("Tables")
@@ -43,7 +45,6 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.5077
 transform = Transform3D(1, 0, 0, 0, 0.235651, 0.971838, 0, -0.971838, 0.235651, 6.35895, 0.67902, -5.75935)
 
 [node name="CustomerManager" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.13263, -0.0761087, -0.620693)
 script = ExtResource("2_cc21q")
 
 [node name="Tables" type="Node3D" parent="."]
@@ -53,6 +54,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.093, -0.256064, 0.527)
 
 [node name="EntryPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00833, 0.0213599, -0.764376)
+
+[node name="CustomerSpawnPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.13263, -0.0761087, -0.620693)
 
 [node name="ExitPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.145675, 0.0213599, 0.399959)
