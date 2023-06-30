@@ -26,6 +26,7 @@ func get_editing_restaurant_action(player_action: Player.Action) -> Callable:
 	match player_action:
 		Player.Action.INTERACT: return resolve_edit_mode_interaction
 		Player.Action.SECONDARY_INTERACT: return resolve_edit_mode_secondary_interaction
+		Player.Action.PAINT: return resolve_painting_target
 		Player.Action.BUY: return resolve_buying_held_item
 		Player.Action.SELL: return resolve_selling_held_item
 		_: return not_implemented_action
@@ -135,6 +136,40 @@ func notify_peers_of_secondary_interaction(data: PackedByteArray):
 		return
 	
 	interactable.secondary_interact(player)
+
+@rpc("any_peer")
+func resolve_painting_target(p_id: int):
+	if not is_multiplayer_authority():
+		return
+	
+	var player : Player = GameState.get_player_by_id(p_id)
+	if player == null:
+		return
+	
+	var writer = ByteWriter.new()
+	var node = player.edit_mode_ray_cast.get_collider()
+	if node == null:
+		return
+	if not player.edit_mode_ray_cast.is_colliding():
+		return
+	
+	var color = Color.RED
+	Painter.paint(player.edit_mode_ray_cast.get_collider().get_parent(), 0, color)
+	
+	writer.write_color(color)
+	writer.write_path_to(player.edit_mode_ray_cast.get_parent())
+	notify_peers_of_painted_target.rpc(writer.data)
+
+@rpc("authority", "call_remote")
+func notify_peers_of_painted_target(data: PackedByteArray) -> void:
+	var reader = ByteReader.new(data)
+	var color = reader.read_color()
+	var path_to_node = reader.read_path_to()
+	
+	var mesh = get_node_or_null(path_to_node)
+	if mesh == null:
+		return
+	Painter.paint(mesh, 0, color)
 
 @rpc("any_peer")
 func resolve_edit_mode_interaction(p_id: int):

@@ -6,6 +6,7 @@ signal health_changed(health_value)
 enum Action {
 	INTERACT,
 	SECONDARY_INTERACT,
+	PAINT,
 	BUY,
 	SELL,
 }
@@ -143,6 +144,8 @@ func _unhandled_input(event):
 		buy_attempt()
 	elif event.is_action_pressed("sell"):
 		sell_attempt()
+	elif event.is_action_pressed("paint"):
+		paint_attempt()
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
@@ -190,6 +193,12 @@ func secondary_interact() -> void:
 		return
 	
 	InteractionManager.resolve_player_action(self, Action.SECONDARY_INTERACT)
+
+func paint_attempt():
+	if not edit_mode_ray_cast.is_colliding():
+		return
+	
+	InteractionManager.resolve_player_action(self, Action.PAINT)
 
 func buy_attempt():
 	if not edit_mode_ray_cast.is_holding_editable:

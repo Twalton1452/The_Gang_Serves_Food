@@ -73,3 +73,12 @@ func test_player_can_pick_up_and_put_down_object() -> void:
 	assert_eq(_player.edit_mode_ray_cast.is_holding_editable, false)
 	var expected_position = _player.edit_mode_ray_cast.correct_position(_player.edit_mode_ray_cast.uneditable_ray_cast.get_collision_point())
 	assert_almost_eq(_object.global_position, expected_position, Vector3(0.1, 0.1, 0.1))
+
+func test_player_can_paint_targeted_object() -> void:
+	var mesh = _object.get_node("MeshInstance3D")
+	var og_color = mesh.get_active_material(0).albedo_color
+	var target_color = Color.RED
+	_player.edit_mode_ray_cast.force_raycast_update()
+	_player.paint_attempt()
+	await wait_frames(1)
+	assert_eq(mesh.get_active_material(0).albedo_color, target_color)
