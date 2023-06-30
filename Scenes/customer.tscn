@@ -36,7 +36,6 @@ target_desired_distance = 0.2
 agent_height_offset = 0.1
 path_max_distance = 0.51
 navigation_layers = 17
-path_postprocessing = 1
 path_metadata_flags = 0
 
 [node name="PixelFace" type="Sprite3D" parent="."]
