@@ -1,8 +1,6 @@
 extends Holder
 class_name CookerComponent
 
-signal cook_progress(progress: float)
-
 @export var power : float = 0.5
 
 # When cooking multiple items on the same Cooker, incur loss of power

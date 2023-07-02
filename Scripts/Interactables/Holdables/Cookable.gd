@@ -2,38 +2,47 @@ extends Holdable
 class_name Cookable
 
 enum CookStates {
-	RAW,
-	COOKED,
-	BURNED
+	RAW = 0,
+	COOKED = 1,
+	BURNED = 2
 }
 
 @export var gradient : Gradient
 @export var obj_to_color : MeshInstance3D
+@export var cook_state_rates : Dictionary = {
+	CookStates.RAW: 0.05,
+	CookStates.COOKED: 0.04,
+	CookStates.BURNED: 0.05,
+}
 
-# Standard Cook Rate influenced by the Power of the Cooker
-# Cook Progress increased everytime the Cooker's Timer timeout signal happens
-@export var cook_rate = 0.01
-
-@export var raw_cook_rate = 0.05
-@export var cooked_cook_rate = 0.04
-@export var burning_cook_rate = 0.05
-
-var cook_progress : float = 0.0
+var cook_state_progress = {
+	CookStates.RAW: 0.0,
+	CookStates.COOKED: 0.0,
+	CookStates.BURNED: 0.0,
+}
 
 var material_to_color : BaseMaterial3D
 var cooked_percent = 0.4
 var burning_percent = 0.8
 var cook_state : CookStates = CookStates.RAW
+var cook_progress : get = get_current_cook_progress
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
-	cook_progress = reader.read_small_float()
+	cook_state_progress[CookStates.RAW] = reader.read_small_float()
+	cook_state_progress[CookStates.COOKED] = reader.read_small_float()
+	cook_state_progress[CookStates.BURNED] = reader.read_small_float()
 	evaluate_cook_rate()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
-	writer.write_small_float(cook_progress)
+	writer.write_small_float(cook_state_progress[CookStates.RAW])
+	writer.write_small_float(cook_state_progress[CookStates.COOKED])
+	writer.write_small_float(cook_state_progress[CookStates.BURNED])
 	return writer
+
+func get_current_cook_progress() -> float:
+	return cook_state_progress[cook_state]
 
 func _ready():
 	super()
@@ -47,24 +56,18 @@ func _ready():
 	assert(gradient != null, "%s doesn't have a gradient" % name)
 
 	material_to_color = obj_to_color.get_active_material(0)
+	material_to_color.albedo_color = gradient.colors[cook_state % gradient.colors.size()]
 	evaluate_cook_rate()
 
 func cook(power: float):
 	if cook_state == CookStates.BURNED:
 		return
 	
+	cook_state_progress[cook_state] += cook_state_rates[cook_state] * power
 	evaluate_cook_rate()
-	cook_progress += cook_rate * power
 
 func evaluate_cook_rate():
-	if cook_progress < cooked_percent:
-		cook_rate = raw_cook_rate
-		cook_state = CookStates.RAW
-	elif cook_progress < burning_percent:
-		cook_rate = cooked_cook_rate
-		cook_state = CookStates.COOKED
-	elif cook_progress < 1.0:
-		cook_rate = burning_cook_rate
-	else:
-		cook_state = CookStates.BURNED
-	material_to_color.albedo_color = gradient.sample(cook_progress)
+	if cook_state_progress[cook_state] >= 1.0:
+		@warning_ignore("int_as_enum_without_cast")
+		cook_state += 1 as CookStates
+		material_to_color.albedo_color = gradient.colors[cook_state % gradient.colors.size()]
