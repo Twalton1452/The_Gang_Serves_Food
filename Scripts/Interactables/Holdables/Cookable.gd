@@ -31,16 +31,22 @@ var cook_progress : get = get_current_cook_progress
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
-	cook_state_progress[CookState.RAW] = reader.read_small_float()
-	cook_state_progress[CookState.COOKED] = reader.read_small_float()
-	cook_state_progress[CookState.BURNED] = reader.read_small_float()
-	evaluate_cook_rate()
+	cook_state = reader.read_int() as CookState
+	cook_state_progress[cook_state] = reader.read_small_float()
+	
+	# For every previous state set them to finished
+	# Avoids sending many states that are likely 0 or 1
+	var i = int(cook_state) - 1
+	while i > CookState.RAW:
+		cook_state_progress[i] = 1.0
+		i -= 1
+	
+	change_color()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	super(writer)
-	writer.write_small_float(cook_state_progress[CookState.RAW])
-	writer.write_small_float(cook_state_progress[CookState.COOKED])
-	writer.write_small_float(cook_state_progress[CookState.BURNED])
+	writer.write_int(cook_state)
+	writer.write_small_float(cook_state_progress[cook_state])
 	return writer
 
 func get_current_cook_progress() -> float:
@@ -59,7 +65,10 @@ func _ready():
 
 	material_to_color = obj_to_color.get_active_material(0)
 	material_to_color.albedo_color = gradient.colors[cook_state % gradient.colors.size()]
-	evaluate_cook_rate()
+	change_color()
+
+func change_color() -> void:
+	material_to_color.albedo_color = gradient.colors[cook_state % gradient.colors.size()]
 
 func cook(power: float):
 	if cook_state == CookState.BURNED:
@@ -70,6 +79,7 @@ func cook(power: float):
 
 func evaluate_cook_rate():
 	if cook_state_progress[cook_state] >= 1.0:
+		cook_state_progress[cook_state] = 1.0
 		@warning_ignore("int_as_enum_without_cast")
 		cook_state += 1 as CookState
-		material_to_color.albedo_color = gradient.colors[cook_state % gradient.colors.size()]
+		change_color()

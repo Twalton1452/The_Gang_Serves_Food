@@ -82,17 +82,28 @@ func stop_cooking():
 	if audio_player.playing:
 		audio_player.stop()
 
+func is_cookable(node: Node) -> bool:
+	return node is Cookable and node.cook_state != Cookable.CookState.BURNED
+
 ## Checks the held items for anything that can be cooked and isn't already burned
-func get_cookables() -> Array[Node]:
+func get_cookables() -> Array[Cookable]:
+	var cookables : Array[Cookable] = []
+	
 	if not is_holding_item():
-		return []
+		return cookables
+	
 	var held_item = get_held_item()
-	if held_item is Cookable and held_item.cook_state != Cookable.CookState.BURNED:
-		return [held_item]
-	if held_item is MultiHolder or held_item is CombinedFoodHolder:
-		return held_item.get_held_items().filter(func(held): return held is Cookable and held.cook_state != Cookable.CookState.BURNED)
+	if is_cookable(held_item):
+		cookables.push_back(held_item)
+	elif held_item is MultiHolder or held_item is CombinedFoodHolder:
+		for held in held_item.get_held_items():
+			if is_cookable(held):
+				cookables.push_back(held)
 	else:
-		return get_children().filter(func(c): return c is Cookable and c.cook_state != Cookable.CookState.BURNED)
+		for child in get_children():
+			if is_cookable(child):
+				cookables.push_back(child)
+	return cookables
 
 func _on_cooking_ticks_timer_timeout():
 	# Cook everything on the Multiholder / CombinedFoodHolders, with power loss per item
@@ -103,6 +114,9 @@ func _on_cooking_ticks_timer_timeout():
 	
 	for cookable in cookables:
 		cookable.cook(curr_power)
+		
+		# Check if we burned the food from cooking, so we can immediately hide the progress bar
+		# the same frame instead of waiting for the next tick to hide it due to lack of cookables
 		if cookable.cook_state != Cookable.CookState.BURNED:
 			still_cookable = true
 		
