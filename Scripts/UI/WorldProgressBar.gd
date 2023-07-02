@@ -53,14 +53,18 @@ func _on_progress_changed(progress: float):
 		unsmooth_change(clamped_progress, color)
 
 func smooth_change(progress: float, color: Color):
-	if progress > bar_pivot.scale.x and progress < 1.0:
+	if progress >= 1.0:
+		if progress_bar_tween != null and progress_bar_tween.is_valid():
+			progress_bar_tween.kill()
+		bar_pivot.scale.x = 1.0
+	else:
 		progress_bar_tween = create_tween()
 		progress_bar_tween.tween_property(bar_pivot, "scale:x", progress, time_between_ticks).set_ease(progress_bar_tween.EASE_OUT)
-	elif progress_bar_tween != null and progress_bar_tween.is_valid():
-		progress_bar_tween.kill()
-		bar_pivot.scale.x = 1.0
 	bar.modulate = color
 
 func unsmooth_change(progress:float, color: Color) -> void:
 	bar_pivot.scale.x = progress
 	bar.modulate = color
+
+func update(progress: float) -> void:
+	_on_progress_changed(progress)

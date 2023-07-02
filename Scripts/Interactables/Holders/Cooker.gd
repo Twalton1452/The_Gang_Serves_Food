@@ -8,6 +8,7 @@ class_name CookerComponent
 @export var power_loss_item_count_begin = 2
 @export var door_rotatable : Rotatable
 @export var cooking_sfx : AudioStream
+@export var progress_bar_visual : WorldProgressBar
 
 @onready var tick_timer : Timer = $CookingTicksTimer
 @onready var audio_player : AudioStreamPlayer3D = $AudioStreamPlayer3D
@@ -20,6 +21,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		# set it back to its original tick rate, just simulate a tick
 		var time_left = reader.read_small_float()
 		await get_tree().create_timer(time_left, false).timeout
+		progress_bar_visual.show_visual()
 		_on_cooking_ticks_timer_timeout()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
@@ -35,6 +37,14 @@ func _ready() -> void:
 	if door_rotatable != null:
 		door_rotatable.rotated.connect(_on_door_rotated)
 	audio_player.stream = cooking_sfx
+	
+	if progress_bar_visual == null:
+		for child in get_children():
+			if child is WorldProgressBar:
+				progress_bar_visual = child
+				break
+	progress_bar_visual.hide_visual()
+	progress_bar_visual.time_between_ticks = tick_timer.wait_time
 
 func _on_door_rotated() -> void:
 	if door_rotatable.is_rotated:
@@ -65,10 +75,12 @@ func release_item_to(holder: Holder):
 	stop_cooking()
 
 func begin_cooking():
+	progress_bar_visual.show_visual()
 	tick_timer.start()
 	audio_player.play()
 
 func stop_cooking():
+	progress_bar_visual.hide_visual()
 	tick_timer.stop()
 	if audio_player.playing:
 		audio_player.stop()
@@ -88,11 +100,13 @@ func _on_cooking_ticks_timer_timeout():
 				num_cooked += 1
 				if num_cooked >= power_loss_item_count_begin:
 					curr_power = clamp(pow(curr_power, 2), 0.1, power)
+				progress_bar_visual.update(item.cook_progress)
 				
 	else:
 		for cookable in get_children().filter(func(c): return c is Cookable):
 			(cookable as Cookable).cook(power)
 			cooked = true
+			progress_bar_visual.update(cookable.cook_progress)
 	
 	# Keep cookin if there is something to cook
 	if cooked:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=40 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -20,7 +20,6 @@
 [ext_resource type="PackedScene" uid="uid://c0g1h8k6b2m0u" path="res://Scenes/holders/stove_components.tscn" id="16_eiaux"]
 [ext_resource type="PackedScene" uid="uid://dhvdilcb12bjf" path="res://Scenes/furniture/menu_item_stand.tscn" id="16_n3yt3"]
 [ext_resource type="Script" path="res://Scripts/AI/CustomerManager.gd" id="17_losm7"]
-[ext_resource type="PackedScene" uid="uid://dbux8704g4o5m" path="res://Scenes/components/food_combiner.tscn" id="18_32clx"]
 [ext_resource type="PackedScene" uid="uid://dyp4hy5noackj" path="res://Scenes/uneditable_floor.tscn" id="18_gm4k8"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="19_r5eyb"]
 [ext_resource type="PackedScene" uid="uid://dfg1k7gfdbgmw" path="res://Scenes/foods/patty.tscn" id="19_rvwxk"]
@@ -105,15 +104,6 @@ max_wait_to_spawn_sec = 2.0
 [node name="Menu" type="Node3D" parent="Restaurant" node_paths=PackedStringArray("orders_parent")]
 script = ExtResource("15_6mlv6")
 orders_parent = NodePath("../Orders")
-
-[node name="TestPattyStack" parent="Restaurant/Menu" instance=ExtResource("18_32clx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.25521, -0.000477135, 4.37289)
-
-[node name="Patty" parent="Restaurant/Menu/TestPattyStack" instance=ExtResource("19_rvwxk")]
-
-[node name="Patty2" parent="Restaurant/Menu/TestPattyStack" instance=ExtResource("19_rvwxk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00817773, 0)
-rule = 5
 
 [node name="MenuItemStand" parent="Restaurant/Menu" instance=ExtResource("16_n3yt3")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -4, 0, 0)

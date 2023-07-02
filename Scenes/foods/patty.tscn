@@ -51,6 +51,11 @@ cook_state_scores = {
 }
 gradient = ExtResource("2_dcdml")
 obj_to_color = NodePath("Patty")
+cook_state_rates = {
+0: 0.07,
+1: 0.04,
+2: 0.05
+}
 SCENE_ID = 1
 mesh_to_highlight = NodePath("Patty")
 

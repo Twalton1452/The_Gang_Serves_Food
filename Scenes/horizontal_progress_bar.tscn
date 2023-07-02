@@ -13,13 +13,11 @@ icon_texture = ExtResource("2_qj788")
 [node name="Background" type="Sprite3D" parent="Pivot"]
 transform = Transform3D(1.1, 0, 0, 0, 1.107, 0, 0, 0, 1, 0, 0, 0)
 modulate = Color(0.133333, 0.133333, 0.133333, 0.756863)
-billboard = 2
 texture = ExtResource("1_gnaq3")
 
 [node name="Icon" type="Sprite3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00161854, 0)
 pixel_size = 0.0002
-billboard = 2
 render_priority = 2
 texture = ExtResource("2_qj788")
 
@@ -29,6 +27,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.156112, -0.082904, 0)
 [node name="Bar" type="Sprite3D" parent="Pivot/BarPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.495, 0.157252, 0.083, 0)
 modulate = Color(0, 1, 1, 1)
-billboard = 2
 render_priority = 1
 texture = ExtResource("1_gnaq3")

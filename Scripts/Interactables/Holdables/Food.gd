@@ -20,9 +20,9 @@ enum CombineRule {
 @export_category("Scoring")
 
 @export var cook_state_scores : Dictionary = {
-	CookStates.RAW: 1.0,
-	CookStates.COOKED: 1.0,
-	CookStates.BURNED: 0.0,
+	CookState.RAW: 1.0,
+	CookState.COOKED: 1.0,
+	CookState.BURNED: 0.0,
 }
 
 var score : float : get = get_score
