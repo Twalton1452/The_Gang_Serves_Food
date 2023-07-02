@@ -1,6 +1,8 @@
 extends Holder
 class_name CookerComponent
 
+signal cook_progress(progress: float)
+
 @export var power : float = 0.5
 
 # When cooking multiple items on the same Cooker, incur loss of power
@@ -11,7 +13,6 @@ class_name CookerComponent
 
 @onready var tick_timer : Timer = $CookingTicksTimer
 @onready var audio_player : AudioStreamPlayer3D = $AudioStreamPlayer3D
-
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
