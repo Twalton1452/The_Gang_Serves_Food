@@ -86,34 +86,30 @@ func spawn_party(party_size: int) -> void:
 		new_party.go_to_entry(restaurant.entry_point)
 	parties.push_back(new_party)
 
-func _on_table_became_available(_table: Table):
-	var found = false
+func _on_table_became_available(_table: Table) -> void:
+	# Prioritize the parties at the front of the line that are waiting for a table
+	# If they cant find a table then allow those behind them to search for a table
 	for party in parties:
 		if party == null or party.is_queued_for_deletion():
 			continue
 		
 		if party.state == CustomerParty.PartyState.WAITING_FOR_TABLE:
 			if check_for_available_table_for(party):
-				found = true
-				break
+				return
 	
-	if found:
-		return
-		
 	for party in parties:
 		if party == null or party.is_queued_for_deletion():
 			continue
 	
 		if party.state == CustomerParty.PartyState.WAITING_IN_LINE:
 			if check_for_available_table_for(party):
-				found = true
-				break
+				return
 
 func check_for_available_table_for(party: CustomerParty) -> bool:
 	var table = restaurant.get_next_available_table_for(party)
 	
 	if table == null:
-		party.wait_for_table()
+		party.wait_for_table(restaurant.entry_point)
 		return false
 	
 	party.go_to_table(table)
@@ -121,17 +117,23 @@ func check_for_available_table_for(party: CustomerParty) -> bool:
 	return true
 
 func move_the_line():
+	var waiting_parties = parties.filter(func(party: CustomerParty):
+		return party != null and not party.is_queued_for_deletion() and \
+			(
+			party.state == CustomerParty.PartyState.WAITING_IN_LINE or \
+			party.state == CustomerParty.PartyState.WALKING_TO_LINE or \
+			party.state == CustomerParty.PartyState.WALKING_TO_ENTRY
+			)
+	)
+	
 	var sent_a_party_to_door = false
-	for i in len(parties):
-		var party = parties[i]
-		if party != null and not party.is_queued_for_deletion() and \
-			party.state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
-			
-			if not sent_a_party_to_door:
-				sent_a_party_to_door = true
-				party.go_to_entry(restaurant.entry_point)
-			else:
-				party.wait_in_line(parties[i-1])
+	for i in len(waiting_parties):
+		var party = waiting_parties[i]
+		if not sent_a_party_to_door:
+			sent_a_party_to_door = true
+			party.go_to_entry(restaurant.entry_point)
+		else:
+			party.wait_in_line(waiting_parties[i-1])
 
 func _on_new_restaurant_menu_available(menu: Menu) -> void:
 	if menu == null:
@@ -172,5 +174,6 @@ func _on_party_state_changed(party: CustomerParty):
 			send_customers_home(party)
 		CustomerParty.PartyState.LEAVING_FOR_HOME_IMPATIENT:
 			send_customers_home(party)
+#			move_the_line()
 		CustomerParty.PartyState.GONE_HOME:
 			clean_up_party(party)

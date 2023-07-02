@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://i3mvkn3kfsgr"]
+[gd_scene load_steps=10 format=3 uid="uid://i3mvkn3kfsgr"]
 
 [ext_resource type="Script" path="res://Scripts/Restaurant/Restaurant.gd" id="1_lad8h"]
 [ext_resource type="Script" path="res://Scripts/AI/CustomerManager.gd" id="2_cc21q"]
 [ext_resource type="PackedScene" uid="uid://cx11ipeseh6dx" path="res://Scenes/furniture/four_person_table.tscn" id="3_ufn6n"]
 [ext_resource type="Script" path="res://Scripts/Restaurant/Menu.gd" id="4_ntk4o"]
+[ext_resource type="PackedScene" uid="uid://c4f0ohpd2jil2" path="res://Scenes/patience_bar.tscn" id="4_tmadq"]
 [ext_resource type="PackedScene" uid="uid://dhvdilcb12bjf" path="res://Scenes/furniture/menu_item_stand.tscn" id="5_s33fr"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_uffqi"]
@@ -55,11 +56,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.093, -0.256064, 0.527)
 [node name="EntryPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00833, 0.0213599, -0.764376)
 
+[node name="PatienceBar" parent="EntryPoint" instance=ExtResource("4_tmadq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855113, 0)
+
 [node name="CustomerSpawnPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.13263, -0.0761087, -0.620693)
 
 [node name="ExitPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.145675, 0.0213599, 0.399959)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.18881, 0.0213599, 2.73783)
 
 [node name="Menu" type="Node3D" parent="." node_paths=PackedStringArray("orders_parent")]
 script = ExtResource("4_ntk4o")

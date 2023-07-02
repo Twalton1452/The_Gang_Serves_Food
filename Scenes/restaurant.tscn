@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=41 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
 [ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
@@ -7,6 +7,7 @@
 [ext_resource type="NavigationMesh" uid="uid://cro8mueu3lb0n" path="res://Resources/building_navmesh.tres" id="3_wk033"]
 [ext_resource type="PackedScene" uid="uid://f7xxx78xeti0" path="res://3d_models/Kenneys_Furniture/wallDoorway.glb" id="4_2i7t1"]
 [ext_resource type="Script" path="res://Scripts/Restaurant/Restaurant.gd" id="4_kvbc8"]
+[ext_resource type="PackedScene" uid="uid://c4f0ohpd2jil2" path="res://Scenes/patience_bar.tscn" id="5_ix4jl"]
 [ext_resource type="Script" path="res://Scripts/Networking/NetworkedGrouperNode3D.gd" id="6_mv2b7"]
 [ext_resource type="PackedScene" uid="uid://dnamranhmwqb3" path="res://Scenes/walls/counter_wall.tscn" id="8_gplef"]
 [ext_resource type="PackedScene" uid="uid://svv4s2y3bd8r" path="res://Scenes/holders/cabinet_components.tscn" id="10_b6sav"]
@@ -83,6 +84,11 @@ only_one_will_exist = true
 
 [node name="EntryPoint" type="Marker3D" parent="Restaurant"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.23241, 0.0952672, -8.01213)
+
+[node name="PatienceBar" parent="Restaurant/EntryPoint" instance=ExtResource("5_ix4jl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.774, 0)
+visible = false
+move_to = Vector3(0, 0.2, 0)
 
 [node name="Exitpoint" type="Marker3D" parent="Restaurant"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.40541, 0.0952667, -8.8677)

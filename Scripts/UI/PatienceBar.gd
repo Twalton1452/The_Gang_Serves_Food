@@ -16,15 +16,15 @@ var progress_bar_tween : Tween = null
 var reset_tween : Tween = null
 var move_to_tween : Tween = null
 
-func reset():
+func reset(patience = 1.0):
 	if move_to_tween != null and move_to_tween.is_valid():
 		move_to_tween.kill()
 	pivot.position = Vector3.ZERO
 	
 	if progress_bar_tween != null and progress_bar_tween.is_valid():
 		progress_bar_tween.kill()
-	bar_pivot.scale.y = 1.0
-	bar.modulate = patience_gradient.sample(0.0)
+	bar_pivot.scale.y = patience
+	bar.modulate = patience_gradient.sample(1.0 - patience)
 
 func pop():
 	if reset_tween != null and reset_tween.is_valid():
@@ -34,8 +34,8 @@ func pop():
 	reset_tween.tween_property(pivot, "scale", Vector3.ONE * 1.2, 0.2).set_trans(Tween.TRANS_ELASTIC)
 	reset_tween.tween_property(pivot, "scale", Vector3.ONE, 0.3).set_ease(Tween.EASE_OUT)
 
-func show_visual():
-	reset()
+func show_visual(patience = 1.0):
+	reset(patience)
 	show()
 	pop()
 
@@ -53,8 +53,7 @@ func _on_patience_changed(patience: float):
 	if smooth:
 		smooth_change(clamped_patience, color)
 	else:
-		bar_pivot.scale.y = clamped_patience
-		bar.modulate = color
+		unsmooth_change(clamped_patience, color)
 
 func move(patience: float) -> void:
 	var progress_to_destination = pow(1.0 - patience, 2)
@@ -74,4 +73,8 @@ func smooth_change(patience: float, color: Color):
 	elif progress_bar_tween != null and progress_bar_tween.is_valid():
 		progress_bar_tween.kill()
 		bar_pivot.scale.y = 0.0
+	bar.modulate = color
+
+func unsmooth_change(patience:float, color: Color) -> void:
+	bar_pivot.scale.y = patience
 	bar.modulate = color

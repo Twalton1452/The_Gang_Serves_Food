@@ -6,6 +6,7 @@ var _restaurant : Restaurant = null
 var _table : Table = null
 var _customer_manager : CustomerManager = null
 var _acceptable_threshold = Vector3(.3, .3, .3)
+var _entry_patience_bar : PatienceBar = null
 
 func _assert_all_child_interactables_not_on_interactable_layer(node: Node) -> void:
 	for child in node.get_children():
@@ -53,7 +54,7 @@ func before_each():
 	_customer_manager.max_parties = 0
 	_customer_manager.min_wait_to_spawn_sec = 998
 	_customer_manager.max_wait_to_spawn_sec = 999
-	#watch_signals(_customer_manager)
+	_entry_patience_bar = _restaurant.entry_point.get_node("PatienceBar")
 
 func test_party_full_journey():
 	GameState.modifiers = load("res://test/Testing_Modifiers.tres")
@@ -75,6 +76,7 @@ func test_party_full_journey():
 	# Note: Should be WAITING_FOR_TABLE for a single frame, but the wait_for_signal processes AFTER the logic happens
 	# So the Party transitions from WALKING_TO_ENTRY to WAITING_FOR_TABLE for less than a frame and then goes to WALKING_TO_TABLE
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WALKING_TO_TABLE, "The Party is not waiting for a table")
+	assert_null(spawned_party.patience_bar_visual)
 	
 	# Act
 	await wait_for_signal(spawned_party.state_changed, 1.0, "The party took to long waiting for a table")
@@ -82,12 +84,15 @@ func test_party_full_journey():
 	# Assert
 	assert_not_null(spawned_party.table, "Party doesn't have a table")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.THINKING, "The Party is not walking to a table")
+	assert_eq(spawned_party.patience_bar_visual, spawned_party.table.patience_bar, "Party didn't hook up their PatienceBar to the Table")
+	assert_eq(spawned_party.patience_bar_visual.visible, true, "PatienceBar is not visible")
 	for chair in spawned_party.table.chairs:
 		assert_almost_eq(chair.sitter.global_position, chair.global_position, _acceptable_threshold, "The customer is not sitting in the chair correctly")
 	
 	# Act
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Party took too long to think about their order")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.ORDERING, "The Party is not ordering")
+	assert_eq(spawned_party.patience_bar_visual.visible, true, "PatienceBar is not visible")
 	assert_eq(spawned_party.num_customers_required_to_advance, 1, "Player should only need to talk to 1 customer to initiate waiting for food")
 	for customer in spawned_party.customers:
 		assert_eq(customer.order.is_equal_to(menu_item_dish), true)
@@ -105,6 +110,7 @@ func test_party_full_journey():
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "The party didn't order")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_FOR_FOOD, "Party isn't waiting for their food")
+	assert_eq(spawned_party.patience_bar_visual.visible, true, "PatienceBar is not visible")
 	
 	for chair in _restaurant.tables[0].chairs:
 		chair.holder.hold_item(menu_item_dish.duplicate())
@@ -112,12 +118,14 @@ func test_party_full_journey():
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Party never got their food")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.EATING, "Party is not eating")
+	assert_null(spawned_party.patience_bar_visual)
 	
 	for customer in spawned_party.customers:
 		assert_eq(customer.order.visible, false, "The order visual is still showing after being given food")
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Party never ate their food")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.WAITING_TO_PAY, "Party is not waiting to pay")
+	assert_eq(spawned_party.patience_bar_visual.visible, true, "PatienceBar is not visible")
 	assert_eq(spawned_party.num_customers_required_to_advance, 1, "Player should only need to talk to 1 customer to initiate paying")
 	var player_interactions = 0
 	for customer in spawned_party.customers:
@@ -135,6 +143,7 @@ func test_party_full_journey():
 	
 	await wait_for_signal(spawned_party.state_changed, 1.0, "Player never took the customer's money")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.PAYING, "Party is not paying")
+	assert_null(spawned_party.patience_bar_visual)
 	
 	player_interactions = 0
 	for customer in spawned_party.customers:
@@ -146,6 +155,7 @@ func test_party_full_journey():
 	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never paid")
 	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME, "Party is not leaving")
 	assert_eq(spawned_party.num_customers_required_to_advance, 1, "Only 1 customer needs to make it to the exit zone")
+	assert_null(spawned_party.patience_bar_visual)
 	assert_null(spawned_party.table)
 	
 	await wait_for_signal(spawned_party.state_changed, 3.0, "Party never started leaving")
@@ -168,14 +178,17 @@ func test_party_can_wait_in_line_then_sit():
 	
 	await wait_for_signal(table_wait_party.state_changed, 1.3, "The first party took too long to get to the Entry")
 	assert_eq(table_wait_party.state, CustomerParty.PartyState.WAITING_FOR_TABLE, "The first Party is not waiting for a table")
+	assert_eq(_entry_patience_bar.visible, true)
 	
 	# Act
 	var line_wait_party = _spawn_test_party(num_customers_to_spawn)
 	await wait_for_signal(line_wait_party.state_changed, 1.3, "The second party took too long to walk to the line")
 	assert_eq(line_wait_party.state, CustomerParty.PartyState.WALKING_TO_LINE, "The second Party is not walking to the line")
+	assert_eq(_entry_patience_bar.visible, true)
 	
 	await wait_for_signal(line_wait_party.state_changed, 1.3, "The second party took too long to get to the line")
 	assert_eq(line_wait_party.state, CustomerParty.PartyState.WAITING_IN_LINE, "The second Party is not waiting in line")
+	assert_eq(_entry_patience_bar.visible, true)
 	
 	# Assert
 	assert_eq(len(_customer_manager.parties), 2, "There are not the correct number of parties")
@@ -184,15 +197,18 @@ func test_party_can_wait_in_line_then_sit():
 	_restaurant.table_became_available.emit(_table)
 	
 	await wait_for_signal(table_wait_party.state_changed, 1.3, "The party took too long to walk to the table")
-	assert_eq(table_wait_party.state, CustomerParty.PartyState.WALKING_TO_TABLE, "The is not walking to the line")
+	assert_eq(table_wait_party.state, CustomerParty.PartyState.WALKING_TO_TABLE, "The party is not walking to the table")
+	assert_eq(_entry_patience_bar.visible, false)
 	await wait_for_signal(table_wait_party.state_changed, 1.3, "The party took too long to sit")
 	assert_eq(table_wait_party.state, CustomerParty.PartyState.THINKING, "The party is not sitting at the table")
 	assert_eq(line_wait_party.state, CustomerParty.PartyState.WAITING_FOR_TABLE, "The waiting party is not waiting for a table")
+	assert_eq(_entry_patience_bar.visible, true, "The EntryPoint PatienceBar isn't visible")
 	
 	_customer_manager.send_customers_home(table_wait_party)
 	table_wait_party.state = CustomerParty.PartyState.LEAVING_FOR_HOME
 	await wait_frames(1)
 	assert_eq(line_wait_party.state, CustomerParty.PartyState.WALKING_TO_TABLE, "The waiting party is not walking to the table")
+	assert_eq(_entry_patience_bar.visible, false)
 
 func test_party_loses_patience_and_leaves_during_ordering():
 	# Arrange

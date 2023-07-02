@@ -38,14 +38,17 @@ var patience_states = {
 		"rate": 0.01,
 		"icon": preload("res://Sprites/CustomerPartyIcons/wait-in-line-line.png"),
 		"requires_interaction": false,
+		"reset_on_enter": false,
 	},
 	PartyState.WAITING_FOR_TABLE: {
 		"rate": 0.01,
 		"icon": preload("res://Sprites/CustomerPartyIcons/wait-in-line-line.png"),
 		"requires_interaction": false,
+		"reset_on_enter": false,
 	},
+	# Thinking has a patience state incase they can't order, they will leave after thinking
 	PartyState.THINKING: {
-		"rate": 0.10,
+		"rate": 0.07,
 		"icon": preload("res://Sprites/CustomerPartyIcons/brain.png"),
 		"requires_interaction": false,
 	},
@@ -196,19 +199,21 @@ func is_in_patience_state() -> bool:
 	return patience_states.has(state)
 
 func reset_patience():
-	patience = 1.0
+	if is_in_patience_state() and patience_states[state].get("reset_on_enter", true):
+		patience = 1.0
+	
 	if patience_bar_visual:
 		if is_in_patience_state():
 			patience_bar_visual.icon.texture = patience_states[state].icon
-			patience_bar_visual.show_visual()
+			patience_bar_visual.show_visual(patience)
 		else:
-			patience_bar_visual.hide_visual()
+			disconnect_from_patience_bar_visual()
 		
 	for customer in customers:
 		customer.pixel_face.change_expression_to(patience_expressions[0])
 
 func connect_to_patience_bar_visual(patience_bar: PatienceBar) -> void:
-	if patience_bar == null:
+	if patience_bar == null or patience_bar == patience_bar_visual:
 		return
 	if patience_bar_visual != null:
 		disconnect_from_patience_bar_visual()
@@ -260,16 +265,15 @@ func go_to_entry(entry: Node3D):
 	
 	state = PartyState.WALKING_TO_ENTRY
 
-func wait_for_table():
-	# TODO: patience bar on entry door
-	pass
+func wait_for_table(entry_point: Node3D):
+	connect_to_patience_bar_visual(entry_point.get_node_or_null("PatienceBar"))
 
 func go_to_table(destination_table: Table):
 	table = destination_table
 	table.lock_for_party_in_transit()
 	target_pos = table.global_position
 	
-	var available_chairs = table.chairs.duplicate()
+	var available_chairs = table.available_chairs()
 	
 	for i in len(customers):
 		var customer : Customer = customers[i]
@@ -299,9 +303,8 @@ func sit_at_table():
 	for customer in customers:
 		customer.sit()
 	
-	connect_to_patience_bar_visual(table.patience_bar)
-	
 	state = PartyState.THINKING
+	connect_to_patience_bar_visual(table.patience_bar)
 
 func order_from(menu: Menu) -> void:
 	await get_tree().create_timer(think_time_sec, false).timeout
@@ -333,6 +336,7 @@ func wait_to_pay() -> void:
 	
 	state = CustomerParty.PartyState.WAITING_TO_PAY
 	num_customers_required_to_advance = 1
+	connect_to_patience_bar_visual(table.patience_bar)
 
 func pay() -> void:
 	state = PartyState.PAYING

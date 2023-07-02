@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bb502wxssj1nf"]
+[gd_scene load_steps=4 format=3 uid="uid://bb502wxssj1nf"]
 
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="1_i18dq"]
 [ext_resource type="Script" path="res://Scripts/AI/CustomerParty.gd" id="1_sgd0r"]
+[ext_resource type="PackedScene" uid="uid://c4f0ohpd2jil2" path="res://Scenes/patience_bar.tscn" id="3_vkrof"]
 
 [node name="CustomerParty" type="Node3D"]
 script = ExtResource("1_sgd0r")
@@ -9,3 +10,5 @@ script = ExtResource("1_sgd0r")
 [node name="NetworkedNode3D" parent="." instance=ExtResource("1_i18dq")]
 priority_sync_order = 2
 override_scene_id = 2001
+
+[node name="PatienceBar" parent="." instance=ExtResource("3_vkrof")]
