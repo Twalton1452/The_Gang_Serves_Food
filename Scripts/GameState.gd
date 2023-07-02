@@ -98,6 +98,7 @@ func set_state(value: Phase):
 func set_level(l: Level):
 	level = l
 	hud = get_node("/root/World/CanvasLayer/HUD")
+	hud.show()
 	THIS_ID = multiplayer.get_unique_id()
 
 func set_money(value: float):

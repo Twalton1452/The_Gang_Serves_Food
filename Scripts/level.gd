@@ -1,7 +1,6 @@
 extends Node3D
 class_name Level
 
-@onready var hud = get_node("/root/World/CanvasLayer/HUD")
 @onready var health_bar = get_node("/root/World/CanvasLayer/HUD/HealthBar")
 @onready var players = $Players
 @onready var spawn_point = $SpawnPoint
@@ -9,7 +8,6 @@ class_name Level
 const player_scene = preload("res://Scenes/player.tscn")
 
 func _ready():
-	hud.show()
 	GameState.level = self
 	# We only need to spawn players on the server.
 	if not multiplayer.is_server():
