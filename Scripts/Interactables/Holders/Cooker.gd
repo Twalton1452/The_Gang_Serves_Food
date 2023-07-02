@@ -46,36 +46,33 @@ func _ready() -> void:
 	progress_bar_visual.hide_visual()
 	progress_bar_visual.time_between_ticks = tick_timer.wait_time
 
-func _on_door_rotated() -> void:
-	if door_rotatable.is_rotated:
-		stop_cooking()
-	else:
-		if is_holding_item() and node_is_cookable(get_held_item()):
-			begin_cooking()
-
 func can_cook() -> bool:
 	var has_door = door_rotatable != null
 	if has_door:
 		return not door_rotatable.is_rotated
-	return true
+	return get_cookables().size() > 0
 
-func node_is_cookable(node: Node3D) -> bool:
-	return (node is Cookable or node is MultiHolder or node is CombinedFoodHolder) and can_cook()
+func _on_door_rotated() -> void:
+	if door_rotatable.is_rotated:
+		stop_cooking()
+	elif can_cook():
+		begin_cooking()
 
 func hold_item(node: Node3D):
 	super(node)
-	if node_is_cookable(node):
+	if can_cook():
 		begin_cooking()
-	else:
-		#print("%s isn't cookable, but i'll hold on to it" % node.name)
-		pass
 
 func release_item_to(holder: Holder):
 	super(holder)
 	stop_cooking()
 
 func begin_cooking():
-	progress_bar_visual.show_visual()
+	var cookables = get_cookables()
+	if cookables.size() == 0:
+		return
+	
+	progress_bar_visual.show_visual((cookables.front() as Cookable).cook_progress)
 	tick_timer.start()
 	audio_player.play()
 
@@ -85,29 +82,37 @@ func stop_cooking():
 	if audio_player.playing:
 		audio_player.stop()
 
-func _on_cooking_ticks_timer_timeout():
-	var cooked = false
-	# Cook everything on the Multiholder / CombinedFoodHolders, with power loss per item
-	if get_held_item() is MultiHolder or get_held_item() is CombinedFoodHolder:
-		var curr_power = power
-		var num_cooked = 0
-		var multi_h_items : Array[Node] = get_held_item().get_held_items()
-		
-		for item in multi_h_items:
-			if item is Cookable:
-				(item as Cookable).cook(curr_power)
-				cooked = true
-				num_cooked += 1
-				if num_cooked >= power_loss_item_count_begin:
-					curr_power = clamp(pow(curr_power, 2), 0.1, power)
-				progress_bar_visual.update(item.cook_progress)
-				
+## Checks the held items for anything that can be cooked and isn't already burned
+func get_cookables() -> Array[Node]:
+	if not is_holding_item():
+		return []
+	var held_item = get_held_item()
+	if held_item is Cookable and held_item.cook_state != Cookable.CookState.BURNED:
+		return [held_item]
+	if held_item is MultiHolder or held_item is CombinedFoodHolder:
+		return held_item.get_held_items().filter(func(held): return held is Cookable and held.cook_state != Cookable.CookState.BURNED)
 	else:
-		for cookable in get_children().filter(func(c): return c is Cookable):
-			(cookable as Cookable).cook(power)
-			cooked = true
-			progress_bar_visual.update(cookable.cook_progress)
+		return get_children().filter(func(c): return c is Cookable and c.cook_state != Cookable.CookState.BURNED)
+
+func _on_cooking_ticks_timer_timeout():
+	# Cook everything on the Multiholder / CombinedFoodHolders, with power loss per item
+	var curr_power = power
+	var num_cooked = 0
+	var cookables = get_cookables() as Array[Cookable]
+	var still_cookable = false
+	
+	for cookable in cookables:
+		cookable.cook(curr_power)
+		if cookable.cook_state != Cookable.CookState.BURNED:
+			still_cookable = true
+		
+		num_cooked += 1
+		if num_cooked >= power_loss_item_count_begin:
+			curr_power = clamp(pow(curr_power, 2), 0.1, power)
 	
 	# Keep cookin if there is something to cook
-	if cooked:
+	if still_cookable:
 		tick_timer.start()
+		progress_bar_visual.update(cookables.front().cook_progress)
+	else:
+		stop_cooking()

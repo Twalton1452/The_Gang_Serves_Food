@@ -47,7 +47,8 @@ func _on_progress_changed(progress: float):
 	var clamped_progress = clamp(progress, 0, 1.0)
 	var color = progress_gradient.sample(clamped_progress)
 	
-	if smooth:
+	# Positive progress can move smoothly, but negative should snap
+	if smooth and clamped_progress > bar_pivot.scale.x:
 		smooth_change(clamped_progress, color)
 	else:
 		unsmooth_change(clamped_progress, color)
