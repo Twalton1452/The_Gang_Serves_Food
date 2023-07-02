@@ -24,6 +24,7 @@ NetworkingUtils="*res://Scripts/Networking/NetworkingUtils.gd"
 GameState="*res://Scripts/GameState.gd"
 InteractionManager="*res://Scripts/InteractionManager.gd"
 NetworkedPartyManager="*res://Scripts/Networking/NetworkedPartyManager.gd"
+NetworkedAccumulatorManager="*res://Scripts/Networking/NetworkedAccumulatorManager.gd"
 
 [display]
 

@@ -64,13 +64,9 @@ func _on_accumulate_timer_tick() -> void:
 
 ## Called from Autoloaded NetworkedAccumlatorManager.gd
 func accumulate() -> void:
+	if not is_multiplayer_authority():
+		return
 	if to_accumulate_scene == null or not holder.has_space_for_another_item():
 		return
 	
-	var accumlated_node = to_accumulate_scene.instantiate()
-	holder.hold_item(accumlated_node)
-	
-	# Safeguard for if a player were to put something on the stack while it was spawning
-	if not holder.is_holding(accumlated_node):
-		print_debug("Accumulator %s for %s spawned, but couldn't fit another. Deleting it" % [name, to_accumulate_scene.resource_name])
-		accumlated_node.queue_free()
+	NetworkedAccumulatorManager.accumulate(self)

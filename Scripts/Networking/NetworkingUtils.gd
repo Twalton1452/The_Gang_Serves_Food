@@ -77,6 +77,7 @@ func spawn_node_for_everyone(node_to_spawn: PackedScene, to_be_parent: Node, dat
 	
 	var net_node : NetworkedNode3D = spawned_node.get_node(NETWORKED_NODE_3D)
 	var writer = ByteWriter.new()
+	writer.write_big_int(net_node.networked_id)
 	writer.write_int(net_node.SCENE_ID)
 	writer.write_path_to(to_be_parent)
 	
@@ -231,13 +232,14 @@ func spawn_node_for_peers(data: PackedByteArray):
 		await MidsessionJoinSyncer.accept_rpcs
 	
 	var reader = ByteReader.new(data)
+	var networked_id = reader.read_big_int()
 	var scene_id = reader.read_int()
 	var to_be_parent = get_node(reader.read_path_to())
 	var has_extra_data = reader.read_bool()
 	var extra_data = reader.read_vec3_dict() if has_extra_data else {}
-	spawn_node(NetworkedScenes.get_scene_by_id(scene_id), to_be_parent, extra_data)
-#	var net_node = spawned_node.get_node(NETWORKED_NODE_3D)
-#	net_node.set_sync_state(reader)
+	var spawned_node = spawn_node(NetworkedScenes.get_scene_by_id(scene_id), to_be_parent, extra_data)
+	var net_node = spawned_node.get_node(NETWORKED_NODE_3D)
+	net_node.networked_id = networked_id
 
 @rpc("authority", "call_remote", "reliable")
 func spawn_node_by_scene_path_for_peers(data: PackedByteArray):
@@ -259,10 +261,10 @@ func duplicate_node_for_peers(data: PackedByteArray):
 	if not MidsessionJoinSyncer.is_synced:
 		print("Trying to duplicate but not synced yet, waiting...")
 		await MidsessionJoinSyncer.accept_rpcs
-	
 	var reader = ByteReader.new(data)
 	var node_to_duplicate = get_node(reader.read_path_to())
-	var to_be_parent = get_node(reader.read_path_to())
+	var parent_path = reader.read_path_to()
+	var to_be_parent = get_node(parent_path)
 	var deep_copy_state = reader.read_bool()
 	duplicate_node(node_to_duplicate, to_be_parent, deep_copy_state)
 

@@ -35,6 +35,7 @@ enum SyncPriorityPhase {
 
 ## Sync with this parent node
 @onready var p_node = get_parent()
+@onready var original_name = p_node.name
 
 ## The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
 ## This is pulled off the Interactable this is attached to if attached to one.
@@ -49,11 +50,12 @@ var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.NETWORKED : get = get_sce
 
 ## Identifier between server/client to figure out what needs to be created/updated/deleted
 ## Generated during [method _ready]
-var networked_id = -1
+var networked_id = -1 : set = set_networked_id
 
 ## Used by the [MidsessionJoinSyncer] script to see if it should update the Peer on spawn to reduce bandwidth
 ## Run-time spawns will need this set to true automatically
 var changed = false
+
 
 func has_after_sync():
 	return "after_sync" in p_node
@@ -106,6 +108,10 @@ func get_stateful_sync_state() -> ByteWriter:
 		p_node.get_sync_state(writer)
 	return writer
 
+func set_networked_id(value: int) -> void:
+	networked_id = value
+	generate_unique_name()
+
 func get_scene_id() -> int:
 	if override_scene_id != NetworkedIds.Scene.NETWORKED:
 		return override_scene_id
@@ -126,7 +132,6 @@ func set_priority_sync_order(value: SyncPriorityPhase) -> void:
 func _ready():
 	if networked_id == -1:
 		networked_id = NetworkingUtils.generate_id()
-		generate_unique_name()
 	add_to_group(str(NetworkedIds.Scene.NETWORKED))
 	
 	if p_node is Interactable:
@@ -154,7 +159,7 @@ func generate_unique_name():
 	if OS.has_feature("standalone"):
 		p_node.name = str(networked_id)
 	else:
-		p_node.name = p_node.name + "_" + str(networked_id) # useful for debugging
+		p_node.name = original_name + "_" + str(networked_id) # useful for debugging
 
 # When the node changes (parents) this gets fired off
 # Can work as a delta signifier to the midsession joins

@@ -1,10 +1,30 @@
 extends Node
 
-## UNUSED... FOR NOW
-## Timers are being handled in Accumulator.gd because they could have different intervals
-## There could be fast/slow Accumulators and a one size fits all Timer wouldn't work
+## Autoloaded
 
 ## Class to handle all of the RPC's related to Accumulator spawning
+
+func accumulate(accumulator: Accumulator) -> void:
+	if not is_multiplayer_authority():
+		return
+	
+	if accumulator.to_accumulate_scene == null or not accumulator.holder.has_space_for_another_item():
+		return
+	
+	var accumlated_node = NetworkingUtils.spawn_node_for_everyone(accumulator.to_accumulate_scene, self)
+	accumulator.holder.hold_item(accumlated_node)
+	
+	var writer = ByteWriter.new()
+	writer.write_path_to(accumulator)
+	writer.write_str(accumlated_node.name)
+	notify_peers_of_accumulation.rpc(writer.data)
+
+@rpc("authority", "call_remote", "reliable")
+func notify_peers_of_accumulation(data: PackedByteArray) -> void:
+	var reader = ByteReader.new(data)
+	var accumulator : Accumulator = get_node(reader.read_path_to())
+	var accumulated_node = get_node(reader.read_str())
+	accumulator.holder.hold_item(accumulated_node)
 
 #var timer : Timer
 #var tick_rate_seconds = 1.0
