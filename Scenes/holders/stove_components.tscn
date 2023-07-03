@@ -56,6 +56,7 @@ shape = SubResource("BoxShape3D_4ekfo")
 
 [node name="HorizontalProgressBar" parent="kitchenStove(Clone)/Burner1/Cooker" index="4" instance=ExtResource("6_5biv2")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.2, 0)
+visible = false
 
 [node name="Burner2" type="Node3D" parent="kitchenStove(Clone)" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0860458, 0.443, 0.0448162)
@@ -69,6 +70,7 @@ shape = SubResource("BoxShape3D_nibh8")
 
 [node name="HorizontalProgressBar" parent="kitchenStove(Clone)/Burner2/Cooker" index="4" instance=ExtResource("6_5biv2")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.2, 0)
+visible = false
 
 [node name="Burner3" type="Node3D" parent="kitchenStove(Clone)" index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0791571, 0.443, -0.0822491)
@@ -82,6 +84,7 @@ shape = SubResource("BoxShape3D_ghs3m")
 
 [node name="HorizontalProgressBar" parent="kitchenStove(Clone)/Burner3/Cooker" index="4" instance=ExtResource("6_5biv2")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.3, 0)
+visible = false
 
 [node name="Burner4" type="Node3D" parent="kitchenStove(Clone)" index="4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0865781, 0.443, -0.0822491)
@@ -95,6 +98,7 @@ shape = SubResource("BoxShape3D_8pwa0")
 
 [node name="HorizontalProgressBar" parent="kitchenStove(Clone)/Burner4/Cooker" index="4" instance=ExtResource("6_5biv2")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.3, 0)
+visible = false
 
 [node name="OvenTop" type="Node3D" parent="kitchenStove(Clone)" index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00957147, 0.226, 0.0655161)
@@ -116,6 +120,7 @@ pitch_scale = 0.8
 
 [node name="HorizontalProgressBar" parent="kitchenStove(Clone)/OvenTop/Cooker" index="4" instance=ExtResource("6_5biv2")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.0116711, 0.125756, 0.182386)
+visible = false
 
 [node name="OvenBottom" type="Node3D" parent="kitchenStove(Clone)" index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0216987, 0.095, 0.0665204)
@@ -135,6 +140,7 @@ pitch_scale = 0.8
 
 [node name="HorizontalProgressBar" parent="kitchenStove(Clone)/OvenBottom/Cooker" index="4" instance=ExtResource("6_5biv2")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.0340722, 0.149596)
+visible = false
 
 [editable path="kitchenStove(Clone)/door/Rotatable"]
 [editable path="kitchenStove(Clone)/OvenTop/Cooker"]

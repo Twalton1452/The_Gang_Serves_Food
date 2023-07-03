@@ -91,7 +91,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_80tl0")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pxy03"]
-size = Vector3(0.217859, 0.0133878, 0.247013)
+size = Vector3(0.240273, 0.0133878, 0.247013)
 
 [node name="CounterWall" instance=ExtResource("1_lac26")]
 
@@ -103,28 +103,28 @@ mesh = SubResource("ArrayMesh_acia8")
 skeleton = NodePath("")
 
 [node name="Holder" parent="." index="2" instance=ExtResource("4_ypd6k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.338356, 0.526206, -0.0271188)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.370925, 0.526206, -0.0271188)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00473422, 0)
 shape = SubResource("BoxShape3D_pxy03")
 
 [node name="Holder2" parent="." index="3" instance=ExtResource("4_ypd6k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.113804, 0.526206, -0.0271188)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.124437, 0.526206, -0.0271188)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder2" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00473422, 0)
 shape = SubResource("BoxShape3D_pxy03")
 
 [node name="Holder3" parent="." index="4" instance=ExtResource("4_ypd6k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.111215, 0.526206, -0.0271188)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.126065, 0.526206, -0.0271188)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder3" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00473422, 0)
 shape = SubResource("BoxShape3D_pxy03")
 
 [node name="Holder4" parent="." index="5" instance=ExtResource("4_ypd6k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.337274, 0.526206, -0.0271188)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.368588, 0.526206, -0.0271188)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Holder4" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00473422, 0)
