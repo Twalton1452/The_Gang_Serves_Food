@@ -14,6 +14,7 @@ var tables : Array[Table]
 var path_testing_customer : Customer = null
 var operable = true : get = get_operable
 var baking = false
+var checking_table_viability = false
 
 func after_sync() -> void:
 	bake_navigation_mesh(false)
@@ -25,7 +26,7 @@ func get_operable() -> bool:
 		if table.available_chairs().size() >= GameState.modifiers.max_party_size:
 			can_seat_max_party_size = true
 			break
-	return can_seat_max_party_size and not baking
+	return can_seat_max_party_size and not baking and not checking_table_viability
 
 func _enter_tree() -> void:
 	tables_root.child_entered_tree.connect(_on_table_entered_tables_tree)
@@ -86,10 +87,12 @@ func _on_edit_mode_node_placed(_node: Node) -> void:
 #	await bake_finished
 	baking = false
 	
+	checking_table_viability = true
 	var i = 0
 	while i < tables.size():
-		assess_table_viability(tables[i])
+		await assess_table_viability(tables[i])
 		i += 1
+	checking_table_viability = false
 
 func _on_game_state_changed() -> void:
 	pass
