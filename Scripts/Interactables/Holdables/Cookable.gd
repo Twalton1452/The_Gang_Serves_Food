@@ -1,8 +1,6 @@
 extends Holdable
 class_name Cookable
 
-signal cook_state_changed(state: CookState)
-
 enum CookState {
 	RAW = 0,
 	COOKED = 1,
@@ -80,4 +78,3 @@ func cook(power: float):
 		@warning_ignore("int_as_enum_without_cast")
 		cook_state += 1 as CookState
 		change_color()
-		cook_state_changed.emit(cook_state)

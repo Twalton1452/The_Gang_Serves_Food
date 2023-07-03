@@ -12,6 +12,7 @@ class_name CookerComponent
 
 @onready var tick_timer : Timer = $CookingTicksTimer
 @onready var audio_player : AudioStreamPlayer3D = $AudioStreamPlayer3D
+@onready var progress_audio_player : AudioStreamPlayer3D = $ProgressAudioStreamPlayer3D
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
@@ -113,7 +114,15 @@ func _on_cooking_ticks_timer_timeout():
 	var still_cookable = false
 	
 	for cookable in cookables:
+		var previous_state = cookable.cook_state
 		cookable.cook(curr_power)
+		
+		# Kind of hacky
+		# Would like to hook up some signals instead
+		# Not sure the performance impact of having the AudioPlayer3D's on every Cookable either
+		# There will be a lot less perf problems with them on the Cooker though
+		if cookable.cook_state != previous_state:
+			progress_audio_player.play()
 		
 		# Check if we burned the food from cooking, so we can immediately hide the progress bar
 		# the same frame instead of waiting for the next tick to hide it due to lack of cookables
