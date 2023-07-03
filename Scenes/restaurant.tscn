@@ -1,7 +1,7 @@
 [gd_scene load_steps=41 format=3 uid="uid://bkur10mtv3uoy"]
 
+[ext_resource type="Script" path="res://Scripts/GameLevel.gd" id="1_7m55k"]
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
-[ext_resource type="Script" path="res://Scripts/Level.gd" id="1_sgx7f"]
 [ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="2_7dixm"]
 [ext_resource type="PackedScene" uid="uid://bgnxoax3vojcl" path="res://3d_models/Kenneys_Furniture/wallDoorwayWide.glb" id="3_21ak5"]
 [ext_resource type="NavigationMesh" uid="uid://cro8mueu3lb0n" path="res://Resources/building_navmesh.tres" id="3_wk033"]
@@ -52,7 +52,7 @@ sky = SubResource("Sky_irnl5")
 tonemap_mode = 2
 
 [node name="Level" type="Node3D"]
-script = ExtResource("1_sgx7f")
+script = ExtResource("1_7m55k")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866024, -0.433016, 0.25, 0, 0.499998, 0.866027, -0.500003, 0.75, -0.43301, 0, 5.58447, 0)

@@ -46,7 +46,7 @@ var STATE_VALIDATIONS = {
 
 ## Player str(id) is the key and the Player Node is the value
 var players : Dictionary = {}
-var level : Level : set = set_level
+var level : GameLevel : set = set_level
 var hud : HUD = null
 
 func set_sync_state(reader: ByteReader):
@@ -95,7 +95,7 @@ func set_state(value: Phase):
 		return
 	notify_state_changed.rpc(state)
 
-func set_level(l: Level):
+func set_level(l: GameLevel):
 	level = l
 	hud = get_node("/root/World/CanvasLayer/HUD")
 	hud.show()

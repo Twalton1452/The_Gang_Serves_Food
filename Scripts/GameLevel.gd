@@ -1,5 +1,5 @@
 extends Node3D
-class_name Level
+class_name GameLevel
 
 @onready var health_bar = get_node("/root/World/CanvasLayer/HUD/HealthBar")
 @onready var players = $Players
