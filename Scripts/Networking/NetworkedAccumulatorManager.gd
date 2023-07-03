@@ -12,7 +12,7 @@ func accumulate(accumulator: Accumulator) -> void:
 		return
 	
 	var accumlated_node = NetworkingUtils.spawn_node_for_everyone(accumulator.to_accumulate_scene, self)
-	accumulator.holder.hold_item(accumlated_node)
+	accumulator.receive_accumulation(accumlated_node)
 	
 	var writer = ByteWriter.new()
 	writer.write_path_to(accumulator)
@@ -24,7 +24,8 @@ func notify_peers_of_accumulation(data: PackedByteArray) -> void:
 	var reader = ByteReader.new(data)
 	var accumulator : Accumulator = get_node(reader.read_path_to())
 	var accumulated_node = get_node(reader.read_str())
-	accumulator.holder.hold_item(accumulated_node)
+	
+	accumulator.receive_accumulation(accumulated_node)
 
 #var timer : Timer
 #var tick_rate_seconds = 1.0

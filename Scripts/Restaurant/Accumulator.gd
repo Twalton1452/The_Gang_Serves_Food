@@ -5,6 +5,7 @@ class_name Accumulator
 
 @onready var display = $Display
 @onready var accumulate_timer = $AccumulateTimer
+@onready var audio_stream = $AudioStreamPlayer3D
 
 var holder : StackingHolder = null
 
@@ -72,3 +73,7 @@ func accumulate() -> void:
 		return
 	
 	NetworkedAccumulatorManager.accumulate(self)
+
+func receive_accumulation(accumulated_node: Node3D) -> void:
+	holder.hold_item(accumulated_node)
+	audio_stream.play()
