@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://c18b0npj3dtpu"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerPing.gd" id="1_et3xf"]
+[ext_resource type="Material" uid="uid://cuyt1pckt75i4" path="res://Materials/Player_Ping_mat.tres" id="1_g7xkl"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_g01bm"]
+radius = 0.2
+height = 0.4
+radial_segments = 16
+rings = 8
+
+[node name="Ping" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_g01bm")
+surface_material_override/0 = ExtResource("1_g7xkl")
+script = ExtResource("1_et3xf")

@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cuyt1pckt75i4"]
+
+[resource]
+resource_local_to_scene = true
+transparency = 1
+albedo_color = Color(1, 0, 1, 0.372549)
+disable_receive_shadows = true

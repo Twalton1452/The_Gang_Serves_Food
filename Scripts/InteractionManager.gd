@@ -20,6 +20,7 @@ func get_open_for_business_action(player_action: Player.Action) -> Callable:
 		Player.Action.SECONDARY_INTERACT: return resolve_secondary_interaction
 		Player.Action.BUY: return resolve_buying_held_item
 		Player.Action.SELL: return resolve_selling_held_item
+		Player.Action.PING: return resolve_ping
 		_: return not_implemented_action
 
 func get_editing_restaurant_action(player_action: Player.Action) -> Callable:
@@ -29,6 +30,7 @@ func get_editing_restaurant_action(player_action: Player.Action) -> Callable:
 		Player.Action.PAINT: return resolve_painting_target
 		Player.Action.BUY: return resolve_buying_held_item
 		Player.Action.SELL: return resolve_selling_held_item
+		Player.Action.PING: return resolve_ping
 		_: return not_implemented_action
 	
 func resolve_player_action(player: Player, player_action: Player.Action) -> void:
@@ -330,3 +332,13 @@ func notify_peers_player_sold_item(p_id: int) -> void:
 	var player = GameState.get_player_by_id(p_id)
 	
 	release_placing_node(player)
+
+@rpc("any_peer")
+func resolve_ping(p_id: int) -> void:
+	notify_peers_of_player_ping.rpc(p_id)
+
+@rpc("authority", "call_local")
+func notify_peers_of_player_ping(p_id: int) -> void:
+	var ping_node = NetworkedScenes.get_scene_by_id(NetworkedIds.Scene.PLAYER_PING).instantiate()
+	ping_node.player_id = p_id
+	add_child(ping_node)

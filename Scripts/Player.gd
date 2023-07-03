@@ -9,6 +9,7 @@ enum Action {
 	PAINT,
 	BUY,
 	SELL,
+	PING,
 }
 
 @onready var camera = $Camera3D
@@ -135,8 +136,10 @@ func _unhandled_input(event):
 		if gun_ray_cast.is_colliding():
 			var hit_player = gun_ray_cast.get_collider()
 			hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-
-	if event.is_action_pressed("interact"):
+	
+	if event.is_action_pressed("ping"):
+		ping()
+	elif event.is_action_pressed("interact"):
 		interact()
 	if event.is_action_pressed("secondary_interact"):
 		secondary_interact()
@@ -217,6 +220,9 @@ func sell_attempt():
 	if node.scene_file_path.is_empty():
 		return
 	InteractionManager.resolve_player_action(self, Action.SELL)
+
+func ping():
+	InteractionManager.resolve_player_action(self, Action.PING)
 
 @rpc("call_local")
 func pick_emotive_face(id: int):
