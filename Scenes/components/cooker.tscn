@@ -16,7 +16,7 @@ script = ExtResource("2_t7dk3")
 priority_sync_order = 9
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-unit_size = 3.0
+unit_size = 2.0
 bus = &"SFX"
 
 [connection signal="timeout" from="CookingTicksTimer" to="." method="_on_cooking_ticks_timer_timeout"]

@@ -33,5 +33,5 @@ wait_time = 10.0
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." index="5"]
 stream = ExtResource("5_snth2")
 volume_db = -12.0
-unit_size = 2.0
+unit_size = 1.0
 bus = &"SFX"
