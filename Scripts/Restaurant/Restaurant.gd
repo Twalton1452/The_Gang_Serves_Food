@@ -32,9 +32,6 @@ func _enter_tree() -> void:
 	tables_root.child_entered_tree.connect(_on_table_entered_tables_tree)
 	tables_root.child_exiting_tree.connect(_on_table_exiting_tables_tree)
 
-func _exit_tree() -> void:
-	GameState.unregister_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable)
-
 func _ready():
 	GameState.register_validator(GameState.Phase.OPEN_FOR_BUSINESS, get_operable, "There is no table that can seat the Customers!")
 	GameState.register_validator(GameState.Phase.OPEN_FOR_BUSINESS, restaurant_is_pathable, "Customers cannot get in/out to the Restaurant")

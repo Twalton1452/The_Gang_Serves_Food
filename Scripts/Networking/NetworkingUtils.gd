@@ -1,7 +1,12 @@
 extends Node
 
+## Autoloaded
+
 var ID = 0
 const NETWORKED_NODE_3D = "NetworkedNode3D"
+
+func reset() -> void:
+	ID = 0
 
 # Used to sync from server to client on connection
 @rpc("authority", "reliable")

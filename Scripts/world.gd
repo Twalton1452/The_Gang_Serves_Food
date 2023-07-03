@@ -71,7 +71,7 @@ func start_game():
 # Call this function deferred and only on the main authority (server).
 func change_level(scene: PackedScene):
 	# Remove old level if any.
-	GameState.reset()
+	reset.rpc()
 	var level = $Level
 	for c in level.get_children():
 		level.remove_child(c)
@@ -92,3 +92,7 @@ func _on_color_picker_button_color_changed(color):
 
 func _on_quit_button_pressed():
 	get_tree().quit.call_deferred()
+
+@rpc("call_local")
+func reset() -> void:
+	GameState.reset()

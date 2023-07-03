@@ -68,14 +68,22 @@ func get_sync_state() -> ByteWriter:
 ## validator: Dictionary{ "validator": Callable -> bool, "err_message": String }
 func register_validator(phase: Phase, callable: Callable, error_message: String) -> void:
 	var new_validation = Validation.new(phase, callable, error_message)
-	STATE_VALIDATIONS[new_validation.phase].push_back(new_validation)
+	if STATE_VALIDATIONS.has(new_validation.phase):
+		STATE_VALIDATIONS[new_validation.phase].push_back(new_validation)
+	else:
+		STATE_VALIDATIONS[new_validation.phase] = [new_validation]
 
 func unregister_validator(phase: Phase, callable: Callable) -> void:
+	var validations = STATE_VALIDATIONS.get(phase, [])
+	if validations.size() == 0:
+		return
+	
 	var index = 0
-	for validator in STATE_VALIDATIONS[phase]:
+	for validator in validations:
 		if validator.validator == callable:
 			break
 		index += 1
+	
 	STATE_VALIDATIONS[phase].remove_at(index)
 
 func set_state(value: Phase):
@@ -109,9 +117,6 @@ func set_money(value: float):
 		return
 	notify_money_changed.rpc(money)
 
-func _ready() -> void:
-	register_validator(Phase.OPEN_FOR_BUSINESS, player_validator, "A player is holding something!")
-
 func player_validator() -> bool:
 	for player_id in players:
 		if players[player_id].holder.is_holding_item() or players[player_id].edit_mode_ray_cast.is_holding_editable:
@@ -125,8 +130,12 @@ func subtract_money(value: float):
 	set_money(money - value)
 
 func reset():
+	NetworkingUtils.reset()
 	players.clear()
 	level = null
+	STATE_VALIDATIONS.clear()
+	register_validator(Phase.OPEN_FOR_BUSINESS, player_validator, "A player is holding something!")
+	set_money(0)
 
 func get_player_by_id(p_id: int) -> Player:
 	return get_player_by_name(str(p_id))

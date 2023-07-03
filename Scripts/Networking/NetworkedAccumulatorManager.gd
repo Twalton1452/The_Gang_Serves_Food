@@ -11,7 +11,7 @@ func accumulate(accumulator: Accumulator) -> void:
 	if accumulator.to_accumulate_scene == null or not accumulator.holder.has_space_for_another_item():
 		return
 	
-	var accumlated_node = NetworkingUtils.spawn_node_for_everyone(accumulator.to_accumulate_scene, self)
+	var accumlated_node = NetworkingUtils.spawn_node_for_everyone(accumulator.to_accumulate_scene, accumulator)
 	accumulator.receive_accumulation(accumlated_node)
 	
 	var writer = ByteWriter.new()
@@ -22,8 +22,13 @@ func accumulate(accumulator: Accumulator) -> void:
 @rpc("authority", "call_remote", "reliable")
 func notify_peers_of_accumulation(data: PackedByteArray) -> void:
 	var reader = ByteReader.new(data)
-	var accumulator : Accumulator = get_node(reader.read_path_to())
-	var accumulated_node = get_node(reader.read_str())
+	var accumulator : Accumulator = get_node_or_null(reader.read_path_to())
+	if accumulator == null:
+		return
+	
+	var accumulated_node = accumulator.get_node_or_null(reader.read_str())
+	if accumulated_node == null:
+		return
 	
 	accumulator.receive_accumulation(accumulated_node)
 
