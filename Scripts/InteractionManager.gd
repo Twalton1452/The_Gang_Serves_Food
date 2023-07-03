@@ -304,14 +304,17 @@ func resolve_edit_mode_rotation(p_id : int):
 	
 	if player.edit_mode_ray_cast.is_holding_editable:
 		to_rotate_node = player.edit_mode_ray_cast.get_held_editable_node()
+		to_rotate_node.rotation.y += ROTATION_AMOUNT
 	else:
 		if player.edit_mode_ray_cast.is_colliding():
 			to_rotate_node = player.edit_mode_ray_cast.get_collider().owner
+			to_rotate_node.rotation.y += ROTATION_AMOUNT
+			# Only emit the rotated signal when the object is firmly on the ground
+			# otherwise the rotation affects surrounding objects path finding
+			edit_mode_node_rotated.emit(to_rotate_node)
 	
 	if to_rotate_node == null:
 		return
-	to_rotate_node.rotation.y += ROTATION_AMOUNT
-	edit_mode_node_rotated.emit(to_rotate_node)
 	
 	var writer = ByteWriter.new()
 	writer.write_big_int(p_id)
@@ -334,7 +337,8 @@ func notify_peers_of_edit_mode_rotation(data: PackedByteArray):
 		return
 	
 	node.global_rotation = global_rot
-	edit_mode_node_rotated.emit(node)
+	if not player.edit_mode_ray_cast.is_holding_editable:
+		edit_mode_node_rotated.emit(node)
 
 @rpc("any_peer")
 func resolve_buying_held_item(p_id: int) -> void:
