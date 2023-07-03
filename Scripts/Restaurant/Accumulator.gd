@@ -9,6 +9,7 @@ class_name Accumulator
 var holder : StackingHolder = null
 
 func set_sync_state(reader: ByteReader) -> void:
+	to_accumulate_scene = load(reader.read_str())
 	var is_timer_playing = reader.read_bool()
 	if is_timer_playing:
 		# Instead of setting the Timer Node to this tick rate and then adding logic to 
@@ -18,6 +19,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		_on_accumulate_timer_tick()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	writer.write_str(to_accumulate_scene.resource_path)
 	var is_timer_playing = not accumulate_timer.is_stopped()
 	writer.write_bool(is_timer_playing)
 	if is_timer_playing:
