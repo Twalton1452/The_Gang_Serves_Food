@@ -12,12 +12,13 @@ signal edit_mode_node_bought(node: Node)
 const ROTATION_AMOUNT = PI / 2
 
 func not_implemented_action(p_id: int) -> void:
-	printerr(p_id, " tried to call a not implemented action")
+	print(p_id, " tried to call a not implemented action")
 
 func get_open_for_business_action(player_action: Player.Action) -> Callable:
 	match player_action:
 		Player.Action.INTERACT: return resolve_interaction
 		Player.Action.SECONDARY_INTERACT: return resolve_secondary_interaction
+		Player.Action.ROTATE: return not_implemented_action
 		Player.Action.BUY: return resolve_buying_held_item
 		Player.Action.SELL: return resolve_selling_held_item
 		Player.Action.PING: return resolve_ping
@@ -27,6 +28,7 @@ func get_editing_restaurant_action(player_action: Player.Action) -> Callable:
 	match player_action:
 		Player.Action.INTERACT: return resolve_edit_mode_interaction
 		Player.Action.SECONDARY_INTERACT: return resolve_edit_mode_secondary_interaction
+		Player.Action.ROTATE: return resolve_edit_mode_rotation
 		Player.Action.PAINT: return resolve_painting_target
 		Player.Action.BUY: return resolve_buying_held_item
 		Player.Action.SELL: return resolve_selling_held_item
@@ -61,6 +63,8 @@ func lock_on_to_node(player: Player, node: Node) -> void:
 			continue
 		
 		if other_player.edit_mode_ray_cast.get_held_editable_path() == player.edit_mode_ray_cast.get_held_editable_path():
+			player.edit_mode_ray_cast.target_original_position = other_player.edit_mode_ray_cast.target_original_position
+			player.edit_mode_ray_cast.target_original_rotation = other_player.edit_mode_ray_cast.target_original_rotation
 			release_placing_node(other_player)
 			break
 
@@ -68,6 +72,17 @@ func release_placing_node(player: Player) -> void:
 	var held_node = player.edit_mode_ray_cast.get_held_editable_node()
 	edit_mode_node_placed.emit(held_node)
 	player.edit_mode_ray_cast.unlock_from_target()
+
+func cancel_editing_node(player: Player) -> bool:
+	var player_editing_node = player.edit_mode_ray_cast.get_held_editable_node()
+	if player_editing_node != null:
+		player.edit_mode_ray_cast.release_target_to_original_orientation()
+	else:
+		return false
+	
+#	edit_mode_node_rotated.emit(player_editing_node)
+	edit_mode_node_placed.emit(player_editing_node)
+	return true
 
 @rpc("any_peer")
 func resolve_interaction(p_id: int):
@@ -240,6 +255,44 @@ func notify_peers_of_edit_mode_interaction(data: PackedByteArray):
 
 @rpc("any_peer")
 func resolve_edit_mode_secondary_interaction(p_id : int):
+	if not is_multiplayer_authority():
+		return
+	
+	var player : Player = GameState.get_player_by_id(p_id)
+	if player == null:
+		return
+	
+	var player_editing_node = player.edit_mode_ray_cast.get_held_editable_node()
+	if not cancel_editing_node(player):
+		return
+	
+	var writer = ByteWriter.new()
+	writer.write_big_int(p_id)
+	writer.write_vector3(player_editing_node.global_position)
+	writer.write_vector3(player_editing_node.global_rotation)
+	writer.write_path_to(player_editing_node)
+	notify_peers_of_edit_mode_cancel_editing.rpc(writer.data)
+
+@rpc("authority", "call_remote")
+func notify_peers_of_edit_mode_cancel_editing(data: PackedByteArray) -> void:
+	var reader = ByteReader.new(data)
+	var p_id = reader.read_big_int()
+	var global_pos = reader.read_vector3()
+	var global_rot = reader.read_vector3()
+	var path_to_node = reader.read_path_to()
+	var player : Player = GameState.get_player_by_id(p_id)
+	if player == null:
+		return
+	
+	cancel_editing_node(player)
+	var node = get_node_or_null(path_to_node)
+	if node == null:
+		return
+	node.global_position = global_pos
+	node.global_rotation = global_rot
+
+@rpc("any_peer")
+func resolve_edit_mode_rotation(p_id : int):
 	if not is_multiplayer_authority():
 		return
 	

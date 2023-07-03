@@ -50,17 +50,17 @@ func test_player_can_rotate_held_object() -> void:
 	pick_up_object()
 	
 	assert_eq(_object.global_rotation, Vector3.ZERO)
-	_player.secondary_interact()
+	_player.rotate_attempt()
 	assert_almost_eq(_object.global_rotation, Vector3(0.0, InteractionManager.ROTATION_AMOUNT, 0.0), Vector3(0.1, 0.1, 0.1))
 
 func test_player_can_rotate_targeted_object() -> void:
 	assert_eq(_object.global_rotation, Vector3.ZERO)
 	_player.edit_mode_ray_cast.force_raycast_update()
-	_player.secondary_interact()
+	_player.rotate_attempt()
 	await wait_frames(1)
 	assert_almost_eq(_object.global_rotation, Vector3(0.0, InteractionManager.ROTATION_AMOUNT, 0.0), Vector3(0.1, 0.1, 0.1))
 
-func test_player_can_pick_up_and_put_down_object() -> void:
+func test_player_can_pick_up_and_place_object() -> void:
 	pick_up_object()
 	
 	_player.camera.rotation.x = deg_to_rad(-25.0)
@@ -74,6 +74,31 @@ func test_player_can_pick_up_and_put_down_object() -> void:
 	assert_eq(_player.edit_mode_ray_cast.is_holding_editable, false)
 	var expected_position = _player.edit_mode_ray_cast.correct_position(_player.edit_mode_ray_cast.uneditable_ray_cast.get_collision_point())
 	assert_almost_eq(_object.global_position, expected_position, Vector3(0.1, 0.1, 0.1))
+
+func test_player_can_pick_up_and_release_object_to_original_position() -> void:
+	var original_global_position = _object.global_position
+	var original_global_rotation = _object.global_rotation
+	pick_up_object()
+	assert_eq(_player.edit_mode_ray_cast.target_original_position, original_global_position)
+	assert_eq(_player.edit_mode_ray_cast.target_original_rotation, original_global_rotation)
+	
+	_player.camera.rotation.x = deg_to_rad(-25.0)
+	_player.global_position += Vector3(0.0, 0.0, -1.0)
+	await wait_frames(2)
+	
+	_object.global_rotation.y += PI / 2
+	await wait_frames(1)
+	
+	assert_eq(_player.edit_mode_ray_cast.uneditable_ray_cast.is_colliding(), true)
+	assert_almost_ne(_object.global_position, original_global_position, Vector3(0.1, 0.1, 0.1))
+	assert_almost_ne(_object.global_rotation, original_global_rotation, Vector3(0.1, 0.1, 0.1))
+	
+	_player.secondary_interact()
+	await wait_frames(2)
+	
+	assert_eq(_player.edit_mode_ray_cast.is_holding_editable, false)
+	assert_almost_eq(_object.global_position, original_global_position, Vector3(0.1, 0.1, 0.1))
+	assert_almost_eq(_object.global_rotation, original_global_rotation, Vector3(0.1, 0.1, 0.1))
 
 func test_player_can_paint_targeted_object() -> void:
 	var mesh = _object.get_node("MeshInstance3D")

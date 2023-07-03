@@ -22,6 +22,8 @@ var should_snap_to_looking_at_y = false
 
 ## The collider the ray points to
 var target : StaticBody3D = null
+var target_original_position = Vector3.ZERO
+var target_original_rotation = Vector3.ZERO
 var default_snap = Vector3(0.05, 0.05, 0.05)
 var snapping = Vector3(0.1, 0.1, 0.1)
 var is_holding_editable : bool : get = get_is_holding_editable
@@ -32,6 +34,8 @@ func set_sync_state(reader: ByteReader) -> void:
 	var has_target = reader.read_bool()
 	if has_target:
 		lock_on_to(get_node(reader.read_path_to()))
+		target_original_position = reader.read_vector3()
+		target_original_rotation = reader.read_vector3()
 
 func get_sync_state() -> ByteWriter:
 	var writer = ByteWriter.new()
@@ -41,6 +45,8 @@ func get_sync_state() -> ByteWriter:
 	writer.write_bool(has_target)
 	if has_target:
 		writer.write_path_to(target)
+		writer.write_vector3(target_original_position)
+		writer.write_vector3(target_original_rotation)
 	
 	return writer
 
@@ -59,6 +65,8 @@ func can_place_node() -> bool:
 
 ## Called from InteractionManager
 func lock_on_to(node: Node) -> void:
+	target_original_position = node.owner.global_position
+	target_original_rotation = node.owner.global_rotation
 	remote_transform.global_position = node.owner.global_position
 	remote_transform.remote_path = node.owner.get_path()
 	target = node
@@ -74,6 +82,7 @@ func lock_on_to(node: Node) -> void:
 func unlock_from_target() -> void:
 	remote_transform.remote_path = ^""
 	remote_transform.position = Vector3.ZERO
+	remote_transform.rotation = Vector3.ZERO
 	snapping = default_snap
 	
 	if looking_at != null:
@@ -86,6 +95,12 @@ func unlock_from_target() -> void:
 #	set_child_collisions_for(target.owner, true)
 	target = null
 #	audio_player.play()
+
+func release_target_to_original_orientation() -> void:
+	var releasing_node = get_held_editable_node()
+	unlock_from_target()
+	releasing_node.global_position = target_original_position
+	releasing_node.global_rotation = target_original_rotation
 
 func set_child_collisions_for(node: Node3D, value: bool) -> void:
 	node.propagate_call("set_collision_layer_value", [1, value], true)

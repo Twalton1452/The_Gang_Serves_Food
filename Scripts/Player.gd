@@ -6,6 +6,7 @@ signal health_changed(health_value)
 enum Action {
 	INTERACT,
 	SECONDARY_INTERACT,
+	ROTATE,
 	PAINT,
 	BUY,
 	SELL,
@@ -147,6 +148,8 @@ func _unhandled_input(event):
 		buy_attempt()
 	elif event.is_action_pressed("sell"):
 		sell_attempt()
+	elif event.is_action_pressed("rotate"):
+		rotate_attempt()
 	elif event.is_action_pressed("paint"):
 		paint_attempt()
 
@@ -196,6 +199,12 @@ func secondary_interact() -> void:
 		return
 	
 	InteractionManager.resolve_player_action(self, Action.SECONDARY_INTERACT)
+
+func rotate_attempt() -> void:
+	if not interact_ray_cast.is_colliding() and not edit_mode_ray_cast.is_colliding() and not edit_mode_ray_cast.is_holding_editable:
+		return
+	
+	InteractionManager.resolve_player_action(self, Action.ROTATE)
 
 func paint_attempt():
 	if not edit_mode_ray_cast.is_colliding():
