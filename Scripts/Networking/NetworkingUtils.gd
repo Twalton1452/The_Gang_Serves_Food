@@ -283,7 +283,6 @@ func delete_item_for_everyone_by_networked_id(networked_id: int):
 	if networked_node_to_delete == null:
 		print_debug("Networked Node with ID: %s doesn't exist" % networked_id)
 		return
-	
 	networked_node_to_delete.p_node.queue_free()
 	Utils.cleanup_material_overrides(networked_node_to_delete.p_node)
 

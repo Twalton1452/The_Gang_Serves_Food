@@ -72,7 +72,7 @@ func begin_cooking():
 	if cookables.size() == 0:
 		return
 	
-	progress_bar_visual.show_visual((cookables.front() as Cookable).cook_progress)
+	progress_bar_visual.show_visual(cookables.front().cook_progress)
 	tick_timer.start()
 	audio_player.play()
 

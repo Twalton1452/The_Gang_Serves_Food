@@ -75,11 +75,9 @@ func cook(power: float):
 		return
 	
 	cook_state_progress[cook_state] += cook_state_rates[cook_state] * power
-	evaluate_cook_rate()
-
-func evaluate_cook_rate():
 	if cook_state_progress[cook_state] >= 1.0:
 		cook_state_progress[cook_state] = 1.0
 		@warning_ignore("int_as_enum_without_cast")
 		cook_state += 1 as CookState
 		change_color()
+		cook_state_changed.emit(cook_state)
