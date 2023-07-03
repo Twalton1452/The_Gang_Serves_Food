@@ -33,3 +33,4 @@ shape = SubResource("BoxShape3D_cfjuu")
 
 [node name="HorizontalProgressBar" parent="kitchenMicrowave(Clone)/Cooker" index="5" instance=ExtResource("5_f8asj")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.187962, 0.103519)
+visible = false
