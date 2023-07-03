@@ -127,7 +127,7 @@ transform = Transform3D(-2.18557e-09, 0, -0.05, 0, 1, 0, 0.05, 0, -2.18557e-09, 
 
 [node name="Cabinets" type="Node3D" parent="Restaurant"]
 script = ExtResource("6_mv2b7")
-snapping_spacing = Vector3(0.043, 0.043, 0.043)
+snapping_spacing = Vector3(0.043, 0.05, 0.043)
 
 [node name="kitchenCabinetPlates" parent="Restaurant/Cabinets" instance=ExtResource("10_b6sav")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -0.473, 0, 0.215)
@@ -188,7 +188,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.817,
 
 [node name="Tables" type="Node3D" parent="Restaurant"]
 script = ExtResource("6_mv2b7")
-snapping_spacing = Vector3(0.425, 0.425, 0.425)
+snapping_spacing = Vector3(0.425, 0.05, 0.425)
 
 [node name="TableFourPerson" parent="Restaurant/Tables" instance=ExtResource("10_tuail")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57577, 0.00454932, -3.12547)
@@ -336,7 +336,7 @@ omni_attenuation = 0.5
 
 [node name="Walls" type="Node3D" parent="Restaurant"]
 script = ExtResource("6_mv2b7")
-snapping_spacing = Vector3(0.25, 0.25, 0.25)
+snapping_spacing = Vector3(0.25, 0.05, 0.25)
 
 [node name="wall4" parent="Restaurant/Walls" instance=ExtResource("1_lxx3p")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 1, 0, 0.5)
@@ -358,7 +358,7 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 1, 0, 
 
 [node name="OutsideWalls" type="Node3D" parent="Restaurant"]
 script = ExtResource("6_mv2b7")
-snapping_spacing = Vector3(0.25, 0.25, 0.25)
+snapping_spacing = Vector3(0.25, 0.05, 0.25)
 
 [node name="wallWindowSlide2" parent="Restaurant/OutsideWalls" instance=ExtResource("11_b8503")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -4.5)
