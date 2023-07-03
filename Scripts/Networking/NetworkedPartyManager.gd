@@ -126,3 +126,11 @@ func notify_peers_of_pay(data: PackedByteArray):
 	
 	party.state = CustomerParty.PartyState.LEAVING_FOR_HOME
 	party.num_customers_required_to_advance = 1
+
+func clean_up_orders_for(party: CustomerParty) -> void:
+	if not is_multiplayer_authority():
+		return
+	
+	for customer in party.customers:
+		if customer.order != null:
+			NetworkingUtils.send_item_for_deletion(customer.order)

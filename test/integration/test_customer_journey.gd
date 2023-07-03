@@ -164,7 +164,7 @@ func test_party_full_journey():
 	
 	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
 	assert_null(spawned_party, "Party never got deleted after leaving")
-	
+	assert_eq(_restaurant.menu.orders_parent.get_children().size(), 0, "Never cleaned up the orders")
 
 func test_party_can_wait_in_line_then_sit():
 	# Arrange
@@ -206,6 +206,7 @@ func test_party_can_wait_in_line_then_sit():
 	
 	_customer_manager.send_customers_home(table_wait_party)
 	table_wait_party.state = CustomerParty.PartyState.LEAVING_FOR_HOME
+	assert_eq(_restaurant.menu.orders_parent.get_children().size(), 0, "Never cleaned up the orders")
 	await wait_frames(1)
 	assert_eq(line_wait_party.state, CustomerParty.PartyState.WALKING_TO_TABLE, "The waiting party is not walking to the table")
 	assert_eq(_entry_patience_bar.visible, false)
@@ -230,13 +231,11 @@ func test_party_loses_patience_and_leaves_during_ordering():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME_IMPATIENT)
 	assert_null(spawned_party.table)
 	
-	for customer in spawned_party.customers as Array[Customer]:
-		assert_eq(customer.order.visible, false)
-	
 	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never left")
 	
 	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
 	assert_null(spawned_party, "Party never got deleted after leaving")
+	assert_eq(_restaurant.menu.orders_parent.get_children().size(), 0, "Never cleaned up the orders")
 
 func test_party_loses_patience_and_leaves_during_thinking_with_no_menu():
 	# Arrange
@@ -262,6 +261,7 @@ func test_party_loses_patience_and_leaves_during_thinking_with_no_menu():
 	
 	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
 	assert_null(spawned_party, "Party never got deleted after leaving")
+	assert_eq(_restaurant.menu.orders_parent.get_children().size(), 0, "Never cleaned up the orders")
 
 func test_party_loses_patience_and_leaves_during_waiting_to_pay():
 	# Arrange
@@ -298,13 +298,11 @@ func test_party_loses_patience_and_leaves_during_waiting_to_pay():
 	assert_eq(spawned_party.state, CustomerParty.PartyState.LEAVING_FOR_HOME_IMPATIENT)
 	assert_null(spawned_party.table)
 	
-	for customer in spawned_party.customers as Array[Customer]:
-		assert_eq(customer.order.visible, false)
-	
 	await wait_for_signal(spawned_party.state_changed, 2.0, "Party never left")
 	
 	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
 	assert_null(spawned_party, "Party never got deleted after leaving")
+	assert_eq(_restaurant.menu.orders_parent.get_children().size(), 0, "Never cleaned up the orders")
 	
 func test_party_loses_patience_and_leaves_during_waiting_for_table():
 	# Arrange
@@ -331,3 +329,4 @@ func test_party_loses_patience_and_leaves_during_waiting_for_table():
 	
 	assert_eq(len(_customer_manager.parties), 0, "Customer Manager didn't get cleaned up from the party leaving")
 	assert_null(spawned_party, "Party never got deleted after leaving")
+	assert_eq(_restaurant.menu.orders_parent.get_children().size(), 0, "Never cleaned up the orders")

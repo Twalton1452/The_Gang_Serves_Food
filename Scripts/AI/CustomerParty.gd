@@ -353,6 +353,7 @@ func go_home(entry_point: Node3D, exit_point: Node3D) -> void:
 	for customer in customers:
 		customer.hide_order_visual()
 		customer.target_chair = null
+	NetworkedPartyManager.clean_up_orders_for(self)
 	await get_tree().create_timer(wait_before_leave_time_sec, false).timeout
 	
 	var customers_ordered_by_closest_to_door : Array[Customer] = customers.duplicate()
