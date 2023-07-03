@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://rneuq07he0ic"]
+
+[ext_resource type="PackedScene" uid="uid://cilr2dxph4hbu" path="res://3d_models/StoveSingleBurner.glb" id="1_ddek1"]
+[ext_resource type="PackedScene" uid="uid://d3y6xmhkuoht5" path="res://Scenes/components/cooker.tscn" id="2_io04v"]
+[ext_resource type="PackedScene" uid="uid://d3b6lt6fgetu7" path="res://Scenes/horizontal_progress_bar.tscn" id="3_5tjmx"]
+[ext_resource type="AudioStream" uid="uid://bfyyougstvvio" path="res://SFX/frying-calm.mp3" id="3_bu407"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_037te"]
+size = Vector3(0.301, 0.0265489, 0.301)
+
+[node name="StoveSingleBurner" instance=ExtResource("1_ddek1")]
+
+[node name="StaticBody3D" parent="kitchenStove(Clone)" index="0"]
+collision_mask = 0
+
+[node name="Cooker" parent="." index="1" node_paths=PackedStringArray("progress_bar_visual") instance=ExtResource("2_io04v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.445799, 0.0124851)
+cooking_sfx = ExtResource("3_bu407")
+progress_bar_visual = NodePath("HorizontalProgressBar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cooker" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00797486, 0)
+shape = SubResource("BoxShape3D_037te")
+
+[node name="HorizontalProgressBar" parent="Cooker" index="4" instance=ExtResource("3_5tjmx")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.246226, 0)
+visible = false
