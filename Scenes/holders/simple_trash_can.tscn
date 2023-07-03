@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cb0m2vupoq03p"]
+[gd_scene load_steps=9 format=3 uid="uid://cb0m2vupoq03p"]
 
 [ext_resource type="Script" path="res://Scripts/Interactables/Holders/TrashCan.gd" id="1_jtvoc"]
 [ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_wv71b"]
+[ext_resource type="AudioStream" uid="uid://bj3es0d50hkod" path="res://SFX/throwaway_trash.wav" id="3_w7ck6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flyfa"]
 resource_name = "Can"
@@ -92,3 +93,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0946499, 0)
 shape = SubResource("BoxShape3D_qd8wl")
 
 [node name="NetworkedNode3D" parent="." instance=ExtResource("2_wv71b")]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_w7ck6")
+unit_size = 4.0
+bus = &"SFX"

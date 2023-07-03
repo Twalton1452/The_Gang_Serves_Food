@@ -1,6 +1,8 @@
 extends Interactable
 class_name TrashCan
 
+@onready var audio_player = $AudioStreamPlayer3D
+
 func _interact(player: Player) -> void:
 	if not player.holder.is_holding_item():
 		return
@@ -28,10 +30,15 @@ func node_is_throw_awayable(node: Node) -> bool:
 	return node is Food or node is CombinedFoodHolder
 
 func throw_away(node: Node) -> void:
-	NetworkingUtils.send_item_for_deletion(node)
+	audio_player.play()
+	# Not using NetworkingUtils delete method because this runs on every client
+	# There is some authority issues since the Player is holding the item I think
+	# It works like this for now
+	node.queue_free()
 
 func node_is_emptyable(node: Node) -> bool:
 	return node.has_method("empty_out")
 
 func empty_contents(node: Node) -> void:
 	node.call("empty_out")
+	audio_player.play()
