@@ -22,6 +22,7 @@ enum Scene {
 	
 	# Furniture
 	TABLE_FOUR = 700,
+	BELL = 701,
 	
 #	# Facilitating Components
 	FOOD_COMBINER = 1000,
