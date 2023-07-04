@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=45 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="Script" path="res://Scripts/GameLevel.gd" id="1_7m55k"]
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -40,6 +40,7 @@
 [ext_resource type="PackedScene" uid="uid://ccxgufwft0jbd" path="res://Scenes/accumulators/small_accumulator.tscn" id="33_3uitd"]
 [ext_resource type="PackedScene" uid="uid://b0pf1ssonatu" path="res://3d_models/Kenneys_Roads/road_bend.glb" id="33_tubjy"]
 [ext_resource type="PackedScene" uid="uid://b1jo2hhx1y5tn" path="res://Scenes/bell.tscn" id="40_anj7w"]
+[ext_resource type="PackedScene" uid="uid://dn4m8kbxf3qrg" path="res://Scenes/sign.tscn" id="41_ho763"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cju1x"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -569,6 +570,9 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -3.25,
 
 [node name="road_bend" parent="Road" instance=ExtResource("33_tubjy")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3, 0, -5.75)
+
+[node name="Sign" parent="." instance=ExtResource("41_ho763")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.612, -0.043, -4.73)
 
 [connection signal="despawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_despawned"]
 [connection signal="spawned" from="Networking/PlayerSpawner" to="." method="_on_player_spawner_spawned"]

@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://dn4m8kbxf3qrg"]
+
+[ext_resource type="PackedScene" uid="uid://ckoulqajevc0b" path="res://3d_models/Sign.glb" id="1_bwost"]
+[ext_resource type="Script" path="res://Scripts/Restaurant/OpenCloseSign.gd" id="2_7t82q"]
+[ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_t3dky"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yfpox"]
+size = Vector3(0.258, 0.172, 0.043)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vhljj"]
+size = Vector3(0.258, 0.43, 0.043)
+
+[node name="Sign" node_paths=PackedStringArray("rotatable") instance=ExtResource("1_bwost")]
+script = ExtResource("2_7t82q")
+rotatable = NodePath("Sign2/Rotatable")
+
+[node name="Rotatable" parent="Sign2" index="0" instance=ExtResource("2_t3dky")]
+tar_rot = Vector3(0, 180, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sign2/Rotatable" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.344, 0)
+shape = SubResource("BoxShape3D_yfpox")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sign2" index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sign2/StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.215, 0)
+shape = SubResource("BoxShape3D_vhljj")
