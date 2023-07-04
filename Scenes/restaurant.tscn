@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bkur10mtv3uoy"]
+[gd_scene load_steps=43 format=3 uid="uid://bkur10mtv3uoy"]
 
 [ext_resource type="Script" path="res://Scripts/GameLevel.gd" id="1_7m55k"]
 [ext_resource type="PackedScene" uid="uid://bd26alxq0b1f0" path="res://3d_models/Kenneys_Furniture/wall.glb" id="1_lxx3p"]
@@ -31,6 +31,7 @@
 [ext_resource type="PackedScene" uid="uid://rneuq07he0ic" path="res://Scenes/holders/stove_single_burner_components.tscn" id="24_rjjg7"]
 [ext_resource type="PackedScene" uid="uid://cmy2yoow08hoa" path="res://Scenes/drink_fountain.tscn" id="26_cud0u"]
 [ext_resource type="PackedScene" uid="uid://bxmdymcsubnk" path="res://3d_models/Kenneys_Furniture/hoodLarge.glb" id="26_qebtt"]
+[ext_resource type="PackedScene" uid="uid://1cwavv26t7o1" path="res://Scenes/foods/steak.tscn" id="26_r0ude"]
 [ext_resource type="PackedScene" uid="uid://c8g6844y5nmcr" path="res://Scenes/holders/cup_holder_wall.tscn" id="28_1erph"]
 [ext_resource type="PackedScene" uid="uid://b2ys78r5xa42u" path="res://3d_models/Kenneys_Roads/road_straight.glb" id="30_66431"]
 [ext_resource type="PackedScene" uid="uid://choukybprh7d7" path="res://Scenes/holders/cabinet_single_components.tscn" id="31_ryu4v"]
@@ -191,6 +192,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.86, 0, 0.258)
 
 [node name="StoveSingleBurner" parent="Restaurant/Cabinets" instance=ExtResource("24_rjjg7")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.817, 0, 0.215)
+
+[node name="SmallSteakAccumulator" parent="Restaurant/Cabinets" instance=ExtResource("33_3uitd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.731, 0, -1.247)
+to_accumulate_scene = ExtResource("26_r0ude")
 
 [node name="Tables" type="Node3D" parent="Restaurant"]
 script = ExtResource("6_mv2b7")

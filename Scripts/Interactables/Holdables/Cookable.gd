@@ -9,6 +9,7 @@ enum CookState {
 
 @export var gradient : Gradient
 @export var obj_to_color : MeshInstance3D
+@export var surface_to_color = 0
 @export var cook_state_rates : Dictionary = {
 	CookState.RAW: 0.05,
 	CookState.COOKED: 0.04,
@@ -61,7 +62,7 @@ func _ready():
 	assert(obj_to_color != null, "%s doesn't have a MeshInstance3D assigned to obj_to_color" % name)
 	assert(gradient != null, "%s doesn't have a gradient" % name)
 
-	material_to_color = obj_to_color.get_active_material(0)
+	material_to_color = obj_to_color.get_active_material(surface_to_color)
 	material_to_color.albedo_color = gradient.colors[cook_state % gradient.colors.size()]
 	change_color()
 

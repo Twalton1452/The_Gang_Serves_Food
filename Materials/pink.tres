@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://423kyux3h1ec"]
+
+[resource]
+resource_local_to_scene = true
+resource_name = "pink"
+albedo_color = Color(1, 0.537255, 0.560784, 1)
+metallic_specular = 0.0

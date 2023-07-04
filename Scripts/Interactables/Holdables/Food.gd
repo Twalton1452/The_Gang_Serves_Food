@@ -14,7 +14,9 @@ enum CombineRule {
 }
 
 @export var rule : CombineRule = CombineRule.ANYWHERE
+## Not manually settable right now, auto set to AABB y value
 @export var stacking_spacing = Vector3(0.0, 0.008, 0.0)
+## Offset from the AABB
 @export var stacking_spacing_offset = Vector3(0.0, 0.001, 0.0)
 
 @export_category("Scoring")

@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cok1yy4b8pu5h"]
+
+[resource]
+resource_local_to_scene = true
+resource_name = "white"
+metallic_specular = 0.0
