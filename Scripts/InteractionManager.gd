@@ -48,6 +48,9 @@ func resolve_player_action(player: Player, player_action: Player.Action) -> void
 		printerr("Phase actions not implemented for GameState: ", GameState.state)
 		return
 	
+	if action == not_implemented_action:
+		return
+	
 	if is_multiplayer_authority():
 		action.call(p_id)
 	else:
