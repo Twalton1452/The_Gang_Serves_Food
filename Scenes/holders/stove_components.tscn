@@ -48,6 +48,7 @@ pitch_scale = 0.8
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0789449, 0.443, 0.04514)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner1" index="0" node_paths=PackedStringArray("progress_bar_visual") instance=ExtResource("3_jfae0")]
+power = 0.3
 cooking_sfx = ExtResource("4_o2en1")
 progress_bar_visual = NodePath("HorizontalProgressBar")
 
@@ -62,6 +63,7 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0860458, 0.443, 0.0448162)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner2" index="0" node_paths=PackedStringArray("progress_bar_visual") instance=ExtResource("3_jfae0")]
+power = 0.3
 cooking_sfx = ExtResource("4_o2en1")
 progress_bar_visual = NodePath("HorizontalProgressBar")
 
@@ -76,6 +78,7 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0791571, 0.443, -0.0822491)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner3" index="0" node_paths=PackedStringArray("progress_bar_visual") instance=ExtResource("3_jfae0")]
+power = 0.3
 cooking_sfx = ExtResource("4_o2en1")
 progress_bar_visual = NodePath("HorizontalProgressBar")
 
@@ -90,6 +93,7 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0865781, 0.443, -0.0822491)
 
 [node name="Cooker" parent="kitchenStove(Clone)/Burner4" index="0" node_paths=PackedStringArray("progress_bar_visual") instance=ExtResource("3_jfae0")]
+power = 0.3
 cooking_sfx = ExtResource("4_o2en1")
 progress_bar_visual = NodePath("HorizontalProgressBar")
 

@@ -1,11 +1,11 @@
-extends Node3D
+extends PowerConsumer
 class_name Accumulator
 
 @export var to_accumulate_scene : PackedScene : set = set_to_accumulate_scene
 
 @onready var display = $Display
 @onready var accumulate_timer = $AccumulateTimer
-@onready var audio_stream = $AudioStreamPlayer3D
+@onready var audio_player : AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 var holder : StackingHolder = null
 
@@ -65,15 +65,16 @@ func _on_accumulate_timer_tick() -> void:
 	accumulate()
 	accumulate_timer.start()
 
+func _power_dependent_action() -> void:
+	NetworkedAccumulatorManager.accumulate(self)
+
 ## Called from Autoloaded NetworkedAccumlatorManager.gd
 func accumulate() -> void:
-	if not is_multiplayer_authority():
-		return
 	if to_accumulate_scene == null or not holder.has_space_for_another_item():
 		return
 	
-	NetworkedAccumulatorManager.accumulate(self)
+	power_dependent_action()
 
 func receive_accumulation(accumulated_node: Node3D) -> void:
 	holder.hold_item(accumulated_node)
-	audio_stream.play()
+	audio_player.play()

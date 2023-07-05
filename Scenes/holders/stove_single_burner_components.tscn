@@ -15,6 +15,7 @@ collision_mask = 0
 
 [node name="Cooker" parent="." index="1" node_paths=PackedStringArray("progress_bar_visual") instance=ExtResource("2_io04v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.445799, 0.0124851)
+power = 0.6
 cooking_sfx = ExtResource("3_bu407")
 progress_bar_visual = NodePath("HorizontalProgressBar")
 

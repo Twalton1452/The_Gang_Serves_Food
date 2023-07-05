@@ -25,6 +25,7 @@ GameState="*res://Scripts/GameState.gd"
 InteractionManager="*res://Scripts/InteractionManager.gd"
 NetworkedPartyManager="*res://Scripts/Networking/NetworkedPartyManager.gd"
 NetworkedAccumulatorManager="*res://Scripts/Networking/NetworkedAccumulatorManager.gd"
+PowerGrid="*res://Scripts/Power/PowerGrid.gd"
 
 [display]
 

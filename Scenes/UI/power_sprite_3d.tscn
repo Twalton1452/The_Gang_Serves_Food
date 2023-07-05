@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bldcswvld2td5"]
+
+[ext_resource type="Texture2D" uid="uid://fwilg7d8eudn" path="res://Sprites/lightning-yellow-accent.svg" id="1_w6sh6"]
+
+[node name="PowerSprite3D" type="Sprite3D"]
+pixel_size = 0.0003
+texture = ExtResource("1_w6sh6")

@@ -9,6 +9,7 @@ func before_each() -> void:
 	GameState.hud = double(HUD, DOUBLE_STRATEGY.SCRIPT_ONLY).new()
 	GameState.state = GameState.Phase.OPEN_FOR_BUSINESS
 	_accumulator = AccumulatorScene.instantiate()
+	_accumulator.consumption_per_action = 0.0
 	add_child_autoqfree(_accumulator)
 	_accumulator.to_accumulate_scene = AccumulateScene
 	_accumulator.accumulate_timer.stop()

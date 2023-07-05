@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Power" load_steps=2 format=3 uid="uid://c0k8xi8k6sdj4"]
+
+[ext_resource type="Script" path="res://Scripts/Resources/Power.gd" id="1_fhgks"]
+
+[resource]
+script = ExtResource("1_fhgks")
+amount = 0.0
