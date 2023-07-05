@@ -9,7 +9,7 @@ var SERVER_ID = 1
 ## Used for debugging, shows ID of GameState to make looking at the Remote SceneTree easier
 var THIS_ID = -1
 var player_color : Color
-var state : Phase = Phase.EDITING_RESTAURANT : set = set_state
+var state : Phase = Phase.LOBBY : set = set_state
 var modifiers : GameModifiers = preload("res://Resources/GameModifiers/StarterModifiers.tres")
 var money : float = 0.0 # Good use case for "Watched" Property in Godot 4.1
 var multiholder_multiplier : float = 1.5
@@ -108,6 +108,7 @@ func set_level(l: GameLevel):
 	hud = get_node("/root/World/CanvasLayer/HUD")
 	hud.show()
 	THIS_ID = multiplayer.get_unique_id()
+	state = GameState.Phase.EDITING_RESTAURANT
 
 func set_money(value: float):
 	money = snapped(value, 0.01)
