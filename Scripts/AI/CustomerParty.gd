@@ -100,6 +100,7 @@ func after_sync():
 	(get_parent() as CustomerManager).sync_party(self)
 
 func set_sync_state(reader: ByteReader) -> void:
+	global_position = reader.read_vector3()
 	state = reader.read_int() as PartyState
 	num_arrived_to_destination = reader.read_int()
 	num_customers_required_to_advance = reader.read_int()
@@ -119,6 +120,7 @@ func set_sync_state(reader: ByteReader) -> void:
 	patience = reader.read_small_float()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	writer.write_vector3(global_position)
 	writer.write_int(state)
 	writer.write_int(num_arrived_to_destination)
 	writer.write_int(num_customers_required_to_advance)
@@ -168,6 +170,13 @@ func set_state(value: PartyState) -> void:
 func set_patience(value: float) -> void:
 	patience = value
 	patience_changed.emit(patience)
+
+func _on_child_entered_tree(child: Node) -> void:
+	if child is Customer:
+		sync_customer(child)
+
+func _enter_tree() -> void:
+	child_entered_tree.connect(_on_child_entered_tree)
 
 func _ready():
 	add_to_group(str(NetworkedIds.Scene.CUSTOMER_PARTY))

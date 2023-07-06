@@ -10,7 +10,11 @@ class_name Accumulator
 var holder : StackingHolder = null
 
 func set_sync_state(reader: ByteReader) -> void:
-	to_accumulate_scene = load(reader.read_str())
+	super(reader)
+	var has_accumulate_scene = reader.read_bool()
+	if has_accumulate_scene:
+		to_accumulate_scene = load(reader.read_str())
+	
 	var is_timer_playing = reader.read_bool()
 	if is_timer_playing:
 		# Instead of setting the Timer Node to this tick rate and then adding logic to 
@@ -20,11 +24,17 @@ func set_sync_state(reader: ByteReader) -> void:
 		_on_accumulate_timer_tick()
 
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
-	writer.write_str(to_accumulate_scene.resource_path)
+	super(writer)
+	var has_accumulate_scene = to_accumulate_scene != null
+	writer.write_bool(has_accumulate_scene)
+	if has_accumulate_scene:
+		writer.write_str(to_accumulate_scene.resource_path)
+	
 	var is_timer_playing = not accumulate_timer.is_stopped()
 	writer.write_bool(is_timer_playing)
 	if is_timer_playing:
 		writer.write_small_float(accumulate_timer.time_left)
+	
 	return writer
 
 func set_to_accumulate_scene(value: PackedScene) -> void:
@@ -37,8 +47,10 @@ func set_to_accumulate_scene(value: PackedScene) -> void:
 	if to_accumulate_scene == null:
 		display.get_child(-1).queue_free()
 	else:
-		display.add_child(to_accumulate_scene.instantiate())
+		NetworkingUtils.spawn_client_only_node(to_accumulate_scene, display)
 	holder.ingredient_scene = to_accumulate_scene
+	if not holder.released_item.is_connected(_on_holder_released_item):
+		holder.released_item.connect(_on_holder_released_item)
 
 func _ready() -> void:
 	accumulate_timer.timeout.connect(_on_accumulate_timer_tick)
@@ -61,20 +73,25 @@ func _on_node_entered_display_tree(node: Node) -> void:
 	node.propagate_call("set_collision_layer_value", [Interactable.INTERACTABLE_LAYER, false], true)
 	node.propagate_call("set_collision_layer_value", [Player.WORLD_MASK, false], true)
 
+func _on_holder_released_item(_item: Node3D) -> void:
+	if accumulate_timer.is_stopped():
+		accumulate_timer.start()
+
 func _on_accumulate_timer_tick() -> void:
 	accumulate()
-	accumulate_timer.start()
 
 func _power_dependent_action() -> void:
 	NetworkedAccumulatorManager.accumulate(self)
+	if holder.has_space_for_another_item():
+		accumulate_timer.start()
 
-## Called from Autoloaded NetworkedAccumlatorManager.gd
 func accumulate() -> void:
 	if to_accumulate_scene == null or not holder.has_space_for_another_item():
 		return
 	
 	power_dependent_action()
 
+## Called from Autoloaded NetworkedAccumulatorManager.gd
 func receive_accumulation(accumulated_node: Node3D) -> void:
 	holder.hold_item(accumulated_node)
 	audio_player.play()

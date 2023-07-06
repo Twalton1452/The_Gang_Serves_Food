@@ -13,8 +13,7 @@ var stored_amount = 0.0 : set = set_stored_amount
 func set_sync_state(reader: ByteReader):
 	stored_amount = reader.read_float()
 
-func get_sync_state() -> ByteWriter:
-	var writer : ByteWriter = ByteWriter.new()
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_float(stored_amount)
 	return writer
 

@@ -13,8 +13,18 @@ class_name PowerConsumer
 ## the Consumer will try and take as much as possible in order to perform the action
 var accumulated_power = 0.0
 
+func set_sync_state(reader: ByteReader) -> void:
+	accumulated_power = reader.read_float()
+
+func get_sync_state(writer: ByteWriter) -> ByteWriter:
+	writer.write_float(accumulated_power)
+	return writer
+
 func _power_dependent_action() -> void:
 	pass
+
+func _ready():
+	power_sprite.hide()
 
 ## Consume as much power to perform the action as possible
 ## If not enough power was consumed then it will hold that power for the next cycle

@@ -30,6 +30,7 @@ override_scene_id = 1003
 
 [node name="AccumulateTimer" type="Timer" parent="." index="4"]
 wait_time = 10.0
+one_shot = true
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." index="5"]
 stream = ExtResource("5_snth2")

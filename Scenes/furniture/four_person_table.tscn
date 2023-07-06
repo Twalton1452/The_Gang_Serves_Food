@@ -79,6 +79,9 @@ size = Vector3(0.22168, 0.0159814, 0.187379)
 script = ExtResource("1_g14pa")
 table_mesh = NodePath("tableCloth(Clone)")
 
+[node name="NetworkedNode3D" parent="." instance=ExtResource("7_vfk4o")]
+override_scene_id = 700
+
 [node name="tableCloth(Clone)" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_qwnwm")
 skeleton = NodePath("")
@@ -145,9 +148,6 @@ shape = SubResource("BoxShape3D_fj2mp")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 visible = false
 move_to = Vector3(0, 0.3, 0)
-
-[node name="NetworkedNode3D" parent="." instance=ExtResource("7_vfk4o")]
-override_scene_id = 700
 
 [editable path="ChairCloth"]
 [editable path="ChairCloth2"]

@@ -143,12 +143,13 @@ func ensure_correct_sync_order_for(node: Node) -> void:
 
 ## Find the first parent of this node that has a priority_sync_order to set it after
 func crawl_up_tree_for_next_priority_sync_order(node: Node) -> int:
-	if node.get_parent() == null:
-		return 0
-	var parent_net_node = node.get_parent().get_node_or_null(NETWORKED_NODE_3D)
-	if parent_net_node != null:
-		return parent_net_node.priority_sync_order + 1
-	return crawl_up_tree_for_next_priority_sync_order(node.get_parent())
+	var parent_node = node.get_parent()
+	while parent_node != null:
+		var parent_net_node = parent_node.get_node_or_null(NETWORKED_NODE_3D)
+		if parent_net_node != null:
+			return parent_net_node.priority_sync_order + 1
+		parent_node = parent_node.get_parent()
+	return 0
 
 ## Recursively set the priority_sync_order of all the children to be 1 more than their parent
 func set_priority_sync_order_for_children_of(node: Node, sync_order: int) -> void:

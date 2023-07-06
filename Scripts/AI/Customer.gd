@@ -14,8 +14,6 @@ var order : Order : set = set_order
 
 func set_sync_state(reader: ByteReader) -> void:
 	super(reader)
-	(get_parent() as CustomerParty).sync_customer(self)
-	
 	var has_target_chair = reader.read_bool()
 	if has_target_chair:
 		var chair = reader.read_path_to()

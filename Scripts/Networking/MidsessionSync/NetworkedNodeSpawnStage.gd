@@ -3,6 +3,7 @@ class_name NetworkedNodeSpawnStage
 
 const NETWORKED_NODE_BATCH_SIZE = 50
 var existing_net_nodes : Array[Node] = []
+## This is used for tracking if existing nodes in the starter Scene were deleted or not
 var updated_existing_net_nodes : Dictionary = {}
 
 func _ready():
@@ -25,13 +26,11 @@ func _write_node(node: Node, writer: ByteWriter) -> void:
 	
 	writer.write_int(net_node.networked_id)
 	writer.write_int(net_node.SCENE_ID)
-	writer.write_vector3(net_node.p_node.global_position)
 	writer.write_path_to(net_node.p_node)
 
 func _read_node(reader: ByteReader) -> void:
 	var networked_id = reader.read_int()
 	var net_scene_id = reader.read_int()
-	var global_pos = reader.read_vector3()
 	var path_to_p_node = reader.read_path_to()
 	
 	var net_node : NetworkedNode3D = null
@@ -42,31 +41,41 @@ func _read_node(reader: ByteReader) -> void:
 			updated_existing_net_nodes[networked_id] = true
 			break
 	
-	
+	var split_path : PackedStringArray = path_to_p_node.split("/")
+	var new_name = split_path[-1]
+	var path_to_parent = "/".join(split_path.slice(0, -1))
+	var new_parent = get_node(path_to_parent)
 	
 	# Node doesn't come in the pre-existing level - Spawn it
 	if net_node == null:
 		# Scene_id: NETWORKED nodes do not have spawnable scenes
 		# They are attached to other scenes
 		# We wrote the data anyway because its easier than developing some kind of "skip()" method
+		# TODO: Revisit this
 		if net_scene_id == NetworkedIds.Scene.NETWORKED:
 			return
 		print_verbose("[Peer %s] received request to [spawn Node %s]" % [multiplayer.get_unique_id(), networked_id])
 		assert(NetworkedScenes.get_scene_by_id(net_scene_id) != null, "%s does not have a NetworkedIds.Scene PATH to instantiate from in SceneIds.gd")
 		
-		# Add the node into the tree so that it can call get_node from within
-		var net_scene = NetworkingUtils.spawn_node(NetworkedScenes.get_scene_by_id(net_scene_id), self)
+		var net_scene = NetworkedScenes.get_scene_by_id(net_scene_id).instantiate()
 		net_node = net_scene.get_node("NetworkedNode3D")
+		# Since we are not adding the Scene to the tree until later, but we want to setup its name/id
+		# We need to manually assign the @onready var's
+		net_node.p_node = net_scene
+		net_node.original_name = net_scene.name
 		net_node.networked_id = networked_id
+#		print(name, ": Spawned %s, assigned %s networked_id to: %s" % [net_scene.name, net_node.name, net_node.networked_id])
+		if not net_node.only_one_will_exist:
+			net_scene.name = new_name
+		
+		if new_parent is Holder:
+			new_parent.hold_item(net_node.p_node)
+		else:
+			new_parent.add_child(net_node.p_node, true)
+		
+		return
 	
-	if net_node.sync_position:
-		net_node.p_node.global_position = global_pos
-	
-	var split_path : PackedStringArray = path_to_p_node.split("/")
-	var new_name = split_path[-1]
-	var path_to_parent = "/".join(split_path.slice(0, -1))
-	var new_parent = get_node(path_to_parent)
-	
+	# Node came with pre-existing level, figure out the best way to shuffle parents around
 	if not net_node.only_one_will_exist:
 		net_node.p_node.name = new_name
 	
@@ -89,5 +98,6 @@ func _nodes_to_sync() -> Array[Node]:
 			return 1
 		return 0
 	)
-	
+#	for net_node in net_nodes:
+#		print(net_node.priority_sync_order, " ", net_node.p_node.name)
 	return net_nodes

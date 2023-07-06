@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://cdhj2idf4x5iv"]
+[gd_scene load_steps=10 format=3 uid="uid://cdhj2idf4x5iv"]
 
 [ext_resource type="PackedScene" uid="uid://do7mjshpo6k84" path="res://3d_models/Kenneys_Furniture/kitchenMicrowave.glb" id="1_1gdom"]
 [ext_resource type="PackedScene" uid="uid://b7ayd84j7afft" path="res://Scenes/components/rotatable.tscn" id="2_bearh"]
 [ext_resource type="PackedScene" uid="uid://d3y6xmhkuoht5" path="res://Scenes/components/cooker.tscn" id="3_bscym"]
 [ext_resource type="AudioStream" uid="uid://dygbnrnxt7fb4" path="res://SFX/appliance-humming.mp3" id="4_qv7os"]
 [ext_resource type="PackedScene" uid="uid://d3b6lt6fgetu7" path="res://Scenes/horizontal_progress_bar.tscn" id="5_f8asj"]
+[ext_resource type="PackedScene" uid="uid://ycyd8lf8m7wn" path="res://Scenes/components/holder.tscn" id="6_wbbp0"]
+[ext_resource type="PackedScene" uid="uid://bldcswvld2td5" path="res://Scenes/UI/power_sprite_3d.tscn" id="7_2ts4b"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pmmh6"]
 size = Vector3(0.193689, 0.13668, 0.0143231)
@@ -21,16 +23,20 @@ mesh_to_highlight = NodePath("..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenMicrowave(Clone)/Group/Rotatable" index="1"]
 shape = SubResource("BoxShape3D_pmmh6")
 
-[node name="Cooker" parent="kitchenMicrowave(Clone)" index="1" node_paths=PackedStringArray("door_rotatable", "progress_bar_visual", "mesh_to_highlight") instance=ExtResource("3_bscym")]
+[node name="Cooker" parent="." index="1" node_paths=PackedStringArray("door_rotatable", "progress_bar_visual") instance=ExtResource("3_bscym")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0275192, 0.025, 0.0125567)
-door_rotatable = NodePath("../Group/Rotatable")
+door_rotatable = NodePath("../kitchenMicrowave(Clone)/Group/Rotatable")
 cooking_sfx = ExtResource("4_qv7os")
 progress_bar_visual = NodePath("HorizontalProgressBar")
-mesh_to_highlight = NodePath("..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="kitchenMicrowave(Clone)/Cooker" index="2"]
-shape = SubResource("BoxShape3D_cfjuu")
-
-[node name="HorizontalProgressBar" parent="kitchenMicrowave(Clone)/Cooker" index="5" instance=ExtResource("5_f8asj")]
+[node name="HorizontalProgressBar" parent="Cooker" index="4" instance=ExtResource("5_f8asj")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.187962, 0.103519)
 visible = false
+
+[node name="Holder" parent="Cooker" index="5" instance=ExtResource("6_wbbp0")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cooker/Holder" index="0"]
+shape = SubResource("BoxShape3D_cfjuu")
+
+[node name="PowerSprite3D" parent="Cooker" index="6" instance=ExtResource("7_2ts4b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.272038, 0)

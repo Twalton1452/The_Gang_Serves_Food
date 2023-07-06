@@ -9,11 +9,11 @@ func _ready():
 
 func _write_node(node: Node, writer: ByteWriter) -> void:
 	var net_node : NetworkedNode3D = node
-	writer.write_int(net_node.networked_id)
+	writer.write_big_int(net_node.networked_id)
 	writer.append_array(net_node.get_sync_state().data)
 
 func _read_node(reader: ByteReader) -> void:
-	var networked_id = reader.read_int()
+	var networked_id = reader.read_big_int()
 	var net_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))
 	print_verbose("[Peer %s] received request to [sync Node %s]" % [multiplayer.get_unique_id(), networked_id])
 

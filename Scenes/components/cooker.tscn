@@ -4,15 +4,13 @@
 [ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="2_t7dk3"]
 [ext_resource type="AudioStream" uid="uid://b66hhttdvdisd" path="res://SFX/progression-2.wav" id="3_gfst2"]
 
-[node name="Cooker" type="Area3D"]
-collision_layer = 4
-collision_mask = 0
+[node name="Cooker" type="Node3D"]
 script = ExtResource("1_34ogp")
 
 [node name="CookingTicksTimer" type="Timer" parent="."]
 wait_time = 0.5
 
-[node name="NetworkedNode3D" type="Node3D" parent="."]
+[node name="NetworkedNode3D" type="Node" parent="."]
 script = ExtResource("2_t7dk3")
 priority_sync_order = 9
 

@@ -28,14 +28,12 @@ enum SyncPriorityPhase {
 	DELETION, ## Delete Nodes last to make sure all the connections are setup [br]ex: Existing nodes deleted
 }
 
-## Only set this to false in the scene editor
-@export var sync_position = true
 ## The lower the number the more important it is to sync
 @export var priority_sync_order : SyncPriorityPhase = SyncPriorityPhase.REPARENT : set = set_priority_sync_order
 
 ## Sync with this parent node
-@onready var p_node = get_parent()
-@onready var original_name = p_node.name
+var p_node : Node = null
+var original_name : String = ""
 
 ## The SCENE_ID will point to the instantiatable Scene in SceneIds.gd
 ## This is pulled off the Interactable this is attached to if attached to one.
@@ -115,7 +113,7 @@ func set_networked_id(value: int) -> void:
 func get_scene_id() -> int:
 	if override_scene_id != NetworkedIds.Scene.NETWORKED:
 		return override_scene_id
-	if has_additional_sync():
+	if has_additional_sync() and p_node.get("SCENE_ID") != null:
 		return p_node.SCENE_ID
 	return SCENE_ID
 
@@ -127,10 +125,16 @@ func set_priority_sync_order(value: SyncPriorityPhase) -> void:
 	changed = true
 	# TODO revisit, sync order is being set when p_node is null
 	# setting p_node during [_enter_tree] doesn't fix it
-	#print(p_node.name, " ", priority_sync_order)
+#	if p_node != null:
+#		print(p_node.name, " ", priority_sync_order)
 
 func _ready():
+	if p_node == null:
+		p_node = get_parent()
+		original_name = p_node.name
 	if networked_id == -1:
+#		if not is_multiplayer_authority():
+#			print(p_node.name, " the networked_id was -1, assigning new id")
 		networked_id = NetworkingUtils.generate_id()
 	add_to_group(str(NetworkedIds.Scene.NETWORKED))
 	
@@ -143,7 +147,7 @@ func _ready():
 	
 	if not is_multiplayer_authority():
 		return
-	NetworkingUtils.crawl_up_tree_for_next_priority_sync_order(p_node)
+	priority_sync_order = NetworkingUtils.crawl_up_tree_for_next_priority_sync_order(p_node) as SyncPriorityPhase
 
 func _on_interaction():
 	changed = true
@@ -161,14 +165,18 @@ func generate_unique_name():
 	else:
 		p_node.name = original_name + "_" + str(networked_id) # useful for debugging
 
-# When the node changes (parents) this gets fired off
-# Can work as a delta signifier to the midsession joins
-func _exit_tree():
-	changed = true
-	
-	if multiplayer and not is_multiplayer_authority():
+# Anytime the node enters another tree, like being held this is fired off
+# As well as on startup
+func _enter_tree():
+	if p_node == null or (multiplayer and not is_multiplayer_authority()):
 		return
 	
 	if not p_node.is_queued_for_deletion():
 		NetworkingUtils.ensure_correct_sync_order_for(p_node)
+
+# When the node changes (parents) this gets fired off
+# Can work as a delta signifier to the midsession joins for already existing nodes
+func _exit_tree():
+	changed = true
+	
 #	print("[Changed: %s] Parent: %s" % [name, get_parent().name])
