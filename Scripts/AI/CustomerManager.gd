@@ -74,9 +74,8 @@ func spawn_party(party_size: int) -> void:
 	new_party.state_changed.connect(_on_party_state_changed)
 	new_party.global_position = restaurant.customer_spawn_point.global_position
 	
-	var party_members : Array[Customer] = []
 	for i in range(party_size):
-		party_members.push_back(NetworkingUtils.spawn_node(customer_scene, new_party) as Customer)
+		new_party.sync_customer(NetworkingUtils.spawn_node(customer_scene, new_party) as Customer)
 	
 	if len(parties) > 0 and parties[-1].state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
 		new_party.wait_in_line(parties[-1])

@@ -175,11 +175,9 @@ func _on_child_entered_tree(child: Node) -> void:
 	if child is Customer:
 		sync_customer(child)
 
-func _enter_tree() -> void:
-	child_entered_tree.connect(_on_child_entered_tree)
-
 func _ready():
 	add_to_group(str(NetworkedIds.Scene.CUSTOMER_PARTY))
+	child_entered_tree.connect(_on_child_entered_tree)
 
 ## wrapper around the signal to emit at the end of the frame
 ## allows the party to set all of its state before notifying others
