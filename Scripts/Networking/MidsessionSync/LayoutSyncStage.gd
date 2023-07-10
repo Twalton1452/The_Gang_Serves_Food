@@ -4,7 +4,6 @@ class_name LayoutSyncStage
 const LAYOUT_BATCH_SIZE = 50
 
 func _ready():
-	name = "LayoutSyncStage"
 	batch_size = LAYOUT_BATCH_SIZE
 
 func _nodes_to_sync() -> Array[Node]:
@@ -43,7 +42,7 @@ func _read_node(reader: ByteReader) -> void:
 			var index = to_delete_nodes.find(node)
 			to_delete_nodes.remove_at(index)
 		
-		node.name = node_name
+		node.set_name.call_deferred(node_name)
 		node.global_position = global_pos
 		node.global_rotation = global_rot
 	

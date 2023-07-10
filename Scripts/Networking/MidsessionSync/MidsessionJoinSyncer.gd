@@ -37,14 +37,13 @@ class SyncPipeline extends Node:
 		
 		# Could be configurable in the future if necessary
 		pipeline = [
-			LayoutSyncStage.new(),
-			NetworkedNodeSpawnStage.new(),
-			NetworkedNodeSyncStage.new(),
-			PlayerSyncStage.new(),
+			LayoutSyncStage.new("LayoutSyncStage", to_sync_peer_id),
+			NetworkedNodeSpawnStage.new("NetworkedNodeSpawnStage", to_sync_peer_id),
+			NetworkedNodeSyncStage.new("NetworkedNodeSyncStage", to_sync_peer_id),
+			PlayerSyncStage.new("PlayerSyncStage", to_sync_peer_id),
 		]
 		
 		for sync_stage in pipeline:
-			sync_stage.peer_id = to_sync_peer_id
 			add_child(sync_stage)
 		
 		name = "SyncPipeline_" + str(peer_id)

@@ -108,7 +108,7 @@ func get_stateful_sync_state() -> ByteWriter:
 
 func set_networked_id(value: int) -> void:
 	networked_id = value
-	generate_unique_name()
+	generate_unique_name.call_deferred()
 
 func get_scene_id() -> int:
 	if override_scene_id != NetworkedIds.Scene.NETWORKED:

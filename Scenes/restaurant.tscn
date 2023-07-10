@@ -103,7 +103,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.2345, 0.268635, -8.92151)
 [node name="CustomerManager" type="Node3D" parent="Restaurant"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.6535, 0.268635, -8.92151)
 script = ExtResource("17_losm7")
-max_parties = 0
+max_parties = 10
 max_wait_to_spawn_sec = 2.0
 
 [node name="Menu" type="Node3D" parent="Restaurant" node_paths=PackedStringArray("orders_parent")]

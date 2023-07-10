@@ -2,9 +2,6 @@ extends SyncStage
 class_name PlayerSyncStage
 
 
-func _ready():
-	name = "PlayerSyncStage"
-
 func _nodes_to_sync() -> Array[Node]:
 	var players : Array[Node] = []
 	for player in GameState.players.values():

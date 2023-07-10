@@ -7,7 +7,6 @@ var existing_net_nodes : Array[Node] = []
 var updated_existing_net_nodes : Dictionary = {}
 
 func _ready():
-	name = "NetworkedNodeSpawnStage"
 	batch_size = NETWORKED_NODE_BATCH_SIZE
 
 func _client_begin() -> void:

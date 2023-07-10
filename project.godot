@@ -12,7 +12,7 @@ config_version=5
 
 config/name="The_Gang_Serves_Food"
 run/main_scene="res://Scenes/world.tscn"
-config/features=PackedStringArray("4.0", "GL Compatibility")
+config/features=PackedStringArray("4.1", "GL Compatibility")
 config/icon="res://kitchenStove_SE.png"
 
 [autoload]
@@ -68,12 +68,12 @@ shoot={
 }
 interact={
 "deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"pressed":false,"double_click":false,"script":null)
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
 ]
 }
 secondary_interact={
 "deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(118, 14),"global_position":Vector2(122, 57),"factor":1.0,"button_index":2,"pressed":true,"double_click":false,"script":null)
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(118, 14),"global_position":Vector2(122, 57),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
 unlock_cursor={
@@ -109,7 +109,7 @@ paint={
 }
 ping={
 "deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"button_mask":1,"position":Vector2(207, 14),"global_position":Vector2(211, 57),"factor":1.0,"button_index":1,"pressed":true,"double_click":false,"script":null)
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"button_mask":1,"position":Vector2(207, 14),"global_position":Vector2(211, 57),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
 rotate={
@@ -133,6 +133,11 @@ rotate={
 3d_physics/layer_6="EditModeAligner"
 3d_physics/layer_7="Visual"
 3d_navigation/layer_7="Visual"
+
+[navigation]
+
+3d/default_cell_size=0.1
+3d/default_cell_height=0.1
 
 [rendering]
 
