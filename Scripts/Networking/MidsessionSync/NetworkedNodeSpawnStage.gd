@@ -40,30 +40,30 @@ func _read_node(reader: ByteReader) -> void:
 			updated_existing_net_nodes[networked_id] = true
 			break
 	
-	# Node came in the pre-existing level - Don't need to spawn anything
-	if net_node != null:
-		return
+	var net_scene : Node = null
+	if net_node == null:
+		# Scene_id: NETWORKED nodes do not have spawnable scenes
+		# They are attached to other scenes
+		# We wrote the data anyway because its easier than developing some kind of "skip()" method
+		# TODO: Revisit this
+		if net_scene_id == NetworkedIds.Scene.NETWORKED:
+			return
+		print_verbose("[Peer %s] received request to [spawn Node %s]" % [multiplayer.get_unique_id(), networked_id])
+		assert(NetworkedScenes.get_scene_by_id(net_scene_id) != null, "%s does not have a NetworkedIds.Scene PATH to instantiate from in SceneIds.gd")
+		net_scene = NetworkedScenes.get_scene_by_id(net_scene_id).instantiate()
+		net_node = net_scene.get_node("NetworkedNode3D")
 		
-	# Scene_id: NETWORKED nodes do not have spawnable scenes
-	# They are attached to other scenes
-	# We wrote the data anyway because its easier than developing some kind of "skip()" method
-	# TODO: Revisit this
-	if net_scene_id == NetworkedIds.Scene.NETWORKED:
-		return
-	print_verbose("[Peer %s] received request to [spawn Node %s]" % [multiplayer.get_unique_id(), networked_id])
-	assert(NetworkedScenes.get_scene_by_id(net_scene_id) != null, "%s does not have a NetworkedIds.Scene PATH to instantiate from in SceneIds.gd")
+		# Since we are not adding the Scene to the tree until later, but we want to setup its name/id
+		# We need to manually assign the @onready var's
+		net_node.p_node = net_scene
+		net_node.original_name = net_scene.name
+		net_node.networked_id = networked_id
+		add_child(net_node.p_node, true)
+	else:
+		net_scene = net_node.p_node
 	
-	var net_scene = NetworkedScenes.get_scene_by_id(net_scene_id).instantiate()
-	net_node = net_scene.get_node("NetworkedNode3D")
-	# Since we are not adding the Scene to the tree until later, but we want to setup its name/id
-	# We need to manually assign the @onready var's
-	net_node.p_node = net_scene
-	net_node.original_name = net_scene.name
-	net_node.networked_id = networked_id
 	if not net_node.only_one_will_exist:
 		net_scene.name = p_node_name
-	
-	add_child(net_node.p_node, true)
 
 func _nodes_to_sync() -> Array[Node]:
 	var net_nodes = get_tree().get_nodes_in_group(str(NetworkedIds.Scene.NETWORKED))

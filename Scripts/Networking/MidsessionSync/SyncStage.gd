@@ -79,6 +79,8 @@ func _ensure_sync_nodes_are_ready() -> void:
 
 func ensure_sync_nodes_are_ready() -> void:
 	await _ensure_sync_nodes_are_ready()
+	await get_tree().physics_frame
+	await get_tree().physics_frame
 
 func nodes_to_sync() -> Array[Node]:
 	return _nodes_to_sync()

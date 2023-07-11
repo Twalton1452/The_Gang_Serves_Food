@@ -33,7 +33,7 @@ func _read_node(reader: ByteReader) -> void:
 	
 	var new_parent_node = get_node_or_null(path_to_p_node)
 	if new_parent_node == null:
-		printerr("Could find parent node, Path: %s" % path_to_p_node)
+		printerr("Couldnt find parent node when trying to Parent %s, Path: %s" % [net_node.p_node.name, path_to_p_node])
 		return
 	
 	print_verbose("[Peer %s] received request to [parent Node %s] %s" % [multiplayer.get_unique_id(), networked_id, net_node.p_node])
