@@ -1,4 +1,5 @@
 extends Node
+class_name World
 
 @onready var main_menu = $CanvasLayer/MainMenu
 @onready var address_entry = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/AddressEntry
@@ -71,7 +72,6 @@ func start_game():
 # Call this function deferred and only on the main authority (server).
 func change_level(scene: PackedScene):
 	# Remove old level if any.
-	reset.rpc()
 	var level = $Level
 	for c in level.get_children():
 		level.remove_child(c)
@@ -79,12 +79,16 @@ func change_level(scene: PackedScene):
 	# Add new level.
 	level.add_child(scene.instantiate())
 
+func reset_level() -> void:
+	reset.rpc()
+	change_level.call_deferred(load("res://Scenes/restaurant.tscn"))
+
 # The server can restart the level by pressing Home.
 func _input(event):
 	if not multiplayer.is_server():
 		return
 	if event.is_action("ui_home") and Input.is_action_just_pressed("ui_home"):
-		change_level.call_deferred(load("res://Scenes/restaurant.tscn"))
+		reset_level()
 
 func _on_color_picker_button_color_changed(color):
 	$CanvasLayer/MainMenu/MeshInstance2D.self_modulate = color

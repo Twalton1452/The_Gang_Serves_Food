@@ -39,6 +39,7 @@ class SyncPipeline extends Node:
 		pipeline = [
 			LayoutSyncStage.new("LayoutSyncStage", to_sync_peer_id),
 			NetworkedNodeSpawnStage.new("NetworkedNodeSpawnStage", to_sync_peer_id),
+			NetworkedNodeParentStage.new("NetworkedNodeParentStage", to_sync_peer_id),
 			NetworkedNodeSyncStage.new("NetworkedNodeSyncStage", to_sync_peer_id),
 			PlayerSyncStage.new("PlayerSyncStage", to_sync_peer_id),
 		]
@@ -122,7 +123,6 @@ func begin_sync(peer_id: int, needs_sync: bool) -> void:
 	
 	pause_for_players.rpc()
 	start_sync_pipeline_for_peer.rpc_id(peer_id)
-	iterate_sync_stages(peer_id)
 
 func finish_sync(peer_id: int) -> void:
 	sync_complete.emit()
@@ -187,3 +187,19 @@ func notify_client_sync_complete() -> void:
 @rpc("authority", "reliable")
 func start_sync_pipeline_for_peer() -> void:
 	create_pipeline_for(multiplayer.get_unique_id())
+	
+	# Confirm the Game is in a state that can be Sync'd
+	if GameState.level == null:
+		print("The Level wasn't instantiated yet, waiting 2 frames")
+		await GameState.level_changed
+	if not GameState.level.is_node_ready():
+		print("The Level wasn't ready yet waiting for it to be ready")
+		await GameState.level.ready
+	
+	notify_server_that_client_is_ready_for_sync.rpc_id(GameState.SERVER_ID)
+
+## Client needs to setup the initial level and Players before starting the sync process
+@rpc("any_peer", "reliable")
+func notify_server_that_client_is_ready_for_sync() -> void:
+	var peer_id = multiplayer.get_remote_sender_id()
+	iterate_sync_stages(peer_id)

@@ -4,6 +4,9 @@ extends Node
 
 signal state_changed
 signal money_changed(value: float)
+signal level_changed
+
+@onready var hud : HUD = get_node("/root/World/CanvasLayer/HUD")
 
 var SERVER_ID = 1
 ## Used for debugging, shows ID of GameState to make looking at the Remote SceneTree easier
@@ -47,7 +50,6 @@ var STATE_VALIDATIONS = {
 ## Player str(id) is the key and the Player Node is the value
 var players : Dictionary = {}
 var level : GameLevel : set = set_level
-var hud : HUD = null
 
 func set_sync_state(reader: ByteReader):
 	set_money(reader.read_float())
@@ -105,10 +107,10 @@ func set_state(value: Phase):
 
 func set_level(l: GameLevel):
 	level = l
-	hud = get_node("/root/World/CanvasLayer/HUD")
 	hud.show()
 	THIS_ID = multiplayer.get_unique_id()
 	state = GameState.Phase.EDITING_RESTAURANT
+	level_changed.emit()
 
 func set_money(value: float):
 	money = snapped(value, 0.01)
