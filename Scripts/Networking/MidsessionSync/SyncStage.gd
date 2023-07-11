@@ -69,6 +69,17 @@ func _client_begin() -> void:
 func _client_finished() -> void:
 	pass
 
+func _ensure_sync_nodes_are_ready() -> void:
+	var nodes = _nodes_to_sync()
+	for node in nodes:
+		if not node.is_node_ready():
+			print("[%s] Node: %s isn't ready, waiting for ready signal..." % [name, node.name])
+			await node.ready
+			print("[%s] Node: %s is now ready, progressing" % [name, node.name])
+
+func ensure_sync_nodes_are_ready() -> void:
+	await _ensure_sync_nodes_are_ready()
+
 func nodes_to_sync() -> Array[Node]:
 	return _nodes_to_sync()
 
@@ -167,6 +178,7 @@ func client_begin() -> void:
 
 func client_finished() -> void:
 	_client_finished()
+	await _ensure_sync_nodes_are_ready()
 	print_verbose("[Client %s Peer %s] <End> | %d ms | Received %d bytes------" % [name, peer_id, Time.get_ticks_msec() - start_time_ms, total_bytes_received])
 	notify_server_stage_finished.rpc_id(GameState.SERVER_ID)
 	successful = true

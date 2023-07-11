@@ -6,6 +6,15 @@ const NETWORKED_NODE_BATCH_SIZE = 50
 func _ready():
 	batch_size = NETWORKED_NODE_BATCH_SIZE
 
+func _ensure_sync_nodes_are_ready() -> void:
+	var networked_node_spawn_stage = get_parent().get_node("NetworkedNodeSpawnStage_" + str(peer_id))
+	var children = networked_node_spawn_stage.get_children()
+	
+	while children.size() > 0:
+		print("[%s] still has %s Children attached. Waiting for them to leave. %s" % [name, children.size(), children])
+		await networked_node_spawn_stage.child_exiting_tree
+		children = networked_node_spawn_stage.get_children()
+
 func _write_node(node: Node, writer: ByteWriter) -> void:
 	var net_node : NetworkedNode3D = node
 	
