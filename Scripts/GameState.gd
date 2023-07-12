@@ -51,7 +51,7 @@ var STATE_VALIDATIONS = {
 var players : Dictionary = {}
 var level : GameLevel : set = set_level
 
-func set_sync_state(reader: ByteReader):
+func set_sync_state(reader: ByteReader) -> void:
 	set_money(reader.read_float())
 	var current_validations = STATE_VALIDATIONS
 	STATE_VALIDATIONS = {}
@@ -59,12 +59,10 @@ func set_sync_state(reader: ByteReader):
 	STATE_VALIDATIONS = current_validations
 	modifiers.set_sync_state(reader)
 
-func get_sync_state() -> ByteWriter:
-	var writer : ByteWriter = ByteWriter.new()
+func get_sync_state(writer: ByteWriter) -> void:
 	writer.write_float(money)
 	writer.write_int(state)
-	writer.append_array(modifiers.get_sync_state().data)
-	return writer
+	modifiers.get_sync_state(writer)
 
 ## target_phase_to_prevent: Phase - When switching to this phase, ensure the validator is true
 ## validator: Dictionary{ "validator": Callable -> bool, "err_message": String }

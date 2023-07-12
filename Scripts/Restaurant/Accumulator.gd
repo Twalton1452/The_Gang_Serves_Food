@@ -23,7 +23,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		await get_tree().create_timer(time_left, false).timeout
 		_on_accumulate_timer_tick()
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	super(writer)
 	var has_accumulate_scene = to_accumulate_scene != null
 	writer.write_bool(has_accumulate_scene)
@@ -34,8 +34,6 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_bool(is_timer_playing)
 	if is_timer_playing:
 		writer.write_small_float(accumulate_timer.time_left)
-	
-	return writer
 
 func set_to_accumulate_scene(value: PackedScene) -> void:
 	to_accumulate_scene = value

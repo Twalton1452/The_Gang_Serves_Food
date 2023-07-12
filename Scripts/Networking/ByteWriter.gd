@@ -66,9 +66,16 @@ func write_int_array(arr: Array[int]) -> void:
 
 func write_path_to(node: Node) -> void:
 	var path_to = StringName(node.get_path()).to_utf8_buffer()
+	assert(path_to.size() < 240,\
+	 "Writing Path To Node %s is getting close to the Byte limit of a U8. Consider switching to U16" % node.name)
 	encode_u8(path_to.size())
 	append_array(path_to)
-	
+
+func write_relative_path_to(node: Node, from: Node) -> void:
+	var path_to = StringName(from.get_path_to(node)).to_utf8_buffer()
+	encode_u8(path_to.size())
+	append_array(path_to)
+
 func write_str(s: String):
 	var s_buf = StringName(s).to_utf8_buffer()
 	encode_u8(s_buf.size())

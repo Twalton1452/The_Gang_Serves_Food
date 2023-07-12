@@ -50,6 +50,9 @@ func read_str() -> String:
 func read_path_to() -> String:
 	return decode_utf8_str()
 
+func read_relative_path_to() -> String:
+	return decode_utf8_str()
+
 func read_vector3() -> Vector3:
 	return Vector3(decode_half(), decode_half(), decode_half())
 

@@ -10,6 +10,15 @@ func _ensure_sync_nodes_are_ready() -> void:
 	var networked_node_spawn_stage = get_parent().get_node("NetworkedNodeSpawnStage_" + str(peer_id))
 	var children = networked_node_spawn_stage.get_children()
 	
+	# TODO: Still broken
+	# ID issue? All of the things should be spawned and ready, last thing to check should be the names
+	# A non table entered the Table tree Rotatable_66:<Area3D#107575512053>
+#   At: res://Scripts/Restaurant/Restaurant.gd:59:_on_table_entered_tables_tree()
+#  Could find parent node, Path: /root/World/Level/Level/Restaurant/Cabinets/kitchenStove_13/OvenTop_79/Holder
+#  Could find parent node, Path: /root/World/Level/Level/Restaurant/Cabinets/kitchenStove_13/Burner1_75/Holder
+#  Could find parent node, Path: /root/World/Level/Level/Restaurant/Cabinets/kitchenStove_12/Burner1_68/Holder
+#[NetworkedNodeParentStage_1945738084] still has 3 Children attached. Waiting for them to leave. [TopBun_82:<Area3D#114806492498>, Patty_81:<Area3D#115259477355>, BottomBun_83:<Area3D#115544690042>]
+
 	while children.size() > 0:
 		print("[%s] still has %s Children attached. Waiting for them to leave. %s" % [name, children.size(), children])
 		await networked_node_spawn_stage.child_exiting_tree

@@ -23,6 +23,7 @@ var batch_size : int = 0 : set = set_batch_size
 func _init(stage_name: String, syncing_peer_id: int) -> void:
 	name = stage_name + "_" + str(syncing_peer_id)
 	peer_id = syncing_peer_id
+	set_process_internal(true)
 
 func set_batch_size(value: int) -> void:
 	batch_size = value

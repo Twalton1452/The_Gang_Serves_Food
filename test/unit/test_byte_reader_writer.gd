@@ -76,6 +76,26 @@ func test_can_read_write_path():
 	var read_value = _reader.read_path_to()
 	assert_eq(get_node(read_value), some_node)
 
+func test_can_read_write_relative_path():
+	var a_parent_node = Node3D.new()
+	a_parent_node.name = "ParentNode"
+	var one_layers_deep = Node3D.new()
+	one_layers_deep.name = "OneLayersDeep"
+	var two_layers_deep = Node3D.new()
+	two_layers_deep.name = "TwoLayersDeep"
+	var some_node = Node3D.new()
+	some_node.name = "SomeNode"
+	add_child_autoqfree(a_parent_node)
+	
+	a_parent_node.add_child(one_layers_deep)
+	one_layers_deep.add_child(two_layers_deep)
+	two_layers_deep.add_child(some_node)
+	some_node.owner = a_parent_node
+	
+	_writer.write_relative_path_to(some_node, some_node.owner)
+	var read_value = _reader.read_relative_path_to()
+	assert_eq(a_parent_node.get_node(read_value), some_node)
+
 func test_can_read_write_str():
 	var ev = "Testy"
 	

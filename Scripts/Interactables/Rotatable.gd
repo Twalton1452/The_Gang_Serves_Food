@@ -22,11 +22,10 @@ func set_sync_state(reader: ByteReader) -> void:
 	if is_rotated or in_progress:
 		get_parent().rotation = tar_rot
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	super(writer)
 	writer.write_bool(is_rotated)
 	writer.write_bool(in_progress)
-	return writer
 
 func _ready():
 	super()

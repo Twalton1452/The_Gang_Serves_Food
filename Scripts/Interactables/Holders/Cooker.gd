@@ -30,7 +30,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		_on_cooking_ticks_timer_timeout()
 	
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	super(writer)
 	holder.get_sync_state(writer)
 	
@@ -38,8 +38,6 @@ func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_bool(is_timer_playing)
 	if is_timer_playing:
 		writer.write_small_float(tick_timer.time_left)
-	
-	return writer
 
 func _ready() -> void:
 	super()

@@ -15,6 +15,10 @@ script = ExtResource("1_3suxm")
 [node name="FillRateTimer" type="Timer" parent="."]
 wait_time = 0.5
 
+[node name="NetworkedNode3D" parent="." instance=ExtResource("6_usg67")]
+priority_sync_order = 9
+override_scene_id = 500
+
 [node name="FountainModel" type="Node3D" parent="."]
 
 [node name="Base" type="MeshInstance3D" parent="FountainModel"]
@@ -37,7 +41,3 @@ beverage = ExtResource("7_7newn")
 [node name="DrinkDispenser3" parent="FountainModel" instance=ExtResource("3_dspd8")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.188, -0.19, 0.0929348)
 beverage = ExtResource("8_yfqur")
-
-[node name="NetworkedNode3D" parent="." instance=ExtResource("6_usg67")]
-priority_sync_order = 9
-override_scene_id = 500

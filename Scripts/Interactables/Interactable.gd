@@ -30,10 +30,9 @@ func set_sync_state(reader : ByteReader) -> void:
 		set_collision_layer_value(INTERACTABLE_LAYER, false)
 		set_collision_layer_value(NON_INTERACTABLE_LAYER, true)
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	writer.write_bool(is_collider_enabled())
 	writer.write_bool(get_collision_layer_value(INTERACTABLE_LAYER))
-	return writer
 
 func _ready():
 	collider = get_node_or_null("CollisionShape3D")

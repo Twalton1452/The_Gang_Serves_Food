@@ -42,11 +42,10 @@ func set_sync_state(reader: ByteReader) -> void:
 	
 	change_color()
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	super(writer)
 	writer.write_int(cook_state)
 	writer.write_small_float(cook_state_progress[cook_state])
-	return writer
 
 func get_current_cook_progress() -> float:
 	return cook_state_progress[cook_state]

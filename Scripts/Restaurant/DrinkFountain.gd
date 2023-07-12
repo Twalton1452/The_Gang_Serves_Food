@@ -18,12 +18,11 @@ func set_sync_state(reader: ByteReader) -> void:
 		await get_tree().create_timer(time_left, false).timeout
 		_on_fill_rate_tick()
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	var is_timer_playing = not fill_rate_timer.is_stopped()
 	writer.write_bool(is_timer_playing)
 	if is_timer_playing:
 		writer.write_small_float(fill_rate_timer.time_left)
-	return writer
 
 func _ready():
 	fill_rate_timer.timeout.connect(_on_fill_rate_tick)

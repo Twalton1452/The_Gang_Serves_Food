@@ -9,7 +9,7 @@ func _ready():
 func _write_node(node: Node, writer: ByteWriter) -> void:
 	var net_node : NetworkedNode3D = node
 	writer.write_big_int(net_node.networked_id)
-	writer.append_array(net_node.get_sync_state().data)
+	net_node.get_sync_state(writer)
 
 func _read_node(reader: ByteReader) -> void:
 	var networked_id = reader.read_big_int()

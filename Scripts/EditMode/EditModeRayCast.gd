@@ -37,8 +37,7 @@ func set_sync_state(reader: ByteReader) -> void:
 		target_original_position = reader.read_vector3()
 		target_original_rotation = reader.read_vector3()
 
-func get_sync_state() -> ByteWriter:
-	var writer = ByteWriter.new()
+func get_sync_state(writer: ByteWriter) -> void:
 	writer.write_str(remote_transform.remote_path)
 	
 	var has_target = target != null
@@ -47,8 +46,6 @@ func get_sync_state() -> ByteWriter:
 		writer.write_path_to(target)
 		writer.write_vector3(target_original_position)
 		writer.write_vector3(target_original_rotation)
-	
-	return writer
 
 func get_is_holding_editable() -> bool:
 	return remote_transform.remote_path != ^""

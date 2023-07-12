@@ -75,16 +75,13 @@ func set_sync_state(reader: ByteReader) -> void:
 
 ## Get the sync state of the parent including name and path information.
 ## Useful for syncing non-existent nodes across server/client
-func get_sync_state() -> ByteWriter:
-	var writer = ByteWriter.new()
-	
+func get_sync_state(writer: ByteWriter) -> void:
 	# Shouldn't happen, but it could if we mistakenly try to sync before _ready gets called
 	assert(networked_id != -1, "%s has -1 networked_id when trying to get_sync_state" % name)
 	
 	if has_additional_sync():
 		# Node this is attached to properties to sync
 		p_node.get_sync_state(writer)
-	return writer
 
 ## Set the sync state of the parent without name and path information.
 ## Useful for syncing existing nodes across server/client
@@ -106,9 +103,17 @@ func get_stateful_sync_state() -> ByteWriter:
 		p_node.get_sync_state(writer)
 	return writer
 
+#func set_spawn_data(reader: ByteReader) -> void:
+#	p_node.propagate_call("set_sync_state", [reader])
+
+func get_spawn_data(writer: ByteWriter) -> void:
+	writer.write_int(SCENE_ID)
+#	writer.write_big_int(networked_id)
+	writer.write_str(p_node.owner.get_path_to(p_node))
+#	p_node.propagate_call("get_sync_state", [writer])
+
 func set_networked_id(value: int) -> void:
 	networked_id = value
-	generate_unique_name.call_deferred()
 
 func get_scene_id() -> int:
 	if override_scene_id != NetworkedIds.Scene.NETWORKED:
@@ -132,10 +137,6 @@ func _ready():
 	if p_node == null:
 		p_node = get_parent()
 		original_name = p_node.name
-	if networked_id == -1:
-#		if not is_multiplayer_authority():
-#			print(p_node.name, " the networked_id was -1, assigning new id")
-		networked_id = NetworkingUtils.generate_id()
 	add_to_group(str(NetworkedIds.Scene.NETWORKED))
 	
 	if p_node is Interactable:
@@ -147,6 +148,10 @@ func _ready():
 	
 	if not is_multiplayer_authority():
 		return
+	if networked_id == -1:
+		networked_id = NetworkingUtils.generate_id()
+		generate_unique_name.call_deferred()
+	
 	priority_sync_order = NetworkingUtils.crawl_up_tree_for_next_priority_sync_order(p_node) as SyncPriorityPhase
 
 func _on_interaction():

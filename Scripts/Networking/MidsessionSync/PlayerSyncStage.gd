@@ -13,7 +13,7 @@ func _sync_process(nodes: Array[Node]) -> void:
 	
 	for player in nodes:
 		writer.write_str(player.name)
-		writer.append_array(player.get_sync_state().data)
+		player.get_sync_state(writer)
 	
 	send_client_sync_data(writer.data)
 
@@ -26,7 +26,7 @@ func _receive_sync_data(data: PackedByteArray) -> int:
 	
 	var writer = ByteWriter.new()
 	var client : Player = GameState.get_player_by_id(multiplayer.get_unique_id())
-	writer.append_array(client.get_sync_state().data)
+	client.get_sync_state(writer)
 	client.notify_peers_of_my_settings.rpc(writer.data)
 	
 	return total_num_nodes_to_sync

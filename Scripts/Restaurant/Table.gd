@@ -24,13 +24,11 @@ func set_sync_state(reader: ByteReader) -> void:
 	for holder in holders:
 		holder.set_sync_state(reader)
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	for chair in chairs:
 		chair.get_sync_state(writer)
 	for holder in holders:
 		holder.get_sync_state(writer)
-	
-	return writer
 
 func get_viable() -> bool:
 	return available_chairs().size() > 0

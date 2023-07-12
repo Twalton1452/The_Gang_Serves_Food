@@ -35,14 +35,20 @@ class SyncPipeline extends Node:
 	func _init(to_sync_peer_id: int) -> void:
 		peer_id = to_sync_peer_id
 		
-		# Could be configurable in the future if necessary
+		var remove_existing_net_nodes_stage = RemoveExistingNetworkedNodesStage.new("RemoveExistingNetworkedNodesStage", to_sync_peer_id)
+		
 		pipeline = [
+			remove_existing_net_nodes_stage,
 			LayoutSyncStage.new("LayoutSyncStage", to_sync_peer_id),
-			NetworkedNodeSpawnStage.new("NetworkedNodeSpawnStage", to_sync_peer_id),
-			NetworkedNodeParentStage.new("NetworkedNodeParentStage", to_sync_peer_id),
-			NetworkedNodeSyncStage.new("NetworkedNodeSyncStage", to_sync_peer_id),
-			PlayerSyncStage.new("PlayerSyncStage", to_sync_peer_id),
+#			NetworkedNodeSpawnStage.new("NetworkedNodeSpawnStage", to_sync_peer_id),
+#			NetworkedNodeParentStage.new("NetworkedNodeParentStage", to_sync_peer_id),
+#			NetworkedNodeSyncStage.new("NetworkedNodeSyncStage", to_sync_peer_id),
+#			PlayerSyncStage.new("PlayerSyncStage", to_sync_peer_id),
 		]
+		
+		# Spawner stages, need to cleanup all existing nodes before we spawn
+		remove_existing_net_nodes_stage.register_nodes_to_cleanup(pipeline[1].nodes_to_sync)
+#		remove_existing_net_nodes_stage.register_nodes_to_cleanup(pipeline[2].nodes_to_sync)
 		
 		for sync_stage in pipeline:
 			add_child(sync_stage)
@@ -72,6 +78,9 @@ const FAIL_SAFE_TIMER = 10.0
 var syncing = {}
 
 var is_synced : bool : get = get_is_synced
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func get_is_synced() -> bool:
 	return syncing.size() == 0 or syncing.values().all(func(pipeline): return pipeline.finished or pipeline.aborted)
@@ -110,7 +119,9 @@ func iterate_sync_stages(peer_id: int) -> void:
 		notify_peer_sync_stage_complete.rpc_id(peer_id, pipeline.current_stage)
 	
 	# These probably deserve their own stages too
-	sync_game_state.rpc_id(peer_id, GameState.get_sync_state().data)
+	var game_state_writer = ByteWriter.new()
+	GameState.get_sync_state(game_state_writer)
+	sync_game_state.rpc_id(peer_id, game_state_writer.data)
 	NetworkingUtils.sync_id.rpc_id(peer_id, NetworkingUtils.ID)
 	
 	finish_sync(peer_id)

@@ -52,11 +52,10 @@ func set_sync_state(reader: ByteReader):
 	if is_showing:
 		show()
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	writer.write_path_to(display_order)
 	var is_showing = visible
 	writer.write_bool(is_showing)
-	return writer
 
 func init(display: Node3D):
 	display_order = display

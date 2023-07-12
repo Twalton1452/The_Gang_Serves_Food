@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0wct3k6mqsl4"]
+[gd_scene load_steps=6 format=3 uid="uid://c0wct3k6mqsl4"]
 
 [ext_resource type="PackedScene" uid="uid://cj82gq64tqgkv" path="res://3d_models/PlateStackHolder.blend" id="1_kaax1"]
+[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_gg4la"]
 [ext_resource type="PackedScene" uid="uid://i1fsr68tupru" path="res://Scenes/holders/plate_components.tscn" id="2_lyxfo"]
 [ext_resource type="PackedScene" uid="uid://5oe7ra5qa4nb" path="res://Scenes/components/stacking_holder.tscn" id="3_gitd8"]
 
@@ -9,7 +10,9 @@ size = Vector3(0.171371, 0.225305, 0.314048)
 
 [node name="PlateStackHolder" instance=ExtResource("1_kaax1")]
 
-[node name="StackingHolder" parent="." index="1" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("3_gitd8")]
+[node name="NetworkedNode3D" parent="." index="1" instance=ExtResource("2_gg4la")]
+
+[node name="StackingHolder" parent="." index="2" node_paths=PackedStringArray("mesh_to_highlight") instance=ExtResource("3_gitd8")]
 ingredient_scene = ExtResource("2_lyxfo")
 stacking_spacing = Vector3(0, 0.006, 0)
 mesh_to_highlight = NodePath("../Holder")

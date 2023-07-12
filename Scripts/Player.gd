@@ -42,12 +42,10 @@ func set_sync_state(reader: ByteReader) -> void:
 	pixel_face.frame = reader.read_int()
 	edit_mode_ray_cast.set_sync_state(reader)
 
-func get_sync_state() -> ByteWriter:
-	var writer = ByteWriter.new()
+func get_sync_state(writer: ByteWriter) -> void:
 	writer.write_color(color)
 	writer.write_int(pixel_face.frame)
-	writer.append_array(edit_mode_ray_cast.get_sync_state().data)
-	return writer
+	edit_mode_ray_cast.get_sync_state(writer)
 
 ## Called from PlayerSyncStage
 @rpc("any_peer", "call_remote")

@@ -9,11 +9,9 @@ func set_sync_state(reader: ByteReader) -> void:
 	for holder in holders:
 		holder.set_sync_state(reader)
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	for holder in holders:
 		holder.get_sync_state(writer)
-	
-	return writer
 
 func _ready():
 	super()

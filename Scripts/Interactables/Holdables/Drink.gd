@@ -36,14 +36,13 @@ func set_sync_state(reader: ByteReader) -> void:
 	
 	evaluate_fill_state()
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	super(writer)
 	writer.write_small_float(fill_amount)
 	writer.write_int(beverage_amounts.size())
 	for beverage in beverage_amounts:
 		writer.write_int(beverage.RESOURCE_ID)
 		writer.write_small_float(beverage_amounts[beverage])
-	return writer
 
 func get_score() -> float:
 	return fill_amount

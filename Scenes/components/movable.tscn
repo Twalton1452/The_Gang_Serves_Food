@@ -1,13 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ujlsb34t55dm"]
+[gd_scene load_steps=2 format=3 uid="uid://ujlsb34t55dm"]
 
 [ext_resource type="Script" path="res://Scripts/Interactables/Moveable.gd" id="1_ny1ay"]
-[ext_resource type="PackedScene" uid="uid://wxfaroadhvvq" path="res://Scenes/networked_node_3d.tscn" id="2_36dxe"]
 
 [node name="Movable" type="Area3D"]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_ny1ay")
-
-[node name="NetworkedNode3D" parent="." instance=ExtResource("2_36dxe")]
-sync_position = false
-priority_sync_order = 9

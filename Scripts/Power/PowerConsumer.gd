@@ -16,9 +16,8 @@ var accumulated_power = 0.0
 func set_sync_state(reader: ByteReader) -> void:
 	accumulated_power = reader.read_float()
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	writer.write_float(accumulated_power)
-	return writer
 
 func _power_dependent_action() -> void:
 	pass

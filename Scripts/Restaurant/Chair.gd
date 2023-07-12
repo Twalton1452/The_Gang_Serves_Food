@@ -10,9 +10,8 @@ var sittable = true : set = set_sittable
 func set_sync_state(reader: ByteReader) -> void:
 	sittable = reader.read_bool()
 
-func get_sync_state(writer: ByteWriter) -> ByteWriter:
+func get_sync_state(writer: ByteWriter) -> void:
 	writer.write_bool(sittable)
-	return writer
 
 func set_sittable(value: bool) -> void:
 	visible = value

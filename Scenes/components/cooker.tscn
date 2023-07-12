@@ -1,18 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3y6xmhkuoht5"]
+[gd_scene load_steps=3 format=3 uid="uid://d3y6xmhkuoht5"]
 
 [ext_resource type="Script" path="res://Scripts/Interactables/Holders/Cooker.gd" id="1_34ogp"]
-[ext_resource type="Script" path="res://Scripts/Networking/NetworkedNode3D.gd" id="2_t7dk3"]
 [ext_resource type="AudioStream" uid="uid://b66hhttdvdisd" path="res://SFX/progression-2.wav" id="3_gfst2"]
 
 [node name="Cooker" type="Node3D"]
 script = ExtResource("1_34ogp")
+cook_power = null
+cook_power_loss_item_count_begin = null
+progress_cooking_sfx = null
+consumption_per_action = null
 
 [node name="CookingTicksTimer" type="Timer" parent="."]
 wait_time = 0.5
-
-[node name="NetworkedNode3D" type="Node" parent="."]
-script = ExtResource("2_t7dk3")
-priority_sync_order = 9
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 unit_size = 2.0
