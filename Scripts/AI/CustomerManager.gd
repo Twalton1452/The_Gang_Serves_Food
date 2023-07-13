@@ -46,6 +46,9 @@ func _on_child_entered_tree(customer_party: Node) -> void:
 	parties.push_back(customer_party)
 
 func _on_party_has_expected_customers(party: CustomerParty) -> void:
+	if party.state != CustomerParty.PartyState.SPAWNING:
+		return
+	
 	# Find the last party to wait behind, if none exist go to entry
 	if len(parties) > 0:
 		var i = parties.size() - 1

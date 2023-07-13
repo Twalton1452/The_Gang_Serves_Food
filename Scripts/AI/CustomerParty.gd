@@ -84,7 +84,7 @@ var paying_time_sec = 2.0
 var wait_before_leave_time_sec = 1.0
 var wait_between_customers_leaving = 0.2
 var customer_spacing = 0.5
-var customers : Array[Customer] = [] : set = set_customers
+var customers : Array[Customer] = []
 var SCENE_ID : NetworkedIds.Scene = NetworkedIds.Scene.CUSTOMER_PARTY
 var patience_bar_visual : PatienceBar = null
 
@@ -173,6 +173,8 @@ func set_state(value: PartyState) -> void:
 
 func set_party_size(value: int) -> void:
 	party_size = value
+	# Client-side safety measure
+	# Just incase the server spawns all of the customers before party_size gets set
 	if customers.size() == party_size:
 		has_expected_customers.emit(self)
 
@@ -190,6 +192,8 @@ func _on_child_entered_tree(customer: Node) -> void:
 	
 	if not customer.is_node_ready():
 		await customer.ready
+	NetworkingUtils.sort_array_by_net_id(customers)
+	num_customers_required_to_advance = len(customers)
 	has_expected_customers.emit(self)
 
 func _ready():
@@ -200,24 +204,6 @@ func _ready():
 ## allows the party to set all of its state before notifying others
 func emit_state_changed():
 	state_changed.emit(self)
-
-func set_customers(value: Array[Customer]) -> void:
-	if not customers.is_empty():
-		print("Tried to set_customers for party %s when it already has customers" % name)
-		return
-	
-	customers = value
-	var spacing = 0
-	for customer in customers:
-		customer.arrived.connect(_on_customer_arrived)
-		customer.player_interacted_with.connect(_on_customer_arrived)
-		customer.got_order.connect(_on_customer_arrived)
-		customer.ate_food.connect(_on_customer_arrived)
-		
-		customer.position = Vector3(0,0,-spacing)
-		spacing += customer_spacing
-	NetworkingUtils.sort_array_by_net_id(customers)
-	num_customers_required_to_advance = len(customers)
 
 func is_in_patience_state() -> bool:
 	return patience_states.has(state)
