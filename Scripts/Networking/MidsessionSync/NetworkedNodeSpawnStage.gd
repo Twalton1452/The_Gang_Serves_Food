@@ -44,8 +44,8 @@ func _read_node(reader: ByteReader) -> void:
 	if net_node == null:
 		# Scene_id: NETWORKED nodes do not have spawnable scenes
 		# They are attached to other scenes
-		# We wrote the data anyway because its easier than developing some kind of "skip()" method
-		# TODO: Revisit this
+		# The NetworkedNode3D's have their name/id info sync'd in LayoutSyncStage
+		# Ex: Stove with Cookers
 		if net_scene_id == NetworkedIds.Scene.NETWORKED:
 			return
 		print_verbose("[Peer %s] received request to [spawn Node %s]" % [multiplayer.get_unique_id(), networked_id])

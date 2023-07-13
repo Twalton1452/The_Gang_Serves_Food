@@ -27,7 +27,7 @@ func _init(stage_name: String, syncing_peer_id: int) -> void:
 func set_batch_size(value: int) -> void:
 	batch_size = value
 	@warning_ignore("integer_division")
-	num_packets_to_incur_wait = ceili(batch_size / 10)
+	num_packets_to_incur_wait = 2 # Completely arbitrary number
 
 func set_num_nodes_syncd(value: int) -> void:
 	num_nodes_syncd = value

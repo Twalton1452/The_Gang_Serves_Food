@@ -106,6 +106,22 @@ func get_stateful_sync_state() -> ByteWriter:
 		p_node.get_sync_state(writer)
 	return writer
 
+## Set the name and id information for syncing net_nodes under other dynamically spawned nodes
+## Ex: Stove is spawned, Set the Cooker's names/ids when we spawn the Stove
+func set_spawnable_sync_state(reader: ByteReader) -> void:
+	networked_id = reader.read_big_int()
+	original_name = reader.read_str()
+	p_node.name = reader.read_str()
+
+## Get the name and id information for syncing net_nodes under other dynamically spawned nodes
+## Ex: Stove is spawned, Get the Cooker's names/ids when we spawn the Stove
+func get_spawnable_sync_state() -> ByteWriter:
+	var writer = ByteWriter.new()
+	writer.write_big_int(networked_id)
+	writer.write_str(original_name)
+	writer.write_str(p_node.name)
+	return writer
+
 func set_networked_id(value: int) -> void:
 	networked_id = value
 

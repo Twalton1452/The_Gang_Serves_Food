@@ -72,7 +72,7 @@ func _unhandled_input(event):
 		spawn_party.rpc(4)
 
 ## Called from CustomerParty when they have Spawned
-func sync_party(party: CustomerParty):
+func sync_party(_party: CustomerParty):
 	NetworkingUtils.sort_array_by_net_id(parties)
 
 func start_customer_spawning():
