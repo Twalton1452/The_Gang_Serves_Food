@@ -128,27 +128,27 @@ func set_priority_sync_order(value: SyncPriorityPhase) -> void:
 #		print(p_node.name, " ", priority_sync_order)
 
 func _ready():
+	# p_node on the server is set here
+	# Clients have it set during MidsessionSync | Except pre-existing nodes that are in the Level scene
 	if p_node == null:
 		p_node = get_parent()
 		original_name = p_node.name
+	
+	# ID is set here on the server
+	# Clients will set the ID during MidsessionSync | Except pre-existing nodes that are in the Level scene
 	if networked_id == -1:
-#		if not is_multiplayer_authority():
-#			print(p_node.name, " the networked_id was -1, assigning new id")
 		networked_id = NetworkingUtils.generate_id()
 		generate_unique_name.call_deferred()
 		
 	add_to_group(str(NetworkedIds.Scene.NETWORKED))
 	
+	# This is for the server and syncing, but running it on client doesn't hurt
 	if p_node is Interactable:
 		SCENE_ID = p_node.SCENE_ID
 		p_node.interacted.connect(_on_interaction)
 	# sync overrides because they likely have no other trigger to sync them
 	elif override_scene_id != NetworkedIds.Scene.NETWORKED or only_one_will_exist:
 		changed = true
-	
-	if not is_multiplayer_authority():
-		return
-	priority_sync_order = NetworkingUtils.crawl_up_tree_for_next_priority_sync_order(p_node) as SyncPriorityPhase
 
 func _on_interaction():
 	changed = true
@@ -165,15 +165,6 @@ func generate_unique_name():
 		p_node.name = str(networked_id)
 	else:
 		p_node.name = original_name + "_" + str(networked_id) # useful for debugging
-
-# Anytime the node enters another tree, like being held this is fired off
-# As well as on startup
-func _enter_tree():
-	if p_node == null or (multiplayer and not is_multiplayer_authority()):
-		return
-	
-	if not p_node.is_queued_for_deletion():
-		NetworkingUtils.ensure_correct_sync_order_for(p_node)
 
 # When the node changes (parents) this gets fired off
 # Can work as a delta signifier to the midsession joins for already existing nodes

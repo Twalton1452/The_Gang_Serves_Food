@@ -94,6 +94,9 @@ func erase_pipeline_for(peer_id: int) -> void:
 func iterate_sync_stages(peer_id: int) -> void:
 	var start_time_ms = Time.get_ticks_msec()
 	var pipeline : SyncPipeline = create_pipeline_for(peer_id)
+	var level_net_node : NetworkedNode3D = GameState.level.get_node(NetworkingUtils.NETWORKED_NODE_3D)
+	NetworkingUtils.ensure_correct_sync_order_for(level_net_node)
+	
 	pipeline.start()
 	
 	while not pipeline.finished:
