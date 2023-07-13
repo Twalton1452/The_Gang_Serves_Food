@@ -108,7 +108,6 @@ func get_stateful_sync_state() -> ByteWriter:
 
 func set_networked_id(value: int) -> void:
 	networked_id = value
-	generate_unique_name.call_deferred()
 
 func get_scene_id() -> int:
 	if override_scene_id != NetworkedIds.Scene.NETWORKED:
@@ -136,6 +135,8 @@ func _ready():
 #		if not is_multiplayer_authority():
 #			print(p_node.name, " the networked_id was -1, assigning new id")
 		networked_id = NetworkingUtils.generate_id()
+		generate_unique_name.call_deferred()
+		
 	add_to_group(str(NetworkedIds.Scene.NETWORKED))
 	
 	if p_node is Interactable:
