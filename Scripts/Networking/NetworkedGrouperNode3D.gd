@@ -26,7 +26,7 @@ func _ready():
 	add_to_group(GROUP_NAME)
 
 func _on_child_entered_tree(node: Node) -> void:
-	generate_network_safe_name_for.call_deferred(node)
+#	generate_network_safe_name_for.call_deferred(node)
 	snap_node.call_deferred(node)
 
 func snap_node(node: Node) -> void:

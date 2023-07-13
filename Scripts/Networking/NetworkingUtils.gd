@@ -37,40 +37,52 @@ func sort_array_by_net_id(arr: Array) -> void:
 		return false
 	)
 
-func spawn_node(node_to_spawn: PackedScene, to_be_parent: Node, data: Dictionary = {}) -> Node:
+## Similar method to [spawn_node], but makes sure the networked_id and name
+## are set to specific values before being added to the SceneTree
+func client_spawn_node(node_to_spawn: PackedScene, to_be_parent: Node, node_name: String, networked_id: int = -1) -> Node:
 	var spawned_node = node_to_spawn.instantiate()
+	
+	var spawned_net_node : NetworkedNode3D = spawned_node.get_node_or_null(NETWORKED_NODE_3D)
+	if spawned_net_node != null:
+		spawned_net_node.networked_id = networked_id
+		spawned_net_node.p_node = spawned_node
+		spawned_net_node.original_name = spawned_node.name
+	
+	spawned_node.name = node_name
+#	print("Client Spawned Node, Name %s, Parent %s: " % [spawned_node.name, to_be_parent])
+	
 	to_be_parent.add_child(spawned_node, true)
-	
-	if data.size() > 0:
-		for property in data:
-			spawned_node[property] = data[property]
-	# Only the server cares about the NetworkedNode3D sync orders
-	# If the player needs that too, then remove this
-	if not is_multiplayer_authority():
-		return spawned_node
-	
-	ensure_correct_sync_order_for(spawned_node)
-	
 	return spawned_node
 
-func spawn_node_by_scene_path(path_to_node_scene: String, to_be_parent: Node, data: Dictionary = {}) -> Node:
-	return spawn_node(load(path_to_node_scene), to_be_parent, data)
+func spawn_node(node_to_spawn: PackedScene, to_be_parent: Node) -> Node:
+	var spawned_node = node_to_spawn.instantiate()
+	
+	if is_multiplayer_authority():
+		var spawned_net_node : NetworkedNode3D = spawned_node.get_node_or_null(NETWORKED_NODE_3D)
+		if spawned_net_node != null:
+			spawned_net_node.runtime_created_setup()
+#			print("Server Spawned Node, Name %s, Parent %s: " % [spawned_node.name, to_be_parent])
+	
+	to_be_parent.add_child(spawned_node, true)
+	return spawned_node
 
-func spawn_node_by_scene_path_for_everyone(path_to_node_scene: String, to_be_parent: Node, data: Dictionary = {}) -> Node:
+func spawn_node_by_scene_path(path_to_node_scene: String, to_be_parent: Node) -> Node:
+	return spawn_node(load(path_to_node_scene), to_be_parent)
+
+func client_spawn_node_by_scene_path(path_to_node_scene: String, to_be_parent: Node, node_name: String) -> Node:
+	return client_spawn_node(load(path_to_node_scene), to_be_parent, node_name)
+
+func spawn_node_by_scene_path_for_everyone(path_to_node_scene: String, to_be_parent: Node) -> Node:
 	if not is_multiplayer_authority():
 		return null
 	
-	var spawned_node = spawn_node_by_scene_path(path_to_node_scene, to_be_parent, data)
+	var spawned_node = spawn_node_by_scene_path(path_to_node_scene, to_be_parent)
 	
 	var writer = ByteWriter.new()
 	writer.write_str(path_to_node_scene)
+	writer.write_str(spawned_node.name)
 	writer.write_path_to(to_be_parent)
 	
-	var has_extra_data = data.size() > 0
-	writer.write_bool(has_extra_data)
-	if has_extra_data:
-		writer.write_vec3_dict(data)
-		
 	spawn_node_by_scene_path_for_peers.rpc(writer.data)
 	return spawned_node
 
@@ -84,6 +96,7 @@ func spawn_node_for_everyone(node_to_spawn: PackedScene, to_be_parent: Node, dat
 	var writer = ByteWriter.new()
 	writer.write_big_int(net_node.networked_id)
 	writer.write_int(net_node.SCENE_ID)
+	writer.write_str(net_node.p_node.name)
 	writer.write_path_to(to_be_parent)
 	
 	var has_extra_data = data.size() > 0
@@ -240,12 +253,16 @@ func spawn_node_for_peers(data: PackedByteArray):
 	var reader = ByteReader.new(data)
 	var networked_id = reader.read_big_int()
 	var scene_id = reader.read_int()
+	var p_node_name = reader.read_str()
 	var to_be_parent = get_node(reader.read_path_to())
 	var has_extra_data = reader.read_bool()
 	var extra_data = reader.read_vec3_dict() if has_extra_data else {}
-	var spawned_node = spawn_node(NetworkedScenes.get_scene_by_id(scene_id), to_be_parent, extra_data)
-	var net_node = spawned_node.get_node(NETWORKED_NODE_3D)
-	net_node.networked_id = networked_id
+	extra_data["name"] = p_node_name
+	
+	client_spawn_node(NetworkedScenes.get_scene_by_id(scene_id), to_be_parent, p_node_name, networked_id)
+#	var spawned_node = client_spawn_node(NetworkedScenes.get_scene_by_id(scene_id), to_be_parent, p_node_name, networked_id)
+#	var net_node = spawned_node.get_node(NETWORKED_NODE_3D)
+#	net_node.networked_id = networked_id
 
 @rpc("authority", "call_remote", "reliable")
 func spawn_node_by_scene_path_for_peers(data: PackedByteArray):
@@ -254,10 +271,10 @@ func spawn_node_by_scene_path_for_peers(data: PackedByteArray):
 	
 	var reader = ByteReader.new(data)
 	var scene_path = reader.read_str()
+	var node_name = reader.read_str()
 	var to_be_parent = get_node(reader.read_path_to())
-	var has_extra_data = reader.read_bool()
-	var extra_data = reader.read_vec3_dict() if has_extra_data else {}
-	spawn_node_by_scene_path(scene_path, to_be_parent, extra_data)
+	
+	client_spawn_node_by_scene_path(scene_path, to_be_parent, node_name)
 
 @rpc("authority", "call_remote", "reliable")
 func duplicate_node_for_peers(data: PackedByteArray):

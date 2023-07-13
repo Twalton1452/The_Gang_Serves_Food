@@ -4,6 +4,7 @@ class_name CustomerParty
 ## A group of customers makes up a CustomerParty
 ## This class will help to organize groups of Customers to tell them where to go like a family
 
+signal has_expected_customers(party: CustomerParty)
 signal state_changed(party: CustomerParty)
 signal patience_changed(new_value: float)
 
@@ -89,6 +90,7 @@ var patience_bar_visual : PatienceBar = null
 
 # Saved/Loaded State
 var state : PartyState = PartyState.SPAWNING : set = set_state
+var party_size : int = -1 : set = set_party_size
 var num_arrived_to_destination = 0
 var num_customers_required_to_advance = 1
 var target_pos : Vector3 = Vector3.ZERO
@@ -102,6 +104,7 @@ func after_sync():
 func set_sync_state(reader: ByteReader) -> void:
 	global_position = reader.read_vector3()
 	state = reader.read_int() as PartyState
+	party_size = reader.read_int()
 	num_arrived_to_destination = reader.read_int()
 	num_customers_required_to_advance = reader.read_int()
 	target_pos = reader.read_vector3()
@@ -122,6 +125,7 @@ func set_sync_state(reader: ByteReader) -> void:
 func get_sync_state(writer: ByteWriter) -> ByteWriter:
 	writer.write_vector3(global_position)
 	writer.write_int(state)
+	writer.write_int(party_size)
 	writer.write_int(num_arrived_to_destination)
 	writer.write_int(num_customers_required_to_advance)
 	writer.write_vector3(target_pos)
@@ -167,13 +171,26 @@ func set_state(value: PartyState) -> void:
 			table.color = Color.FOREST_GREEN
 	#print("Party has advanced to state: %s" % str(state))
 
+func set_party_size(value: int) -> void:
+	party_size = value
+	if customers.size() == party_size:
+		has_expected_customers.emit(self)
+
 func set_patience(value: float) -> void:
 	patience = value
 	patience_changed.emit(patience)
 
-func _on_child_entered_tree(child: Node) -> void:
-	if child is Customer:
-		sync_customer(child)
+func _on_child_entered_tree(customer: Node) -> void:
+	if not customer is Customer:
+		return
+	
+	sync_customer(customer)
+	if customers.size() != party_size:
+		return
+	
+	if not customer.is_node_ready():
+		await customer.ready
+	has_expected_customers.emit(self)
 
 func _ready():
 	add_to_group(str(NetworkedIds.Scene.CUSTOMER_PARTY))

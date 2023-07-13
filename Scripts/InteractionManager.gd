@@ -365,9 +365,31 @@ func resolve_buying_held_item(p_id: int) -> void:
 	var to_be_parent = Utils.crawl_up_for_grouper_node(node)
 	if to_be_parent == null:
 		to_be_parent = node.get_parent()
-	var spawned_node = NetworkingUtils.spawn_node_by_scene_path_for_everyone(node.scene_file_path, to_be_parent, data)
+	var spawned_node = NetworkingUtils.spawn_node_by_scene_path(node.scene_file_path, to_be_parent)
+	for property in data:
+		spawned_node[property] = data[property]
 	edit_mode_node_bought.emit(spawned_node)
 	print(p_id, " Bought ", spawned_node)
+	
+	var writer = ByteWriter.new()
+	writer.write_str(node.scene_file_path)
+	writer.write_str(spawned_node.name)
+	writer.write_path_to(to_be_parent)
+	writer.write_vec3_dict(data)
+	notify_peers_of_bought_item.rpc(writer.data)
+
+@rpc("authority", "call_remote")
+func notify_peers_of_bought_item(data: PackedByteArray) -> void:
+	var reader = ByteReader.new(data)
+	var scene_path = reader.read_str()
+	var node_name = reader.read_str()
+	var to_be_parent = get_node(reader.read_path_to())
+	var node_data = reader.read_vec3_dict()
+	
+	var spawned_node = NetworkingUtils.client_spawn_node_by_scene_path(scene_path, to_be_parent, node_name)
+	for property in node_data:
+		spawned_node[property] = node_data[property]
+	edit_mode_node_bought.emit(spawned_node)
 
 @rpc("any_peer")
 func resolve_selling_held_item(p_id: int) -> void:

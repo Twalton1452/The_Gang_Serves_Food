@@ -31,16 +31,17 @@ func _read_node(reader: ByteReader) -> void:
 	
 	for _i in range(num_nodes):
 		var node_name = reader.read_str()
-		var scene_path = reader.read_str()
+		var spawnable_scene_path = reader.read_str()
 		var global_pos = reader.read_vector3()
 		var global_rot = reader.read_vector3()
 		
 		var node : Node = grouper_node.get_node_or_null(node_name)
 		if node == null:
-			node = NetworkingUtils.spawn_node_by_scene_path(scene_path, grouper_node)
+			node = NetworkingUtils.spawn_node_by_scene_path(spawnable_scene_path, grouper_node)
 		elif to_delete_nodes.size() > 0:
 			var index = to_delete_nodes.find(node)
-			to_delete_nodes.remove_at(index)
+			if index != -1:
+				to_delete_nodes.remove_at(index)
 		
 		node.set_name.call_deferred(node_name)
 		node.global_position = global_pos

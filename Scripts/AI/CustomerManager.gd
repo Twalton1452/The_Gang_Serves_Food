@@ -13,6 +13,9 @@ var parties : Array[CustomerParty] = []
 var can_spawn = true
 var is_spawning = true
 
+func _enter_tree() -> void:
+	child_entered_tree.connect(_on_child_entered_tree)
+
 func _ready():
 	restaurant.table_became_available.connect(_on_table_became_available)
 	restaurant.menu.new_menu.connect(_on_new_restaurant_menu_available)
@@ -32,6 +35,34 @@ func _on_game_state_changed() -> void:
 		for party in parties:
 			party.state = CustomerParty.PartyState.LEAVING_FOR_HOME
 
+func _on_child_entered_tree(customer_party: Node) -> void:
+	if not customer_party is CustomerParty:
+		return
+	
+	customer_party.state_changed.connect(_on_party_state_changed)
+	customer_party.has_expected_customers.connect(_on_party_has_expected_customers)
+	customer_party.global_position = restaurant.customer_spawn_point.global_position
+	
+	parties.push_back(customer_party)
+
+func _on_party_has_expected_customers(party: CustomerParty) -> void:
+	# Find the last party to wait behind, if none exist go to entry
+	if len(parties) > 0:
+		var i = parties.size() - 1
+	
+		while i >= 0:
+			if parties[i] == party:
+				i -= 1
+				continue
+			
+			if parties[i].state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
+				party.wait_in_line(parties[i])
+				return
+			
+			i -= 1
+	
+	party.go_to_entry(restaurant.entry_point)
+
 func _unhandled_input(event):
 	if not is_multiplayer_authority():
 		return
@@ -42,8 +73,6 @@ func _unhandled_input(event):
 
 ## Called from CustomerParty when they have Spawned
 func sync_party(party: CustomerParty):
-	party.state_changed.connect(_on_party_state_changed)
-	parties.push_back(party)
 	NetworkingUtils.sort_array_by_net_id(parties)
 
 func start_customer_spawning():
@@ -60,28 +89,31 @@ func start_customer_spawning():
 		return
 	
 	if len(parties) < max_parties:
-		spawn_party.rpc(randi_range(GameState.modifiers.min_party_size, GameState.modifiers.max_party_size))
+		spawn_party(randi_range(GameState.modifiers.min_party_size, GameState.modifiers.max_party_size))
 		start_customer_spawning()
 	else:
 		is_spawning = false
 
-@rpc("authority", "call_local")
 func spawn_party(party_size: int) -> void:
 	if party_size > GameState.modifiers.max_party_size:
 		return
 	
-	var new_party : CustomerParty = NetworkingUtils.spawn_node(party_scene, self)
-	new_party.state_changed.connect(_on_party_state_changed)
-	new_party.global_position = restaurant.customer_spawn_point.global_position
+	var new_party : CustomerParty = NetworkingUtils.spawn_node_for_everyone(party_scene, self)
+	new_party.party_size = party_size
+	
+	var writer = ByteWriter.new()
+	writer.write_str(new_party.name)
+	writer.write_int(party_size)
+	notify_peers_of_spawned_party.rpc(writer.data)
 	
 	for i in range(party_size):
-		new_party.sync_customer(NetworkingUtils.spawn_node(customer_scene, new_party) as Customer)
-	
-	if len(parties) > 0 and parties[-1].state <= CustomerParty.PartyState.WAITING_FOR_TABLE:
-		new_party.wait_in_line(parties[-1])
-	else:
-		new_party.go_to_entry(restaurant.entry_point)
-	parties.push_back(new_party)
+		NetworkingUtils.spawn_node_for_everyone(customer_scene, new_party)
+
+@rpc("authority", "call_remote")
+func notify_peers_of_spawned_party(data: PackedByteArray) -> void:
+	var reader = ByteReader.new(data)
+	var spawned_party = get_node(reader.read_str())
+	spawned_party.party_size = reader.read_int()
 
 func _on_table_became_available(_table: Table) -> void:
 	# Prioritize the parties at the front of the line that are waiting for a table

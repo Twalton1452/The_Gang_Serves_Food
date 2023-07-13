@@ -172,3 +172,12 @@ func _exit_tree():
 	changed = true
 	
 #	print("[Changed: %s] Parent: %s" % [name, get_parent().name])
+
+func runtime_created_setup() -> void:
+	p_node = get_parent()
+	original_name = p_node.name
+	
+	# ID is set here on the server
+	# Clients will set the ID during MidsessionSync | Except pre-existing nodes that are in the Level scene
+	networked_id = NetworkingUtils.generate_id()
+	generate_unique_name()
